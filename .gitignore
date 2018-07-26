@@ -1,0 +1,11 @@
+*.*~
+build/*
+!build/sweet16.prg
+!build/sweet16.b64
+!build/sweet16.d64
+!build/index.sym
+code/#*#
+code/.#*
+breakpoints.txt
+#*#
+.#*
