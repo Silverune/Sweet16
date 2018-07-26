@@ -7,8 +7,9 @@ Program:
 	break()
 	jsr SWEET16
 S16: *=* "PRG"
-	br $FF
-	ld 2
+	set 1 : $7000
+	set 2 : $7002
+	set 3 : $0001
 	rtn
 	break()
 	SetWholeScreen(WHITE)

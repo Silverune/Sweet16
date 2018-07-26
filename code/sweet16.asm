@@ -20,12 +20,12 @@
 }
 
 .function _16bitnextArgument(arg) {
+	.if (arg.getType()==AT_IMMEDIATE)
+		.return CmdArgument(arg.getType(),>arg.getValue())
+	.return CmdArgument(arg.getType(),arg.getValue()+1)
 }
-	
+
 .function effective_address(ea) {
-//	.if (ea.getType() == AT_IMMEDIATE || ea.getType() == AT_ABSOLUTE)
-//		.return ea.getValue()
-	//	.return "Not yet supported effective address"
 	.if (ea.getType()==AT_IMMEDIATE || ea.getType()==AT_ABSOLUTE)
 		.return ea.getValue()
 	.return CmdArgument(ea.getType(),ea.getValue()+1).getValue()
@@ -41,64 +41,69 @@
 }
 
 // Register Ops
-.pseudocommand set register {
-	.byte opcode($10, register)
+.macro register_encode(op, register, address) {
+	.byte opcode(op, register)
+	.word address.getValue()
+}
+
+.pseudocommand set register : address {
+	register_encode($10, register, address)
+}
+
+.pseudocommand ld register : address {
+	register_encode($20, register, address)
+}
+
+.pseudocommand st register : address {
+	register_encode($30, register, address)
 }
 	
-.pseudocommand ld register {
-	.byte opcode($20, register)
-}
-
-.pseudocommand st register {
-	.byte opcode($30, register)
+.pseudocommand ldi register : address {
+	register_encode($40, register, address)
 }
 	
-.pseudocommand ldi register {
-	.byte opcode($40, register)
+.pseudocommand sti register : address {
+	register_encode($50, register, address)
 }
 	
-.pseudocommand sti register {
-	.byte opcode($50, register)
-}
-	
-.pseudocommand ldd register {
-	.byte opcode($60, register)
+.pseudocommand ldd register : address {
+	register_encode($60, register, address)
 }
 
-.pseudocommand std register {
-	.byte opcode($70, register)
+.pseudocommand std register : address {
+	register_encode($70, register, address)
 }
 
-.pseudocommand pop register {
-	.byte opcode($70, register)
+.pseudocommand pop register : address {
+	register_encode($80, register, address)
 }
 
-.pseudocommand stp register {
-	.byte opcode($90, register)
+.pseudocommand stp register : address {
+	register_encode($90, register, address)
 }
 
-.pseudocommand add register {
-	.byte opcode($a0, register)
+.pseudocommand add register : address {
+	register_encode($a0, register, address)
 }
 
-.pseudocommand sub register {
-	.byte opcode($b0, register)
+.pseudocommand sub register : address {
+	register_encode($b0, register, address)
 }
 
-.pseudocommand popd register {
-	.byte opcode($c0, register)
+.pseudocommand popd register : address {
+	register_encode($c0, register, address)
 }
 
-.pseudocommand cpr register {
-	.byte opcode($d0, register)
+.pseudocommand cpr register : address {
+	register_encode($d0, register, address)
 }
 
-.pseudocommand inr register {
-	.byte opcode($e0, register)
+.pseudocommand inr register : address {
+	register_encode($e0, register, address)
 }
 
-.pseudocommand dcr register {
-	.byte opcode($f0, register)
+.pseudocommand dcr register : address {
+	register_encode($f0, register, address)
 }
 
 .const R0L = RL(0)   // ACC
