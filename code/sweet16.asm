@@ -13,99 +13,6 @@
 	.return ZP_BASE + (register * 2) + 1
 }
 
-.function opcode(operand, register) {
-	.if (register.getType() == AT_IMMEDIATE || register.getType() == AT_ABSOLUTE)
-		.return operand + register.getValue()
-	.error "Register must be a number"
-}
-
-.function _16bitnextArgument(arg) {
-	.if (arg.getType()==AT_IMMEDIATE)
-		.return CmdArgument(arg.getType(),>arg.getValue())
-	.return CmdArgument(arg.getType(),arg.getValue()+1)
-}
-
-.function effective_address(ea) {
-	.if (ea.getType()==AT_IMMEDIATE || ea.getType()==AT_ABSOLUTE)
-		.return ea.getValue()
-	.return CmdArgument(ea.getType(),ea.getValue()+1).getValue()
-}
-
-// Nonregister Ops	
-.pseudocommand rtn {
-	.byte $00
-}
-
-.pseudocommand br ea {
-	.byte $10, effective_address(ea)
-}
-
-// Register Ops
-.macro register_encode(op, register, address) {
-	.byte opcode(op, register)
-	.word address.getValue()
-}
-
-.pseudocommand set register : address {
-	register_encode($10, register, address)
-}
-
-.pseudocommand ld register : address {
-	register_encode($20, register, address)
-}
-
-.pseudocommand st register : address {
-	register_encode($30, register, address)
-}
-	
-.pseudocommand ldi register : address {
-	register_encode($40, register, address)
-}
-	
-.pseudocommand sti register : address {
-	register_encode($50, register, address)
-}
-	
-.pseudocommand ldd register : address {
-	register_encode($60, register, address)
-}
-
-.pseudocommand std register : address {
-	register_encode($70, register, address)
-}
-
-.pseudocommand pop register : address {
-	register_encode($80, register, address)
-}
-
-.pseudocommand stp register : address {
-	register_encode($90, register, address)
-}
-
-.pseudocommand add register : address {
-	register_encode($a0, register, address)
-}
-
-.pseudocommand sub register : address {
-	register_encode($b0, register, address)
-}
-
-.pseudocommand popd register : address {
-	register_encode($c0, register, address)
-}
-
-.pseudocommand cpr register : address {
-	register_encode($d0, register, address)
-}
-
-.pseudocommand inr register : address {
-	register_encode($e0, register, address)
-}
-
-.pseudocommand dcr register : address {
-	register_encode($f0, register, address)
-}
-
 .const R0L = RL(0)   // ACC
 .const R0H = RH(0)
 .const R12L = RL(12) // RSP
@@ -118,6 +25,7 @@
 .const R15H = RH(15)
 
 SWEET16: *=* "SWEET16"
+SW16:	
 	jsr SAVE           // PRESERVE 6502 REG CONTENTS
 	
 SW16A: *=* "SW16A"
@@ -136,7 +44,6 @@ SW16C: *=* "SW16C"
     inc  R15H
 	
 SW16D: *=* "SW16D"
-	break()
 	lda  #>SET          // COMMON HIGH BYTE FOR ALL ROUTINES
     pha                 // PUSH ON staCK FOR rts
     ldy  $0
@@ -227,7 +134,7 @@ BRTBL: *=* "BRTBL"
     .byte  <NUL-1          // F
 
 // FOLLOWING CODE MUST BE CONTAINED ON A SINGLE PAGE!
-.align $100
+.align $100            // ensures page aligned
 .var sanity = *	
 SET: *=* "SET"
 	jmp SETZ           // ALWAYS TAKEN
@@ -260,7 +167,7 @@ STAT3:
 	
 INR:
 	inc  R0L,X
-    bne  INR2           // incR RX
+    bne  INR2           // INCR RX
     inc  R0H,X
 	
 INR2:
@@ -278,12 +185,12 @@ POP:
     beq  POP2           // ALWAYS TAKEN
 	
 POPD:
-	jsr  DCR            // decR RX
+	jsr  DCR            // DECR RX
     lda  (R0L,X)        // POP HIGH ORDER BYTE @RX
     tay                 // SAVE IN Y REG
 	
 POP2:
-	jsr  DCR            // decR RX
+	jsr  DCR            // DECR RX
     lda  (R0L,X)        // LOW ORDER BYTE
     sta  R0L            // TO R0
     sty  R0H
@@ -297,7 +204,7 @@ LDDAT:
 	jsr  LDAT           // LOW ORDER BYTE TO R0, incR RX
     lda  (R0L,X)        // HIGH ORDER BYTE TO R0
     sta  R0H
-    jmp  INR            // incR RX
+    jmp  INR            // INCR RX
 	
 STDAT:
 	jsr  STAT           // STORE INDIRECT LOW ORDER
@@ -306,14 +213,14 @@ STDAT:
     jmp  INR            // INCR RX and RETURN
 	
 STPAT:
-	jsr  DCR            // decR RX
+	jsr  DCR            // DECR RX
     lda  R0L
     sta  (R0L,X)        // STORE R0 LOW BYTE @RX
     jmp  POP3           // INDICATE R0 AS LAST RESULT REG
 
 DCR:
 	lda  R0L,X
-    bne  DCR2           // decR RX
+    bne  DCR2           // DECR RX
     dec  R0H,X
 	
 DCR2:
@@ -324,7 +231,7 @@ SUB:
 	ldy  $0             // RESULT TO R0
 
 CPR:
-	sec                  // NOTE Y REG = 13*2 FOR cpr
+	sec                 // NOTE Y REG = 13*2 FOR cpr
     lda  R0L
     sbc  R0L,X
     sta  R0L,Y          // R0-RX TO RY
@@ -438,9 +345,8 @@ RS:
     sta  R15L
     rts
 
-RTN:	*=* "RTN"
+RTN: *=* "RTN"
 	.print "Page Size = " + (* - sanity)
-	break()
 	jmp  RTNZ
 
 SAVE: *=* "SAVE"
@@ -453,7 +359,7 @@ SAVE: *=* "SAVE"
     cld
     rts
 
-RESTORE:	
+RESTORE: *=* "RESTORE"
     lda STATUS
     pha
     lda ACC
