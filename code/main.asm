@@ -4,10 +4,8 @@ BasicUpstart2(Program)
 
 Program:
 	break()
+	jsr TEST0
 	jsr TEST1
-	break()
 	jsr TEST2
-	break()
 	jsr TEST3
-	break()
 	rts

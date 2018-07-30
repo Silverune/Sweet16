@@ -1,26 +1,27 @@
-/*
+TEST0:	 *=* "Test 0"
 	jsr SWEET16
 	.byte $11,$00,$70 // SET R1,$7000
 	.byte $12,$02,$70 // SET R2,$7002
 	.byte $13,$01,$00 // SET R3,1
-!LOOP:
+/*!LOOP:
 	.byte $41   // LD @R1
 	.byte $52   // ST @R2
 	.byte $F3   // DCR R3
-	.byte $07,$FB // BNZ LOOP
+	.byte $07,$FB // BNZ LOOP*/
 	.byte $00   // RTN
-*/
-TEST1: *=* "TEST1"
+	break()
+	rts
+
+TEST1: *=* "Test 1"
 	jsr SWEET16
 	set 1 : $7000		// SET R1,$7000
 	set 2 : $7002		// SET R2,$7002
 	set 3 : $0001		// SET R3,1
-	break()
-!LOOP: *=* "LOOP"
+/*!LOOP:
 	ldi 1				// LD @R1
 	sti 2				// ST @R2
 	dcr 3				// DCR R3
-	bnz !LOOP-			// BNZ LOOP
+	bnz !LOOP-			// BNZ LOOP */
 	rtn					// RTN
 	break()
 	rts
@@ -49,6 +50,7 @@ TEST2: *=* "Test 2"
 	cpr 5
 	bp !MOVE-		// Test if done
 	rs
+	break()
 	rts
 
 /* Woz example from: http://www.6502.org/source/interpreters/sweet16.htm
@@ -59,7 +61,7 @@ TEST2: *=* "Test 2"
 	30D  07 FB              BNZ   MLOOP    ;Loop until done
 	30F  00                 RTN            ;Return to 6502 mode.
 */
-TEST3: *=* "Test 3 - Woz's Example"
+TEST3: *=* "Test 3"
 	jsr SW16    // Yes, call SWEET 16
 !MLOOP:
 	ld 1		// R1 holds source
@@ -67,4 +69,5 @@ TEST3: *=* "Test 3 - Woz's Example"
 	dcr 3		// Decr. length
 	bnz !MLOOP- // Loop until done
 	rtn			// Return to 6502 mode.
+	break()
 	rts

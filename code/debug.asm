@@ -34,6 +34,24 @@
 #endif
 }
 
+.macro trace_read_addr(addr) {
+#if DEBUG
+	.if(_createDebugFiles) {
+		.eval brkFile.writeln("trace exec " + toHexString(addr))
+		.print "trace exec " + toHexString(addr)
+	}
+#endif
+}
+
+.macro trace_write_addr(addr) {
+#if DEBUG
+	.if(_createDebugFiles) {
+		.eval brkFile.writeln("trace store " + toHexString(addr))
+		.print "trace store " + toHexString(addr)
+	}
+#endif
+}
+
 .macro watch_write() {
 #if DEBUG
 	.if(_createDebugFiles) {
@@ -43,11 +61,39 @@
 #endif
 }
 
+.macro watch_write_addr(addr) {
+#if DEBUG
+	.if(_createDebugFiles) {
+		.eval brkFile.writeln("watch store " + toHexString(addr))
+		.print "watch store " + toHexString(addr)
+	}
+#endif
+}
+
+.macro watch_read_addr(addr) {
+#if DEBUG
+	.if(_createDebugFiles) {
+		.eval brkFile.writeln("watch exec " + toHexString(addr))
+		.print "watch exec " + toHexString(addr)
+	}
+#endif
+}
+
 .macro watch_read() {
 #if DEBUG
 	.if(_createDebugFiles) {
 		.eval brkFile.writeln("watch exec " + toHexString(*))
 		.print "watch exec " + toHexString(*)
+	}
+#endif
+}
+
+.macro label(name, addr) {
+#if DEBUG
+	.if(_createDebugFiles) {
+		.var finalAddr = addr <= 255 ? "00" + toHexString(addr) : toHexString(addr)
+		.eval brkFile.writeln("al C:" + finalAddr + " ." + name)
+		.print "al C:" + finalAddr + " ." + name
 	}
 #endif
 }

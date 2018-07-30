@@ -1,9 +1,10 @@
 // SWEET 16 INTERPRETER
 // APPLE-II  PSEUDO MACHINE INTERPRETER
-// COPYRIGHT (C) 1977 APPLE COMPUTER,  INC ALL  RIGHTS RESERVED
-// S. WOZNIAK
-// Atari Port https://github.com/jefftranter/6502/blob/master/asm/sweet16/sweet16.s
-.const ZP_BASE = $17 // start of 16 bit registers in zero page end if $37
+// COPYRIGHT (C) 1977 APPLE COMPUTER,  INC ALL  RIGHTS RESERVED S. WOZNIAK
+
+#define TRACE_MODE
+	
+.const ZP_BASE = $17 // C64 start of 16 bit registers in zero page end at $37
 
 .function RL(register) {
 	.return ZP_BASE + (register * 2)
@@ -12,6 +13,20 @@
 .function RH(register) {
 	.return ZP_BASE + (register * 2) + 1
 }
+
+#if TRACE_MODE
+.for (var i = 0; i < 16; i++) {
+	label("RL" + i, RL(i))
+	label("RH" + i, RH(i))
+	trace_write_addr(RL(i))
+	trace_read_addr(RL(i))
+	trace_write_addr(RH(i))
+	trace_read_addr(RH(i))
+}
+
+watch_write_addr($0035)
+watch_read_addr($0035)
+#endif
 
 .const R0L = RL(0)   // ACC
 .const R0H = RH(0)
@@ -24,26 +39,26 @@
 .const R15L = RL(15) // PC
 .const R15H = RH(15)
 
-SWEET16: *=* "SWEET16"
-SW16:	
+SWEET16: *=* "Sweet16"
+SW16:	{
 	jsr SAVE           // PRESERVE 6502 REG CONTENTS
 	
-SW16A: *=* "SW16A"
+SW16A:
 	pla
 	sta R15L           // INIT SWEET16 PC
 	pla                // FROM RETURN
 	sta R15H	       // ADDRESS
 
-SW16B: *=* "SW16B"
+SW16B:
 	jsr  SW16C          // INTERPRET and EXECUTE
     jmp  SW16B          // ONE SWEET16 INSTR.
 
-SW16C: *=* "SW16C"
+SW16C:
 	inc  R15L
     bne  SW16D          // INCR SWEET16 PC FOR FETCH
     inc  R15H
 	
-SW16D: *=* "SW16D"
+SW16D:
 	lda  #>SET          // COMMON HIGH BYTE FOR ALL ROUTINES
     pha                 // PUSH ON staCK FOR rts
     ldy  $0
@@ -53,6 +68,8 @@ SW16D: *=* "SW16D"
     tax                 // TO X REG FOR INDEXING
     lsr
     eor  (R15L),Y       // NOW HAVE OPCODE
+label("OPCODE_A", *)
+trace_read_addr(*)
     beq  TOBR           // IF ZERO THEN NON-REG OP
     stx  R14H           // INDICATE "PRIOR RESULT REG"
     lsr
@@ -63,29 +80,33 @@ SW16D: *=* "SW16D"
     pha                 // ONTO staCK
     rts                 // GOTO REG-OP ROUTINE
 
-TOBR: *=* "TOBR"
+TOBR:
 	inc  R15L
     bne  TOBR2          // INCRR PC
     inc  R15H
 	
-TOBR2: *=* "TOBR2"
+TOBR2:
 	lda  BRTBL,X        // LOW ORDER ADR BYTE
     pha                 // ONTO staCK FOR NON-REG OP
     lda  R14H           // "PRIOR RESULT REG" INDEX
     lsr                 // PREPARE CARRY FOR BC, BNC.
     rts                 // GOTO NON-REG OP ROUTINE
 
-RTNZ: *=* "RTNZ"
+RTNZ:
 	pla                 // POP RETURN ADDRESS
     pla
     jsr  RESTORE        // RESTORE 6502 REG CONTENTS
     jmp  (R15L)         // RETURN TO 6502 CODE VIA PC
 
-SETZ: *=* "SETZ"
-	lda  (R15L),Y       // HIGH ORDER BYTE OF CONstaNT
+SETZ:
+	lda  (R15L),Y       // HIGH ORDER BYTE OF CONSTANT
+label("HIGH_CONSTANT_A", *)
+trace_read_addr(*)
     sta  R0H,X
     dey
-    lda  (R15L),Y       // LOW ORDER BYTE OF CONstaNT
+    lda  (R15L),Y       // LOW ORDER BYTE OF CONSTANT
+label("LOW_CONSTANT_A", *)
+trace_read_addr(*)
     sta  R0L,X
     tya                 // Y REG CONTAINS 1
     sec
@@ -94,13 +115,13 @@ SETZ: *=* "SETZ"
     bcc  SET2
     inc  R15H
 
-SET2: *=* "SET2"
+SET2:
 	rts
 
-OPTBL: *=* "OPTBLE"
+OPTBL:
 	.byte <SET-1          // 1X
 
-BRTBL: *=* "BRTBL"
+BRTBL:
 	.byte  <RTN-1          // 0
     .byte  <LD-1           // 2X
     .byte  <BR-1           // 1
@@ -135,8 +156,8 @@ BRTBL: *=* "BRTBL"
 
 // FOLLOWING CODE MUST BE CONTAINED ON A SINGLE PAGE!
 .align $100            // ensures page aligned
-.var sanity = *	
-SET: *=* "SET"
+.var page_start = *	
+SET:
 	jmp SETZ           // ALWAYS TAKEN
 
 LD:
@@ -345,11 +366,13 @@ RS:
     sta  R15L
     rts
 
-RTN: *=* "RTN"
-	.print "Page Size = " + (* - sanity)
+RTN:
+	.var page_size = * - page_start
+	.print "Page Size = " + page_size
+	.errorif page_size > 255, "Must be located on same page"
 	jmp  RTNZ
 
-SAVE: *=* "SAVE"
+SAVE:
     sta ACC
     stx XREG
     sty YREG
@@ -359,7 +382,7 @@ SAVE: *=* "SAVE"
     cld
     rts
 
-RESTORE: *=* "RESTORE"
+RESTORE:
     lda STATUS
     pha
     lda ACC
@@ -368,11 +391,20 @@ RESTORE: *=* "RESTORE"
     plp
     rts
 
-ACC: *=* "ACC"
+ACC:
+	trace_write_addr(*)
+	trace_read_addr(*)
 	.byte 0
-XREG: *=* "XREG"
+XREG:
+	trace_write_addr(*)
+	trace_read_addr(*)
 	.byte 0
-YREG: *=* "YREG"
+YREG:
+	trace_write_addr(*)
+	trace_read_addr(*)
 	.byte 0
-STATUS: *=* "STATUS"
+STATUS:
+	trace_write_addr(*)
+	trace_read_addr(*)
 	.byte 0
+}
