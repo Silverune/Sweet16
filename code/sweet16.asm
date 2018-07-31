@@ -14,19 +14,17 @@
 	.return ZP_BASE + (register * 2) + 1
 }
 
-#if TRACE_MODE
+//#if TRACE_MODE
 .for (var i = 0; i < 16; i++) {
 	label("RL" + i, RL(i))
 	label("RH" + i, RH(i))
-	trace_write_addr(RL(i))
-	trace_read_addr(RL(i))
-	trace_write_addr(RH(i))
-	trace_read_addr(RH(i))
+//	trace_write_addr(RL(i))
+//	trace_read_addr(RL(i))
+//	trace_write_addr(RH(i))
+//	trace_read_addr(RH(i))
 }
 
-watch_write_addr($0035)
-watch_read_addr($0035)
-#endif
+//#endif
 
 .const R0L = RL(0)   // ACC
 .const R0H = RH(0)
@@ -68,10 +66,6 @@ SW16D:
     tax                 // TO X REG FOR INDEXING
     lsr
     eor  (R15L),Y       // NOW HAVE OPCODE
-#if TRACE_MODE
-label("OPCODE_A", *)
-trace_read_addr(*)
-#endif
     beq  TOBR           // IF ZERO THEN NON-REG OP
     stx  R14H           // INDICATE "PRIOR RESULT REG"
     lsr
@@ -80,6 +74,7 @@ trace_read_addr(*)
     tay                 // TO Y REG FOR INDEXING
     lda  OPTBL-2,Y      // LOW ORDER ADR BYTE
     pha                 // ONTO staCK
+	break()
     rts                 // GOTO REG-OP ROUTINE
 
 TOBR:
@@ -102,17 +97,9 @@ RTNZ:
 
 SETZ:
 	lda  (R15L),Y       // HIGH ORDER BYTE OF CONSTANT
-#if TRACE_MODE
-	label("HIGH_CONSTANT_A", *)
-	trace_read_addr(*)
-#endif
     sta  R0H,X
     dey
     lda  (R15L),Y       // LOW ORDER BYTE OF CONSTANT
-#if TRACE_MODE
-	label("LOW_CONSTANT_A", *)
-	trace_read_addr(*)
-#endif
     sta  R0L,X
     tya                 // Y REG CONTAINS 1
     sec
@@ -162,7 +149,9 @@ BRTBL:
 
 // FOLLOWING CODE MUST BE CONTAINED ON A SINGLE PAGE!
 .align $100            // ensures page aligned
-.var page_start = *	
+.var page_start = *
+RTS_FIX:
+	nop                // otherwise RTS "cleverness" not so clever
 SET:
 	jmp SETZ           // ALWAYS TAKEN
 
@@ -373,6 +362,7 @@ RS:
     rts
 
 RTN:
+	trace()
 	.var page_size = * - page_start
 	.errorif page_size > 255, "Must be located on same page"
 #if DEBUG
