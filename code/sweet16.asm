@@ -61,9 +61,9 @@ SW16C:
 SW16D:
 	lda  #>SET          // COMMON HIGH BYTE FOR ALL ROUTINES
     pha                 // PUSH ON staCK FOR rts
-    ldy  $0
+    ldy  #$00
     lda  (R15L),Y       // FETCH INSTR
-    and  $F             // MASK REG SPECIFICATION
+    and  #$0F           // MASK REG SPECIFICATION
     asl                 // DOUBLE FOR TWO BYTE REGISTERS
     tax                 // TO X REG FOR INDEXING
     lsr
@@ -187,7 +187,7 @@ STAT:
 	
 STAT2:
 	sta  (R0L,X)        // STORE BYTE INDIRECT
-    ldy  $0
+    ldy  #$00
 	
 STAT3:
 	sty  R14H           // INDICATE R0 IS RESULT NEG
@@ -203,12 +203,12 @@ INR2:
 LDAT:
 	lda  (R0L,X)        // LOAD INDIRECT (RX)
     sta  R0L            // TO R0
-    ldy  $0
+    ldy  #$00
     sty  R0H            // ZERO HIGH ORDER R0 BYTE
     beq  STAT3          // ALWAYS TAKEN
 	
 POP:
-	ldy  $0             // HIGH ORDER BYTE = 0
+	ldy  #$00           // HIGH ORDER BYTE = 0
     beq  POP2           // ALWAYS TAKEN
 	
 POPD:
@@ -223,7 +223,7 @@ POP2:
     sty  R0H
 	
 POP3:
-	ldy  $0             // INDICATE R0 AS LAST RESULT REG
+	ldy  #$00           // INDICATE R0 AS LAST RESULT REG
     sty  R14H
     rts
 	
@@ -255,7 +255,7 @@ DCR2:
     rts
 	
 SUB:
-	ldy  $0             // RESULT TO R0
+	ldy  #$00           // RESULT TO R0
 
 CPR:
 	sec                 // NOTE Y REG = 13*2 FOR cpr
@@ -268,7 +268,7 @@ CPR:
 SUB2:
 	sta  R0H,Y
     tya                 // LAST RESULT REG*2
-    adc  $0             // CARRY TO LSB
+    adc  #$00           // CARRY TO LSB
     sta  R14H
     rts
 
@@ -278,7 +278,7 @@ ADD:
     sta  R0L            // R0+RX TO R0
     lda  R0H
     adc  R0H,X
-    ldy  $0             // R0 FOR RESULT
+    ldy  #$00           // R0 FOR RESULT
     beq  SUB2           // FINISH ADD
 	
 BS:
@@ -347,7 +347,7 @@ BM1:
     tax
     lda  R0L,X          // CHECK BOTH BYTES
     and  R0H,X          // FOR $FF (MINUS 1)
-    eor  $FF
+    eor  #$FF
     beq  BR1            // BRANCH IF SO
     rts
 	
@@ -356,15 +356,15 @@ BNM1:
     tax
     lda  R0L,X
     and  R0H,X          // CHECK BOTH BYTES FOR NO $FF
-    eor  $FF
+    eor  #$FF
     bne  BR1            // BRANCH IF NOT MINUS 1
 	
 NUL:
 	rts
 	
 RS:
-	ldx  $18            // 12*2 FOR R12 AS staCK POINTER
-    jsr  DCR            // decR staCK POINTER
+	ldx  #$18           // 12*2 FOR R12 AS staCK POINTER
+    jsr  DCR            // DECR STACK POINTER
     lda  (R0L,X)        // POP HIGH RETURN ADDRESS TO PC
     sta  R15H
     jsr  DCR            // SAME FOR LOW ORDER BYTE
