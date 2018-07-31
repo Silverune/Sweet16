@@ -57,7 +57,7 @@ debugonly:
 
 debug:	
 		$(COMPILER) $(CFLAGS_DEBUG) index.asm
-		cat $(OUTPUT)/index.vs >> breakpoints.txt
+		cat $(OUTPUT)/index.vs | sort >> breakpoints.txt
 		$(DEBUG_VICE_LINUX)
 
 debugx:	all
