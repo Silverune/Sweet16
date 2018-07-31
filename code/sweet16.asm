@@ -18,24 +18,25 @@
 .for (var i = 0; i < 16; i++) {
 	label("RL" + i, RL(i))
 	label("RH" + i, RH(i))
-//	trace_write_addr(RL(i))
-//	trace_read_addr(RL(i))
-//	trace_write_addr(RH(i))
-//	trace_read_addr(RH(i))
 }
 
 //#endif
+.const ACC = 0          // ACCUMULATOR
+.const RSP = 12			// SUBROUTINE RETURN POINTER
+.const CPR = 13	        // COMPARE INSTRUCTION RESULT
+.const SR = 14          // STACK REGISTER
+.const PC = 15			// PROGRAM COUNTER
 
-.const R0L = RL(0)   // ACC
-.const R0H = RH(0)
-.const R12L = RL(12) // RSP
-.const R12H = RH(12)
-.const R13L = RL(13) // CPR
-.const R13H = RH(13)
-.const R14L = RL(14) // SR
-.const R14H = RH(14)
-.const R15L = RL(15) // PC
-.const R15H = RH(15)
+.const R0L = RL(ACC)
+.const R0H = RH(ACC)
+.const R12L = RL(RSP)
+.const R12H = RH(RSP)
+.const R13L = RL(CPR)
+.const R13H = RH(CPR)
+.const R14L = RL(SR)
+.const R14H = RH(SR)
+.const R15L = RL(PC)
+.const R15H = RH(PC)
 
 SWEET16: *=* "Sweet16"
 SW16:	{
@@ -74,7 +75,6 @@ SW16D:
     tay                 // TO Y REG FOR INDEXING
     lda  OPTBL-2,Y      // LOW ORDER ADR BYTE
     pha                 // ONTO staCK
-	break()
     rts                 // GOTO REG-OP ROUTINE
 
 TOBR:
@@ -153,18 +153,22 @@ BRTBL:
 RTS_FIX:
 	nop                // otherwise RTS "cleverness" not so clever
 SET:
+	trace()
 	jmp SETZ           // ALWAYS TAKEN
 
 LD:
+	trace()
 	lda  R0L,X
 	
 BK: *=*-1
+	trace()
     sta  R0L
     lda  R0H,X          // MOVE RX TO R0
     sta  R0H
     rts
 
 ST:
+	trace()
 	lda  R0L
     sta  R0L,X          // MOVE R0 TO RX
     lda  R0H
@@ -172,6 +176,7 @@ ST:
     rts
 
 STAT:
+	trace()
 	lda  R0L
 	
 STAT2:
@@ -182,6 +187,7 @@ STAT3:
 	sty  R14H           // INDICATE R0 IS RESULT NEG
 	
 INR:
+	trace()
 	inc  R0L,X
     bne  INR2           // INCR RX
     inc  R0H,X
@@ -190,6 +196,7 @@ INR2:
 	rts
 	
 LDAT:
+	trace()
 	lda  (R0L,X)        // LOAD INDIRECT (RX)
     sta  R0L            // TO R0
     ldy  #$00
@@ -197,10 +204,12 @@ LDAT:
     beq  STAT3          // ALWAYS TAKEN
 	
 POP:
+	trace()
 	ldy  #$00           // HIGH ORDER BYTE = 0
     beq  POP2           // ALWAYS TAKEN
 	
 POPD:
+	trace()
 	jsr  DCR            // DECR RX
     lda  (R0L,X)        // POP HIGH ORDER BYTE @RX
     tay                 // SAVE IN Y REG
@@ -217,36 +226,43 @@ POP3:
     rts
 	
 LDDAT:
+	trace()
 	jsr  LDAT           // LOW ORDER BYTE TO R0, incR RX
     lda  (R0L,X)        // HIGH ORDER BYTE TO R0
     sta  R0H
     jmp  INR            // INCR RX
 	
 STDAT:
+	trace()
 	jsr  STAT           // STORE INDIRECT LOW ORDER
     lda  R0H            // BYTE and incR RX. THEN
     sta  (R0L,X)        // STORE HIGH ORDER BYTE.
     jmp  INR            // INCR RX and RETURN
 	
 STPAT:
+	trace()
 	jsr  DCR            // DECR RX
     lda  R0L
     sta  (R0L,X)        // STORE R0 LOW BYTE @RX
     jmp  POP3           // INDICATE R0 AS LAST RESULT REG
 
 DCR:
+	trace()
 	lda  R0L,X
     bne  DCR2           // DECR RX
     dec  R0H,X
 	
 DCR2:
+	trace()
 	dec  R0L,X
     rts
 	
 SUB:
+	trace()
 	ldy  #$00           // RESULT TO R0
 
 CPR:
+	trace()
 	sec                 // NOTE Y REG = 13*2 FOR cpr
     lda  R0L
     sbc  R0L,X
@@ -262,6 +278,7 @@ SUB2:
     rts
 
 ADD:
+	trace()
 	lda  R0L
     adc  R0L,X
     sta  R0L            // R0+RX TO R0
@@ -271,15 +288,18 @@ ADD:
     beq  SUB2           // FINISH ADD
 	
 BS:
+	trace()
 	lda  R15L           // NOTE X REG IS 12*2!
     jsr  STAT2          // PUSH LOW PC BYTE VIA R12
     lda  R15H
     jsr  STAT2          // PUSH HIGH ORDER PC BYTE
 	
 BR:
+	trace()
 	clc
 	
 BNC:
+	trace()
 	bcs  BNC2           // NO CARRY TEST
 	
 BR1:
@@ -298,10 +318,12 @@ BNC2:
 	rts
 
 BC:
+	trace()
 	bcs  BR
     rts
 
 BP:
+	trace()
 	asl                 // DOUBLE RESULT-REG INDEX
     tax                 // TO X REG FOR INDEXING
     lda  R0H,X          // TEST FOR PLUS
@@ -309,6 +331,7 @@ BP:
     rts
 	
 BM:
+	trace()
 	asl                 // DOUBLE RESULT-REG INDEX
     tax
     lda  R0H,X          // TEST FOR MINUS
@@ -316,6 +339,7 @@ BM:
     rts
 
 BZ:
+	trace()
 	asl                 // DOUBLE RESULT-REG INDEX
     tax
     lda  R0L,X          // TEST FOR ZERO
@@ -324,6 +348,7 @@ BZ:
     rts
 	
 BNZ:
+	trace()
 	asl                 // DOUBLE RESULT-REG INDEX
     tax
     lda  R0L,X          // TEST FOR NON-ZERO
@@ -349,9 +374,11 @@ BNM1:
     bne  BR1            // BRANCH IF NOT MINUS 1
 	
 NUL:
+	trace()
 	rts
 	
 RS:
+	trace()
 	ldx  #$18           // 12*2 FOR R12 AS staCK POINTER
     jsr  DCR            // DECR STACK POINTER
     lda  (R0L,X)        // POP HIGH RETURN ADDRESS TO PC
@@ -371,6 +398,7 @@ RTN:
 	jmp  RTNZ
 
 SAVE:
+	trace()
     sta ACC
     stx XREG
     sty YREG
@@ -381,6 +409,7 @@ SAVE:
     rts
 
 RESTORE:
+	trace()
     lda STATUS
     pha
     lda ACC

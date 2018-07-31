@@ -1,6 +1,6 @@
 TEST0:	 *=* "Test 0"
 	jsr SWEET16
-/*	.byte $11,$00,$70 // SET R1,$7000
+	.byte $11,$00,$70 // SET R1,$7000
 	.byte $12,$02,$70 // SET R2,$7002
 	.byte $13,$01,$00 // SET R3,1
 !LOOP:
@@ -17,7 +17,7 @@ TEST1: *=* "Test 1"
 	set 1 : $7000		// SET R1,$7000
 	set 2 : $7002		// SET R2,$7002
 	set 3 : $0001		// SET R3,1
-/*!LOOP:
+!LOOP:
 	ldi 1				// LD @R1
 	sti 2				// ST @R2
 	dcr 3				// DCR R3
@@ -50,6 +50,7 @@ TEST2: *=* "Test 2"
 	cpr 5
 	bp !MOVE-		// Test if done
 	rs
+	rtn
 	break()
 	rts
 
