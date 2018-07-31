@@ -14,17 +14,23 @@
 	.if (ea.getType() == AT_ABSOLUTE)
 	{
 		.var relative = <(ea.getValue() - currentAddress - 2) // account for byte offset
+#if DEBUG
 		.print "Relative equivalent: $" + toHexString(relative)
+#endif
 		.return relative
 	}
 
 	.if (ea.getType()==AT_IMMEDIATE) {
-		.print "Immediate: #" + ea.getValue  
+#if DEBUG
+		.print "Immediate: #" + ea.getValue
+#endif
 		.return ea.getValue()
 	}
 
 	.var value = CmdArgument(ea.getType(),ea.getValue()+1).getValue()
+#if DEBUG
 	.print "Type: " + ea.getType() + " Value: $"+ toHexString(value)
+#endif	
 	.return value
 }
 

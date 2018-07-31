@@ -2,7 +2,7 @@
 // APPLE-II  PSEUDO MACHINE INTERPRETER
 // COPYRIGHT (C) 1977 APPLE COMPUTER,  INC ALL  RIGHTS RESERVED S. WOZNIAK
 
-#define TRACE_MODE
+//#define TRACE_MODE
 	
 .const ZP_BASE = $17 // C64 start of 16 bit registers in zero page end at $37
 
@@ -68,8 +68,10 @@ SW16D:
     tax                 // TO X REG FOR INDEXING
     lsr
     eor  (R15L),Y       // NOW HAVE OPCODE
+#if TRACE_MODE
 label("OPCODE_A", *)
 trace_read_addr(*)
+#endif
     beq  TOBR           // IF ZERO THEN NON-REG OP
     stx  R14H           // INDICATE "PRIOR RESULT REG"
     lsr
@@ -100,13 +102,17 @@ RTNZ:
 
 SETZ:
 	lda  (R15L),Y       // HIGH ORDER BYTE OF CONSTANT
-label("HIGH_CONSTANT_A", *)
-trace_read_addr(*)
+#if TRACE_MODE
+	label("HIGH_CONSTANT_A", *)
+	trace_read_addr(*)
+#endif
     sta  R0H,X
     dey
     lda  (R15L),Y       // LOW ORDER BYTE OF CONSTANT
-label("LOW_CONSTANT_A", *)
-trace_read_addr(*)
+#if TRACE_MODE
+	label("LOW_CONSTANT_A", *)
+	trace_read_addr(*)
+#endif
     sta  R0L,X
     tya                 // Y REG CONTAINS 1
     sec
@@ -368,8 +374,10 @@ RS:
 
 RTN:
 	.var page_size = * - page_start
-	.print "Page Size = " + page_size
 	.errorif page_size > 255, "Must be located on same page"
+#if DEBUG
+	.print "Page Size = " + page_size
+#endif
 	jmp  RTNZ
 
 SAVE:
@@ -392,19 +400,27 @@ RESTORE:
     rts
 
 ACC:
+#if TRACE_MODE
 	trace_write_addr(*)
 	trace_read_addr(*)
+#endif
 	.byte 0
 XREG:
+#if TRACE_MODE
 	trace_write_addr(*)
 	trace_read_addr(*)
+#endif
 	.byte 0
 YREG:
+#if TRACE_MODE
 	trace_write_addr(*)
 	trace_read_addr(*)
+#endif
 	.byte 0
 STATUS:
+#if TRACE_MODE
 	trace_write_addr(*)
 	trace_read_addr(*)
+#endif
 	.byte 0
 }

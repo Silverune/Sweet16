@@ -1,9 +1,9 @@
 TEST0:	 *=* "Test 0"
 	jsr SWEET16
-	.byte $11,$00,$70 // SET R1,$7000
+/*	.byte $11,$00,$70 // SET R1,$7000
 	.byte $12,$02,$70 // SET R2,$7002
 	.byte $13,$01,$00 // SET R3,1
-/*!LOOP:
+!LOOP:
 	.byte $41   // LD @R1
 	.byte $52   // ST @R2
 	.byte $F3   // DCR R3
