@@ -20,7 +20,6 @@
 #if DEBUG
 	.if(_createDebugFiles) {
 		.eval brkFile.writeln("break exec " + toHexString(*))
-		.print "break exec " + toHexString(*)
 	}
 #endif
 }
@@ -29,7 +28,6 @@
 #if DEBUG
 	.if(_createDebugFiles) {
 		.eval brkFile.writeln("trace exec " + toHexString(*))
-		.print "trace exec " + toHexString(*)
 	}
 #endif
 }
@@ -38,7 +36,6 @@
 #if DEBUG
 	.if(_createDebugFiles) {
 		.eval brkFile.writeln("trace exec " + toHexString(addr))
-		.print "trace exec " + toHexString(addr)
 	}
 #endif
 }
@@ -47,7 +44,6 @@
 #if DEBUG
 	.if(_createDebugFiles) {
 		.eval brkFile.writeln("trace store " + toHexString(addr))
-		.print "trace store " + toHexString(addr)
 	}
 #endif
 }
@@ -56,7 +52,6 @@
 #if DEBUG
 	.if(_createDebugFiles) {
 		.eval brkFile.writeln("watch store " + toHexString(*))
-		.print "watch store " + toHexString(*)
 	}
 #endif
 }
@@ -65,7 +60,6 @@
 #if DEBUG
 	.if(_createDebugFiles) {
 		.eval brkFile.writeln("watch store " + toHexString(addr))
-		.print "watch store " + toHexString(addr)
 	}
 #endif
 }
@@ -74,7 +68,6 @@
 #if DEBUG
 	.if(_createDebugFiles) {
 		.eval brkFile.writeln("watch exec " + toHexString(addr))
-		.print "watch exec " + toHexString(addr)
 	}
 #endif
 }
@@ -83,7 +76,6 @@
 #if DEBUG
 	.if(_createDebugFiles) {
 		.eval brkFile.writeln("watch exec " + toHexString(*))
-		.print "watch exec " + toHexString(*)
 	}
 #endif
 }
@@ -93,7 +85,6 @@
 	.if(_createDebugFiles) {
 		.var finalAddr = addr <= 255 ? "00" + toHexString(addr) : toHexString(addr)
 		.eval brkFile.writeln("al C:" + finalAddr + " ." + name)
-		.print "al C:" + finalAddr + " ." + name
 	}
 #endif
 }
