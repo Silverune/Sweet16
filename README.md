@@ -1,10 +1,10 @@
 # Sweet16
-C64 Port of Stephen Wozniak's ("Woz") virtual 16-bit processor
+A C64 / Kick Assembler port of Stephen Wozniak's ("Woz") 16-bit metaprocessor processor
 - [Original Source Article](http://amigan.1emu.net/kolsen/programming/sweet16.html)
 - [Porting and original source](http://www.6502.org/source/interpreters/sweet16.htm)
 - [Atari Source Port](https://github.com/jefftranter/6502/blob/master/asm/sweet16/sweet16.s)
 
-This project provides an implementation of Steve Wozniak's "SWEET-16" ported to the C64 6502 / 6510 using the Kick Assembler.   Using Kick's powerful language features SWEET-16 can more natively be coded using ```pseudocommands``` that better reflect Woz's original description.  Using an example from Jeff Tranter's Atari port of SWEET-16:
+This project provides an implementation of Steve Wozniak's "SWEET16" ported to the C64 6502 / 6510 using the Kick Assembler.   Using Kick's powerful language features SWEET16 can more natively be coded using ```pseudocommands``` that better reflect Woz's original description.  Using an example from Jeff Tranter's Atari port of SWEET16:
 
 ```
 TEST:
@@ -20,7 +20,7 @@ TEST:
   .BYTE $00         ; RTN
 ```
 
-Looking at the comments you can see the SWEET-16 opcodes but to actually have them execute correctly each needs to be converted into the byte sequence.  So without the comments the code becomes at first glace unreadable assembler:
+Looking at the comments you can see the SWEET16 opcodes but to actually have them execute correctly each needs to be converted into the byte sequence.  So without the comments the code becomes at first glace unreadable assembler:
 
 ```
 TEST:
@@ -30,7 +30,7 @@ TEST:
   .BYTE $41,$52,$F3,$07,$FB,$00
 ```
 
-Clearly this is not easy to maintain and coding in this manner error prone.   However, using Kick's ```pseudocommands``` the following produces the same SWEET-16 code:
+Clearly this is not easy to maintain and coding in this manner is error prone.   However, using Kick's ```pseudocommands``` the following produces the same SWEET16 code:
 
 ```
 TEST:
@@ -45,6 +45,14 @@ LOOP:
   BNZ LOOP
   RTN
 ```
+
+# Overview
+In 1977, Stephen Wozniak wrote an article for BYTE magazine about a 16-bit "metaprocessor" that he had invented to deal with manipulating 16-bit values on an 8-bit CPU (6502) for the Apple BASIC he was writing at the time.  What he came up with was "SWEET16"  which he referred to as "as a 6502 enhancement package, not a stand alone processor".  It defined sixteen 16-bit registers (R0 to R15) which under the bonnet were implemented as 32 memory locations located in zero page. Some of the registers were dual purpose (e.g., RO doubled as the SWEET16 accumulator).  
+
+SWEET16 instructions fell into register and nonregister categories with the register operations specifying one of the 16 registers to be used as either a data element or a pointer to data in memory depending on the specific instruction.  Except for the SET instruction, register operations only require one byte. The nonregister operations were primarily 6502 style branches with the second byte specifying a +/-127 byte displacement relative to the address of the following instruction. If a prior register operation result meets a specified branch condition, the displacement was added to SWEET16's program counter, effecting a branch.
+
+The implementation of SWEET16 required a few key things to achieve this.   The first is that the implementation of all the instructions are located on the same page.  This way a jumptable can be used which only needs to specify a single byte as they will all share a common high byte.  Another requirement is that the registers themselves are located in zero page.  (More information can be found in Carsten Strotmann [article](http://www.6502.org/source/interpreters/sweet16.htm)).
+
 
 # Development
 - Cross-Assembler [Kick Assembler v4.19](http://www.theweb.dk/KickAssembler/Main.html#frontpage)
