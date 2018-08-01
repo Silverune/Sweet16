@@ -1,5 +1,5 @@
 TEST0:	 *=* "Test 0"
-	jsr SWEET16
+	jsr SW16
 	.byte $11,$00,$70 // SET R1,$7000
 	.byte $12,$02,$70 // SET R2,$7002
 	.byte $13,$01,$00 // SET R3,1
@@ -9,11 +9,11 @@ TEST0:	 *=* "Test 0"
 	.byte $F3   // DCR R3
 	.byte $07,$FB // BNZ LOOP*/
 	.byte $00   // RTN
-	break()
+//	break()
 	rts
 
 TEST1: *=* "Test 1"
-	jsr SWEET16
+	sweet16
 	set 1 : $7000		// SET R1,$7000
 	set 2 : $7002		// SET R2,$7002
 	set 3 : $0001		// SET R3,1
@@ -23,7 +23,7 @@ TEST1: *=* "Test 1"
 	dcr 3				// DCR R3
 	bnz !LOOP-			// BNZ LOOP */
 	rtn					// RTN
-	break()
+//	break()
 	rts
 /*
 	SET  R5   $a034     // Init pointer 1
@@ -38,7 +38,7 @@ TEST1: *=* "Test 1"
     RS
 */
 TEST2: *=* "Test 2"
-	jsr SWEET16
+	sweet16
 	set 5 : $a034	// Init pointer 1
 	set 4 : $a03b	// Initi limit 1
 	set 6 : $3000	// Initi pointer 2
@@ -51,7 +51,7 @@ TEST2: *=* "Test 2"
 	bp !MOVE-		// Test if done
 	rs
 	rtn
-	break()
+//	break()
 	rts
 
 /* Woz example from: http://www.6502.org/source/interpreters/sweet16.htm
@@ -70,7 +70,7 @@ TEST3: *=* "Test 3"
 	dcr 3		// Decr. length
 	bnz !MLOOP- // Loop until done
 	rtn			// Return to 6502 mode.
-	break()
+//	break()
 	rts
 
 TEST4: *=* "Test 4"
@@ -94,6 +94,7 @@ TEST5: *=* "Test 5"
     ST R2
     LD @R1
     ST @R2
+	
     LDD @R3
     STD @R4
     POP @R5
