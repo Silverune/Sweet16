@@ -4,6 +4,48 @@ C64 Port of Stephen Wozniak's ("Woz") virtual 16-bit processor
 - [Porting and original source](http://www.6502.org/source/interpreters/sweet16.htm)
 - [Atari Source Port](https://github.com/jefftranter/6502/blob/master/asm/sweet16/sweet16.s)
 
+This project provides an implementation of Steve Wozniak's "SWEET-16" ported to the C64 6502 / 6510 using the Kick Assembler.   Using Kick's powerful language features SWEET-16 can more natively be coded using ```pseudocommands``` that better reflect Woz's original description.  Using an example from Jeff Tranter's Atari port of SWEET-16:
+
+```
+TEST:
+   JSR SWEET16
+  .BYTE $11,$00,$70 ; SET R1,$7000
+  .BYTE $12,$02,$70 ; SET R2,$7002
+  .BYTE $13,$01,$00 ; SET R3,1
+;LOOP:
+  .BYTE $41         ; LD @R1
+  .BYTE $52         ; ST @R2
+  .BYTE $F3         ; DCR R3
+  .BYTE $07,$FB     ; BNZ LOOP
+  .BYTE $00         ; RTN
+```
+
+Looking at the comments you can see the SWEET-16 opcodes but to actually have them execute correctly each needs to be converted into the byte sequence.  So without the comments the code becomes at first glace unreadable assembler:
+
+```
+TEST:
+  JSR SWEET16
+  .BYTE $11,$00,$70,$12,$02,$70,$13,$01,$00
+;LOOP:
+  .BYTE $41,$52,$F3,$07,$FB,$00
+```
+
+Clearly this is not easy to maintain and coding in this manner error prone.   However, using Kick's ```pseudocommands``` the following produces the same SWEET-16 code:
+
+```
+TEST:
+  SWEET16
+  SET 1 : $7000
+  SET 2 : $7002
+  SET 3 : $0001
+LOOP:
+  LDI 1
+  STI 2
+  DCR 3
+  BNZ LOOP
+  RTN
+```
+
 # Development
 - Cross-Assembler [Kick Assembler v4.19](http://www.theweb.dk/KickAssembler/Main.html#frontpage)
 - Emulator [VICE v3.1](http://vice-emu.sourceforge.net/)
