@@ -70,7 +70,7 @@ Collection of links related to the project development:
 <tbody><tr><td align="center" colspan="6"><b>SWEET16 OP CODE SUMMARY</b></td></tr>
 <tr><td align="center" width="50%" colspan="3">Register Ops</td><td align="center" width="50%" colspan="3">Nonregister Ops</td></tr>
 <tr><td width="5%">&nbsp;</td><td width="12%">&nbsp;</td><td width="33%">&nbsp;</td><td width="5%">00</td><td width="12%">RTN</td><td width="33%">(Return to 6502 mode)</td></tr>
-<tr><td>1n</td><td>SET n</td><td>Constant (set)</td><td>01</td><td>BR ea</td><td>(Branch always)</td></tr>
+<tr><td>1n</td><td>SET n : val</td><td>Constant (set) value</td><td>01</td><td>BR ea</td><td>(Branch always)</td></tr>
 <tr><td>2n</td><td>LD n</td><td>(Load)</td><td>02</td><td>BNC ea</td><td>(Branch if No Carry)</td></tr>
 <tr><td>3n</td><td>ST n</td><td>(Store)</td><td>03</td><td>BC ea</td><td>(Branch if Carry)</td></tr>
 <tr><td>4n</td><td>LDI n</td><td>(Load indirect)</td><td>04</td><td>BP ea</td><td>(Branch if Plus)</td></tr>
