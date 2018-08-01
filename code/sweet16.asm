@@ -38,10 +38,21 @@
 .const R15L = RL(PC)
 .const R15H = RH(PC)
 
-SWEET16: *=* "Sweet16"
-SW16:	{
-	jsr SAVE           // PRESERVE 6502 REG CONTENTS
+SW16_SAVE_RESTORE:
+	.byte 0
+
+SW16_NONE:
+	lda #$00
+	sta SW16_SAVE_RESTORE
+	jmp SW160
 	
+SW16:
+	lda #$01
+	sta SW16_SAVE_RESTORE
+SW160:	{
+	beq SAVED
+	jsr SAVE           // PRESERVE 6502 REG CONTENTS
+SAVED:
 SW16A:
 	pla
 	sta R15L           // INIT SWEET16 PC
@@ -92,7 +103,10 @@ TOBR2:
 RTNZ:
 	pla                 // POP RETURN ADDRESS
     pla
-    jsr  RESTORE        // RESTORE 6502 REG CONTENTS
+	lda SW16_SAVE_RESTORE
+	beq RESTORED
+    jsr RESTORE        // RESTORE 6502 REG CONTENTS
+RESTORED:
     jmp  (R15L)         // RETURN TO 6502 CODE VIA PC
 
 SETZ:

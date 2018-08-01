@@ -34,6 +34,20 @@
 	.return value
 }
 
+// Convenience	
+.pseudocommand sweet16 save {
+	.var save_restore = 1
+	.if (save.getType() != AT_NONE)
+		.eval save_restore = save.getValue()
+	.if (save_restore != 0)
+		jsr SW16
+	else
+		jsr SW16_NONE
+}
+	
+.pseudocommand SWEET16 save { sweet16 save }
+
+
 // Nonregister Ops	
 .pseudocommand rtn { .byte $00 }
 .pseudocommand RTN { rtn }
