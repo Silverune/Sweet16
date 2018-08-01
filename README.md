@@ -33,3 +33,33 @@ Collection of links related to the project development:
  - [VICE Monitor](http://codebase64.org/doku.php?id=base:using_the_vice_monitor)
  - [VICE Monitor Commands](http://vice-emu.sourceforge.net/vice_12.html#SEC290)
  - [VICE Emulator](https://vice.janicek.co/c64/#{%22controlPort2%22:%22joystick%22,%22primaryControlPort%22:2,%22files%22:%22{%22disk1.d64%22:""},%22vice%22:{%22-autostart%22:%22disk1.d64%22}%22keys%22:{%22SPACE%22:%22%22,%22SPACE%22:%22%22,%22F1%22:%22%22,%22F3%22:%22%22,%22F5%22:%22%22,%22F7%22:%22%22}})
+
+# Opcode Reference
+
+<table width="100%" border="">
+<tbody><tr><td align="center" colspan="6"><b>SWEET16 OP CODE SUMMARY</b></td></tr>
+<tr><td align="center" width="50%" colspan="3">Register Ops</td><td align="center" width="50%" colspan="3">Nonregister Ops</td></tr>
+<tr><td width="5%">&nbsp;</td><td width="12%">&nbsp;</td><td width="33%">&nbsp;</td><td width="5%">00</td><td width="12%">RTN</td><td width="33%">(Return to 6502 mode)</td></tr>
+<tr><td>1n</td><td>SET Rn</td><td>Constant (set)</td><td>01</td><td>BR ea</td><td>(Branch always)</td></tr>
+<tr><td>2n</td><td>LD Rn</td><td>(Load)</td><td>02</td><td>BNC ea</td><td>(Branch if No Carry)</td></tr>
+<tr><td>3n</td><td>ST Rn</td><td>(Store)</td><td>03</td><td>BC ea</td><td>(Branch if Carry)</td></tr>
+<tr><td>4n</td><td>LD @Rn</td><td>(Load indirect)</td><td>04</td><td>BP ea</td><td>(Branch if Plus)</td></tr>
+<tr><td>5n</td><td>ST @Rn</td><td>(Store indirect)</td><td>05</td><td>BM ea</td><td>(Branch if Minus)</td></tr>
+<tr><td>6n</td><td>LDD @Rn</td><td>(Load double indirect)</td><td>06</td><td>BZ ea</td><td>(Branch if Zero)</td></tr>
+<tr><td>7n</td><td>STD @Rn</td><td>(Store double indirect)</td><td>07</td><td>BNZ ea</td><td>(Branch if NonZero)</td></tr>
+<tr><td>8n</td><td>POP @Rn</td><td>(Pop indirect)</td><td>08</td><td>BM1 ea</td><td>(Branch if Minus 1)</td></tr>
+<tr><td>9n</td><td>STP @Rn</td><td>(Store Pop indirect)</td><td>09</td><td>BNM1 ea</td><td>(Branch if Not Minus 1)</td></tr>
+<tr><td>An</td><td>ADD Rn</td><td>(Add)</td><td>0A</td><td>BK ea</td><td>(Break)</td></tr>
+<tr><td>Bn</td><td>SUB Rn</td><td>(Subtract)</td><td>0B</td><td>RS</td><td>(Return from Subroutine)</td></tr>
+<tr><td>Cn</td><td>POPD @Rn</td><td>(Pop double indirect)</td><td>0C</td><td>BS ea</td><td>(Branch to Subroutine)</td></tr>
+<tr><td>Dn</td><td>CPR Rn</td><td>(Compare)</td><td>0D</td><td>&nbsp;</td><td>(Unassigned)</td></tr>
+<tr><td>En</td><td>INR Rn</td><td>(Increment)</td><td>0E</td><td>&nbsp;</td><td>(Unassigned)</td></tr>
+<tr><td>Fn</td><td>DCR Rn</td><td>(Decrement)</td><td>0F</td><td>&nbsp;</td><td>(Unassigned)</td></tr>
+<tr><td colspan="6"><b>SWEET16 Operation Code Summary:</b> Table 1 summarizes the
+list of SWEET16 operation codes, which are explained in further detail
+one by one in the descriptions which follow this table.  The program in
+Listing 2 implements the execution of these interpretive codes after a
+call to the entry point SW16.  Return to the calling program and normal
+noninterpretive operation is accomplished with the RTN mnemonic of
+SWEET16.</td></tr>
+</tbody></table>
