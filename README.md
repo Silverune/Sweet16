@@ -70,26 +70,20 @@ Collection of links related to the project development:
 <tbody><tr><td align="center" colspan="6"><b>SWEET16 OP CODE SUMMARY</b></td></tr>
 <tr><td align="center" width="50%" colspan="3">Register Ops</td><td align="center" width="50%" colspan="3">Nonregister Ops</td></tr>
 <tr><td width="5%">&nbsp;</td><td width="12%">&nbsp;</td><td width="33%">&nbsp;</td><td width="5%">00</td><td width="12%">RTN</td><td width="33%">(Return to 6502 mode)</td></tr>
-<tr><td>1n</td><td>SET Rn</td><td>Constant (set)</td><td>01</td><td>BR ea</td><td>(Branch always)</td></tr>
-<tr><td>2n</td><td>LD Rn</td><td>(Load)</td><td>02</td><td>BNC ea</td><td>(Branch if No Carry)</td></tr>
-<tr><td>3n</td><td>ST Rn</td><td>(Store)</td><td>03</td><td>BC ea</td><td>(Branch if Carry)</td></tr>
-<tr><td>4n</td><td>LD @Rn</td><td>(Load indirect)</td><td>04</td><td>BP ea</td><td>(Branch if Plus)</td></tr>
-<tr><td>5n</td><td>ST @Rn</td><td>(Store indirect)</td><td>05</td><td>BM ea</td><td>(Branch if Minus)</td></tr>
-<tr><td>6n</td><td>LDD @Rn</td><td>(Load double indirect)</td><td>06</td><td>BZ ea</td><td>(Branch if Zero)</td></tr>
-<tr><td>7n</td><td>STD @Rn</td><td>(Store double indirect)</td><td>07</td><td>BNZ ea</td><td>(Branch if NonZero)</td></tr>
-<tr><td>8n</td><td>POP @Rn</td><td>(Pop indirect)</td><td>08</td><td>BM1 ea</td><td>(Branch if Minus 1)</td></tr>
-<tr><td>9n</td><td>STP @Rn</td><td>(Store Pop indirect)</td><td>09</td><td>BNM1 ea</td><td>(Branch if Not Minus 1)</td></tr>
-<tr><td>An</td><td>ADD Rn</td><td>(Add)</td><td>0A</td><td>BK ea</td><td>(Break)</td></tr>
-<tr><td>Bn</td><td>SUB Rn</td><td>(Subtract)</td><td>0B</td><td>RS</td><td>(Return from Subroutine)</td></tr>
-<tr><td>Cn</td><td>POPD @Rn</td><td>(Pop double indirect)</td><td>0C</td><td>BS ea</td><td>(Branch to Subroutine)</td></tr>
-<tr><td>Dn</td><td>CPR Rn</td><td>(Compare)</td><td>0D</td><td>&nbsp;</td><td>(Unassigned)</td></tr>
-<tr><td>En</td><td>INR Rn</td><td>(Increment)</td><td>0E</td><td>&nbsp;</td><td>(Unassigned)</td></tr>
-<tr><td>Fn</td><td>DCR Rn</td><td>(Decrement)</td><td>0F</td><td>&nbsp;</td><td>(Unassigned)</td></tr>
-<tr><td colspan="6"><b>SWEET16 Operation Code Summary:</b> Table 1 summarizes the
-list of SWEET16 operation codes, which are explained in further detail
-one by one in the descriptions which follow this table.  The program in
-Listing 2 implements the execution of these interpretive codes after a
-call to the entry point SW16.  Return to the calling program and normal
-noninterpretive operation is accomplished with the RTN mnemonic of
-SWEET16.</td></tr>
+<tr><td>1n</td><td>SET n</td><td>Constant (set)</td><td>01</td><td>BR ea</td><td>(Branch always)</td></tr>
+<tr><td>2n</td><td>LD n</td><td>(Load)</td><td>02</td><td>BNC ea</td><td>(Branch if No Carry)</td></tr>
+<tr><td>3n</td><td>ST n</td><td>(Store)</td><td>03</td><td>BC ea</td><td>(Branch if Carry)</td></tr>
+<tr><td>4n</td><td>LDI n</td><td>(Load indirect)</td><td>04</td><td>BP ea</td><td>(Branch if Plus)</td></tr>
+<tr><td>5n</td><td>STI n</td><td>(Store indirect)</td><td>05</td><td>BM ea</td><td>(Branch if Minus)</td></tr>
+<tr><td>6n</td><td>LDDI n</td><td>(Load double indirect)</td><td>06</td><td>BZ ea</td><td>(Branch if Zero)</td></tr>
+<tr><td>7n</td><td>STDI n</td><td>(Store double indirect)</td><td>07</td><td>BNZ ea</td><td>(Branch if NonZero)</td></tr>
+<tr><td>8n</td><td>POPI n</td><td>(Pop indirect)</td><td>08</td><td>BM1 ea</td><td>(Branch if Minus 1)</td></tr>
+<tr><td>9n</td><td>STPI n</td><td>(Store Pop indirect)</td><td>09</td><td>BNM1 ea</td><td>(Branch if Not Minus 1)</td></tr>
+<tr><td>An</td><td>ADD n</td><td>(Add)</td><td>0A</td><td>BK ea</td><td>(Break)</td></tr>
+<tr><td>Bn</td><td>SUB n</td><td>(Subtract)</td><td>0B</td><td>RS</td><td>(Return from Subroutine)</td></tr>
+<tr><td>Cn</td><td>POPDI n</td><td>(Pop double indirect)</td><td>0C</td><td>BS ea</td><td>(Branch to Subroutine)</td></tr>
+<tr><td>Dn</td><td>CPR n</td><td>(Compare)</td><td>0D</td><td>&nbsp;</td><td>(Unassigned)</td></tr>
+<tr><td>En</td><td>INR n</td><td>(Increment)</td><td>0E</td><td>&nbsp;</td><td>(Unassigned)</td></tr>
+<tr><td>Fn</td><td>DCR n</td><td>(Decrement)</td><td>0F</td><td>&nbsp;</td><td>(Unassigned)</td></tr>
+<tr><td colspan="6"><b>SWEET16 Operation Code Summary:</b> Table 1 summarizes the list of SWEET16 operation codes.  They are executed after a call to the entry point SWEET16.  Return to the calling program and normal noninterpretive operation is accomplished with the RTN mnemonic of SWEET16.  These codes differ from Woz's original only in the removal of the redundant <b>R</b> for register numbers and the replacement of <b>I</b> instead of <b>@</b> to refer to indirect address mnemonics</td></tr>
 </tbody></table>
