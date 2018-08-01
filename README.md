@@ -1,6 +1,6 @@
 # Sweet16
 C64 Port of Stephen Wozniak's ("Woz") virtual 16-bit processor
-- [Origial Source Article](http://amigan.1emu.net/kolsen/programming/sweet16.htmlK)
+- [Original Source Article](http://amigan.1emu.net/kolsen/programming/sweet16.html)
 - [Porting and original source](http://www.6502.org/source/interpreters/sweet16.htm)
 - [Atari Source Port](https://github.com/jefftranter/6502/blob/master/asm/sweet16/sweet16.s)
 
