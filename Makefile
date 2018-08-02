@@ -1,8 +1,8 @@
 # Makefile for Sweet16
 COMPILER_PATH   = $(3RD_PARTY_DIR)/KickAssembler
 COMPILER	= java -jar $(COMPILER_PATH)/KickAss.jar
-CFLAGS		= -o $(OUTPUT)/$(PRG) -afo -aom $(SYMBOLS) -libdir $(LIB_DIR)
-CFLAGS_DISK	= -o $(OUTPUT)/$(DISK) -afo -aom $(SYMBOLS) -libdir $(LIB_DIR)
+CFLAGS		= -o $(OUTPUT)/$(PRG) -afo -aom $(SYMBOLS) -libdir $(LIB_DIR) -excludeillegal
+CFLAGS_DISK	= -o $(OUTPUT)/$(DISK) -afo -aom $(SYMBOLS) -libdir $(LIB_DIR) -excludeillegal
 DEBUG_DEFINES   = -define DEBUG
 BYTE_DUMP       = -bytedumpfile $(OUTPUT)/$(APP)_bytedump.txt
 SYMBOLS		= -symbolfiledir $(OUTPUT)
@@ -11,7 +11,7 @@ SOURCE_DIR	= ~/Documents/Source
 APP_DIR		= ~/Documents/Source
 3RD_PARTY_DIR   = ~/Documents/C64
 LIB_DIR		= resources
-CFLAGS_DEBUG    = $(CFLAGS) -debug $(DEBUG_DEFINES) -showmem -vicesymbols $(LOG) $(BYTE_DUMP) $(SYMBOLS)
+CFLAGS_DEBUG = $(CFLAGS) -debug $(DEBUG_DEFINES) -showmem -vicesymbols $(LOG) $(BYTE_DUMP) $(SYMBOLS)
 PROGS		= index
 APP			= sweet16
 PRG			= $(APP).prg
