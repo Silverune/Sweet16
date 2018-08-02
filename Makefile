@@ -62,6 +62,7 @@ debug:
 
 debugx:	all
 		$(COMPILER) $(CFLAGS_DEBUG) index.asm
+		cat $(OUTPUT)/index.vs | sort >> breakpoints.txt
 		$(DEBUG_VICE_OSX)
 
 runx:		
