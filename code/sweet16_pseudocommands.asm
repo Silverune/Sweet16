@@ -102,39 +102,39 @@
 
 .pseudocommand st register { .byte opcode($30, register) }
 .pseudocommand ST register { st register }
-	
+
 .pseudocommand ldi register { .byte opcode($40, register) }
 .pseudocommand LDI register { ldi register }
-	
+
 .pseudocommand sti register { .byte opcode($50, register) }
 .pseudocommand STI register { sti register }
-	
-.pseudocommand ldd register : address {	register_encode($60, register, address) }
-.pseudocommand LDD register : address {	ldd register : address }
 
-.pseudocommand std register : address {	register_encode($70, register, address) }
-.pseudocommand STD register : address {	std register : address }
+.pseudocommand ldd register { .byte opcode($60, register) }
+.pseudocommand LDD register { ldd register }
 
-.pseudocommand pop register : address {	register_encode($80, register, address) }
-.pseudocommand POP register : address {	pop register : address }
+.pseudocommand std register { .byte opcode($70, register) }
+.pseudocommand STD register { std register }
 
-.pseudocommand stp register : address {	register_encode($90, register, address) }
-.pseudocommand STP register : address {	stp register : address }
+.pseudocommand pop register { .byte opcode($80, register) }
+.pseudocommand POP register { pop register }
 
-.pseudocommand add register : address {	register_encode($a0, register, address) }
-.pseudocommand ADD register : address {	add register : address }
+.pseudocommand stp register { .byte opcode($90, register) }
+.pseudocommand STP register { stp register }
 
-.pseudocommand sub register : address {	register_encode($b0, register, address) }
-.pseudocommand SUB register : address {	sub register : address }
+.pseudocommand add register { .byte opcode($a0, register) }
+.pseudocommand ADD register { add register }
 
-.pseudocommand popd register : address { register_encode($c0, register, address) }
-.pseudocommand POPD register : address { popd register : address }
+.pseudocommand sub register { .byte opcode($b0, register) }
+.pseudocommand SUB register { sub register }
 
-.pseudocommand cpr register : address {	register_encode($d0, register, address) }
-.pseudocommand CPR register : address {	cpr register : address }
+.pseudocommand popd register { .byte opcode($c0, register) }
+.pseudocommand POPD register { popd register }
 
-.pseudocommand inr register : address {	register_encode($e0, register, address) }
-.pseudocommand INR register : address {	inr register : address }
+.pseudocommand cpr register { .byte opcode($d0, register) }
+.pseudocommand CPR register { cpr register }
 
-.pseudocommand dcr register : address {	.byte opcode($f0, register) }
-.pseudocommand DCR register : address {	dcr register : address }
+.pseudocommand inr register { .byte opcode($e0, register) }
+.pseudocommand INR register { inr register }
+
+.pseudocommand dcr register { .byte opcode($f0, register) }
+.pseudocommand DCR register { dcr register }
