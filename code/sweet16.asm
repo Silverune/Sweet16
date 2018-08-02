@@ -14,6 +14,14 @@
 	.return ZP_BASE + (register * 2) + 1
 }
 
+.function rl(register) {
+	.return RL(register)
+}
+
+.function rh(register) {
+	.return RH(register)
+}
+
 //#if TRACE_MODE
 .for (var i = 0; i < 16; i++) {
 	label("RL" + i, RL(i))
@@ -174,7 +182,7 @@ LD:
 	trace()
 	lda  R0L,X
 	
-BK: *=*-1
+BK: // *=*-1 
 	trace()
     sta  R0L
     lda  R0H,X          // MOVE RX TO R0
