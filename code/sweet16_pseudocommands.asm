@@ -44,9 +44,14 @@
 	else
 		jsr SW16_NONE
 }
-	
-.pseudocommand SWEET16 save { sweet16 save }
 
+
+.pseudocommand ldxy register {	
+	ldx rh(register.getValue())
+	ldy rl(register.getValue())
+}
+
+.pseudocommand SWEET16 save { sweet16 save }
 
 // Nonregister Ops	
 .pseudocommand rtn { .byte $00 }
