@@ -1,3 +1,44 @@
+SET_TEST:
+	sweet16
+	set 5 : $a034		// R5 now contains $A034
+	rtn
+	ldxy 5
+	break()
+	rts
+
+LD_TEST:
+	sweet16
+    set 5 : $A034
+    ld 5			// ACC now contains $A034	
+	rtn
+	ldxy ACC
+	break()
+	rts
+
+ADD_TEST: *=* "ADD_TEST"
+	sweet16
+	set 0 : $7634   // Init R0 (ACC) and R1
+    set 1 : $4227
+    add 1           // Add R1 (sum=B85B, C clear)
+    add 0			// Double ACC (R0) to $70B6 with carry set.
+	rtn
+	ldxy ACC
+	break()
+	rts
+	
+SET_TEST2: *=* "SET_TEST2"
+	.const r = 1
+	sweet16
+	set 0 : $9ABC
+	set r : $1234
+	set 2 : $5678
+//	add 2
+	rtn
+	ldx RL(r)
+	ldy RH(r)
+	break()
+	rts
+	
 TEST0:	 *=* "Test 0"
 	jsr SW16
 	.byte $11,$00,$70 // SET R1,$7000
@@ -9,7 +50,8 @@ TEST0:	 *=* "Test 0"
 	.byte $F3   // DCR R3
 	.byte $07,$FB // BNZ LOOP*/
 	.byte $00   // RTN
-//	break()
+	ldxy ACC
+	break()
 	rts
 
 TEST1: *=* "Test 1"
