@@ -54,6 +54,22 @@ STORE_INDIRECT_TEST:
 	ldxy 6
 	break()
 	rts
+
+// The low order ACC byte is loaded from memory location whose address resides in Rn, and Rn is then incremented by 1. The high order ACC byte is loaded from the memory location whose address resides in the incremented Rn, and Rn is again incremented by 1. Branch conditions reflect the final ACC contents. The carry is cleared.
+LOAD_DOUBLE_BYTE_INDIRECT_TEST: // TODO - test
+	sweet16
+	set 5 : TEST_MEMORY			// The low-order ACC byte is loaded from
+	ldd 6						// TEST_MEMORY, high-order from TEST_MEMORY+1
+								// R5 is incr by 2
+	rtn
+	ldxy ACC
+	break()
+	ldxy 5
+	break()
+	ldxy 6
+	break()
+	rts
+
 	
 // The contents of Rn are added to the contents of ACC (R0), and the low-order 16 bits of the sum restored in ACC. the 17th sum bit becomes the carry and the other branch conditions reflect the final ACC contents.
 ADD_TEST:

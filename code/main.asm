@@ -7,8 +7,9 @@ Program:
 	jsr LOAD_TEST
 	jsr STORE_TEST
 	jsr LOAD_INDIRECT_TEST
-	*/
 	jsr STORE_INDIRECT_TEST
+	*/
+	jsr LOAD_DOUBLE_BYTE_INDIRECT_TEST
 	/*
 	jsr ADD_TEST
 	*/
