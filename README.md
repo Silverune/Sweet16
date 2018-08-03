@@ -1,7 +1,12 @@
 # Sweet16
 A C64 / Kick Assembler port of Stephen Wozniak's ("Woz") 16-bit metaprocessor processor
 - [Original Source Article](http://amigan.1emu.net/kolsen/programming/sweet16.html)
-- [Porting and original source](http://www.6502.org/source/interpreters/sweet16.htm)
+- [Porting](http://www.6502.org/source/interpreters/sweet16.htm)
+- [Original Source Code](http://www.6502.org/source/interpreters/sweet16.htm#The_Story_of_Sweet_Sixteen)
+- [S-C Macro Assembler](http://www.6502.org/source/interpreters/sweet16.htm#Sweet_16_S_C_Macro_Assembler_Tex)
+- [Original Register Instructions](http://www.6502.org/source/interpreters/sweet16.htm#Register_Instructions_)
+- [Original Detailed Description](http://www.6502.org/source/interpreters/sweet16.htm#SWEET_16_A_Pseudo_16_Bit_Micropr)
+- [SWEET16 Introduction](http://www.6502.org/source/interpreters/sweet16.htm#SWEET_16_INTRODUCTION)
 - [Atari Source Port](https://github.com/jefftranter/6502/blob/master/asm/sweet16/sweet16.s)
 
 This project provides an implementation of Steve Wozniak's "SWEET16" ported to the C64 6502 / 6510 using the Kick Assembler.   Using Kick's powerful language features SWEET16 can more natively be coded using ```pseudocommands``` that better reflect Woz's original description.  Using an example from Jeff Tranter's Atari port of SWEET16:
