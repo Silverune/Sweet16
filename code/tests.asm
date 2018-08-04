@@ -59,8 +59,10 @@ STORE_INDIRECT_TEST:
 LOAD_DOUBLE_BYTE_INDIRECT_TEST: // TODO - test
 	sweet16
 	set 5 : TEST_MEMORY			// The low-order ACC byte is loaded from
-	ldd 6						// TEST_MEMORY, high-order from TEST_MEMORY+1
+	ldd 5						// TEST_MEMORY, high-order from TEST_MEMORY+1
+								// NOTE - original had error of specifying "R6"
 								// R5 is incr by 2
+	
 	rtn
 	ldxy ACC
 	break()
