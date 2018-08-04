@@ -24,7 +24,8 @@ RUN_FLAGS	= -autostartprgmode 1 -autostart-warp +truedrive +cart
 DEBUG_FLAGS	= -vicesymbols $(OUTPUT)/index.vs -prg $(OUTPUT_PRG)
 
 # OSX / MacOS
-EMULATOR_PATH_OSX = /Applications/Vice64
+#EMULATOR_PATH_OSX = /Applications/Vice64
+EMULATOR_PATH_OSX = /Users/rhett/Documents/Source/vice-emu-code/vice/vice-macosx-sdl-x86_64-3.1
 EMULATOR_OSX	= $(EMULATOR_PATH_OSX)/x64.app
 DEBUGGER_OSX    = open -a $(3RD_PARTY_DIR)/C64Debugger/C64Debugger.app $(OUTPUT_PRG)
 RUN_OSX         = open -a $(EMULATOR_OSX) $(OUTPUT_PRG) --args $(RUN_FLAGS)
