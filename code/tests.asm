@@ -125,10 +125,10 @@ STORE_POP_INDIRECT_TEST:
 // The contents of Rn are added to the contents of ACC (R0), and the low-order 16 bits of the sum restored in ACC. the 17th sum bit becomes the carry and the other branch conditions reflect the final ACC contents.
 ADD_TEST:
 	sweet16
-	set 0 : $7634   // Init R0 (ACC) and R1
-    set 1 : $4227
-    add 1           // Add R1 (sum=B85B, C clear)
-    add 0			// Double ACC (R0) to $70B6 with carry set.
+	set ACC : $7634 // Init R0 (ACC)
+    set 1 : $4227	// Init R1
+    add 1           // Add R1 (sum = $B85B, C clear)
+    add ACC			// Double ACC (R0) to $70B6 with carry set.
 	rtn
 	ldxy ACC
 	break()

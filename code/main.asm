@@ -11,11 +11,9 @@ Program:
 	jsr LOAD_DOUBLE_BYTE_INDIRECT_TEST
 	jsr STORE_DOUBLE_BYTE_INDIRECT_TEST
 	jsr POP_INDIRECT
-	*/
 	jsr STORE_POP_INDIRECT_TEST
-	/*
-	jsr ADD_TEST
 	*/
+	jsr ADD_TEST
 	
 	lda #$00
 	sta $d020
