@@ -85,8 +85,28 @@ STORE_DOUBLE_BYTE_INDIRECT_TEST:
 	ldxy 6
 	break()
 	rts
-	
-	
+
+// The low-order ACC byte is loaded from the memory location whose address resides in Rn after Rn is decremented by 1, and the high order ACC byte is cleared. Branch conditions reflect the final 2-byte ACC contents which will always be positive and never minus one. The carry is cleared. Because Rn is decremented prior to loading the ACC, single byte stacks may be implemented with the STI Rn and POP Rn ops (Rn is the stack pointer).
+POP_INDIRECT:	
+	sweet16
+	set 5 : TEST_MEMORY			// Init stack pointer
+	set ACC : 4					// Load 4 into ACC
+	sti 5						// Push 4 onto stack
+	set ACC : 5					// Load 5 into ACC
+	sti 5						// Push 5 onto stack
+	set ACC : 6					// Load 6 into ACC
+	sti 5						// Push 6 onto stack
+	pop 5						// Pop 6 off stack into ACC
+	pop 5						// Pop 5 off stack into ACC
+	pop 5						// Pop 4 off stack into ACC
+	rtn						
+	ldxy ACC
+	break()
+	ldxy 5
+	break()
+	rts
+
+
 // The contents of Rn are added to the contents of ACC (R0), and the low-order 16 bits of the sum restored in ACC. the 17th sum bit becomes the carry and the other branch conditions reflect the final ACC contents.
 ADD_TEST:
 	sweet16
