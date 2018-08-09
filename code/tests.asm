@@ -134,6 +134,22 @@ ADD_TEST:
 	break()
 	rts
 
+// The contents of Rn are subtracted from the ACC contents by performing a two's complement addition:
+//
+// ACC = ACC + Rn + 1
+//
+//The low order 16 bits of the subtraction are restored in the ACC, the 17th sum bit becomes the carry and other branch conditions reflect the final ACC contents. If the 16-bit unsigned ACC contents are greater than or equal to the 16-bit unsigned Rn contents, then the carry is set, otherwise it is cleared. Rn is not disturbed.
+SUBTRACT_TEST:
+	sweet16
+	set ACC : $7634     // Init R0 (ACC) 
+	set 1 : $4227		// and R1
+	sub 1				// subtract R1 (diff=$340D with c set)
+	sub ACC				// clears ACC. (R0)
+	rtn
+	ldxy ACC
+	break()
+	rts
+	
 // Used for indirect testing
 TEST_MEMORY:
 	.byte $12,$34
