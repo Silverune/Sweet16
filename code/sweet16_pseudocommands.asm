@@ -45,7 +45,6 @@
 		jsr SW16_NONE
 }
 
-
 .pseudocommand ldxy register {	
 	ldx rh(register.getValue())
 	ldy rl(register.getValue())

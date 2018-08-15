@@ -13,10 +13,11 @@ Program:
 	jsr POP_INDIRECT
 	jsr STORE_POP_INDIRECT_TEST
 	jsr ADD_TEST
+	jsr SUBTRACT_TEST
 	*/
 
-	jsr SUBTRACT_TEST
-	
+	jsr POP_DOUBLE_BYTE_INDIRECT_TEST
+
 	lda #$00
 	sta $d020
 	sta $d021

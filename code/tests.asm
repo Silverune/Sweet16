@@ -46,7 +46,7 @@ STORE_INDIRECT_TEST:
 	sweet16
 	set 5 : TEST_MEMORY			// Load pointers R5, R6 with
 	set 6 : TEST_MEMORY_2		// memory values
-    ldi 5            			// Move byte from TEST_MEMORY to TEST_MEMORY_@
+    ldi 5            			// Move byte from TEST_MEMORY to TEST_MEMORY_2
     sti 6			            // Both ptrs are incremented	
 	rtn						
 	ldxy 5
@@ -87,10 +87,10 @@ STORE_DOUBLE_BYTE_INDIRECT_TEST:
 	rts
 
 // The low-order ACC byte is loaded from the memory location whose address resides in Rn after Rn is decremented by 1, and the high order ACC byte is cleared. Branch conditions reflect the final 2-byte ACC contents which will always be positive and never minus one. The carry is cleared. Because Rn is decremented prior to loading the ACC, single byte stacks may be implemented with the STI Rn and POP Rn ops (Rn is the stack pointer).
-POP_INDIRECT:
+POP_INDIRECT: {
 	.const STACK = 5			// Arbitrary register to use
 	sweet16
-	set STACK : TEST_MEMORY		// Init stack pointer
+	set STACK : STACK_MEMORY	// Init stack pointer
 	set ACC : 4					// Load 4 into ACC
 	sti STACK					// Push 4 onto stack
 	set ACC : 5					// Load 5 into ACC
@@ -106,9 +106,10 @@ POP_INDIRECT:
 	ldxy STACK
 	break()
 	rts
-
+}
+	
 // The low-order ACC byte is stored into the memory location whose address resides in Rn after Rn is decremented by 1. Branch conditions will reflect the 2-byte ACC contents which are not modified. STP Rn and POP Rn are used together to move data blocks beginning at the greatest address and working down. Additionally, single-byte stacks may be implemented with the STP Rn ops.
-STORE_POP_INDIRECT_TEST:
+STORE_POP_INDIRECT_TEST: {
 	.const FROM = 4				// Arbitrary register
 	.const TO = 5				// Arbitrary register
 	sweet16
@@ -121,7 +122,8 @@ STORE_POP_INDIRECT_TEST:
 	rtn		
 	break()
 	rts
-	
+}
+
 // The contents of Rn are added to the contents of ACC (R0), and the low-order 16 bits of the sum restored in ACC. the 17th sum bit becomes the carry and the other branch conditions reflect the final ACC contents.
 ADD_TEST:
 	sweet16
@@ -149,6 +151,23 @@ SUBTRACT_TEST:
 	ldxy ACC
 	break()
 	rts
+
+// Rn is decremented by 1 and the high-order ACC byte is loaded from the memory location whose address now resides in Rn. Rn is again decremented by 1 and the low-order ACC byte is loaded from the corresponding memory location. Branch conditions reflect the final ACC contents. The carry is cleared. Because Rn is decremented prior to loading each of the ACC halves, double-byte stacks may be implemented with the STD @Rn and POPD @Rn ops (Rn is the stack pointer).
+POP_DOUBLE_BYTE_INDIRECT_TEST: {
+	.const STACK = 5			// Arbitrary register to use
+	sweet16
+	set STACK : STACK_MEMORY	// Init stack pointer
+	set ACC : TEST_MEMORY		// Load TEST_MEMORY into ACC
+	std STACK					// Push TEST_MEMORY onto stack
+	set ACC : TEST_MEMORY_2		// Load TEST_MEMORY_2 into ACC
+	std STACK					// Push TEST_MEMORY_2 onto stack
+	popd STACK					// Pop TEST_MEMORY_2 off stack
+	popd STACK					// Pop TEST_MEMORY off stack
+	rtn
+	ldxy ACC
+	break()
+	rts
+}
 	
 // Used for indirect testing
 TEST_MEMORY:
@@ -159,3 +178,8 @@ TEST_MEMORY_2:
 
 TEST_MEMORY_3:
 	.byte $9a,$bc
+
+STACK_MEMORY: {
+	.const STACK_SIZE = 16		// bytes
+	.fill STACK_SIZE, 0
+}
