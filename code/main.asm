@@ -15,7 +15,8 @@ Program:
 	jsr ADD_TEST
 	jsr SUBTRACT_TEST
 	*/
-
+	.var asdf = test_calculate_effective_address(0)
+	
 	jsr POP_DOUBLE_BYTE_INDIRECT_TEST
 
 	lda #$00

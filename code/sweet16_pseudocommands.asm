@@ -10,6 +10,32 @@
 	.return CmdArgument(arg.getType(),arg.getValue()+1)
 }
 
+// An effective address (ea) is calculated by adding the signed displacement byte (d) to the PC. The PC contains the address of the instruction immediately following the BR, or the address of the BR op plus 2. The displacement is a signed two's complement value from -128 to +127. Branch conditions are not changed.	
+.function calc_effective_address(d, currentAddress) {
+	.if (d >= $80) {
+		.print currentAddress + 2 - ($100 - d)
+		.return <(currentAddress + 2 - ($100 - d))
+	}
+	else {	
+		.print currentAddress + 2 + d
+		.return currentAddress + 2 + d
+	}
+}
+
+.function calculate_effective_address(ea, currentAddress) {
+	.return <(ea - currentAddress - 2) // account for byte offset
+}
+
+.function test_calculate_effective_address(currentAddress) {
+	.var values = List().add($80, $81, $ff, $00, $01, $7e, $7f)
+
+	.for (var i = 0	; i < values.size(); i++) {
+		.print "i = $" + toHexString(values.get(i)) + " -> $" + toHexString(calc_effective_address(values.get(i), currentAddress))
+	}
+	.var d = $02
+	.print "Woz i = $" + toHexString(d) + " -> $" + toHexString(calc_effective_address(d, $300))
+}
+	
 .function effective_address(ea, currentAddress) {
 	.if (ea.getType() == AT_ABSOLUTE)
 	{
