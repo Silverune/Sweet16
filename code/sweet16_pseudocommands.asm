@@ -84,7 +84,7 @@
 .pseudocommand bnm1 ea { .byte $09, effective_address(ea,*) }
 .pseudocommand BNM1 ea { bnm1 ea }
 
-.pseudocommand bk ea { .byte $0a, effective_address(ea,*) }
+.pseudocommand bk ea { .byte $0a }
 .pseudocommand BK ea { bk ea }
 
 .pseudocommand rs {	.byte $0b }
