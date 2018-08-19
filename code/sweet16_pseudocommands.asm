@@ -39,6 +39,7 @@
 	{
 		.var relativeAddress = <(ea.getValue() - currentAddress - 2) // account for byte offset
 #if DEBUG
+		.print "ea: $" + toHexString(ea.getValue()) + " currentAddress: $" + toHexString(currentAddress)
 		.print "Relative address: $" + toHexString(relativeAddress)
 #endif
 		.return relativeAddress

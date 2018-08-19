@@ -295,7 +295,30 @@ BRANCH_IF_CARRY_SET_TEST: {
 	bc SET_FEDC
 	br SET_0123
 }
-	
+
+// A branch is effected only if the prior 'result' (or most recently transferred dat) was positive. Branch conditions are not changed. e.g., Clear mem from TEST_MEMORY_SEQUENCE to SIZE
+BRANCH_IF_PLUS_TEST: {
+	.const DATA_REGISTER = 5
+	.const LIMIT_REGISTER = 4
+	.const SIZE = 9
+	jmp !test+
+TEST_MEMORY_SEQUENCE:
+	.fill SIZE, i	
+!test:
+	set DATA_REGISTER : TEST_MEMORY_SEQUENCE		 // Init pointer
+	set LIMIT_REGISTER : TEST_MEMORY_SEQUENCE + SIZE // Init limit
+!loop:
+	break()
+	sub ACC									// Clear mem byte
+	sti DATA_REGISTER						// Increment R5
+	ld LIMIT_REGISTER						// Compare limit
+	cpr DATA_REGISTER						// to Pointer
+	bp !loop-								// Loop until done
+	rtn
+	break()
+	rts
+}
+
 TEST_MEMORY:
 	.byte $12,$34
 
