@@ -223,7 +223,30 @@ INCREMENT_TEST: {
 	break()
 	rts
 }
-	
+
+// The contents of Rn are decremented by 1. The carry is cleared and other branch conditions reflect the decremented value. e.g., to clear 9 bytes beginning at location TEST_MEMORY_SEQUENCE
+DECREMENT_TEST: {
+	.const DATA_REGISTER = 5
+	.const COUNT_REGISTER = 4
+	.const SIZE = 9
+	jmp !test+
+TEST_MEMORY_SEQUENCE:
+	.fill SIZE, i	
+!test:
+	sweet16
+	set DATA_REGISTER : TEST_MEMORY_SEQUENCE	// Init pointer
+	set COUNT_REGISTER : SIZE					// Init counter
+	sub ACC									    // Zero ACC
+!loop:
+	sti DATA_REGISTER							// Clear a mem byte
+	dcr COUNT_REGISTER							// Decrement count
+	bnz !loop-
+	rtn
+	ldxy DATA_REGISTER
+	break()
+	rts
+}
+
 SET_FEDC:
 	set ACC : $fedc
 	br BRANCH_FINISH
@@ -236,8 +259,7 @@ BRANCH_FINISH:
 	rtn
 	ldxy ACC
 	break()
-	rts
-	
+	rts	
 
 // An effective address (ea) is calculated by adding the signed displacement byte (d) to the PC. The PC contains the address of the instruction immediately following the BR, or the address of the BR op plus 2. The displacement is a signed two's complement value from -128 to +127. Branch conditions are not changed.
 BRANCH_ALWAYS_TEST:
