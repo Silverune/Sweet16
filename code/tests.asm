@@ -273,8 +273,29 @@ BRANCH_FINISH:
 BRANCH_ALWAYS_TEST:
 	sweet16
 	br SET_FEDC
+
+// A branch to the effective address is taken only is the carry is clear, otherwise execution resumes as normal with the next instruction. Branch conditions are not changed.	
+BRANCH_IF_NO_CARRY_TEST: {
+	.const REGISTER = 5
+	sweet16
+	set REGISTER : $1000
+	set ACC : $ffff
+	add REGISTER
+	bnc SET_FEDC
+	br SET_0123
+}
 	
-// Used for indirect testing
+// A branch is effected only if the carry is set. Branch conditions are not changed.
+BRANCH_IF_CARRY_SET_TEST: {
+	.const REGISTER = 5
+	sweet16
+	set REGISTER : $1000
+	set ACC : $ffff
+	add REGISTER
+	bc SET_FEDC
+	br SET_0123
+}
+	
 TEST_MEMORY:
 	.byte $12,$34
 
