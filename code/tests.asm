@@ -247,6 +247,14 @@ TEST_MEMORY_SEQUENCE:
 	rts
 }
 
+// Control is returned to the 6502 and program execution continues at the location immediately following the RTN instruction. the 6502 registers and status conditions are restored to their original contents (prior to entering SWEET 16 mode).
+RETURN_TO_6502_MODE_TEST: {
+	sweet16
+	rtn
+	break()
+	rts
+}
+	
 SET_FEDC:
 	set ACC : $fedc
 	br BRANCH_FINISH
