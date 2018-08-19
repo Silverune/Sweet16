@@ -170,12 +170,31 @@ POP_DOUBLE_BYTE_INDIRECT_TEST: {
 }
 
 // The ACC (R0) contents are compared to Rn by performing the 16 bit binary subtraction ACC-Rn and storing the low order 16 difference bits in R13 for subsequent branch tests. If the 16 bit unsigned ACC contents are greater than or equal to the 16 bit unsigned Rn contents, then the carry is set, otherwise it is cleared. No other registers, including ACC and Rn, are disturbed.
-COMPARE_TEST:
-	sweet16  // TODO
+COMPARE_TEST: {
+	.const DATA_REGISTER = 5
+	.const LIMIT_REGISTER = 6
+	.const COMPARE_FILL_SIZE = 8
+
+	jmp !test+
+COMPARE_MEMORY:
+	.fill COMPARE_FILL_SIZE, i
+	
+!test:	
+	sweet16
+	set DATA_REGISTER : COMPARE_MEMORY						// pointer to memory
+	set LIMIT_REGISTER : COMPARE_FILL_SIZE + COMPARE_MEMORY	// limit address
+!loop:
+	sub ACC				// zero data
+	std	DATA_REGISTER	// clear 2 locations
+	ld DATA_REGISTER	// compare pointer R5
+	cpr LIMIT_REGISTER	// to limit R6
+	bnc !loop-			// loop if C clear
 	rtn
+	ldxy CPR
 	break()
 	rts	
-
+}
+	
 SET_FEDC:
 	set ACC : $fedc
 	br BRANCH_FINISH
