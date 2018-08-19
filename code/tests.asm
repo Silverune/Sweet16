@@ -168,6 +168,33 @@ POP_DOUBLE_BYTE_INDIRECT_TEST: {
 	break()
 	rts
 }
+
+// The ACC (R0) contents are compared to Rn by performing the 16 bit binary subtraction ACC-Rn and storing the low order 16 difference bits in R13 for subsequent branch tests. If the 16 bit unsigned ACC contents are greater than or equal to the 16 bit unsigned Rn contents, then the carry is set, otherwise it is cleared. No other registers, including ACC and Rn, are disturbed.
+COMPARE_TEST:
+	sweet16  // TODO
+	rtn
+	break()
+	rts	
+
+SET_FEDC:
+	set ACC : $fedc
+	br BRANCH_FINISH
+
+SET_0123:
+	set ACC : $0123
+	br BRANCH_FINISH
+
+BRANCH_FINISH:
+	rtn
+	ldxy ACC
+	break()
+	rts
+	
+
+// An effective address (ea) is calculated by adding the signed displacement byte (d) to the PC. The PC contains the address of the instruction immediately following the BR, or the address of the BR op plus 2. The displacement is a signed two's complement value from -128 to +127. Branch conditions are not changed.
+BRANCH_ALWAYS_TEST:
+	sweet16
+	br SET_FEDC
 	
 // Used for indirect testing
 TEST_MEMORY:
