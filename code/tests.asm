@@ -1,94 +1,109 @@
 // The 2-byte constant is loaded into Rn (n=0 to F, Hex) and branch conditions set accordingly. The carry is cleared.
-SET_TEST:
+SET_TEST: {
+	.const REGISTER = 5			// arbitrary register	
 	sweet16
-	set 5 : $a034		// R5 now contains $A034
+	set REGISTER : $a034		// R5 now contains $A034
 	rtn
-	ldxy 5
+	ldxy REGISTER
 	break()
 	rts
-
+}
+	
 // The ACC (R0) is loaded from Rn and branch conditions set according to the data transferred. The carry is cleared and contents of Rn are not disturbed.
-LOAD_TEST:
+LOAD_TEST: {
+	.const REGISTER = 5			// arbitrary register
 	sweet16
-    set 5 : $A034
-    ld 5			// ACC now contains $A034	
+    set REGISTER : $A034
+    ld REGISTER					// ACC now contains $A034	
 	rtn
 	ldxy ACC
 	break()
 	rts
+}
 
 // The ACC is stored into Rn and branch conditions set according to the data transferred. The carry is cleared and the ACC contents are not disturbed.
-STORE_TEST:
+STORE_TEST: {
+	.const SOURCE = 5			// arbitrary register
+	.const DEST = 6				// arbitrary register
 	sweet16
-	set 5 : $1234
-	ld 5			// Copy the contents
-	st 6			// of R5 to R6
+	set SOURCE : $1234
+	ld SOURCE					// Copy the contents
+	st DEST						// of R5 to R6
 	rtn
-	ldxy 6
+	ldxy DEST
 	break()
 	rts
-
+}
+	
 // The low-order ACC byte is loaded from the memory location whose address resides in Rn and the high-order ACC byte is cleared. Branch conditions reflect the final ACC contents which will always be positive and never minus 1. The carry is cleared. After the transfer, Rn is incremented by 1.	
-LOAD_INDIRECT_TEST:
+LOAD_INDIRECT_TEST: {
+	.const REGISTER = 5			// arbitrary register
 	sweet16
-	set 5 : TEST_MEMORY  // TEST_MEMORY contains value $12
-	ldi 5				 // ACC is loaded from memory where TEST_MEMORY ($00, $12)
-						 // R5 is incr by one (TEST_MEMORY + 1)
+	set REGISTER : TEST_MEMORY  // TEST_MEMORY contains value $12
+	ldi REGISTER				// ACC is loaded from memory where TEST_MEMORY ($00, $12)
+								// R5 is incr by one (TEST_MEMORY + 1)
 	rtn
 	ldxy ACC
 	break()
-	ldxy 5
+	ldxy REGISTER
 	break()
 	rts
-
-	// The low-order ACC byte is stored into the memory location whose address resides in Rn. Branch conditions reflect the 2-byte ACC contents. The carry is cleared. After the transfer Rn is incremented by 1.
-STORE_INDIRECT_TEST:
+}
+	
+// The low-order ACC byte is stored into the memory location whose address resides in Rn. Branch conditions reflect the 2-byte ACC contents. The carry is cleared. After the transfer Rn is incremented by 1.
+STORE_INDIRECT_TEST: {
+	.const SOURCE = 5			// arbitrary register
+	.const DEST = 6				// arbitrary register
 	sweet16
-	set 5 : TEST_MEMORY			// Load pointers R5, R6 with
-	set 6 : TEST_MEMORY_2		// memory values
-    ldi 5            			// Move byte from TEST_MEMORY to TEST_MEMORY_2
-    sti 6			            // Both ptrs are incremented	
+	set SOURCE : TEST_MEMORY	// Load pointers R5, R6 with
+	set DEST : TEST_MEMORY_2	// memory values
+    ldi SOURCE            		// Move byte from TEST_MEMORY to TEST_MEMORY_2
+    sti DEST			        // Both ptrs are incremented	
 	rtn						
-	ldxy 5
+	ldxy SOURCE
 	break()
-	ldxy 6
+	ldxy DEST
 	break()
 	rts
-
+}
+	
 // The low order ACC byte is loaded from memory location whose address resides in Rn, and Rn is then incremented by 1. The high order ACC byte is loaded from the memory location whose address resides in the incremented Rn, and Rn is again incremented by 1. Branch conditions reflect the final ACC contents. The carry is cleared.
-LOAD_DOUBLE_BYTE_INDIRECT_TEST:
+LOAD_DOUBLE_BYTE_INDIRECT_TEST: {
+	.const REGISTER = 5			// arbitrary register
 	sweet16
-	set 5 : TEST_MEMORY			// The low-order ACC byte is loaded from
-	ldd 5						// TEST_MEMORY, high-order from TEST_MEMORY+1
+	set REGISTER : TEST_MEMORY	// The low-order ACC byte is loaded from
+	ldd REGISTER				// TEST_MEMORY, high-order from TEST_MEMORY+1
 								// NOTE - original had error of specifying "R6"
 								// R5 is incr by 2	
 	rtn
 	ldxy ACC
 	break()
-	ldxy 5
-	break()
-	ldxy 6
+	ldxy REGISTER
 	break()
 	rts
+}
 
 // The low-order ACC byte is stored into memory location whose address resides in Rn, and Rn is the incremented by 1. The high-order ACC byte is stored into the memory location whose address resides in the incremented Rn, and Rn is again incremented by 1. Branch conditions reflect the ACC contents which are not disturbed. The carry is cleared.
-STORE_DOUBLE_BYTE_INDIRECT_TEST:
+STORE_DOUBLE_BYTE_INDIRECT_TEST: {
+	.const SOURCE = 5			// arbitrary register
+	.const DEST = 6				// arbitrary register
 	sweet16
-	set 5 : TEST_MEMORY			// Load pointers R5, R6 with
-	set 6 : TEST_MEMORY_2		// memory values
-	ldd 5						// Move double byte from
-    std 6            			// TEST_MEMORY to TEST_MEMORY_2
+	set SOURCE : TEST_MEMORY	// Load pointers R5, R6 with
+	set DEST : TEST_MEMORY_2	// memory values
+	ldd SOURCE					// Move double byte from
+    std DEST            		// TEST_MEMORY to TEST_MEMORY_2
                                 // Both pointers incremented by 2.
 	rtn						
-	ldxy 5
+	ldxy SOURCE
 	break()
-	ldxy 6
+	ldxy DEST
 	break()
 	rts
-
+}
+	
 // The low-order ACC byte is loaded from the memory location whose address resides in Rn after Rn is decremented by 1, and the high order ACC byte is cleared. Branch conditions reflect the final 2-byte ACC contents which will always be positive and never minus one. The carry is cleared. Because Rn is decremented prior to loading the ACC, single byte stacks may be implemented with the STI Rn and POP Rn ops (Rn is the stack pointer).
 POP_INDIRECT: {
-	.const STACK = 5			// Arbitrary register to use
+	.const STACK = 5			// Arbitrary register
 	sweet16
 	set STACK : STACK_MEMORY	// Init stack pointer
 	set ACC : 4					// Load 4 into ACC
@@ -110,22 +125,22 @@ POP_INDIRECT: {
 	
 // The low-order ACC byte is stored into the memory location whose address resides in Rn after Rn is decremented by 1. Branch conditions will reflect the 2-byte ACC contents which are not modified. STP Rn and POP Rn are used together to move data blocks beginning at the greatest address and working down. Additionally, single-byte stacks may be implemented with the STP Rn ops.
 STORE_POP_INDIRECT_TEST: {
-	.const FROM = 4				// Arbitrary register
-	.const TO = 5				// Arbitrary register
+	.const SOURCE = 4				// Arbitrary register
+	.const DEST = 5					// Arbitrary register
 	sweet16
-	set FROM : TEST_MEMORY + 2	// Init pointers with 2 byte offset
-	set TO : TEST_MEMORY_2 + 2  // as moves down from this address -1 then -2
-	pop	FROM					// Move byte from
-    stp TO            			// TEST_MEMORY + 1 to TEST_MEMORY_2 + 1
-	pop FROM					// Move byte from
-	stp TO						// TEST_MEMORY_2 to TEST_MEMORY_2
+	set SOURCE : TEST_MEMORY + 2	// Init pointers with 2 byte offset
+	set DEST : TEST_MEMORY_2 + 2 	// as moves down from this address -1 then -2
+	pop	SOURCE						// Move byte from
+    stp DEST            			// TEST_MEMORY + 1 to TEST_MEMORY_2 + 1
+	pop SOURCE						// Move byte from
+	stp DEST						// TEST_MEMORY_2 to TEST_MEMORY_2
 	rtn		
 	break()
 	rts
 }
 
 // The contents of Rn are added to the contents of ACC (R0), and the low-order 16 bits of the sum restored in ACC. the 17th sum bit becomes the carry and the other branch conditions reflect the final ACC contents.
-ADD_TEST:
+ADD_TEST: {
 	sweet16
 	set ACC : $7634 // Init R0 (ACC)
     set 1 : $4227	// Init R1
@@ -135,13 +150,14 @@ ADD_TEST:
 	ldxy ACC
 	break()
 	rts
-
+}
+	
 // The contents of Rn are subtracted from the ACC contents by performing a two's complement addition:
 //
 // ACC = ACC + Rn + 1
 //
 //The low order 16 bits of the subtraction are restored in the ACC, the 17th sum bit becomes the carry and other branch conditions reflect the final ACC contents. If the 16-bit unsigned ACC contents are greater than or equal to the 16-bit unsigned Rn contents, then the carry is set, otherwise it is cleared. Rn is not disturbed.
-SUBTRACT_TEST:
+SUBTRACT_TEST: {
 	sweet16
 	set ACC : $7634     // Init R0 (ACC) 
 	set 1 : $4227		// and R1
@@ -151,10 +167,11 @@ SUBTRACT_TEST:
 	ldxy ACC
 	break()
 	rts
-
+}
+	
 // Rn is decremented by 1 and the high-order ACC byte is loaded from the memory location whose address now resides in Rn. Rn is again decremented by 1 and the low-order ACC byte is loaded from the corresponding memory location. Branch conditions reflect the final ACC contents. The carry is cleared. Because Rn is decremented prior to loading each of the ACC halves, double-byte stacks may be implemented with the STD @Rn and POPD @Rn ops (Rn is the stack pointer).
 POP_DOUBLE_BYTE_INDIRECT_TEST: {
-	.const STACK = 5			// Arbitrary register to use
+	.const STACK = 5			// Arbitrary register
 	sweet16
 	set STACK : STACK_MEMORY	// Init stack pointer
 	set ACC : TEST_MEMORY		// Load TEST_MEMORY into ACC
@@ -174,11 +191,9 @@ COMPARE_TEST: {
 	.const DATA_REGISTER = 5
 	.const LIMIT_REGISTER = 6
 	.const COMPARE_FILL_SIZE = 8
-
 	jmp !test+
 COMPARE_MEMORY:
-	.fill COMPARE_FILL_SIZE, i
-	
+	.fill COMPARE_FILL_SIZE, i	
 !test:	
 	sweet16
 	set DATA_REGISTER : COMPARE_MEMORY						// pointer to memory
@@ -193,6 +208,20 @@ COMPARE_MEMORY:
 	ldxy CPR
 	break()
 	rts	
+}
+
+// The contents of Rn are incremented by 1. The carry is cleared and other branch conditions reflect the incremented value.
+INCREMENT_TEST: {
+	.const REGISTER = 5			// arbitrary register
+	sweet16
+	set REGISTER : TEST_MEMORY	// setup pointer
+	sub ACC						// clear ACC
+	sti REGISTER				// clear location TEST_MEMORY
+	inr REGISTER				// increment R5 to TEST_MEMORY + 2
+	rtn
+	ldxy REGISTER
+	break()
+	rts
 }
 	
 SET_FEDC:

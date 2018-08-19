@@ -16,12 +16,12 @@ Program:
 	jsr ADD_TEST
 	jsr SUBTRACT_TEST
 	jsr POP_DOUBLE_BYTE_INDIRECT_TEST
+	jsr COMPARE_TEST
 
 	jsr BRANCH_ALWAYS_TEST
 
 	*/
-
-	jsr COMPARE_TEST
+	jsr INCREMENT_TEST
 
 	lda #$00
 	sta $d020
