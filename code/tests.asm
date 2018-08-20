@@ -1,3 +1,22 @@
+// Setup some common blocks of memory to use for the testing
+TEST_MEMORY:
+	.byte $12,$34
+
+TEST_MEMORY_2:
+	.byte $56,$78
+
+TEST_MEMORY_3:
+	.byte $9a,$bc
+
+.const TMS_SIZE = 16
+TEST_MEMORY_SEQUENCE:
+	.fill TMS_SIZE, i
+
+STACK_MEMORY: {
+	.const STACK_SIZE = 16		// bytes
+	.fill STACK_SIZE, 0
+}
+
 // The 2-byte constant is loaded into Rn (n=0 to F, Hex) and branch conditions set accordingly. The carry is cleared.
 SET_TEST: {
 	.const REGISTER = 5			// arbitrary register	
@@ -190,14 +209,9 @@ POP_DOUBLE_BYTE_INDIRECT_TEST: {
 COMPARE_TEST: {
 	.const DATA_REGISTER = 5
 	.const LIMIT_REGISTER = 6
-	.const COMPARE_FILL_SIZE = 8
-	jmp !test+
-COMPARE_MEMORY:
-	.fill COMPARE_FILL_SIZE, i	
-!test:	
 	sweet16
-	set DATA_REGISTER : COMPARE_MEMORY						// pointer to memory
-	set LIMIT_REGISTER : COMPARE_FILL_SIZE + COMPARE_MEMORY	// limit address
+	set DATA_REGISTER : TEST_MEMORY_SEQUENCE				// pointer to memory
+	set LIMIT_REGISTER : TEST_MEMORY_SEQUENCE + TMS_SIZE	// limit address
 !loop:
 	sub ACC				// zero data
 	std	DATA_REGISTER	// clear 2 locations
@@ -228,14 +242,9 @@ INCREMENT_TEST: {
 DECREMENT_TEST: {
 	.const DATA_REGISTER = 5
 	.const COUNT_REGISTER = 4
-	.const SIZE = 9
-	jmp !test+
-TEST_MEMORY_SEQUENCE:
-	.fill SIZE, i	
-!test:
 	sweet16
 	set DATA_REGISTER : TEST_MEMORY_SEQUENCE	// Init pointer
-	set COUNT_REGISTER : SIZE					// Init counter
+	set COUNT_REGISTER : TMS_SIZE				// Init counter
 	sub ACC									    // Zero ACC
 !loop:
 	sti DATA_REGISTER							// Clear a mem byte
@@ -300,13 +309,9 @@ BRANCH_IF_CARRY_SET_TEST: {
 BRANCH_IF_PLUS_TEST: {
 	.const DATA_REGISTER = 5
 	.const LIMIT_REGISTER = 4
-	.const SIZE = 9
-	jmp !test+
-TEST_MEMORY_SEQUENCE:
-	.fill SIZE, i	
-!test:
-	set DATA_REGISTER : TEST_MEMORY_SEQUENCE		 // Init pointer
-	set LIMIT_REGISTER : TEST_MEMORY_SEQUENCE + SIZE // Init limit
+	sweet16
+	set DATA_REGISTER : TEST_MEMORY_SEQUENCE		 		// Init pointer
+	set LIMIT_REGISTER : TEST_MEMORY_SEQUENCE + TMS_SIZE 	// Init limit
 !loop:
 	break()
 	sub ACC									// Clear mem byte
@@ -317,18 +322,4 @@ TEST_MEMORY_SEQUENCE:
 	rtn
 	break()
 	rts
-}
-
-TEST_MEMORY:
-	.byte $12,$34
-
-TEST_MEMORY_2:
-	.byte $56,$78
-
-TEST_MEMORY_3:
-	.byte $9a,$bc
-
-STACK_MEMORY: {
-	.const STACK_SIZE = 16		// bytes
-	.fill STACK_SIZE, 0
 }
