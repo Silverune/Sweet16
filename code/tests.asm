@@ -343,6 +343,17 @@ BRANCH_IF_ZERO_TEST: {
 	br SET_FEDC
 }
 
+// A branch is effected only if the priot 'result' was non-zero Branch conditions are not changed.
+BRANCH_IF_NONZERO_TEST: {
+	.const DATA_REGISTER = 5
+	.const VALUE = 10
+	sweet16
+	set DATA_REGISTER : #VALUE
+	sub ACC									// Clear mem byte
+	add DATA_REGISTER                       // Add from R5 value to 0 
+	bnz SET_0123
+	br SET_FEDC
+}
 
 
 
