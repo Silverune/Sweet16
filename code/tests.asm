@@ -379,5 +379,16 @@ BRANCH_IF_NOT_MINUS_ONE_TEST:
 	bnm1 SET_0123
 	br SET_FEDC
 
+// A 6502 BRK (break) instruction is executed. SWEET 16 may be re-entered non destructively at SW16d after correcting the stack pointer to its value prior to executing the BRK.
+BREAK_TEST:
+	sweet16
+	bk
+CONTINUE: *=*
+	set ACC : $feed
+	rtn
+	ldxy ACC
+	break()
+	rts
+
 
 

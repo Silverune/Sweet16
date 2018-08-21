@@ -28,9 +28,10 @@ Program:
 	jsr BRANCH_IF_ZERO_TEST
 	jsr BRANCH_IF_NONZERO_TEST
 	jsr BRANCH_IF_MINUS_ONE_TEST
-	*/
-	
 	jsr BRANCH_IF_NOT_MINUS_ONE_TEST
+	*/
+
+	jsr BREAK_TEST
 
 	lda #$00
 	sta $d020

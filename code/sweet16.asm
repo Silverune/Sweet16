@@ -325,7 +325,7 @@ BNC:
 	bcs  BNC2           // NO CARRY TEST
 	
 BR1:
-	lda  (R15L),Y       // DISplaCEMENT BYTE
+	lda  (R15L),Y       // DISPLACEMENT BYTE
     bpl  BR2
     dey
 
