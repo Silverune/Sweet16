@@ -313,7 +313,6 @@ BRANCH_IF_PLUS_TEST: {
 	set DATA_REGISTER : TEST_MEMORY_SEQUENCE		 		// Init pointer
 	set LIMIT_REGISTER : TEST_MEMORY_SEQUENCE + TMS_SIZE 	// Init limit
 !loop:
-	break()
 	sub ACC									// Clear mem byte
 	sti DATA_REGISTER						// Increment R5
 	ld LIMIT_REGISTER						// Compare limit
@@ -322,4 +321,16 @@ BRANCH_IF_PLUS_TEST: {
 	rtn
 	break()
 	rts
+}
+
+// A branch is effected only if prior 'result' was minus (negative, MSB = 1). Branch conditions are not changed.
+BRANCH_IF_MINUS_TEST: {
+	.const DATA_REGISTER = 5
+	.const LIMIT_REGISTER = 4
+	sweet16
+	set 5 : #$10
+	sub ACC									// Clear mem byte
+	sub 5                                   // Subtract from 0 value in R5
+	bm SET_0123
+	br SET_FEDC
 }
