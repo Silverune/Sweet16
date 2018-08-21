@@ -356,4 +356,16 @@ BRANCH_IF_NONZERO_TEST: {
 }
 
 
+// A branch is effected only if the prior 'result' was minus one ($FFFF Hex). Branch conditions are not changed.
+BRANCH_IF_MINUS_ONE_TEST: {
+	.const DATA_REGISTER = 5
+	.const VALUE = 1
+	sweet16
+	set DATA_REGISTER : #VALUE
+	sub ACC									// Clear mem byte
+	sub DATA_REGISTER                       // Subtract from 0 value in R5
+	bm1 SET_0123
+	br SET_FEDC
+}
+
 
