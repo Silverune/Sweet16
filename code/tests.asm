@@ -368,4 +368,16 @@ BRANCH_IF_MINUS_ONE_TEST: {
 	br SET_FEDC
 }
 
+// A branch effected only if the prior 'result' was not minus 1. Branch conditions are not changed
+BRANCH_IF_NOT_MINUS_ONE_TEST:
+	.const DATA_REGISTER = 5
+	.const VALUE = 2
+	sweet16
+	set DATA_REGISTER : #VALUE
+	sub ACC									// Clear mem byte
+	sub DATA_REGISTER                       // Subtract from 0 value in R5
+	bnm1 SET_0123
+	br SET_FEDC
+
+
 
