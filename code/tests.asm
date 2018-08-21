@@ -326,11 +326,23 @@ BRANCH_IF_PLUS_TEST: {
 // A branch is effected only if prior 'result' was minus (negative, MSB = 1). Branch conditions are not changed.
 BRANCH_IF_MINUS_TEST: {
 	.const DATA_REGISTER = 5
-	.const LIMIT_REGISTER = 4
+	.const VALUE = 10
 	sweet16
-	set 5 : #$10
+	set DATA_REGISTER : #VALUE
 	sub ACC									// Clear mem byte
-	sub 5                                   // Subtract from 0 value in R5
+	sub DATA_REGISTER                       // Subtract from 0 value in R5
 	bm SET_0123
 	br SET_FEDC
 }
+
+// A Branch is effected only if the prior 'result' was zero. Branch conditions are not changed.
+BRANCH_IF_ZERO_TEST: {
+	sweet16
+	sub ACC									// Clear mem byte
+	bz SET_0123
+	br SET_FEDC
+}
+
+
+
+
