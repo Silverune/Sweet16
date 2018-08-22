@@ -181,14 +181,15 @@ SET:
 LD:
 	trace()
 	lda  R0L,X
-	
-BK: // *=*-1 
+.pseudopc *-1 {	
+BK:
+}
 	trace()
     sta  R0L
     lda  R0H,X          // MOVE RX TO R0
     sta  R0H
     rts
-
+//}
 ST:
 	trace()
 	lda  R0L
