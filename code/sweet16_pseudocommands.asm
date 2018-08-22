@@ -108,8 +108,8 @@
 .pseudocommand bnm1 ea { .byte $09, effective_address(ea,*) }
 .pseudocommand BNM1 ea { bnm1 ea }
 
-.pseudocommand bk ea { .byte $0a }
-.pseudocommand BK ea { bk ea }
+.pseudocommand bk { .byte $0a }
+.pseudocommand BK { bk }
 
 .pseudocommand rs {	.byte $0b }
 .pseudocommand RS {	rs }
@@ -167,3 +167,13 @@
 
 .pseudocommand dcr register { .byte opcode($f0, register) }
 .pseudocommand DCR register { dcr register }
+
+// You can perform absolute jumps within SWEET 16 by loading the ACC (R0) with the address you wish to jump to (minus 1) and executing a ST R15 instruction.
+.pseudocommand ajmp address {
+	.if (address.getType() == AT_IMMEDIATE || address.getType() == AT_ABSOLUTE) {
+		set ACC : address.getValue()-1
+		st PC
+	}
+	.error "Absolute jump not supporting passed in type"
+}
+.pseudocommand AJMP address { ajmp address }
