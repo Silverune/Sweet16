@@ -92,7 +92,7 @@ Collection of links related to the project development:
 <tr><td>7n</td><td>STDI n</td><td>Store double indirect</td><td>07</td><td>BNZ ea</td><td>Branch if NonZero</td></tr>
 <tr><td>8n</td><td>POPI n</td><td>Pop indirect</td><td>08</td><td>BM1 ea</td><td>Branch if Minus 1</td></tr>
 <tr><td>9n</td><td>STPI n</td><td>Store Pop indirect</td><td>09</td><td>BNM1 ea</td><td>Branch if Not Minus 1</td></tr>
-<tr><td>An</td><td>ADD n</td><td>Add</td><td>0A</td><td>BK ea</td><td>Break</td></tr>
+<tr><td>An</td><td>ADD n</td><td>Add</td><td>0A</td><td>BK</td><td>Break</td></tr>
 <tr><td>Bn</td><td>SUB n</td><td>Subtract</td><td>0B</td><td>RS</td><td>Return from Subroutine</td></tr>
 <tr><td>Cn</td><td>POPDI n</td><td>Pop double indirect</td><td>0C</td><td>BS ea</td><td>Branch to Subroutine</td></tr>
 <tr><td>Dn</td><td>CPR n</td><td>Compare</td><td>0D</td><td>&nbsp;</td><td>(Unassigned)</td></tr>
