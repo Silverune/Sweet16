@@ -68,6 +68,7 @@ SW16A:
 	sta R15H	       // ADDRESS
 
 SW16B:
+	trace()
 	jsr  SW16C          // INTERPRET and EXECUTE
     jmp  SW16B          // ONE SWEET16 INSTR.
 
@@ -77,6 +78,7 @@ SW16C:
     inc  R15H
 	
 SW16D:
+	trace()
 	lda  #>SET          // COMMON HIGH BYTE FOR ALL ROUTINES
     pha                 // PUSH ON staCK FOR rts
     ldy  #$00
@@ -181,15 +183,17 @@ SET:
 LD:
 	trace()
 	lda  R0L,X
-.pseudopc *-1 {	
+/*.pseudopc *-1 {	
 BK:
-}
+}*/
 	trace()
     sta  R0L
     lda  R0H,X          // MOVE RX TO R0
     sta  R0H
     rts
-//}
+BK:
+	trace()
+	brk
 ST:
 	trace()
 	lda  R0L

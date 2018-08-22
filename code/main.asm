@@ -3,7 +3,9 @@ BasicUpstart2(Program)
 *=$0810 "Program"          // $080d is end of BASIC
 
 Program:
-/*	.eval test_calculate_effective_address($1000)
+	BreakOnBrk()
+
+	/*	.eval test_calculate_effective_address($1000)
 	jsr SET_TEST
 	jsr LOAD_TEST
 	jsr STORE_TEST
