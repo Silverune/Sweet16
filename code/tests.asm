@@ -12,6 +12,9 @@ TEST_MEMORY_3:
 TEST_MEMORY_SEQUENCE:
 	.fill TMS_SIZE, i
 
+TEST_MEMORY_SEQUENCE_2:
+	.fill TMS_SIZE, $ff
+	
 STACK_MEMORY: {
 	.const STACK_SIZE = 16		// bytes
 	.fill STACK_SIZE, 0
@@ -355,7 +358,6 @@ BRANCH_IF_NONZERO_TEST: {
 	br SET_FEDC
 }
 
-
 // A branch is effected only if the prior 'result' was minus one ($FFFF Hex). Branch conditions are not changed.
 BRANCH_IF_MINUS_ONE_TEST: {
 	.const DATA_REGISTER = 5
@@ -369,7 +371,7 @@ BRANCH_IF_MINUS_ONE_TEST: {
 }
 
 // A branch effected only if the prior 'result' was not minus 1. Branch conditions are not changed
-BRANCH_IF_NOT_MINUS_ONE_TEST:
+BRANCH_IF_NOT_MINUS_ONE_TEST: {
 	.const DATA_REGISTER = 5
 	.const VALUE = 2
 	sweet16
@@ -378,9 +380,10 @@ BRANCH_IF_NOT_MINUS_ONE_TEST:
 	sub DATA_REGISTER                       // Subtract from 0 value in R5
 	bnm1 SET_0123
 	br SET_FEDC
-
+}
+	
 // A 6502 BRK (break) instruction is executed. SWEET 16 may be re-entered non destructively at SW16d after correcting the stack pointer to its value prior to executing the BRK.   This test uses an extension to SWEET16 which inserts a VICE break when the BK instruction is encountered after restoring the SP, Registers and Flags.  Note the additional argument to sweet16 to ensure the handler is setup as it is not by default.  The handler also deals with the setting up for the stack pointer and conntinuing execution from SW16D
-BREAK_TEST:
+BREAK_TEST: {
 	sweet16 : 1
 	set ACC : $feed
 	bk
@@ -390,3 +393,43 @@ BREAK_TEST:
 	ldxy ACC
 	break()
 	rts
+}
+
+// RS terminates execution of a SWEET 16 subroutine and returns to the SWEET 16 calling program which resumes execution (in SWEET 16 mode). R12, which is the SWEET 16 subroutine return stack pointer, is decremented twice. Branch conditions are not changed.
+RETURN_FROM_SUBROUTINE_TEST: {
+	.const DEFAULT_VALUE = $1234
+	.const SUB_SET_VALUE = $5678
+	sweet16
+	set ACC : DEFAULT_VALUE
+	bs !overwrite+
+	rtn
+	ldxy ACC
+	break()
+	rts
+	!overwrite:
+	set ACC : SUB_SET_VALUE
+	rs
+}
+	
+// A branch to the effective address (PC + 2 + d) is taken and execution is resumed in SWEET 16 mode. The current PC is pushed onto a SWEET 16 subroutine return address stack whose pointer is R12, and R12 is incremented by 2. The carry is cleared and branch conditions set to indicate the current ACC contents. EXAMPLE: Calling a 'memory move' subroutine to move TEST_MEMORY_SEQUENCE to TEST_MEMORY_SEQUENCE_2
+BRANCH_TO_SUBROUTINE_TEST: {
+	.const SOURCE = 5
+	.const SOURCE_LIMIT = 4
+	.const DEST = 6
+	break()
+	sweet16
+	set SOURCE : TEST_MEMORY_SEQUENCE					// Init source register
+	set SOURCE_LIMIT : TEST_MEMORY_SEQUENCE + TMS_SIZE 	// Init limit register
+	set DEST : TEST_MEMORY_SEQUENCE_2					// Init dest register
+	bs !move+											// call subroutine
+	rtn													
+	break()
+	rts
+!move:
+	ldi SOURCE											// move one byte
+	sti DEST
+	ld SOURCE_LIMIT
+	cpr SOURCE											// test if done
+	bp !move-
+	rs													// return
+}
