@@ -28,10 +28,15 @@
 	label("RH" + i, RH(i))
 }
 
+.macro BreakOnBrk() {
+	.const BRKVEC = $0316
+	InstallHandler(BRKVEC, BREAK_HANDLER)
+}
+	
 //#endif
 .const ACC = 0          // ACCUMULATOR
 .const RSP = 12			// SUBROUTINE RETURN POINTER
-.const CPR = 13	        // COMPARE INSTRUCTION RESULT
+.const CIR = 13	        // COMPARE INSTRUCTION RESULT
 .const SR = 14          // STACK REGISTER
 .const PC = 15			// PROGRAM COUNTER
 
@@ -39,8 +44,8 @@
 .const R0H = RH(ACC)
 .const R12L = RL(RSP)
 .const R12H = RH(RSP)
-.const R13L = RL(CPR)
-.const R13H = RH(CPR)
+.const R13L = RL(CIR)
+.const R13H = RH(CIR)
 .const R14L = RL(SR)
 .const R14H = RH(SR)
 .const R15L = RL(PC)
@@ -49,17 +54,30 @@
 SW16_SAVE_RESTORE:
 	.byte 0
 
+BREAK_HANDLER:
+	pla		// Y
+	tay
+	pla		// X
+	tax
+	pla		// A
+	plp		// Flags
+	pla		// PCL flush
+	pla		// PCH flush
+	break()
+	jmp SW16D
+
 SW16_NONE:
 	lda #$00
 	sta SW16_SAVE_RESTORE
 	jmp SW160
-	
 SW16:
+	BreakOnBrk()
 	lda #$01
 	sta SW16_SAVE_RESTORE
-SW160:	{
+SW160:
 	beq SAVED
 	jsr SAVE           // PRESERVE 6502 REG CONTENTS
+
 SAVED:
 SW16A:
 	pla
@@ -426,7 +444,7 @@ RTN:
 
 SAVE:
 	trace()
-    sta ACC
+    sta ACCUMULATOR
     stx XREG
     sty YREG
     php
@@ -439,13 +457,13 @@ RESTORE:
 	trace()
     lda STATUS
     pha
-    lda ACC
+    lda ACCUMULATOR
     ldx XREG
     ldy YREG
     plp
     rts
 
-ACC:
+ACCUMULATOR:
 #if TRACE_MODE
 	trace_write_addr(*)
 	trace_read_addr(*)
@@ -469,4 +487,3 @@ STATUS:
 	trace_read_addr(*)
 #endif
 	.byte 0
-}

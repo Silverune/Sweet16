@@ -107,18 +107,11 @@
 	trace()
 }
 
-.macro InstallBrakeHandler(handler) {
-	.const BRKVEC = $0316
+.macro InstallHandler(address, handler) {
 	lda #<handler
-    sta BRKVEC
+    sta address
     lda #>handler
-    sta BRKVEC+1
+    sta address+1
 }
-
-.macro BreakOnBrk() {
-	InstallBrakeHandler(BreakHandler)
-}
-
-BreakHandler:
-	break()
+	
 	
