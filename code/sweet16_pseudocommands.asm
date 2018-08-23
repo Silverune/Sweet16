@@ -60,7 +60,13 @@
 }
 
 // Convenience	
-.pseudocommand sweet16 save {
+.pseudocommand sweet16 save : break_handler {
+	.var install_break = 0
+	.if (break_handler.getType() != AT_NONE)
+		.eval install_break = break_handler.getValue()
+	.if (install_break != 0)
+		BreakOnBrk()
+	
 	.var save_restore = 1
 	.if (save.getType() != AT_NONE)
 		.eval save_restore = save.getValue()
@@ -75,7 +81,7 @@
 	ldy rl(register.getValue())
 }
 
-.pseudocommand SWEET16 save { sweet16 save }
+.pseudocommand SWEET16 save : break_handler { sweet16 save : break_handler }
 
 // Nonregister Ops	
 .pseudocommand rtn { .byte $00 }

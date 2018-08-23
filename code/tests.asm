@@ -379,16 +379,14 @@ BRANCH_IF_NOT_MINUS_ONE_TEST:
 	bnm1 SET_0123
 	br SET_FEDC
 
-// A 6502 BRK (break) instruction is executed. SWEET 16 may be re-entered non destructively at SW16d after correcting the stack pointer to its value prior to executing the BRK.
+// A 6502 BRK (break) instruction is executed. SWEET 16 may be re-entered non destructively at SW16d after correcting the stack pointer to its value prior to executing the BRK.   This test uses an extension to SWEET16 which inserts a VICE break when the BK instruction is encountered after restoring the SP, Registers and Flags.  Note the additional argument to sweet16 to ensure the handler is setup as it is not by default.  The handler also deals with the setting up for the stack pointer and conntinuing execution from SW16D
 BREAK_TEST:
-	sweet16
-	bk
-CONTINUE: *=*
+	sweet16 : 1
 	set ACC : $feed
+	bk
+	set ACC : $0123
+	bk
 	rtn
 	ldxy ACC
 	break()
 	rts
-
-
-

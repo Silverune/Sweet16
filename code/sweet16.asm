@@ -71,7 +71,6 @@ SW16_NONE:
 	sta SW16_SAVE_RESTORE
 	jmp SW160
 SW16:
-	BreakOnBrk()
 	lda #$01
 	sta SW16_SAVE_RESTORE
 SW160:
