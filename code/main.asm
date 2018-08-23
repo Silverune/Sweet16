@@ -3,8 +3,9 @@ BasicUpstart2(Program)
 *=$0810 "Program"          // $080d is end of BASIC
 
 Program:
+	jsr AJMP_TEST
 
-	/*	.eval test_calculate_effective_address($1000)
+	/*
 	jsr SET_TEST
 	jsr LOAD_TEST
 	jsr STORE_TEST
@@ -32,9 +33,10 @@ Program:
 	jsr BRANCH_IF_NOT_MINUS_ONE_TEST
 	jsr BREAK_TEST
 	jsr BRANCH_TO_SUBROUTINE_TEST
-	*/
-
 	jsr RETURN_FROM_SUBROUTINE_TEST
+
+	.eval test_calculate_effective_address($1000)
+*/
 	lda #$00
 	sta $d020
 	sta $d021

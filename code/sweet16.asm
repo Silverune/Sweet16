@@ -1,39 +1,17 @@
 // SWEET 16 INTERPRETER
 // APPLE-II  PSEUDO MACHINE INTERPRETER
 // COPYRIGHT (C) 1977 APPLE COMPUTER,  INC ALL  RIGHTS RESERVED S. WOZNIAK
+// Additional code: Rhett D. Jacobs 
 
-//#define TRACE_MODE
-	
 .const ZP_BASE = $17 // C64 start of 16 bit registers in zero page end at $37
 
-.function RL(register) {
-	.return ZP_BASE + (register * 2)
-}
-
-.function RH(register) {
-	.return ZP_BASE + (register * 2) + 1
-}
-
-.function rl(register) {
-	.return RL(register)
-}
-
-.function rh(register) {
-	.return RH(register)
-}
-
-//#if TRACE_MODE
+#if DEBUG
 .for (var i = 0; i < 16; i++) {
 	label("RL" + i, RL(i))
 	label("RH" + i, RH(i))
 }
+#endif
 
-.macro BreakOnBrk() {
-	.const BRKVEC = $0316
-	InstallHandler(BRKVEC, BREAK_HANDLER)
-}
-	
-//#endif
 .const ACC = 0          // ACCUMULATOR
 .const RSP = 12			// SUBROUTINE RETURN POINTER
 .const CIR = 13	        // COMPARE INSTRUCTION RESULT
@@ -51,33 +29,19 @@
 .const R15L = RL(PC)
 .const R15H = RH(PC)
 
-SW16_SAVE_RESTORE:
-	.byte 0
-
-BREAK_HANDLER:
-	pla		// Y
-	tay
-	pla		// X
-	tax
-	pla		// A
-	plp		// Flags
-	pla		// PCL flush
-	pla		// PCH flush
-	break()
-	jmp SW16D
-
-SW16_NONE:
+SW16_NONE:		// Entry point if no need to preserve registers
 	lda #$00
 	sta SW16_SAVE_RESTORE
 	jmp SW160
-SW16:
+	
+SW16:			// Main entry point - should be called via pseudocommand "sweet16"
 	lda #$01
 	sta SW16_SAVE_RESTORE
+	
 SW160:
-	beq SAVED
+	beq SW16A
 	jsr SAVE           // PRESERVE 6502 REG CONTENTS
-
-SAVED:
+	
 SW16A:
 	pla
 	sta R15L           // INIT SWEET16 PC
@@ -85,7 +49,6 @@ SW16A:
 	sta R15H	       // ADDRESS
 
 SW16B:
-	trace()
 	jsr  SW16C          // INTERPRET and EXECUTE
     jmp  SW16B          // ONE SWEET16 INSTR.
 
@@ -95,7 +58,6 @@ SW16C:
     inc  R15H
 	
 SW16D:
-	trace()
 	lda  #>SET          // COMMON HIGH BYTE FOR ALL ROUTINES
     pha                 // PUSH ON staCK FOR rts
     ldy  #$00
@@ -133,6 +95,7 @@ RTNZ:
 	lda SW16_SAVE_RESTORE
 	beq RESTORED
     jsr RESTORE        // RESTORE 6502 REG CONTENTS
+
 RESTORED:
     jmp  (R15L)         // RETURN TO 6502 CODE VIA PC
 
@@ -188,31 +151,38 @@ BRTBL:
     .byte  <NUL-1          // UNUSED
     .byte  <NUL-1          // F
 
-// FOLLOWING CODE MUST BE CONTAINED ON A SINGLE PAGE!
+// THE FOLLOWING CODE MUST BE CONTAINED ON A SINGLE PAGE!
 .align $100            // ensures page aligned
 .var page_start = *
 RTS_FIX:
 	nop                // otherwise RTS "cleverness" not so clever
+					   // due to minus if SET is placed at $00	
 SET:
+#if DEBUG	
 	trace()
+#endif
 	jmp SETZ           // ALWAYS TAKEN
 
 LD:
+#if DEBUG
 	trace()
+#endif
 	lda  R0L,X
-/*.pseudopc *-1 {	
-BK:
-}*/
-	trace()
     sta  R0L
     lda  R0H,X          // MOVE RX TO R0
     sta  R0H
     rts
+
 BK:
+#if DEBUG
 	trace()
+#endif
 	brk
+
 ST:
+#if DEBUG	
 	trace()
+#endif
 	lda  R0L
     sta  R0L,X          // MOVE R0 TO RX
     lda  R0H
@@ -220,27 +190,30 @@ ST:
     rts
 
 STAT:
+#if DEBUG	
 	trace()
-	lda  R0L
-	
+#endif
+	lda  R0L	
 STAT2:
 	sta  (R0L,X)        // STORE BYTE INDIRECT
     ldy  #$00
-	
 STAT3:
 	sty  R14H           // INDICATE R0 IS RESULT NEG
 	
 INR:
+#if DEBUG
 	trace()
+#endif
 	inc  R0L,X
     bne  INR2           // INCR RX
-    inc  R0H,X
-	
+    inc  R0H,X	
 INR2:
 	rts
 	
 LDAT:
+#if DEBUG
 	trace()
+#endif
 	lda  (R0L,X)        // LOAD INDIRECT (RX)
     sta  R0L            // TO R0
     ldy  #$00
@@ -248,72 +221,83 @@ LDAT:
     beq  STAT3          // ALWAYS TAKEN
 	
 POP:
+#if DEBUG	
 	trace()
+#endif
 	ldy  #$00           // HIGH ORDER BYTE = 0
     beq  POP2           // ALWAYS TAKEN
-	
 POPD:
+#if DEBUG
 	trace()
+#endif
 	jsr  DCR            // DECR RX
     lda  (R0L,X)        // POP HIGH ORDER BYTE @RX
-    tay                 // SAVE IN Y REG
-	
+    tay                 // SAVE IN Y REG	
 POP2:
 	jsr  DCR            // DECR RX
     lda  (R0L,X)        // LOW ORDER BYTE
     sta  R0L            // TO R0
     sty  R0H
-	
 POP3:
 	ldy  #$00           // INDICATE R0 AS LAST RESULT REG
     sty  R14H
     rts
 	
 LDDAT:
+#if DEBUG
 	trace()
+#endif
 	jsr  LDAT           // LOW ORDER BYTE TO R0, incR RX
     lda  (R0L,X)        // HIGH ORDER BYTE TO R0
     sta  R0H
     jmp  INR            // INCR RX
 	
 STDAT:
+#if DEBUG
 	trace()
+#endif
 	jsr  STAT           // STORE INDIRECT LOW ORDER
     lda  R0H            // BYTE and incR RX. THEN
     sta  (R0L,X)        // STORE HIGH ORDER BYTE.
     jmp  INR            // INCR RX and RETURN
 	
 STPAT:
+#if DEBUG
 	trace()
+#endif
 	jsr  DCR            // DECR RX
     lda  R0L
     sta  (R0L,X)        // STORE R0 LOW BYTE @RX
     jmp  POP3           // INDICATE R0 AS LAST RESULT REG
 
 DCR:
+#if DEBUG
 	trace()
+#endif
 	lda  R0L,X
     bne  DCR2           // DECR RX
     dec  R0H,X
-	
 DCR2:
 	trace()
 	dec  R0L,X
     rts
 	
 SUB:
+#if DEBUG	
 	trace()
+#endif
 	ldy  #$00           // RESULT TO R0
 
 CPR:
+#if DEBUG	
 	trace()
+#endif
 	sec                 // NOTE Y REG = 13*2 FOR cpr
     lda  R0L
     sbc  R0L,X
     sta  R0L,Y          // R0-RX TO RY
     lda  R0H
     sbc  R0H,X
-	
 SUB2:
 	sta  R0H,Y
     tya                 // LAST RESULT REG*2
@@ -322,7 +306,9 @@ SUB2:
     rts
 
 ADD:
+#if DEBUG
 	trace()
+#endif
 	lda  R0L
     adc  R0L,X
     sta  R0L            // R0+RX TO R0
@@ -332,50 +318,59 @@ ADD:
     beq  SUB2           // FINISH ADD
 	
 BS:
+#if DEBUG	
 	trace()
+#endif
 	lda  R15L           // NOTE X REG IS 12*2!
     jsr  STAT2          // PUSH LOW PC BYTE VIA R12
     lda  R15H
     jsr  STAT2          // PUSH HIGH ORDER PC BYTE
 	
 BR:
+#if DEBUG	
 	trace()
+#endif
 	clc
 	
 BNC:
+#if DEBUG	
 	trace()
-	bcs  BNC2           // NO CARRY TEST
-	
+#endif
+	bcs  BNC2           // NO CARRY TEST	
 BR1:
 	lda  (R15L),Y       // DISPLACEMENT BYTE
     bpl  BR2
     dey
-
 BR2:
 	adc  R15L           // ADD TO PC
     sta  R15L
     tya
     adc  R15H
     sta  R15H
-
 BNC2:
 	rts
 
 BC:
+#if DEBUG	
 	trace()
+#endif
 	bcs  BR
     rts
 
 BP:
+#if DEBUG	
 	trace()
+#endif
 	asl                 // DOUBLE RESULT-REG INDEX
     tax                 // TO X REG FOR INDEXING
     lda  R0H,X          // TEST FOR PLUS
     bpl  BR1            // BRANCH IF SO
     rts
-	
+
 BM:
+#if DEBUG	
 	trace()
+#endif
 	asl                 // DOUBLE RESULT-REG INDEX
     tax
     lda  R0H,X          // TEST FOR MINUS
@@ -383,7 +378,9 @@ BM:
     rts
 
 BZ:
+#if DEBUG
 	trace()
+#endif
 	asl                 // DOUBLE RESULT-REG INDEX
     tax
     lda  R0L,X          // TEST FOR ZERO
@@ -392,15 +389,20 @@ BZ:
     rts
 	
 BNZ:
+#if DEBUG
 	trace()
+#endif
 	asl                 // DOUBLE RESULT-REG INDEX
     tax
     lda  R0L,X          // TEST FOR NON-ZERO
     ora  R0H,X          // (BOTH BYTES)
     bne  BR1            // BRANCH IF SO
-    rts
-	
+    rts	
+
 BM1:
+#if DEBUG
+	trace()
+#endif
 	asl                 // DOUBLE RESULT-REG INDEX
     tax
     lda  R0L,X          // CHECK BOTH BYTES
@@ -410,6 +412,9 @@ BM1:
     rts
 	
 BNM1:
+#if DEBUG
+	trace()
+#endif
 	asl                 // DOUBLE RESULT-REG INDEX
     tax
     lda  R0L,X
@@ -418,11 +423,15 @@ BNM1:
     bne  BR1            // BRANCH IF NOT MINUS 1
 	
 NUL:
+#if DEBUG
 	trace()
+#endif
 	rts
 	
 RS:
+#if DEBUG
 	trace()
+#endif
 	ldx  #$18           // 12*2 FOR R12 AS staCK POINTER
     jsr  DCR            // DECR STACK POINTER
     lda  (R0L,X)        // POP HIGH RETURN ADDRESS TO PC
@@ -433,16 +442,18 @@ RS:
     rts
 
 RTN:
+#if DEBUG
 	trace()
 	.var page_size = * - page_start
 	.errorif page_size > 255, "Must be located on same page"
-#if DEBUG
 	.print "Page Size = " + page_size
 #endif
 	jmp  RTNZ
 
 SAVE:
+#if DEBUG
 	trace()
+#endif
     sta ACCUMULATOR
     stx XREG
     sty YREG
@@ -453,7 +464,9 @@ SAVE:
     rts
 
 RESTORE:
+#if DEBUG
 	trace()
+#endif
     lda STATUS
     pha
     lda ACCUMULATOR
@@ -462,27 +475,27 @@ RESTORE:
     plp
     rts
 
+BREAK_HANDLER:
+	pla		// Y
+	tay
+	pla		// X
+	tax
+	pla		// A
+	plp		// Flags
+	pla		// PCL flush
+	pla		// PCH flush
+	break()
+	jmp SW16D
+
 ACCUMULATOR:
-#if TRACE_MODE
-	trace_write_addr(*)
-	trace_read_addr(*)
-#endif
 	.byte 0
 XREG:
-#if TRACE_MODE
-	trace_write_addr(*)
-	trace_read_addr(*)
-#endif
 	.byte 0
 YREG:
-#if TRACE_MODE
-	trace_write_addr(*)
-	trace_read_addr(*)
-#endif
 	.byte 0
 STATUS:
-#if TRACE_MODE
-	trace_write_addr(*)
-	trace_read_addr(*)
-#endif
 	.byte 0
+SW16_SAVE_RESTORE:
+	.byte 0
+
+	

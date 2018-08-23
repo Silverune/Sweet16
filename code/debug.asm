@@ -106,12 +106,5 @@
 !exit:
 	trace()
 }
-
-.macro InstallHandler(address, handler) {
-	lda #<handler
-    sta address
-    lda #>handler
-    sta address+1
-}
 	
 	

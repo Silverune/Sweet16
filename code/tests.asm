@@ -433,3 +433,18 @@ BRANCH_TO_SUBROUTINE_TEST: {
 	bp !move-
 	rs													// return
 }
+
+AJMP_TEST:
+	sweet16
+	set ACC : $0000
+	ajmp AJMP_SET
+
+AJMP_FINISHED:
+	ldxy ACC
+	rtn
+	break()
+	rts
+
+AJMP_SET:
+	set ACC : $1234
+	ajmp AJMP_FINISHED

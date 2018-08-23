@@ -1,65 +1,7 @@
-.function opcode(operand, register) {
-	.if (register.getType() == AT_IMMEDIATE || register.getType() == AT_ABSOLUTE)
-		.return operand + register.getValue()
-	.error "Register must be a number"
-}
 
-.function _16bitnextArgument(arg) {
-	.if (arg.getType()==AT_IMMEDIATE)
-		.return CmdArgument(arg.getType(),>arg.getValue())
-	.return CmdArgument(arg.getType(),arg.getValue()+1)
-}
-
-// An effective address (ea) is calculated by adding the signed displacement byte (d) to the PC. The PC contains the address of the instruction immediately following the BR, or the address of the BR op plus 2. The displacement is a signed two's complement value from -128 to +127. Branch conditions are not changed.	
-.function calc_effective_address(d, currentAddress) {
-	.var finalAddress
-	.if (d >= $80) {
-		.eval finalAddress = currentAddress + 2 - ($100 - d)
-	}
-	else {	
-		.eval finalAddress = currentAddress + 2 + d 
-	}
-	.errorif finalAddress < 0, "PC cannot be negative"
-	.return finalAddress
-}
-
-//.function calculate_effective_address(ea, currentAddress) {
-//	.return <(ea - currentAddress - 2) // account for byte offset
-//}
-
-.function test_calculate_effective_address(currentAddress) {
-	.var values = List().add($80, $81, $ff, $00, $01, $7e, $7f)
-	.for (var i = 0	; i < values.size(); i++) {
-		.print "i = $" + toHexString(values.get(i)) + " -> $" + toHexString(calc_effective_address(values.get(i), currentAddress))
-	}
-}
-	
-.function effective_address(ea, currentAddress) {
-	.if (ea.getType() == AT_ABSOLUTE)
-	{
-		.var relativeAddress = <(ea.getValue() - currentAddress - 2) // account for byte offset
-#if DEBUG
-		.print "ea: $" + toHexString(ea.getValue()) + " currentAddress: $" + toHexString(currentAddress)
-		.print "Relative address: $" + toHexString(relativeAddress)
-#endif
-		.return relativeAddress
-	}
-
-	.if (ea.getType()==AT_IMMEDIATE) {
-#if DEBUG
-		.print "Immediate: #" + ea.getValue
-#endif
-		.return ea.getValue()
-	}
-
-	.var value = CmdArgument(ea.getType(),ea.getValue()+1).getValue()
-#if DEBUG
-	.print "Type: " + ea.getType() + " Value: $"+ toHexString(value)
-#endif	
-	.return value
-}
-
-// Convenience	
+// convenience entry point
+// save - (optional) if non-zero will save registers on entry and restore on exit
+// break_handler - (optional) installs a ISR to called if the "bk" command is in ever used (6502 "brk" as well).  The routine restores the state and sets up to continue execution.  Useful for debugging in assembly monitors 
 .pseudocommand sweet16 save : break_handler {
 	.var install_break = 0
 	.if (break_handler.getType() != AT_NONE)
@@ -75,13 +17,13 @@
 	else
 		jsr SW16_NONE
 }
+.pseudocommand SWEET16 save : break_handler { sweet16 save : break_handler }
 
-.pseudocommand ldxy register {	
+// debugging conveniece to load into the X and Y regsiters the specified SWEET16 register
+.pseudocommand ldxy register {
 	ldx rh(register.getValue())
 	ldy rl(register.getValue())
 }
-
-.pseudocommand SWEET16 save : break_handler { sweet16 save : break_handler }
 
 // Nonregister Ops	
 .pseudocommand rtn { .byte $00 }
@@ -124,11 +66,6 @@
 .pseudocommand BS ea { bs ea }
 	
 // Register Ops
-.macro register_encode(op, register, address) {
-	.byte opcode(op, register)
-	.word address.getValue()
-}
-
 .pseudocommand set register : address {	register_encode($10, register, address) }
 .pseudocommand SET register : address { set register : address }
 
@@ -179,8 +116,12 @@
 	.if (address.getType() == AT_IMMEDIATE || address.getType() == AT_ABSOLUTE) {
 		set ACC : address.getValue()-1
 		st PC
+	} else {
+		set ACC : address.getValue()-1
+		st PC	
 	}
-	.error "Absolute jump not supporting passed in type"
+	.print "Type: " + address.getType() + " Value = $" + toHexString(address.getValue())
+//	.error "Absolute jump not supporting passed in type"
 }
 .pseudocommand AJMP address { ajmp address }
 
