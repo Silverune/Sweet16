@@ -64,7 +64,11 @@
 
 .pseudocommand bs ea { .byte $0c, effective_address(ea,*) }
 .pseudocommand BS ea { bs ea }
-	
+
+// extension
+.pseudocommand ibk { .byte $0e }
+.pseudocommand IBK { ibk }
+
 // Register Ops
 .pseudocommand set register : address {	register_encode($10, register, address) }
 .pseudocommand SET register : address { set register : address }

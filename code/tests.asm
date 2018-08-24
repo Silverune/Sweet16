@@ -395,6 +395,19 @@ BREAK_TEST: {
 	rts
 }
 
+// Shows the use of the extension "IBK" which operates like "BK" except that it is responsible for installing the 6502 "brk" which can also be done by starting SWEET16 with a "sweet16 : 1".  Once the interrupt handler has been set there is no need to call ibk again
+INTERRUPT_BREAK_TEST: {
+	sweet16
+	set ACC : $feed
+	ibk
+	set ACC : $0123
+	bk
+	rtn
+	ldxy ACC
+	break()
+	rts
+}
+	
 // RS terminates execution of a SWEET 16 subroutine and returns to the SWEET 16 calling program which resumes execution (in SWEET 16 mode). R12, which is the SWEET 16 subroutine return stack pointer, is decremented twice. Branch conditions are not changed.
 RETURN_FROM_SUBROUTINE_TEST: {
 	.const DEFAULT_VALUE = $1234

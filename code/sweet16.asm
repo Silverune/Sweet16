@@ -147,7 +147,7 @@ BRTBL:
     .byte  <INR-1          // EX
     .byte  <NUL-1          // D
     .byte  <DCR-1          // FX
-    .byte  <NUL-1          // E
+    .byte  <IBK-1          // E
     .byte  <NUL-1          // UNUSED
     .byte  <NUL-1          // F
 
@@ -179,6 +179,13 @@ BK:
 #endif
 	brk
 
+IBK:
+#if DEBUG
+	trace()
+#endif
+	jmp IBK_OUTOFPAGE 	// code will make block larger than 255 if placed here
+						// jump to code on another page. As this is an interrupt
+						// pausing execution speed is not an issue
 ST:
 #if DEBUG	
 	trace()
@@ -476,17 +483,24 @@ RESTORE:
     rts
 
 BREAK_HANDLER:
+	.const TEMP_A = $fc  // spare ZP address
 	pla		// Y
-	tay
+	tay		// restore Y
 	pla		// X
-	tax
-	pla		// A
-	plp		// Flags
-	pla		// PCL flush
-	pla		// PCH flush
+	tax		// restore X
+	pla		// restore A
+	sta TEMP_A
+	plp		// restore Status Flags
+	pla		// PCL discard - not useful
+	pla		// PCH discard - not useful
+	lda TEMP_A
 	break()
 	jmp SW16D
 
+IBK_OUTOFPAGE:
+	BreakOnBrk()
+	jmp BK
+	
 ACCUMULATOR:
 	.byte 0
 XREG:
@@ -497,5 +511,3 @@ STATUS:
 	.byte 0
 SW16_SAVE_RESTORE:
 	.byte 0
-
-	

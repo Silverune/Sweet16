@@ -38,7 +38,7 @@ Program:
 	.eval test_calculate_effective_address($1000)
 */
 
-	jsr ABSOLUTE_JUMP_TEST
+	jsr INTERRUPT_BREAK_TEST
 
 	lda #$00
 	sta $d020
