@@ -434,17 +434,21 @@ BRANCH_TO_SUBROUTINE_TEST: {
 	rs													// return
 }
 
-AJMP_TEST:
-	sweet16
-	set ACC : $0000
-	ajmp AJMP_SET
 
-AJMP_FINISHED:
-	ldxy ACC
-	rtn
-	break()
+// Test the pseudocommand AJMP which allows SWEET16 to perform absolute jumps by directly setting the address of the PC (minus 1) in the ACC register.  Affect the value in the ACC and PC registers
+ABSOLUTE_JUMP_TEST: {
+	.const NON_ACC_REGISTER = 5
+	sweet16
+	set NON_ACC_REGISTER : $0000		// initial value
+	ajmp !setter+						// absolute jump to setter
+
+!finished:
+	rtn									// exit SWEET16
+	ldxy NON_ACC_REGISTER
+	break()								// inspect value
 	rts
 
-AJMP_SET:
-	set ACC : $1234
-	ajmp AJMP_FINISHED
+!setter:
+	set NON_ACC_REGISTER : $1234		// overwrite value
+	ajmp !finished-						// absolute jmp to finish
+}

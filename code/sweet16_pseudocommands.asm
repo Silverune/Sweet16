@@ -111,17 +111,10 @@
 .pseudocommand dcr register { .byte opcode($f0, register) }
 .pseudocommand DCR register { dcr register }
 
-// You can perform absolute jumps within SWEET 16 by loading the ACC (R0) with the address you wish to jump to (minus 1) and executing a ST R15 instruction.
+// "You can perform absolute jumps within SWEET 16 by loading the ACC (R0) with the address you wish to jump to (minus 1) and executing a ST R15 instruction."  This is not a core SWEET16 instruction
 .pseudocommand ajmp address {
-	.if (address.getType() == AT_IMMEDIATE || address.getType() == AT_ABSOLUTE) {
-		set ACC : address.getValue()-1
-		st PC
-	} else {
-		set ACC : address.getValue()-1
-		st PC	
-	}
-	.print "Type: " + address.getType() + " Value = $" + toHexString(address.getValue())
-//	.error "Absolute jump not supporting passed in type"
+	set ACC : address.getValue()-1
+	st PC
 }
 .pseudocommand AJMP address { ajmp address }
 
