@@ -23,15 +23,56 @@ STACK_MEMORY: {
 	.fill STACK_SIZE, 0
 }
 
+.macro TestName(name) {
+	.const spacing = 2
+	KernalOutput(memory)
+	jmp !done+
+memory:
+	.fill spacing, spacebar
+	.text name
+	.text "..."
+	.byte NULL
+!done:
+}
+
+TEST_SUCCESS:
+	.text "SUCCESS"
+	Newline()
+	
+TEST_FAILURE:
+	.text "FAILURE"
+	Newline()
+	
+.macro TestSuccess() {
+	KernalOutput(TEST_SUCCESS)
+}
+
+.macro TestFailure() {
+	KernalOutput(TEST_FAILURE)
+}
+
 // The 2-byte constant is loaded into Rn (n=0 to F, Hex) and branch conditions set accordingly. The carry is cleared.
 SET_TEST: {
-	.const REGISTER = 5			// arbitrary register	
+	.const REGISTER = 5			// arbitrary register
+	.const test_value = $a034	
+	TestName("SET TEST")
 	sweet16
-	set REGISTER : $a034		// R5 now contains $A034
+	set REGISTER : test_value //$a034		// R5 now contains $A034
 	rtn
 	ldxy REGISTER
+	cpx TEST_VALUE
+	bne failed
+	cpy TEST_VALUE+1
+	bne failed
+	TestSuccess()
 	break()
 	rts
+failed:
+	TestFailure()
+	break()
+	rts
+TEST_VALUE:
+	.byte $a0, $34
 }
 	
 // The ACC (R0) is loaded from Rn and branch conditions set according to the data transferred. The carry is cleared and contents of Rn are not disturbed.

@@ -4,6 +4,11 @@ BasicUpstart2(Program)
 
 Program:
 
+	ChangeScreen(BLUE)
+	ClearScreenZeroPage()
+	KernalOutput(Title)
+	
+	jsr SET_TEST
 	/*
 	jsr SET_TEST
 	jsr LOAD_TEST
@@ -38,9 +43,15 @@ Program:
 	.eval test_calculate_effective_address($1000)
 */
 
-	jsr INTERRUPT_BREAK_TEST
+//	jsr INTERRUPT_BREAK_TEST
 
-	lda #$00
-	sta $d020
-	sta $d021
+//	lda #$00
+//	sta $d020
+//	sta $d021
 	rts
+
+Title:
+	.text "SWEET16 TEST RUNNER"
+	Newline()
+	
+	
