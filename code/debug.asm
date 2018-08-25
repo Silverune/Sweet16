@@ -1,7 +1,6 @@
-// Code for creating the breakpoint file sent to Vice.
+// Code for creating the breakpoint file sent to VICE
 // telnet localhost 6510 to get to remote monitor
 .var _useBinFolderForBreakpoints = cmdLineVars.get("usebin") == "true"
-.print "Command Line Vars: "
 .var keys = cmdLineVars.keys()
 .for (var i=0; i<keys.size(); i++) {
     .print keys.get(i)

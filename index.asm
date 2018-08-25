@@ -1,4 +1,4 @@
-//#import "code/bsod.asm"
+// Sweet16 top-level
 #import "code/debug.asm"
 #import "code/sweet16_functions.asm"
 #import "code/sweet16_macros.asm"
