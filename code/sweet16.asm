@@ -1,7 +1,7 @@
 // SWEET 16 INTERPRETER
 // APPLE-II  PSEUDO MACHINE INTERPRETER
 // COPYRIGHT (C) 1977 APPLE COMPUTER,  INC ALL  RIGHTS RESERVED S. WOZNIAK
-// Additional code: Rhett D. Jacobs 
+// Additimal Code: Copyright (C) 2018 Enable Software Pty Ltd, Inc All Rights Reservered Rhett D. Jacobs
 
 .const ZP_BASE = $17 // C64 start of 16 bit registers in zero page end at $37
 
@@ -74,7 +74,7 @@ SW16D:
     lsr
     tay                 // TO Y REG FOR INDEXING
     lda  OPTBL-2,Y      // LOW ORDER ADR BYTE
-    pha                 // ONTO staCK
+    pha                 // ONTO STACK
     rts                 // GOTO REG-OP ROUTINE
 
 TOBR:
@@ -84,7 +84,7 @@ TOBR:
 	
 TOBR2:
 	lda  BRTBL,X        // LOW ORDER ADR BYTE
-    pha                 // ONTO staCK FOR NON-REG OP
+    pha                 // ONTO STACK FOR NON-REG OP
     lda  R14H           // "PRIOR RESULT REG" INDEX
     lsr                 // PREPARE CARRY FOR BC, BNC.
     rts                 // GOTO NON-REG OP ROUTINE
@@ -147,9 +147,10 @@ BRTBL:
     .byte  <INR-1          // EX
     .byte  <NUL-1          // D
     .byte  <DCR-1          // FX
-    .byte  <IBK-1          // E
+//    .byte  <IBK-1          // E
+    .byte  <NUL-1          // E
     .byte  <NUL-1          // UNUSED
-    .byte  <NUL-1          // F
+    .byte  <SETI-1          // F
 
 // THE FOLLOWING CODE MUST BE CONTAINED ON A SINGLE PAGE!
 .align $100            // ensures page aligned
@@ -179,13 +180,20 @@ BK:
 #endif
 	brk
 
-IBK:
+/*IBK:
 #if DEBUG
 	trace()
 #endif
 	jmp IBK_OUTOFPAGE 	// code will make block larger than 255 if placed here
 						// jump to code on another page. As this is an interrupt
 						// pausing execution speed is not an issue
+*/
+SETI:
+#if DEBUG
+	trace()
+#endif
+	jmp SETI_OUTOFPAGE 	// code will make block larger than 255 if placed here
+						// jump to code on another page.
 ST:
 #if DEBUG	
 	trace()
@@ -500,6 +508,9 @@ BREAK_HANDLER:
 IBK_OUTOFPAGE:
 	BreakOnBrk()
 	jmp BK
+	
+SETI_OUTOFPAGE:
+	rts
 	
 ACCUMULATOR:
 	.byte 0

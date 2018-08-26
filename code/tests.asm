@@ -57,7 +57,8 @@ SET_TEST: {
 	.const test_value = $a034	
 	TestName("SET TEST")
 	sweet16
-	set REGISTER : test_value //$a034		// R5 now contains $A034
+//	set REGISTER : test_value //$a034		// R5 now contains $A034
+	set REGISTER : TEST_VALUE //test_value //$a034		// R5 now contains $A034
 	rtn
 	ldxy REGISTER
 	cpx TEST_VALUE
