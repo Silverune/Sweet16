@@ -147,10 +147,9 @@ BRTBL:
     .byte  <INR-1          // EX
     .byte  <NUL-1          // D
     .byte  <DCR-1          // FX
-//    .byte  <IBK-1          // E
-    .byte  <NUL-1          // E
+    .byte  <IBK-1          // E
     .byte  <NUL-1          // UNUSED
-    .byte  <SETI-1          // F
+    .byte  <NUL-1          // F
 
 // THE FOLLOWING CODE MUST BE CONTAINED ON A SINGLE PAGE!
 .align $100            // ensures page aligned
@@ -180,20 +179,14 @@ BK:
 #endif
 	brk
 
-/*IBK:
+IBK:
 #if DEBUG
 	trace()
 #endif
 	jmp IBK_OUTOFPAGE 	// code will make block larger than 255 if placed here
 						// jump to code on another page. As this is an interrupt
 						// pausing execution speed is not an issue
-*/
-SETI:
-#if DEBUG
-	trace()
-#endif
-	jmp SETI_OUTOFPAGE 	// code will make block larger than 255 if placed here
-						// jump to code on another page.
+
 ST:
 #if DEBUG	
 	trace()
@@ -508,10 +501,7 @@ BREAK_HANDLER:
 IBK_OUTOFPAGE:
 	BreakOnBrk()
 	jmp BK
-	
-SETI_OUTOFPAGE:
-	rts
-	
+
 ACCUMULATOR:
 	.byte 0
 XREG:

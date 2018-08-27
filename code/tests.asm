@@ -54,16 +54,15 @@ TEST_FAILURE:
 // The 2-byte constant is loaded into Rn (n=0 to F, Hex) and branch conditions set accordingly. The carry is cleared.
 SET_TEST: {
 	.const REGISTER = 5			// arbitrary register
-	.const test_value = $a034	
+	.const test_value = $a034
 	TestName("SET TEST")
 	sweet16
-//	set REGISTER : test_value //$a034		// R5 now contains $A034
-	set REGISTER : TEST_VALUE //test_value //$a034		// R5 now contains $A034
+	set REGISTER : test_value //$a034		// R5 now contains $A034
 	rtn
 	ldxy REGISTER
-	cpx TEST_VALUE
+	cpx #>test_value
 	bne failed
-	cpy TEST_VALUE+1
+	cpy #<test_value
 	bne failed
 	TestSuccess()
 	break()
@@ -75,7 +74,7 @@ failed:
 TEST_VALUE:
 	.byte $a0, $34
 }
-	
+
 // The ACC (R0) is loaded from Rn and branch conditions set according to the data transferred. The carry is cleared and contents of Rn are not disturbed.
 LOAD_TEST: {
 	.const REGISTER = 5			// arbitrary register
