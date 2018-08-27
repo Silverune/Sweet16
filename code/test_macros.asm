@@ -44,7 +44,25 @@ memory:
 	bne !failed+
 	TestSuccess()
 	jmp !done+
-	rts
+!failed:
+	TestFailure()
+!done:	
+}
+
+.macro TestAssertEqualMemory(source, dest, size, desc) {
+	TestAssertDescription(desc)
+	ldx #$ff
+!loop:
+	inx
+	cpx #size
+	beq !success+
+	lda source,x
+	cmp dest,x
+	beq !loop-
+	jmp !failed+
+!success:
+	TestSuccess()
+	jmp !done+
 !failed:
 	TestFailure()
 !done:	
@@ -59,7 +77,6 @@ memory:
 	bne !failed+
 	TestSuccess()
 	jmp !done+
-	rts
 !failed:
 	TestFailure()
 !done:	
@@ -74,7 +91,6 @@ memory:
 	bne !failed+
 	TestSuccess()
 	jmp !done+
-	rts
 !failed:
 	TestFailure()
 !done:	

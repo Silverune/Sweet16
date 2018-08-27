@@ -27,7 +27,7 @@ STACK_MEMORY: {
 SET_TEST: {
 	.const REGISTER = 5			// arbitrary register
 	.const VALUE = $a034
-	TestName("SET TEST")
+	TestName("SET")
 	sweet16
 	set REGISTER : VALUE		// R5 now contains $A034
 	rtn
@@ -40,7 +40,7 @@ SET_TEST: {
 LOAD_TEST: {
 	.const REGISTER = 5			// arbitrary register
 	.const VALUE = $a034	
-	TestName("LOAD TEST")
+	TestName("LOAD")
 	sweet16
     set REGISTER : VALUE
     ld REGISTER					// ACC now contains VALUE
@@ -55,7 +55,7 @@ STORE_TEST: {
 	.const SOURCE = 5			// arbitrary register
 	.const DEST = 6				// arbitrary register
 	.const VALUE = $1234
-	TestName("STORE TEST")
+	TestName("STORE")
 	sweet16
 	set SOURCE : VALUE
 	ld SOURCE					// Copy the contents
@@ -69,7 +69,7 @@ STORE_TEST: {
 // The low-order ACC byte is loaded from the memory location whose address resides in Rn and the high-order ACC byte is cleared. Branch conditions reflect the final ACC contents which will always be positive and never minus 1. The carry is cleared. After the transfer, Rn is incremented by 1.	
 LOAD_INDIRECT_TEST: {
 	.const REGISTER = 5			// arbitrary register
-	TestName("LOAD INDIRECT TEST")
+	TestName("LOAD INDIRECT")
 	sweet16
 	set REGISTER : TEST_MEMORY  // TEST_MEMORY contains value $12
 	ldi REGISTER				// ACC is loaded from memory where TEST_MEMORY ($00, $12)
@@ -85,16 +85,16 @@ LOAD_INDIRECT_TEST: {
 STORE_INDIRECT_TEST: {
 	.const SOURCE = 5			// arbitrary register
 	.const DEST = 6				// arbitrary register
+	TestName("STORE INDIRECT")
 	sweet16
 	set SOURCE : TEST_MEMORY	// Load pointers R5, R6 with
 	set DEST : TEST_MEMORY_2	// memory values
     ldi SOURCE            		// Move byte from TEST_MEMORY to TEST_MEMORY_2
     sti DEST			        // Both ptrs are incremented	
 	rtn						
-	ldxy SOURCE
-	break()
-	ldxy DEST
-	break()
+	TestAssertEqualMemory(TEST_MEMORY, TEST_MEMORY_2, 1, "MEM")
+	TestAssertEqual(SOURCE, TEST_MEMORY+1, "SRC")
+	TestAssertEqual(DEST, TEST_MEMORY_2+1, "DST")
 	rts
 }
 	
