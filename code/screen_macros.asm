@@ -3,13 +3,27 @@
 .const background_color = $d021 // Background color
 .const foreground_color = $0286 // Cursor color
 .const spacebar = $20           // Code for the SPACEBAR
+.const cursor_col = $00D3
+.const cursor_row = $00D6
 .const NULL = $00
 .const RETURN = $0D
 
 .macro Newline() {
 	.byte RETURN, NULL
 }
-	
+
+.macro ChangeCursor(row, column) {
+	lda #row
+	sta cursor_row
+	lda #column
+	sta cursor_col
+	KernalOutput(newline)	// need return to ensure pointers $d1 and $f3 update
+	jmp !done+
+newline:
+	Newline()
+!done:
+}
+
 .macro ChangeBorder(color) {
 	lda #color
 	sta border_color

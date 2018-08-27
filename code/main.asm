@@ -6,6 +6,7 @@ Program:
 
 	ChangeScreen(BACKGROUND_COLOR, TITLE_COLOR)
 	ClearScreenZeroPage()
+	ChangeCursor(0,0)
 	KernalOutput(Title)
 	ChangeColor(FOREGROUND_COLOR)
 	
