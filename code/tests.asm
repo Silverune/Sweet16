@@ -95,6 +95,7 @@ STORE_INDIRECT_TEST: {
 	TestAssertEqualMemory(TEST_MEMORY, TEST_MEMORY_2, 1, "MEM")
 	TestAssertEqual(SOURCE, TEST_MEMORY+1, "SRC")
 	TestAssertEqual(DEST, TEST_MEMORY_2+1, "DST")
+	TestComplete()
 	rts
 }
 	

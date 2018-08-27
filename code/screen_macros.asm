@@ -56,6 +56,15 @@ newline:
 	sta border_color
 }
 
+.macro Petscii2Binary() {
+	and #$0f
+}
+	
+.macro Binary2Petscii() {
+	ora #$30
+}
+
+
 .function UnusedZeroPage() {
 	.return $fe
 }

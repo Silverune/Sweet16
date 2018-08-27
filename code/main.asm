@@ -9,13 +9,15 @@ Program:
 	ChangeCursor(0,0)
 	KernalOutput(Title)
 	ChangeColor(FOREGROUND_COLOR)
-	
+
+	TestStart()
 	jsr SET_TEST
 	jsr LOAD_TEST
 	jsr STORE_TEST
 	jsr LOAD_INDIRECT_TEST
 	jsr STORE_INDIRECT_TEST
-
+	TestFinished()
+	
 	/*
 	jsr LOAD_DOUBLE_BYTE_INDIRECT_TEST
 	jsr STORE_DOUBLE_BYTE_INDIRECT_TEST

@@ -1,3 +1,46 @@
+TEST_COUNT:
+	.byte $00
+
+TEST_PASS_COUNT:
+	.byte $00
+
+.macro TestStart() {
+	lda #$00
+	sta TEST_COUNT
+	sta TEST_PASS_COUNT
+}
+
+.macro TestInc() {
+	inc TEST_COUNT
+}
+
+.macro TestPassed() {
+	inc TEST_PASS_COUNT
+}
+
+.macro TestFinished() {
+	OutputInColor(memory, TITLE_COLOR)
+	lda TEST_PASS_COUNT
+	Binary2Petscii()
+	KernalOutputA()
+	OutputInColor(memory_2, TITLE_COLOR)
+	lda TEST_COUNT
+	Binary2Petscii()
+	KernalOutputA()
+	OutputInColor(memory_3, TITLE_COLOR)
+	jmp !done+
+memory:
+	.byte RETURN
+	.text "TESTS COMPLETE: "
+	.byte NULL
+memory_2:
+	.text " / "
+	.byte NULL
+memory_3:
+	Newline()
+!done:	
+}
+	
 .macro TestName(name) {
 	.const spacing = 2
 	OutputInColor(memory, NAME_COLOR)
@@ -11,6 +54,7 @@ memory:
 }
 
 .macro TestAssertDescription(description) {
+	TestInc()
 	OutputInColor(memory, DESC_COLOR)
 	jmp !done+
 memory:
@@ -22,6 +66,7 @@ memory:
 }
 
 .macro TestSuccess() {
+	TestPassed()
 	OutputInColor(TEST_SUCCESS, SUCCESS_COLOR)
 }
 
