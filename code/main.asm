@@ -9,9 +9,8 @@ Program:
 	KernalOutput(Title)
 	
 	jsr SET_TEST
-	/*
-	jsr SET_TEST
 	jsr LOAD_TEST
+	/*
 	jsr STORE_TEST
 	jsr LOAD_INDIRECT_TEST
 	jsr STORE_INDIRECT_TEST

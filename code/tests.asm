@@ -51,39 +51,44 @@ TEST_FAILURE:
 	KernalOutput(TEST_FAILURE)
 }
 
+.macro TestAssert(register, value) {
+	ldxy register
+	cpx #>value
+	bne !failed+
+	cpy #<value
+	bne !failed+
+	TestSuccess()
+	jmp !done+
+	rts
+!failed:
+	TestFailure()
+!done:	
+}
+
 // The 2-byte constant is loaded into Rn (n=0 to F, Hex) and branch conditions set accordingly. The carry is cleared.
 SET_TEST: {
 	.const REGISTER = 5			// arbitrary register
-	.const test_value = $a034
+	.const VALUE = $a034
 	TestName("SET TEST")
 	sweet16
-	set REGISTER : test_value //$a034		// R5 now contains $A034
+	set REGISTER : VALUE		// R5 now contains $A034
 	rtn
-	ldxy REGISTER
-	cpx #>test_value
-	bne failed
-	cpy #<test_value
-	bne failed
-	TestSuccess()
 	break()
+	TestAssert(REGISTER, VALUE)
 	rts
-failed:
-	TestFailure()
-	break()
-	rts
-TEST_VALUE:
-	.byte $a0, $34
 }
 
 // The ACC (R0) is loaded from Rn and branch conditions set according to the data transferred. The carry is cleared and contents of Rn are not disturbed.
 LOAD_TEST: {
 	.const REGISTER = 5			// arbitrary register
+	.const VALUE = $a034	
+	TestName("LOAD TEST")
 	sweet16
-    set REGISTER : $A034
-    ld REGISTER					// ACC now contains $A034	
+    set REGISTER : VALUE
+    ld REGISTER					// ACC now contains VALUE
 	rtn
-	ldxy ACC
 	break()
+	TestAssert(ACC, VALUE)
 	rts
 }
 
