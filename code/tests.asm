@@ -51,7 +51,7 @@ TEST_FAILURE:
 	KernalOutput(TEST_FAILURE)
 }
 
-.macro TestAssert(register, value) {
+.macro TestAssertEqual(register, value) {
 	ldxy register
 	cpx #>value
 	bne !failed+
@@ -74,7 +74,7 @@ SET_TEST: {
 	set REGISTER : VALUE		// R5 now contains $A034
 	rtn
 	break()
-	TestAssert(REGISTER, VALUE)
+	TestAssertEqual(REGISTER, VALUE)
 	rts
 }
 
@@ -88,7 +88,7 @@ LOAD_TEST: {
     ld REGISTER					// ACC now contains VALUE
 	rtn
 	break()
-	TestAssert(ACC, VALUE)
+	TestAssertEqual(ACC, VALUE)
 	rts
 }
 
@@ -96,13 +96,15 @@ LOAD_TEST: {
 STORE_TEST: {
 	.const SOURCE = 5			// arbitrary register
 	.const DEST = 6				// arbitrary register
+	.const VALUE = $1234
+	TestName("STORE TEST")
 	sweet16
-	set SOURCE : $1234
+	set SOURCE : VALUE
 	ld SOURCE					// Copy the contents
 	st DEST						// of R5 to R6
 	rtn
-	ldxy DEST
 	break()
+	TestAssertEqual(DEST, VALUE)
 	rts
 }
 	
