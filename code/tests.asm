@@ -31,7 +31,7 @@ SET_TEST: {
 	sweet16
 	set REGISTER : VALUE		// R5 now contains $A034
 	rtn
-	TestAssertEqual(REGISTER, VALUE)
+	TestAssertEqual(REGISTER, VALUE, "VALUE")
 	TestComplete()
 	rts
 }
@@ -45,7 +45,7 @@ LOAD_TEST: {
     set REGISTER : VALUE
     ld REGISTER					// ACC now contains VALUE
 	rtn
-	TestAssertEqual(ACC, VALUE)
+	TestAssertEqual(ACC, VALUE, "ACC")
 	TestComplete()
 	rts
 }
@@ -61,7 +61,7 @@ STORE_TEST: {
 	ld SOURCE					// Copy the contents
 	st DEST						// of R5 to R6
 	rtn
-	TestAssertEqual(DEST, VALUE)
+	TestAssertEqual(DEST, VALUE, "VALUE")
 	TestComplete()
 	rts
 }
@@ -75,10 +75,8 @@ LOAD_INDIRECT_TEST: {
 	ldi REGISTER				// ACC is loaded from memory where TEST_MEMORY ($00, $12)
 								// R5 is incr by one (TEST_MEMORY + 1)
 	rtn
-	TestAssertEqualIndirectByte(ACC, TEST_MEMORY)
-	ldxy REGISTER
-	break()
-	TestAssertEqual(REGISTER, TEST_MEMORY + 1)
+	TestAssertEqualIndirectByte(ACC, TEST_MEMORY, "ACC")
+	TestAssertEqual(REGISTER, TEST_MEMORY + 1, "REG")
 	TestComplete()
 	rts
 }

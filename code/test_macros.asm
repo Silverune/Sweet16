@@ -1,11 +1,22 @@
 .macro TestName(name) {
 	.const spacing = 2
-	KernalOutput(memory)
+	OutputInColor(memory, NAME_COLOR)
 	jmp !done+
 memory:
 	.fill spacing, spacebar
 	.text name
 	.text "..."
+	.byte NULL
+!done:
+}
+
+.macro TestAssertDescription(description) {
+	OutputInColor(memory, DESC_COLOR)
+	jmp !done+
+memory:
+	.byte spacebar
+	.text description
+	.text ":"
 	.byte NULL
 !done:
 }
@@ -26,7 +37,8 @@ memory:
 !done:
 }
 
-.macro TestAssertEqualIndirectByte(register, address) {
+.macro TestAssertEqualIndirectByte(register, address, desc) {
+	TestAssertDescription(desc)
 	ldxy register
 	cpy address
 	bne !failed+
@@ -38,7 +50,8 @@ memory:
 !done:	
 }
 
-.macro TestAssertEqualIndirect(register, address) {
+.macro TestAssertEqualIndirect(register, address, desc) {
+	TestAssertDescription(desc)
 	ldxy register
 	cpx address
 	bne !failed+
@@ -52,7 +65,8 @@ memory:
 !done:	
 }
 	
-.macro TestAssertEqual(register, value) {
+.macro TestAssertEqual(register, value, desc) {
+	TestAssertDescription(desc)
 	ldxy register
 	cpx #>value
 	bne !failed+
