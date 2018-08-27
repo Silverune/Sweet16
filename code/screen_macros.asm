@@ -1,6 +1,7 @@
 .const kernal_chrout = $ffd2    // kernel CHROUT subroutine
 .const border_color = $d020     // Border color
-.const background_color = $d021     // Background color
+.const background_color = $d021 // Background color
+.const foreground_color = $0286 // Cursor color
 .const spacebar = $20           // Code for the SPACEBAR
 .const NULL = $00
 .const RETURN = $0D
@@ -19,9 +20,15 @@
 	sta background_color
 }
 
-.macro ChangeScreen(color) {
-	ChangeBorder(color)
-	ChangeBackground(color)
+.macro ChangeColor(color) {
+	lda #color
+	sta foreground_color
+}
+
+.macro ChangeScreen(background_color, foreground_color) {
+	ChangeBorder(background_color)
+	ChangeBackground(background_color)
+	ChangeColor(foreground_color)
 }
 
 .macro CycleScreen() {
@@ -140,4 +147,13 @@
 
 .macro KernalOutputA() {
 	jsr kernal_chrout
+}
+
+.macro OutputInColor(msg, color) {
+	lda foreground_color
+	pha
+	ChangeColor(color)
+	KernalOutput(msg)
+	pla
+	sta foreground_color
 }

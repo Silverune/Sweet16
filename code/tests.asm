@@ -23,78 +23,6 @@ STACK_MEMORY: {
 	.fill STACK_SIZE, 0
 }
 
-.macro TestName(name) {
-	.const spacing = 2
-	KernalOutput(memory)
-	jmp !done+
-memory:
-	.fill spacing, spacebar
-	.text name
-	.text "..."
-	.byte NULL
-!done:
-}
-
-TEST_SUCCESS:
-	.text "SUCCESS"
-	Newline()
-	
-TEST_FAILURE:
-	.text "FAILURE"
-	Newline()
-	
-.macro TestSuccess() {
-	KernalOutput(TEST_SUCCESS)
-}
-
-.macro TestFailure() {
-	KernalOutput(TEST_FAILURE)
-}
-
-.macro TestAssertEqualIndirectByte(register, address) {
-	ldxy register
-	break()
-	cpy address
-	bne !failed+
-	TestSuccess()
-	jmp !done+
-	rts
-!failed:
-	TestFailure()
-!done:	
-}
-
-.macro TestAssertEqualIndirect(register, address) {
-	ldxy register
-	break()
-	cpx address
-	bne !failed+
-	cpy address+1
-	bne !failed+
-	TestSuccess()
-	jmp !done+
-	rts
-!failed:
-	TestFailure()
-!done:	
-}
-
-	
-.macro TestAssertEqual(register, value) {
-	.print "Value = " + toHexString(value)
-	ldxy register
-	cpx #>value
-	bne !failed+
-	cpy #<value
-	bne !failed+
-	TestSuccess()
-	jmp !done+
-	rts
-!failed:
-	TestFailure()
-!done:	
-}
-
 // The 2-byte constant is loaded into Rn (n=0 to F, Hex) and branch conditions set accordingly. The carry is cleared.
 SET_TEST: {
 	.const REGISTER = 5			// arbitrary register
@@ -103,8 +31,8 @@ SET_TEST: {
 	sweet16
 	set REGISTER : VALUE		// R5 now contains $A034
 	rtn
-	break()
 	TestAssertEqual(REGISTER, VALUE)
+	TestComplete()
 	rts
 }
 
@@ -117,8 +45,8 @@ LOAD_TEST: {
     set REGISTER : VALUE
     ld REGISTER					// ACC now contains VALUE
 	rtn
-	break()
 	TestAssertEqual(ACC, VALUE)
+	TestComplete()
 	rts
 }
 
@@ -133,8 +61,8 @@ STORE_TEST: {
 	ld SOURCE					// Copy the contents
 	st DEST						// of R5 to R6
 	rtn
-	break()
 	TestAssertEqual(DEST, VALUE)
+	TestComplete()
 	rts
 }
 	
@@ -147,11 +75,11 @@ LOAD_INDIRECT_TEST: {
 	ldi REGISTER				// ACC is loaded from memory where TEST_MEMORY ($00, $12)
 								// R5 is incr by one (TEST_MEMORY + 1)
 	rtn
-	ldxy ACC
-	break()
 	TestAssertEqualIndirectByte(ACC, TEST_MEMORY)
 	ldxy REGISTER
 	break()
+	TestAssertEqual(REGISTER, TEST_MEMORY + 1)
+	TestComplete()
 	rts
 }
 	

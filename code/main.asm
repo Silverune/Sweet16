@@ -4,9 +4,10 @@ BasicUpstart2(Program)
 
 Program:
 
-	ChangeScreen(BLUE)
+	ChangeScreen(BACKGROUND_COLOR, TITLE_COLOR)
 	ClearScreenZeroPage()
 	KernalOutput(Title)
+	ChangeColor(FOREGROUND_COLOR)
 	
 	jsr SET_TEST
 	jsr LOAD_TEST
