@@ -51,7 +51,37 @@ TEST_FAILURE:
 	KernalOutput(TEST_FAILURE)
 }
 
+.macro TestAssertEqualIndirectByte(register, address) {
+	ldxy register
+	break()
+	cpy address
+	bne !failed+
+	TestSuccess()
+	jmp !done+
+	rts
+!failed:
+	TestFailure()
+!done:	
+}
+
+.macro TestAssertEqualIndirect(register, address) {
+	ldxy register
+	break()
+	cpx address
+	bne !failed+
+	cpy address+1
+	bne !failed+
+	TestSuccess()
+	jmp !done+
+	rts
+!failed:
+	TestFailure()
+!done:	
+}
+
+	
 .macro TestAssertEqual(register, value) {
+	.print "Value = " + toHexString(value)
 	ldxy register
 	cpx #>value
 	bne !failed+
@@ -111,6 +141,7 @@ STORE_TEST: {
 // The low-order ACC byte is loaded from the memory location whose address resides in Rn and the high-order ACC byte is cleared. Branch conditions reflect the final ACC contents which will always be positive and never minus 1. The carry is cleared. After the transfer, Rn is incremented by 1.	
 LOAD_INDIRECT_TEST: {
 	.const REGISTER = 5			// arbitrary register
+	TestName("LOAD INDIRECT TEST")
 	sweet16
 	set REGISTER : TEST_MEMORY  // TEST_MEMORY contains value $12
 	ldi REGISTER				// ACC is loaded from memory where TEST_MEMORY ($00, $12)
@@ -118,6 +149,7 @@ LOAD_INDIRECT_TEST: {
 	rtn
 	ldxy ACC
 	break()
+	TestAssertEqualIndirectByte(ACC, TEST_MEMORY)
 	ldxy REGISTER
 	break()
 	rts
