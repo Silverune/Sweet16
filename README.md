@@ -95,7 +95,7 @@ Collection of links related to the project development:
 <tr><td>An</td><td>ADD n</td><td>Add</td><td>0A</td><td>BK</td><td>Break</td></tr>
 <tr><td>Bn</td><td>SUB n</td><td>Subtract</td><td>0B</td><td>RS</td><td>Return from Subroutine</td></tr>
 <tr><td>Cn</td><td>POPDI n</td><td>Pop double indirect</td><td>0C</td><td>BS ea</td><td>Branch to Subroutine</td></tr>
-<tr><td>Dn</td><td>CPR n</td><td>Compare</td><td>0D</td><td><i>EJSR addr</i></td><td><i>Extension - Jump to External 6502 Subroutine</i></td></tr>
+<tr><td>Dn</td><td>CPR n</td><td>Compare</td><td>0D</td><td><i>XJSR addr</i></td><td><i>Extension - Jump to External 6502 Subroutine</i></td></tr>
 <tr><td>En</td><td>INR n</td><td>Increment</td><td>0E</td><td><i>IBK</i></td><td><i>Extension - BRK and Install Handler</i></td></tr>
 <tr><td>Fn</td><td>DCR n</td><td>Decrement</td><td>0F</td><td>&nbsp;</td><td>(Unassigned)</td></tr>
 <tr><td colspan="6"><b>SWEET16 Operation Code Summary:</b> Table 1 summarizes the list of SWEET16 operation codes.  They are executed after a call to the entry point SWEET16.  Return to the calling program and normal noninterpretive operation is accomplished with the RTN mnemonic of SWEET16.  These codes differ from Woz's original only in the removal of the redundant <b>R</b> for register numbers and the replacement of <b>I</b> instead of <b>@</b> to refer to indirect address mnemonics</td></tr>

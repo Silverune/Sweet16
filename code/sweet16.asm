@@ -135,7 +135,7 @@ BRTBL:
     .byte  <CPR-1          // DX
     .byte  <BS-1           // C
     .byte  <INR-1          // EX
-    .byte  <EJSR-1         // D
+    .byte  <XJSR-1         // D
     .byte  <DCR-1          // FX
     .byte  <IBK-1          // E
     .byte  <NUL-1          // UNUSED
@@ -175,11 +175,11 @@ IBK:
 #endif
 	jmp IBK_OUTOFPAGE 	// code will make block larger than 255 if placed here
 
-EJSR:
+XJSR:
 #if DEBUG
 	trace()
 #endif
-	jmp EJSR_OUTOFPAGE 	// code will make block larger than 255 if placed here
+	jmp XJSR_OUTOFPAGE 	// code will make block larger than 255 if placed here
 
 ST:
 #if DEBUG	
@@ -506,7 +506,7 @@ IBK_OUTOFPAGE:
 	BreakOnBrk()
 	jmp BK
 
-EJSR_OUTOFPAGE: {
+XJSR_OUTOFPAGE: {
 #if DEBUG	
 	trace()
 #endif

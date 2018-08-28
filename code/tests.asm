@@ -481,22 +481,29 @@ EXTERNAL_JSR_TEST: {
 	TestName("EXTERNAL JSR")
 	.const REGISTER = 5			// arbitrary register
 	.const VALUE = $4321		// arbitrary value
-	.const VALUE_2 = $feed		// different value (will be set using 6502 calls)
-	break()
+	.const VALUE_2 = $1234		// arbitrary value
+	.const VALUE_3 = $feed		// different value (will be set using 6502 calls)
 	sweet16
 	set REGISTER : VALUE		// R5 now contains VALUE
-	ejsr !code6502+
+	xjsr !assertAssigned+
+	set REGISTER : VALUE_2		// R5 now contains VALUE_2
+	xjsr !code6502+
 	set REGISTER : VALUE		// R5 now contains VALUE (again)
 	rtn
-	TestAssertEqual(REGISTER, VALUE, "VALUE")
+	TestAssertEqual(REGISTER, VALUE, "AGAIN")
 	TestComplete()
 	rts
+
+!assertAssigned:
+	TestAssertEqual(REGISTER, VALUE, "VALUE")
+	rts
+	
 !code6502:						// native 6502 code
-	lda #>VALUE_2
+	lda #>VALUE_3
 	sta rh(REGISTER)
-	lda #<VALUE_2
+	lda #<VALUE_3
 	sta rl(REGISTER)
 	ldxy REGISTER
-	TestAssertEqual(REGISTER, VALUE_2, "6502 VALUE")
+	TestAssertEqual(REGISTER, VALUE_3, "6502")
 	rts
 }

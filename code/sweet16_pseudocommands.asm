@@ -66,12 +66,12 @@
 .pseudocommand BS ea { bs ea }
 
 // extension
-.pseudocommand ejsr address {
+.pseudocommand xjsr address {
 	.byte $0d
 	.byte >(address.getValue()-1)
 	.byte <(address.getValue()-1)
 }
-.pseudocommand EJSR address { ejsr address }
+.pseudocommand XJSR address { xjsr address }
 
 .pseudocommand ibk { .byte $0e }
 .pseudocommand IBK { ibk }
