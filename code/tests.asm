@@ -476,7 +476,7 @@ ABSOLUTE_JUMP_TEST: {
 	ajmp !finished-						// absolute jmp to finish
 }
 
-// EJSR is an extension I've added to the standard SWEET16 instructions to allow for a mix of SWEET16 calls and 6502.  When the "EJSR" is called the address is then executed normally.  Once the RTS is encountered regular SWEET16 execution continues
+// XJSR is an extension I've added to the standard SWEET16 instructions to allow for a mix of SWEET16 calls and 6502.  When "XJSR" is called the address is executed normally as if we were in 6502 instruction set mode.  Once the RTS is encountered regular SWEET16 execution continues
 EXTERNAL_JSR_TEST: {
 	TestName("EXTERNAL JSR")
 	.const REGISTER = 5			// arbitrary register
