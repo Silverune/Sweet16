@@ -69,6 +69,13 @@
 .pseudocommand ibk { .byte $0e }
 .pseudocommand IBK { ibk }
 
+.pseudocommand ejsr address {
+	.byte $0f
+	.byte >(address.getValue()-1)
+	.byte <(address.getValue()-1)
+}
+.pseudocommand EJSR address { ejsr address }
+	
 // Register Ops
 .pseudocommand set register : address {	register_encode($10, register, address) }
 .pseudocommand SET register : address { set register : address }
@@ -121,5 +128,3 @@
 	st PC
 }
 .pseudocommand AJMP address { ajmp address }
-
-	

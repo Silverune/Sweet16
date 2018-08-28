@@ -59,7 +59,7 @@ SW16C:
 	
 SW16D:
 	lda  #>SET          // COMMON HIGH BYTE FOR ALL ROUTINES
-    pha                 // PUSH ON staCK FOR rts
+    pha                 // PUSH ON STACK FOR RTS
     ldy  #$00
     lda  (R15L),Y       // FETCH INSTR
     and  #$0F           // MASK REG SPECIFICATION
@@ -79,7 +79,7 @@ SW16D:
 
 TOBR:
 	inc  R15L
-    bne  TOBR2          // INCRR PC
+    bne  TOBR2          // INCR PC
     inc  R15H
 	
 TOBR2:
@@ -147,9 +147,10 @@ BRTBL:
     .byte  <INR-1          // EX
     .byte  <NUL-1          // D
     .byte  <DCR-1          // FX
-    .byte  <IBK-1          // E
+//    .byte  <IBK-1          // E
+    .byte  <NUL-1          // E
     .byte  <NUL-1          // UNUSED
-    .byte  <NUL-1          // F
+    .byte  <EJSR-1         // F
 
 // THE FOLLOWING CODE MUST BE CONTAINED ON A SINGLE PAGE!
 .align $100            // ensures page aligned
@@ -178,14 +179,20 @@ BK:
 	trace()
 #endif
 	brk
-
+/*
 IBK:
 #if DEBUG
 	trace()
 #endif
 	jmp IBK_OUTOFPAGE 	// code will make block larger than 255 if placed here
 						// jump to code on another page. As this is an interrupt
-						// pausing execution speed is not an issue
+*/						// pausing execution speed is not an issue
+EJSR:
+#if DEBUG
+	trace()
+#endif
+	jmp EJSR_OUTOFPAGE 	// code will make block larger than 255 if placed here
+						// jump to code on another page.
 
 ST:
 #if DEBUG	
@@ -502,6 +509,31 @@ IBK_OUTOFPAGE:
 	BreakOnBrk()
 	jmp BK
 
+EJSR_OUTOFPAGE: {
+#if DEBUG	
+	trace()
+#endif
+	lda #>((!returned+)-1)	// so we know where to come back to as we're
+	pha						// using rts as jmps here
+	lda #<((!returned+)-1)
+	pha
+	lda (R15L),Y       		// high order byte
+	pha
+	inc R15L
+    bne !incremented+ 		// inc PC
+    inc R15H
+!incremented:
+	lda (R15L),Y       		// low order byte
+	pha
+	inc R15L
+    bne !incremented+ 		// inc PC
+    inc R15H
+!incremented:
+	rts				   		// this performs jump from stack
+!returned:
+	jmp SW16D				// back to SWEET16
+}
+	
 ACCUMULATOR:
 	.byte 0
 XREG:

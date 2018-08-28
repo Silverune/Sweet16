@@ -16,6 +16,7 @@ Program:
 	jsr STORE_TEST
 	jsr LOAD_INDIRECT_TEST
 	jsr STORE_INDIRECT_TEST
+	jsr EXTERNAL_JSR_TEST
 	TestFinished()
 	
 	/*

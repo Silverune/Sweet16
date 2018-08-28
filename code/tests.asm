@@ -31,7 +31,7 @@ SET_TEST: {
 	sweet16
 	set REGISTER : VALUE		// R5 now contains $A034
 	rtn
-	TestAssertEqual(REGISTER, VALUE, "VALUE")
+	TestAssertEqual(REGISTER, VALUE, "VALUE")	
 	TestComplete()
 	rts
 }
@@ -474,4 +474,29 @@ ABSOLUTE_JUMP_TEST: {
 !setter:
 	set NON_ACC_REGISTER : $1234		// overwrite value
 	ajmp !finished-						// absolute jmp to finish
+}
+
+// EJSR is an extension I've added to the standard SWEET16 instructions to allow for a mix of SWEET16 calls and 6502.  When the "EJSR" is called the address is then executed normally.  Once the RTS is encountered regular SWEET16 execution continues
+EXTERNAL_JSR_TEST: {
+	TestName("EXTERNAL JSR")
+	.const REGISTER = 5			// arbitrary register
+	.const VALUE = $4321		// arbitrary value
+	.const VALUE_2 = $feed		// different value (will be set using 6502 calls)
+	break()
+	sweet16
+	set REGISTER : VALUE		// R5 now contains VALUE
+	ejsr !code6502+
+	set REGISTER : VALUE		// R5 now contains VALUE (again)
+	rtn
+	TestAssertEqual(REGISTER, VALUE, "VALUE")
+	TestComplete()
+	rts
+!code6502:						// native 6502 code
+	lda #>VALUE_2
+	sta rh(REGISTER)
+	lda #<VALUE_2
+	sta rl(REGISTER)
+	ldxy REGISTER
+	TestAssertEqual(REGISTER, VALUE_2, "6502 VALUE")
+	rts
 }
