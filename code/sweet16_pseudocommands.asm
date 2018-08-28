@@ -66,15 +66,16 @@
 .pseudocommand BS ea { bs ea }
 
 // extension
-.pseudocommand ibk { .byte $0e }
-.pseudocommand IBK { ibk }
-
 .pseudocommand ejsr address {
-	.byte $0f
+	.byte $0d
 	.byte >(address.getValue()-1)
 	.byte <(address.getValue()-1)
 }
 .pseudocommand EJSR address { ejsr address }
+
+.pseudocommand ibk { .byte $0e }
+.pseudocommand IBK { ibk }
+
 	
 // Register Ops
 .pseudocommand set register : address {	register_encode($10, register, address) }

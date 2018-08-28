@@ -89,16 +89,6 @@ TOBR2:
     lsr                 // PREPARE CARRY FOR BC, BNC.
     rts                 // GOTO NON-REG OP ROUTINE
 
-RTNZ:
-	pla                 // POP RETURN ADDRESS
-    pla
-	lda SW16_SAVE_RESTORE
-	beq RESTORED
-    jsr RESTORE        // RESTORE 6502 REG CONTENTS
-
-RESTORED:
-    jmp  (R15L)         // RETURN TO 6502 CODE VIA PC
-
 SETZ:
 	lda  (R15L),Y       // HIGH ORDER BYTE OF CONSTANT
     sta  R0H,X
@@ -145,12 +135,11 @@ BRTBL:
     .byte  <CPR-1          // DX
     .byte  <BS-1           // C
     .byte  <INR-1          // EX
-    .byte  <NUL-1          // D
+    .byte  <EJSR-1         // D
     .byte  <DCR-1          // FX
-//    .byte  <IBK-1          // E
-    .byte  <NUL-1          // E
+    .byte  <IBK-1          // E
     .byte  <NUL-1          // UNUSED
-    .byte  <EJSR-1         // F
+    .byte  <NUL-1          // F
 
 // THE FOLLOWING CODE MUST BE CONTAINED ON A SINGLE PAGE!
 .align $100            // ensures page aligned
@@ -179,20 +168,18 @@ BK:
 	trace()
 #endif
 	brk
-/*
+
 IBK:
 #if DEBUG
 	trace()
 #endif
 	jmp IBK_OUTOFPAGE 	// code will make block larger than 255 if placed here
-						// jump to code on another page. As this is an interrupt
-*/						// pausing execution speed is not an issue
+
 EJSR:
 #if DEBUG
 	trace()
 #endif
 	jmp EJSR_OUTOFPAGE 	// code will make block larger than 255 if placed here
-						// jump to code on another page.
 
 ST:
 #if DEBUG	
@@ -464,6 +451,16 @@ RTN:
 	.print "Page Size = " + page_size
 #endif
 	jmp  RTNZ
+
+RTNZ:
+	pla                 // POP RETURN ADDRESS
+    pla
+	lda SW16_SAVE_RESTORE
+	beq RESTORED
+    jsr RESTORE        // RESTORE 6502 REG CONTENTS
+
+RESTORED:
+    jmp  (R15L)         // RETURN TO 6502 CODE VIA PC
 
 SAVE:
 #if DEBUG
