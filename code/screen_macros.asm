@@ -64,9 +64,25 @@ newline:
 	ora #$30
 }
 
-.macro OutputNumber(value) {
+// y contains the loop counter
+.macro CalcReference(value, reference) {
 	lda value
-	cmp #$0A  //(less than ten?)
+	cmp #reference
+	bcc !done+
+	ldy #$00		// counter
+!loop:
+	iny				// count references's
+	sbc #reference
+	cmp #reference
+	bcs !loop-		// still larger than reference
+//	tax				// store till later
+//	tya
+!done:
+}
+	
+.macro OutputNumber2Digit(value) {
+	lda value
+	cmp #$0A  		// less than 10
 	bcs !biggen+	// larger than 10
 	Binary2Petscii() 
 	KernalOutputA()
@@ -87,7 +103,36 @@ newline:
 	KernalOutputA()
 !done:
 }
+	
+.macro OutputNumber(value) {
+	.const three_digit = $64	
+	lda value
+	cmp #three_digit
+	bcc twoDigit
+	CalcReference(value, three_digit)
+	tya
+	pha
+	Binary2Petscii() 					// display value
+	KernalOutputA()
+	pla
+	tay
+	break()
+	lda value
+!subby:
+	sec
+	sbc #three_digit
+	dey
+	bne !subby-
+	sta $fe
+	break()
+	OutputNumber2Digit($fe)
+	jmp !done+
+twoDigit:
+	OutputNumber2Digit(value)
+!done:	
+}
 
+	
 .function UnusedZeroPage() {
 	.return $fe
 }

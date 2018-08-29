@@ -4,7 +4,17 @@ TEST_COUNT:
 TEST_PASS_COUNT:
 	.byte $00
 
+TEST_TITLE:	
+	.text "SWEET16 TEST RUNNER"
+	Newline()
+	
 .macro TestStart() {
+	ChangeScreen(BACKGROUND_COLOR, TITLE_COLOR)
+	ClearScreenZeroPage()
+	ChangeCursor(0,0)
+	KernalOutput(TEST_TITLE)
+	ChangeColor(FOREGROUND_COLOR)
+
 	lda #$00
 	sta TEST_COUNT
 	sta TEST_PASS_COUNT
@@ -20,16 +30,9 @@ TEST_PASS_COUNT:
 
 .macro TestFinished() {
 	OutputInColor(memory, TITLE_COLOR)
-//	lda TEST_PASS_COUNT
-//	Binary2Petscii()
-	//	KernalOutputA()
 	OutputNumber(TEST_PASS_COUNT)
 	OutputInColor(memory_2, TITLE_COLOR)
-//	lda TEST_COUNT
-//	Binary2Petscii()
-	//	KernalOutputA()
-		OutputNumber(TEST_COUNT)
-
+	OutputNumber(TEST_COUNT)
 	OutputInColor(memory_3, TITLE_COLOR)
 	jmp !done+
 memory:
@@ -41,6 +44,8 @@ memory_2:
 	.byte NULL
 memory_3:
 	Newline()
+/*color:
+	.byte	$00*/
 !done:	
 }
 	

@@ -1,16 +1,12 @@
 BasicUpstart2(Program)
 
 *=$0810 "Program"          // $080d is end of BASIC
-
+TEST_NUMBER:
+	.byte $BB
+//	.byte $57
 Program:
-
-	ChangeScreen(BACKGROUND_COLOR, TITLE_COLOR)
-	ClearScreenZeroPage()
-	ChangeCursor(0,0)
-	KernalOutput(Title)
-	ChangeColor(FOREGROUND_COLOR)
-
 	TestStart()
+	OutputNumber(TEST_NUMBER)
 	jsr SET_TEST
 	jsr LOAD_TEST
 	jsr STORE_TEST
@@ -54,9 +50,3 @@ Program:
 //	sta $d020
 //	sta $d021
 	rts
-
-Title:
-	.text "SWEET16 TEST RUNNER"
-	Newline()
-	
-	

@@ -11,5 +11,3 @@ TEST_SUCCESS:
 	
 TEST_FAILURE:
 	.byte $76, $00
-	
-	

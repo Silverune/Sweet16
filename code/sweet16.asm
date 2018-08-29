@@ -446,9 +446,9 @@ RS:
 RTN:
 #if DEBUG
 	trace()
-	.var page_size = * - page_start
+/*	.var page_size = * - page_start
 	.errorif page_size > 255, "Must be located on same page"
-	.print "Page Size = " + page_size
+	.print "Page Size = " + page_size*/
 #endif
 	jmp  RTNZ
 
