@@ -493,7 +493,7 @@ EXTERNAL_JSR_TEST: {
 	xjsr !code6502+
 	set REGISTER : VALUE		// R5 now contains VALUE (again)
 	rtn
-	TestAssertEqual(REGISTER, VALUE, "AGAIN")
+	TestAssertEqual(REGISTER, VALUE, "SAME")
 	TestComplete()
 	rts
 
