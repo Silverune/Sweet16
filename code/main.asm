@@ -3,6 +3,7 @@ BasicUpstart2(Program)
 *=$0810 "Program"          // $080d is end of BASIC
 Program:
 	TestStart()
+	jsr SET_INDIRECT_TEST
 	jsr SET_TEST
 	jsr LOAD_TEST
 	jsr STORE_TEST

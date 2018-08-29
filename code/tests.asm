@@ -476,7 +476,7 @@ ABSOLUTE_JUMP_TEST: {
 	ajmp !finished-						// absolute jmp to finish
 }
 
-// XJSR is an extension I've added to the standard SWEET16 instructions to allow for a mix of SWEET16 calls and 6502.  When "XJSR" is called the address is executed normally as if we were in 6502 instruction set mode.  Once the RTS is encountered regular SWEET16 execution continues
+// XJSR is an extension added to the standard SWEET16 instructions to allow for a mix of SWEET16 calls and 6502.  When "XJSR" is called the address is executed normally as if we were in 6502 instruction set mode.  Once the RTS is encountered regular SWEET16 execution continues
 EXTERNAL_JSR_TEST: {
 	TestName("EXTERNAL JSR")
 	.const REGISTER = 5			// arbitrary register
@@ -505,5 +505,18 @@ EXTERNAL_JSR_TEST: {
 	sta rl(REGISTER)
 	ldxy REGISTER
 	TestAssertEqual(REGISTER, VALUE_3, "6502")
+	rts
+}
+
+// SETI is an extension added to the standard SWEET16 instructions to allow for a setting a register value indirectly by providing a memory location to source.
+SET_INDIRECT_TEST: {
+	.const REGISTER = 5			// arbitrary register
+	TestName("SET INDIRECT")
+	break()
+	sweet16
+	seti REGISTER : TEST_MEMORY	// set register with value at TEST_MEMORT
+	rtn
+	TestAssertEqualIndirect(REGISTER, TEST_MEMORY, "TEST MEM")	
+	TestComplete()
 	rts
 }

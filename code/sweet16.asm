@@ -139,7 +139,7 @@ BRTBL:
     .byte  <DCR-1          // FX
     .byte  <IBK-1          // E
     .byte  <NUL-1          // UNUSED
-    .byte  <NUL-1          // F
+    .byte  <SETI-1         // F
 
 // THE FOLLOWING CODE MUST BE CONTAINED ON A SINGLE PAGE!
 .align $100            // ensures page aligned
@@ -433,6 +433,9 @@ POPD:
 	jsr  DCR            // DECR RX
     lda  (R0L,X)        // POP HIGH ORDER BYTE @RX
     tay                 // SAVE IN Y REG	
+
+SETI:
+	jmp SETI_OUTOFPAGE
 	
 RTN:
 #if DEBUG
@@ -503,6 +506,26 @@ BREAK_HANDLER:
 	break()
 	jmp SW16D
 
+SETI_OUTOFPAGE:
+	lda (R15L),Y       		// dest addr high
+	sta $fc
+	IncPC()
+	lda (R15L),Y       		// dest addr low
+	sta $fd
+	IncPC()
+	lda (R15L),Y       		// dest register
+	IncPC()
+	tay
+	break()
+	ldx #$fc
+	lda ($00,X)
+	sta $00,Y
+	inc $fc
+	iny
+	lda ($00,X)
+	sta $00,Y
+	jmp SW16D				// back to SWEET16
+
 IBK_OUTOFPAGE:
 	BreakOnBrk()
 	jmp BK
@@ -517,16 +540,10 @@ XJSR_OUTOFPAGE: {
 	pha
 	lda (R15L),Y       		// high order byte
 	pha
-	inc R15L
-    bne !incremented+ 		// inc PC
-    inc R15H
-!incremented:
+	IncPC()
 	lda (R15L),Y       		// low order byte
 	pha
-	inc R15L
-    bne !incremented+ 		// inc PC
-    inc R15H
-!incremented:
+	IncPC()
 	rts				   		// this performs jump from stack
 !returned:
 	jmp SW16D				// back to SWEET16

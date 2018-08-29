@@ -65,7 +65,7 @@
 .pseudocommand bs ea { .byte $0c, effective_address(ea,*) }
 .pseudocommand BS ea { bs ea }
 
-// extension
+// extensions
 .pseudocommand xjsr address {
 	.byte $0d
 	.byte >(address.getValue()-1)
@@ -123,6 +123,15 @@
 .pseudocommand dcr register { .byte opcode($f0, register) }
 .pseudocommand DCR register { dcr register }
 
+
+// extensions
+.pseudocommand seti register : address {
+	.byte $0f
+	.word address.getValue()
+	.byte rl(register.getValue())
+}
+.pseudocommand SETI register : address { seti register : address }
+	
 // "You can perform absolute jumps within SWEET 16 by loading the ACC (R0) with the address you wish to jump to (minus 1) and executing a ST R15 instruction."  This is not a core SWEET16 instruction
 .pseudocommand ajmp address {
 	set ACC : address.getValue()-1
