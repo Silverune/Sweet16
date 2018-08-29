@@ -20,13 +20,16 @@ TEST_PASS_COUNT:
 
 .macro TestFinished() {
 	OutputInColor(memory, TITLE_COLOR)
-	lda TEST_PASS_COUNT
-	Binary2Petscii()
-	KernalOutputA()
+//	lda TEST_PASS_COUNT
+//	Binary2Petscii()
+	//	KernalOutputA()
+	OutputNumber(TEST_PASS_COUNT)
 	OutputInColor(memory_2, TITLE_COLOR)
-	lda TEST_COUNT
-	Binary2Petscii()
-	KernalOutputA()
+//	lda TEST_COUNT
+//	Binary2Petscii()
+	//	KernalOutputA()
+		OutputNumber(TEST_COUNT)
+
 	OutputInColor(memory_3, TITLE_COLOR)
 	jmp !done+
 memory:

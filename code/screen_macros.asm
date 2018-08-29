@@ -64,6 +64,29 @@ newline:
 	ora #$30
 }
 
+.macro OutputNumber(value) {
+	lda value
+	cmp #$0A  //(less than ten?)
+	bcs !biggen+	// larger than 10
+	Binary2Petscii() 
+	KernalOutputA()
+	jmp !done+
+!biggen:
+	ldy #$00
+!loop:
+	iny				// count 10's
+	sbc #$0A
+	cmp #$0A
+	bcs !loop-		// still larger than 10
+	tax				// store till later
+	tya
+	Binary2Petscii() 
+	KernalOutputA()
+	txa
+	Binary2Petscii() 
+	KernalOutputA()
+!done:
+}
 
 .function UnusedZeroPage() {
 	.return $fe
