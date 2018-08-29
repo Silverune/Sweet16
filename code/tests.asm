@@ -26,11 +26,14 @@ STACK_MEMORY: {
 // The 2-byte constant is loaded into Rn (n=0 to F, Hex) and branch conditions set accordingly. The carry is cleared.
 SET_TEST: {
 	.const REGISTER = 5			// arbitrary register
-	.const VALUE = $a034
+//	.const VALUE = $a034
+	.const VALUE = $1234
 	TestName("SET")
 	sweet16
 	set REGISTER : VALUE		// R5 now contains $A034
 	rtn
+	ldxy REGISTER
+	break()
 	TestAssertEqual(REGISTER, VALUE, "VALUE")	
 	TestComplete()
 	rts
@@ -512,10 +515,10 @@ EXTERNAL_JSR_TEST: {
 SET_INDIRECT_TEST: {
 	.const REGISTER = 5			// arbitrary register
 	TestName("SET INDIRECT")
-	break()
 	sweet16
 	seti REGISTER : TEST_MEMORY	// set register with value at TEST_MEMORT
 	rtn
+	ldxy REGISTER
 	TestAssertEqualIndirect(REGISTER, TEST_MEMORY, "TEST MEM")	
 	TestComplete()
 	rts

@@ -517,10 +517,11 @@ SETI_OUTOFPAGE:
 	IncPC()
 	tay
 	break()
+	inc $fc
 	ldx #$fc
 	lda ($00,X)
 	sta $00,Y
-	inc $fc
+	dec $fc
 	iny
 	lda ($00,X)
 	sta $00,Y
