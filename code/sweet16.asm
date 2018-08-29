@@ -222,29 +222,6 @@ LDAT:
     sty  R0H            // ZERO HIGH ORDER R0 BYTE
     beq  STAT3          // ALWAYS TAKEN
 	
-POP:
-#if DEBUG	
-	trace()
-#endif
-	ldy  #$00           // HIGH ORDER BYTE = 0
-    beq  POP2           // ALWAYS TAKEN
-POPD:
-#if DEBUG
-	trace()
-#endif
-	jsr  DCR            // DECR RX
-    lda  (R0L,X)        // POP HIGH ORDER BYTE @RX
-    tay                 // SAVE IN Y REG	
-POP2:
-	jsr  DCR            // DECR RX
-    lda  (R0L,X)        // LOW ORDER BYTE
-    sta  R0L            // TO R0
-    sty  R0H
-POP3:
-	ldy  #$00           // INDICATE R0 AS LAST RESULT REG
-    sty  R14H
-    rts
-	
 LDDAT:
 #if DEBUG
 	trace()
@@ -443,6 +420,20 @@ RS:
     sta  R15L
     rts
 
+POP:
+#if DEBUG	
+	trace()
+#endif
+	ldy  #$00           // HIGH ORDER BYTE = 0
+    beq  POP2           // ALWAYS TAKEN
+POPD:
+#if DEBUG
+	trace()
+#endif
+	jsr  DCR            // DECR RX
+    lda  (R0L,X)        // POP HIGH ORDER BYTE @RX
+    tay                 // SAVE IN Y REG	
+	
 RTN:
 #if DEBUG
 	trace()
@@ -451,6 +442,16 @@ RTN:
 	.print "Page Size = " + page_size*/
 #endif
 	jmp  RTNZ
+
+POP2:
+	jsr  DCR            // DECR RX
+    lda  (R0L,X)        // LOW ORDER BYTE
+    sta  R0L            // TO R0
+    sty  R0H
+POP3:
+	ldy  #$00           // INDICATE R0 AS LAST RESULT REG
+    sty  R14H
+    rts
 
 RTNZ:
 	pla                 // POP RETURN ADDRESS

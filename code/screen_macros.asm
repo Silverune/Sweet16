@@ -75,37 +75,42 @@ newline:
 	sbc #reference
 	cmp #reference
 	bcs !loop-		// still larger than reference
-//	tax				// store till later
-//	tya
 !done:
 }
 	
 .macro OutputNumber2Digit(value) {
+	.const two_digit = $0a
+	.const zp = $fe
 	lda value
-	cmp #$0A  		// less than 10
-	bcs !biggen+	// larger than 10
-	Binary2Petscii() 
+	cmp #two_digit
+	bcc oneDigit
+	CalcReference(value, two_digit)
+	tya
+	pha
+	Binary2Petscii() 					// display value
+	KernalOutputA()
+	pla
+	tay
+	lda value
+!subby:
+	sec
+	sbc #two_digit
+	dey
+	bne !subby-
+	Binary2Petscii() 					// display value
 	KernalOutputA()
 	jmp !done+
-!biggen:
-	ldy #$00
-!loop:
-	iny				// count 10's
-	sbc #$0A
-	cmp #$0A
-	bcs !loop-		// still larger than 10
-	tax				// store till later
-	tya
-	Binary2Petscii() 
+oneDigit:
+	Binary2Petscii() 					// display value
 	KernalOutputA()
-	txa
-	Binary2Petscii() 
-	KernalOutputA()
-!done:
+!done:	
 }
-	
+
+// output to the screen the value stored at the passed in address
+// only up to 255 is supported	
 .macro OutputNumber(value) {
-	.const three_digit = $64	
+	.const three_digit = $64
+	.const zp = $fe
 	lda value
 	cmp #three_digit
 	bcc twoDigit
@@ -116,23 +121,20 @@ newline:
 	KernalOutputA()
 	pla
 	tay
-	break()
 	lda value
 !subby:
 	sec
 	sbc #three_digit
 	dey
 	bne !subby-
-	sta $fe
-	break()
-	OutputNumber2Digit($fe)
+	sta zp
+	OutputNumber2Digit(zp)
 	jmp !done+
 twoDigit:
 	OutputNumber2Digit(value)
 !done:	
 }
 
-	
 .function UnusedZeroPage() {
 	.return $fe
 }

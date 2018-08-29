@@ -1,12 +1,8 @@
 BasicUpstart2(Program)
 
 *=$0810 "Program"          // $080d is end of BASIC
-TEST_NUMBER:
-	.byte $BB
-//	.byte $57
 Program:
 	TestStart()
-	OutputNumber(TEST_NUMBER)
 	jsr SET_TEST
 	jsr LOAD_TEST
 	jsr STORE_TEST
@@ -40,13 +36,9 @@ Program:
 	jsr BRANCH_TO_SUBROUTINE_TEST
 	jsr RETURN_FROM_SUBROUTINE_TEST
 	jsr ABSOLUTE_JUMP_TEST
+//	jsr INTERRUPT_BREAK_TEST
 
 	.eval test_calculate_effective_address($1000)
 */
 
-//	jsr INTERRUPT_BREAK_TEST
-
-//	lda #$00
-//	sta $d020
-//	sta $d021
 	rts
