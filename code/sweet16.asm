@@ -3,10 +3,10 @@
 // COPYRIGHT (C) 1977 APPLE COMPUTER,  INC ALL  RIGHTS RESERVED S. WOZNIAK
 // Additimal Code: Copyright (C) 2018 Enable Software Pty Ltd, Inc All Rights Reservered Rhett D. Jacobs
 
-.const ZP_BASE = $17 // C64 start of 16 bit registers in zero page end at $37
+.const ZP_BASE = $17 // C64 start of 16 bit registers in zero page end at $39
 
 #if DEBUG
-.for (var i = 0; i < 16; i++) {
+.for (var i = 0; i < 17; i++) {
 	label("RL" + i, RL(i))
 	label("RH" + i, RH(i))
 }
@@ -17,6 +17,7 @@
 .const CIR = 13	        // COMPARE INSTRUCTION RESULT
 .const SR = 14          // STACK REGISTER
 .const PC = 15			// PROGRAM COUNTER
+.const ZP = 16			// Extension - Zero Page location used by SETI
 
 .const R0L = RL(ACC)
 .const R0H = RH(ACC)
@@ -28,6 +29,8 @@
 .const R14H = RH(SR)
 .const R15L = RL(PC)
 .const R15H = RH(PC)
+.const R16L = RL(ZP)
+.const R16H = RH(ZP)
 
 SW16_NONE:		// Entry point if no need to preserve registers
 	lda #$00
@@ -508,20 +511,20 @@ BREAK_HANDLER:
 
 SETI_OUTOFPAGE:
 	lda (R15L),Y       		// dest addr high
-	sta $fc
+	sta RL(ZP)
 	IncPC()
 	lda (R15L),Y       		// dest addr low
-	sta $fd
+	sta RH(ZP)
 	IncPC()
 	lda (R15L),Y       		// dest register
 	IncPC()
 	tay
 	break()
-	inc $fc
-	ldx #$fc
+	inc RL(ZP)
+	ldx #RL(ZP)
 	lda ($00,X)
 	sta $00,Y
-	dec $fc
+	dec RL(ZP)
 	iny
 	lda ($00,X)
 	sta $00,Y
