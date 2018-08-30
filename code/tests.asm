@@ -208,14 +208,22 @@ STORE_POP_INDIRECT_TEST: {
 
 // The contents of Rn are added to the contents of ACC (R0), and the low-order 16 bits of the sum restored in ACC. the 17th sum bit becomes the carry and the other branch conditions reflect the final ACC contents.
 ADD_TEST: {
+	.const REGISTER = 1
+	.const VAL_1 = $7634
+	.const VAL_2 = $4227
+	TestName("ADDITION")
 	sweet16
-	set ACC : $7634 // Init R0 (ACC)
-    set 1 : $4227	// Init R1
-    add 1           // Add R1 (sum = $B85B, C clear)
-    add ACC			// Double ACC (R0) to $70B6 with carry set.
+	set ACC : VAL_1 		// Init R0 (ACC)
+    set REGISTER : VAL_2	// Init REGSITER
+    add REGISTER            // Add REGISTER (sum, C clear)
+	xjsr !assertAdd+
+    add ACC					// Double ACC (R0) with carry set.
 	rtn
-	ldxy ACC
-	break()
+	TestAssertEqual(ACC, (VAL_1 + VAL_2) * 2, "DBL")
+	TestComplete()
+	rts
+!assertAdd:
+	TestAssertEqual(ACC, VAL_1 + VAL_2, "ADD")
 	rts
 }
 	
