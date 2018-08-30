@@ -21,8 +21,8 @@
 
 // debugging conveniece to load into the X and Y regsiters the specified SWEET16 register
 .pseudocommand ldxy register {
-	ldx rh(register.getValue())
-	ldy rl(register.getValue())
+	ldx rl(register.getValue())
+	ldy rh(register.getValue())
 }
 
 // Nonregister Ops	

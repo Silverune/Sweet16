@@ -93,7 +93,7 @@ memory:
 .macro TestAssertEqualIndirectByte(register, address, desc) {
 	TestAssertDescription(desc)
 	ldxy register
-	cpy address
+	cpx address
 	bne !failed+
 	TestSuccess()
 	jmp !done+
@@ -121,6 +121,21 @@ memory:
 !done:	
 }
 
+// compares the value in the register with the value stored at the address which has been stpred Low byte then High byte which is how SWEET16 keeps its values
+.macro TestAssertEqualIndirectAddress(register, address, desc) {
+	TestAssertDescription(desc)
+	ldxy register
+	cpy address
+	bne !failed+
+	cpx address+1
+	bne !failed+
+	TestSuccess()
+	jmp !done+
+!failed:
+	TestFailure()
+!done:	
+}
+
 .macro TestAssertEqualIndirect(register, address, desc) {
 	TestAssertDescription(desc)
 	ldxy register
@@ -134,13 +149,14 @@ memory:
 	TestFailure()
 !done:	
 }
-	
+
+// compares the value in the register with the absolute value passed in
 .macro TestAssertEqual(register, value, desc) {
 	TestAssertDescription(desc)
 	ldxy register
-	cpx #>value
+	cpx #<value
 	bne !failed+
-	cpy #<value
+	cpy #>value
 	bne !failed+
 	TestSuccess()
 	jmp !done+

@@ -26,7 +26,6 @@ STACK_MEMORY: {
 // The 2-byte constant is loaded into Rn (n=0 to F, Hex) and branch conditions set accordingly. The carry is cleared.
 SET_TEST: {
 	.const REGISTER = 5			// arbitrary register
-//	.const VALUE = $a034
 	.const VALUE = $1234
 	TestName("SET")
 	sweet16
@@ -42,7 +41,7 @@ SET_TEST: {
 // The ACC (R0) is loaded from Rn and branch conditions set according to the data transferred. The carry is cleared and contents of Rn are not disturbed.
 LOAD_TEST: {
 	.const REGISTER = 5			// arbitrary register
-	.const VALUE = $a034	
+	.const VALUE = $4321
 	TestName("LOAD")
 	sweet16
     set REGISTER : VALUE
@@ -74,7 +73,7 @@ LOAD_INDIRECT_TEST: {
 	.const REGISTER = 5			// arbitrary register
 	TestName("LOAD INDIRECT")
 	sweet16
-	set REGISTER : TEST_MEMORY  // TEST_MEMORY contains value $12
+	set REGISTER : TEST_MEMORY  // Load from 
 	ldi REGISTER				// ACC is loaded from memory where TEST_MEMORY ($00, $12)
 								// R5 is incr by one (TEST_MEMORY + 1)
 	rtn
@@ -105,16 +104,16 @@ STORE_INDIRECT_TEST: {
 // The low order ACC byte is loaded from memory location whose address resides in Rn, and Rn is then incremented by 1. The high order ACC byte is loaded from the memory location whose address resides in the incremented Rn, and Rn is again incremented by 1. Branch conditions reflect the final ACC contents. The carry is cleared.
 LOAD_DOUBLE_BYTE_INDIRECT_TEST: {
 	.const REGISTER = 5			// arbitrary register
+	TestName("LOAD DOUBLE INDIRECT")
 	sweet16
 	set REGISTER : TEST_MEMORY	// The low-order ACC byte is loaded from
 	ldd REGISTER				// TEST_MEMORY, high-order from TEST_MEMORY+1
 								// NOTE - original had error of specifying "R6"
 								// R5 is incr by 2	
 	rtn
-	ldxy ACC
-	break()
-	ldxy REGISTER
-	break()
+	TestAssertEqualIndirect(ACC, TEST_MEMORY, "ACC")
+	TestAssertEqual(REGISTER, TEST_MEMORY+2, "+2")
+	TestComplete()
 	rts
 }
 
@@ -518,8 +517,7 @@ SET_INDIRECT_TEST: {
 	sweet16
 	seti REGISTER : TEST_MEMORY	// set register with value at TEST_MEMORT
 	rtn
-	ldxy REGISTER
-	TestAssertEqualIndirect(REGISTER, TEST_MEMORY, "TEST MEM")	
+	TestAssertEqualIndirectAddress(REGISTER, TEST_MEMORY, "TEST MEM")	
 	TestComplete()
 	rts
 }

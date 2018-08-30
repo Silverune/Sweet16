@@ -519,7 +519,6 @@ SETI_OUTOFPAGE:
 	lda (R15L),Y       		// dest register
 	IncPC()
 	tay
-	break()
 	inc RL(ZP)
 	ldx #RL(ZP)
 	lda ($00,X)
