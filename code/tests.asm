@@ -136,7 +136,7 @@ STORE_DOUBLE_BYTE_INDIRECT_TEST: {
 	rts
 }
 	
-// The low-order ACC byte is loaded from the memory location whose address resides in Rn after Rn is decremented by 1, and the high order ACC byte is cleared. Branch conditions reflect the final 2-byte ACC contents which will always be positive and never minus one. The carry is cleared. Because Rn is decremented prior to loading the ACC, single byte stacks may be implemented with the STI Rn and POP Rn ops (Rn is the stack pointer).
+// The low-order ACC byte is loaded from the memory location whose address resides in Rn after Rn is decremented by 1, and the high order ACC byte is cleared. Branch conditions reflect the final 2-byte ACC contents which will always be positive and never minus one. The carry is cleared. Because Rn is decremented prior to loading the ACC, single byte stacks may be implemented with the STI Rn and POP Rn ops (Rn is the stack pointer).  Note - as trying to inspect the intermediate values using the extension "XJSR" to output the test assertions
 POP_INDIRECT_TEST: {
 	.const STACK = 5			// Arbitrary register
 	.const VAL_1 = $04			// Arbitrary low order used
@@ -191,15 +191,18 @@ POP_INDIRECT_TEST: {
 STORE_POP_INDIRECT_TEST: {
 	.const SOURCE = 4				// Arbitrary register
 	.const DEST = 5					// Arbitrary register
+	TestName("STORE POP IND")
 	sweet16
 	set SOURCE : TEST_MEMORY + 2	// Init pointers with 2 byte offset
 	set DEST : TEST_MEMORY_2 + 2 	// as moves down from this address -1 then -2
 	pop	SOURCE						// Move byte from
     stp DEST            			// TEST_MEMORY + 1 to TEST_MEMORY_2 + 1
 	pop SOURCE						// Move byte from
-	stp DEST						// TEST_MEMORY_2 to TEST_MEMORY_2
-	rtn		
+	stp DEST						// TEST_MEMORY to TEST_MEMORY_2
+	rtn
 	break()
+	TestAssertEqualMemory(TEST_MEMORY, TEST_MEMORY, 2, "MEM")
+	TestComplete()
 	rts
 }
 
