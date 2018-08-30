@@ -121,17 +121,18 @@ LOAD_DOUBLE_BYTE_INDIRECT_TEST: {
 STORE_DOUBLE_BYTE_INDIRECT_TEST: {
 	.const SOURCE = 5			// arbitrary register
 	.const DEST = 6				// arbitrary register
+	TestName("STORE DBL IND")
 	sweet16
 	set SOURCE : TEST_MEMORY	// Load pointers R5, R6 with
 	set DEST : TEST_MEMORY_2	// memory values
 	ldd SOURCE					// Move double byte from
     std DEST            		// TEST_MEMORY to TEST_MEMORY_2
                                 // Both pointers incremented by 2.
-	rtn						
-	ldxy SOURCE
-	break()
-	ldxy DEST
-	break()
+	rtn
+	TestAssertEqualMemory(TEST_MEMORY, TEST_MEMORY_2, 2, "MEM")
+	TestAssertEqual(SOURCE, TEST_MEMORY+2, "S+2")
+	TestAssertEqual(DEST, TEST_MEMORY_2+2, "D+2")
+	TestComplete()
 	rts
 }
 	
