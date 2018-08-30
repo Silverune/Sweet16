@@ -137,24 +137,53 @@ STORE_DOUBLE_BYTE_INDIRECT_TEST: {
 }
 	
 // The low-order ACC byte is loaded from the memory location whose address resides in Rn after Rn is decremented by 1, and the high order ACC byte is cleared. Branch conditions reflect the final 2-byte ACC contents which will always be positive and never minus one. The carry is cleared. Because Rn is decremented prior to loading the ACC, single byte stacks may be implemented with the STI Rn and POP Rn ops (Rn is the stack pointer).
-POP_INDIRECT: {
+POP_INDIRECT_TEST: {
 	.const STACK = 5			// Arbitrary register
+	.const VAL_1 = $04			// Arbitrary low order used
+	.const VAL_2 = $05			// Arbitrary low order used
+	.const VAL_3 = $06			// Arbitrary low order used
+	TestName("POP INDIRECT")
 	sweet16
 	set STACK : STACK_MEMORY	// Init stack pointer
-	set ACC : 4					// Load 4 into ACC
-	sti STACK					// Push 4 onto stack
-	set ACC : 5					// Load 5 into ACC
-	sti STACK					// Push 5 onto stack
-	set ACC : 6					// Load 6 into ACC
-	sti STACK					// Push 6 onto stack
+	set ACC : VAL_1				// Load into ACC
+	sti STACK					// Push onto stack
+	xjsr !assert1+
+	set ACC : VAL_2				// Load into ACC
+	sti STACK					// Push onto stack
+	xjsr !assert2+
+	set ACC : VAL_3				// Load into ACC
+	sti STACK					// Push onto stack
+	xjsr !assert3+
 	pop STACK					// Pop 6 off stack into ACC
+	xjsr !assertP3+
 	pop STACK					// Pop 5 off stack into ACC
+	xjsr !assertP2+
 	pop STACK					// Pop 4 off stack into ACC
+	xjsr !assertP1+
 	rtn					
-	ldxy ACC
-	break()
-	ldxy STACK
-	break()
+	TestComplete()
+	rts
+
+!assert1:
+	TestAssertEqualIndirect(ACC, STACK_MEMORY, "1")
+	TestAssertEqualIndirect(SR, STACK_MEMORY+1, "S1")
+	rts
+!assert2:
+	TestAssertEqualIndirect(ACC, STACK_MEMORY+1, "2")
+	TestAssertEqualIndirect(SR, STACK_MEMORY+2, "S2")
+	rts
+!assert3:
+	TestAssertEqualIndirect(ACC, STACK_MEMORY+2, "3")
+	TestAssertEqualIndirect(SR, STACK_MEMORY+3, "S3")
+	rts
+!assertP3:
+	TestAssertEqual(ACC, VAL_3, "P3")
+	rts
+!assertP2:
+	TestAssertEqual(ACC, VAL_2, "P2")
+	rts
+!assertP1:
+	TestAssertEqual(ACC, VAL_1, "P1")
 	rts
 }
 	
