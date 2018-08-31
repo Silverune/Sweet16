@@ -219,7 +219,7 @@ ADD_TEST: {
 	xjsr !assertAdd+
     add ACC					// Double ACC (R0) with carry set.
 	rtn
-	TestAssertEqual(ACC, (VAL_1 + VAL_2) * 2, "DBL")
+	TestAssertEqual(ACC, (VAL_1 + VAL_2) * 2, "X2")
 	TestComplete()
 	rts
 !assertAdd:
@@ -233,15 +233,23 @@ ADD_TEST: {
 //
 //The low order 16 bits of the subtraction are restored in the ACC, the 17th sum bit becomes the carry and other branch conditions reflect the final ACC contents. If the 16-bit unsigned ACC contents are greater than or equal to the 16-bit unsigned Rn contents, then the carry is set, otherwise it is cleared. Rn is not disturbed.
 SUBTRACT_TEST: {
+	.const REGISTER = 1		// Arbitrary register
+	.const VAL_1 = $7634
+	.const VAL_2 = $4227
+	TestName("SUBTRACTION")
 	sweet16
-	set ACC : $7634     // Init R0 (ACC) 
-	set 1 : $4227		// and R1
-	sub 1				// subtract R1 (diff=$340D with c set)
-	sub ACC				// clears ACC. (R0)
+	set ACC : VAL_1     	// Init R0 (ACC) 
+	set REGISTER : VAL_2	// and REGISTER
+	sub REGISTER			// subtract R1 (diff=$340D with c set)
+	xjsr !assertSub+
+	sub ACC					// clears ACC. (R0)
 	rtn
-	ldxy ACC
-	break()
+	TestAssertEqual(ACC, 0, "0")
+	TestComplete()
 	rts
+!assertSub:
+	TestAssertEqual(ACC, VAL_1 - VAL_2, "SUB")
+	rts	
 }
 	
 // Rn is decremented by 1 and the high-order ACC byte is loaded from the memory location whose address now resides in Rn. Rn is again decremented by 1 and the low-order ACC byte is loaded from the corresponding memory location. Branch conditions reflect the final ACC contents. The carry is cleared. Because Rn is decremented prior to loading each of the ACC halves, double-byte stacks may be implemented with the STD @Rn and POPD @Rn ops (Rn is the stack pointer).
