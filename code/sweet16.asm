@@ -260,10 +260,10 @@ DCR:
     bne  DCR2           // DECR RX
     dec  R0H,X
 DCR2:
-	trace()
 	dec  R0L,X
     rts
 	
+
 SUB:
 #if DEBUG	
 	trace()
@@ -437,16 +437,17 @@ POPD:
 	jsr  DCR            // DECR RX
     lda  (R0L,X)        // POP HIGH ORDER BYTE @RX
     tay                 // SAVE IN Y REG	
-
+	jmp POP2
+	
 SETI:
 	jmp SETI_OUTOFPAGE
 	
 RTN:
 #if DEBUG
 	trace()
-/*	.var page_size = * - page_start
+	.var page_size = * - page_start
 	.errorif page_size > 255, "Must be located on same page"
-	.print "Page Size = " + page_size*/
+	.print "Page Size = " + page_size
 #endif
 	jmp  RTNZ
 
@@ -507,7 +508,6 @@ BREAK_HANDLER:
 	pla		// PCL discard - not useful
 	pla		// PCH discard - not useful
 	lda TEMP_A
-	break()
 	jmp SW16D
 
 SETI_OUTOFPAGE:

@@ -119,6 +119,27 @@ memory:
 !failed:
 	TestFailure()
 !done:	
+	}
+
+// compares the two bytes at the passed in address with the value off the address passed in (assumes its a 2-byte address)
+.macro TestAssertEqualMemoryDirect(addr, value, desc) {
+	TestAssertDescription(desc)
+	ldx addr
+	cpx #<value
+	bne !failed+
+	ldx addr+1
+	cpx #>value
+	bne !failed+
+!success:
+	TestSuccess()
+	jmp !done+
+!failed:
+	TestFailure()
+!done:	
+}
+
+.macro TestAssertEqualMemoryRegister(register, value, desc) {
+	TestAssertEqualMemoryDirect(rl(register), value, desc)
 }
 
 // compares the value in the register with the value stored at the address which has been stpred Low byte then High byte which is how SWEET16 keeps its values
@@ -154,6 +175,7 @@ memory:
 .macro TestAssertEqual(register, value, desc) {
 	TestAssertDescription(desc)
 	ldxy register
+	break()
 	cpx #<value
 	bne !failed+
 	cpy #>value

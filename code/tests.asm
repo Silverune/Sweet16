@@ -255,17 +255,30 @@ SUBTRACT_TEST: {
 // Rn is decremented by 1 and the high-order ACC byte is loaded from the memory location whose address now resides in Rn. Rn is again decremented by 1 and the low-order ACC byte is loaded from the corresponding memory location. Branch conditions reflect the final ACC contents. The carry is cleared. Because Rn is decremented prior to loading each of the ACC halves, double-byte stacks may be implemented with the STD @Rn and POPD @Rn ops (Rn is the stack pointer).
 POP_DOUBLE_BYTE_INDIRECT_TEST: {
 	.const STACK = 5			// Arbitrary register
+	TestName("POP DBL-B IND")
 	sweet16
 	set STACK : STACK_MEMORY	// Init stack pointer
 	set ACC : TEST_MEMORY		// Load TEST_MEMORY into ACC
 	std STACK					// Push TEST_MEMORY onto stack
+	xjsr !assertStd1+
 	set ACC : TEST_MEMORY_2		// Load TEST_MEMORY_2 into ACC
 	std STACK					// Push TEST_MEMORY_2 onto stack
+	xjsr !assertStd2+
 	popd STACK					// Pop TEST_MEMORY_2 off stack
+	xjsr !assertPop2+
 	popd STACK					// Pop TEST_MEMORY off stack
 	rtn
-	ldxy ACC
-	break()
+	TestAssertEqualMemoryRegister(ACC, TEST_MEMORY, "P1")
+	TestComplete()
+	rts
+!assertStd1:
+	TestAssertEqualMemoryDirect(STACK_MEMORY, TEST_MEMORY, "1")
+	rts
+!assertStd2:
+	TestAssertEqualMemoryDirect(STACK_MEMORY+2, TEST_MEMORY_2, "2")
+	rts
+!assertPop2:
+	TestAssertEqualMemoryRegister(ACC, TEST_MEMORY_2, "P2")
 	rts
 }
 
