@@ -429,6 +429,7 @@ POP:
 #endif
 	ldy  #$00           // HIGH ORDER BYTE = 0
     beq  POP2           // ALWAYS TAKEN
+
 POPD:
 #if DEBUG
 	trace()
@@ -522,11 +523,10 @@ SETI_OUTOFPAGE:
 	inc RL(ZP)
 	ldx #RL(ZP)
 	lda ($00,X)
-	sta $00,Y
+	sta $00,Y				// loq order
 	dec RL(ZP)
-	iny
 	lda ($00,X)
-	sta $00,Y
+	sta $01,Y				// high order
 	jmp SW16D				// back to SWEET16
 
 IBK_OUTOFPAGE:
