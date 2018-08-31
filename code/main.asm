@@ -3,9 +3,6 @@ BasicUpstart2(Program)
 *=$0810 "Program"          // $080d is end of BASIC
 Program:
 	TestStart()
-
-	jsr POP_INDIRECT_TEST // todo - work out why other order fails
-	jsr POP_DOUBLE_BYTE_INDIRECT_TEST  // todo - this causes later test to fail
 	
 	jsr SET_TEST
 	jsr LOAD_TEST
@@ -14,11 +11,12 @@ Program:
 	jsr STORE_INDIRECT_TEST
 	jsr LOAD_DOUBLE_BYTE_INDIRECT_TEST
 	jsr STORE_DOUBLE_BYTE_INDIRECT_TEST
-// here
+	jsr POP_INDIRECT_TEST
 	jsr STORE_POP_INDIRECT_TEST
 	jsr ADD_TEST
 	jsr SUBTRACT_TEST
-
+	jsr POP_DOUBLE_BYTE_INDIRECT_TEST
+	
 	jsr EXTERNAL_JSR_TEST
 	jsr SET_INDIRECT_TEST
 

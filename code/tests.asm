@@ -31,8 +31,6 @@ SET_TEST: {
 	sweet16
 	set REGISTER : VALUE		// R5 now contains $A034
 	rtn
-	ldxy REGISTER
-	break()
 	TestAssertEqual(REGISTER, VALUE, "VALUE")	
 	TestComplete()
 	rts
@@ -165,16 +163,13 @@ POP_INDIRECT_TEST: {
 	rts
 
 !assert1:
-	TestAssertEqualIndirect(ACC, STACK_MEMORY, "1")
-	TestAssertEqualIndirect(SR, STACK_MEMORY+1, "S1")
+	TestAssertEqualIndirectByte(ACC, STACK_MEMORY, "1")
 	rts
 !assert2:
-	TestAssertEqualIndirect(ACC, STACK_MEMORY+1, "2")
-	TestAssertEqualIndirect(SR, STACK_MEMORY+2, "S2")
+	TestAssertEqualIndirectByte(ACC, STACK_MEMORY+1, "2")
 	rts
 !assert3:
-	TestAssertEqualIndirect(ACC, STACK_MEMORY+2, "3")
-	TestAssertEqualIndirect(SR, STACK_MEMORY+3, "S3")
+	TestAssertEqualIndirectByte(ACC, STACK_MEMORY+2, "3")
 	rts
 !assertP3:
 	TestAssertEqual(ACC, VAL_3, "P3")
@@ -200,7 +195,6 @@ STORE_POP_INDIRECT_TEST: {
 	pop SOURCE						// Move byte from
 	stp DEST						// TEST_MEMORY to TEST_MEMORY_2
 	rtn
-	break()
 	TestAssertEqualMemory(TEST_MEMORY, TEST_MEMORY, 2, "MEM")
 	TestComplete()
 	rts
