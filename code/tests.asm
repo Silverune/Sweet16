@@ -655,20 +655,23 @@ RETURN_FROM_SUBROUTINE_TEST: {
 
 // Test the pseudocommand AJMP which allows SWEET16 to perform absolute jumps by directly setting the address of the PC (minus 1) in the ACC register.  Affect the value in the ACC and PC registers
 ABSOLUTE_JUMP_TEST: {
+	.const INITIAL_VALUE = $0000
+	.const SET_VALUE = $1234
 	.const NON_ACC_REGISTER = 5
+	TestName("ABSOLUTE JUMP")
 	sweet16
-	set NON_ACC_REGISTER : $0000		// initial value
-	ajmp !setter+						// absolute jump to setter
+	set NON_ACC_REGISTER : INITIAL_VALUE	// initial value
+	ajmp !setter+							// absolute jump to setter
 
 !finished:
-	rtn									// exit SWEET16
-//	ldxy NON_ACC_REGISTER
-//	break()								// inspect value
+	rtn										// exit SWEET16
+	TestAssertEqual(NON_ACC_REGISTER, SET_VALUE, "SET")
+	TestComplete()
 	rts
 
 !setter:
-	set NON_ACC_REGISTER : $1234		// overwrite value
-	ajmp !finished-						// absolute jmp to finish
+	set NON_ACC_REGISTER : SET_VALUE		// overwrite value
+	ajmp !finished-							// absolute jmp to finish
 }
 
 // XJSR is an extension added to the standard SWEET16 instructions to allow for a mix of SWEET16 calls and 6502.  When "XJSR" is called the address is executed normally as if we were in 6502 instruction set mode.  Once the RTS is encountered regular SWEET16 execution continues
@@ -726,4 +729,3 @@ SET_MEMORY_TEST: {
 	TestComplete()
 	rts
 }
-	

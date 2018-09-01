@@ -35,6 +35,7 @@ Program:
 	jsr RETURN_FROM_SUBROUTINE_TEST
 
 	// extensions
+	jsr ABSOLUTE_JUMP_TEST
 	jsr EXTERNAL_JSR_TEST
 	jsr SET_INDIRECT_TEST
 	jsr SET_MEMORY_TEST
@@ -42,10 +43,6 @@ Program:
 	
 	TestFinished()
 	
-	/*
-	jsr ABSOLUTE_JUMP_TEST
-
 	.eval test_calculate_effective_address($1000)
-*/
-
+	
 	rts
