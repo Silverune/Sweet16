@@ -39,6 +39,20 @@
 	.return finalAddress
 }
 
+.function calc_effective_address_negpos(d, currentAddress) {
+	.errorif d > 127, "Displacement too far forward " + d
+	.errorif d < -128, "Displacement too far backward " + d
+
+	.var dval = 0
+/*	.if (d < 0) {
+		.eval dval = $80
+	} else {
+		.eval dval = $7f
+	}
+*/
+	.return calc_effective_address(dval, currentAddress)
+}
+	
 .function test_calculate_effective_address(currentAddress) {
 	.var values = List().add($80, $81, $ff, $00, $01, $7e, $7f)
 	.for (var i = 0	; i < values.size(); i++) {
@@ -46,7 +60,21 @@
 	}
 }
 	
+.function effective_address_new(ea, currentAddress) {
+	.print "ea: " + toHexString(ea.getValue())
+	.print "d: " + (ea.getValue() - currentAddress) + " (" + toHexString(ea.getValue() - currentAddress) + ")"
+	.print "*: " + toHexString(currentAddress)
+	.var result = calc_effective_address_negpos(ea.getValue() - currentAddress, currentAddress)
+	.print "result: " + toHexString(result)
+	.return result
+}
+
 .function effective_address(ea, currentAddress) {
+
+	.var d = (ea.getValue() - currentAddress)
+	.errorif d > 127, "Displacement too far forward " + d
+	.errorif d < -128, "Displacement too far backward " + d
+
 	.if (ea.getType() == AT_ABSOLUTE)
 	{
 		.var relativeAddress = <(ea.getValue() - currentAddress - 2) // account for byte offset

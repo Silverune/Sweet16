@@ -4,7 +4,7 @@ BasicUpstart2(Program)
 Program:
 	TestStart()
 
-//	jsr BRANCH_IF_NO_CARRY_TEST
+	.eval test_calculate_effective_address($1000)
 	
 	jsr SET_TEST
 	jsr LOAD_TEST
@@ -23,6 +23,7 @@ Program:
 	jsr DECREMENT_TEST
 	jsr RETURN_TO_6502_MODE_TEST
 	jsr BRANCH_ALWAYS_TEST
+	jsr BRANCH_IF_NO_CARRY_TEST	
 	
 	jsr EXTERNAL_JSR_TEST
 	jsr SET_INDIRECT_TEST

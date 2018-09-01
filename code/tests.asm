@@ -344,40 +344,65 @@ RETURN_TO_6502_MODE_TEST: {
 	rts
 }
 	
-SET_VAL_1:
+.macro InsertBranches() {
 	.const VAL_1 = $fedc
-	set ACC : VAL_1
-	br BRANCH_FINISH
-
-SET_VAL_2:
 	.const VAL_2 = $0123
+!setVal1:
+	set ACC : VAL_1
+	br !finish+
+!setVal2:
 	set ACC : VAL_2
-	br BRANCH_FINISH
+	br !finish+
+!finish:
+	rtn
+}
 
 // An effective address (ea) is calculated by adding the signed displacement byte (d) to the PC. The PC contains the address of the instruction immediately following the BR, or the address of the BR op plus 2. The displacement is a signed two's complement value from -128 to +127. Branch conditions are not changed.
-BRANCH_ALWAYS_TEST:
+BRANCH_ALWAYS_TEST: {
+	.const VAL_1 = $fedc
+	.const VAL_2 = $0123
 	TestName("BRANCH ALWAYS")
 	sweet16
-	br SET_VAL_1
-
-BRANCH_FINISH:
+	br !setVal1+
+!setVal1:
+	set ACC : VAL_1
+	br !finish+
+!setVal2:
+	set ACC : VAL_2
+	br !finish+
+!finish:
 	rtn
 	TestAssertEqual(ACC, VAL_1, "1")
 	TestComplete()
-	rts	
+	rts
+}
 
 // A branch to the effective address is taken only is the carry is clear, otherwise execution resumes as normal with the next instruction. Branch conditions are not changed.	
 BRANCH_IF_NO_CARRY_TEST: {
+	.const VAL_1 = $fedc
+	.const VAL_2 = $0123
 	.const REGISTER = 5
 	TestName("BRANCH NO CARRY")
 	sweet16
 	set REGISTER : $1000
 	set ACC : $ffff
 	add REGISTER
-	bnc SET_VAL_1
-	br SET_VAL_2
+	bnc !setVal1+
+	br !setVal2+
+!setVal1:
+	set ACC : VAL_1
+	br !finish+
+!setVal2:
+	set ACC : VAL_2
+	br !finish+
+!finish:
+	rtn
+	TestAssertEqual(ACC, VAL_2, "2")
+	TestComplete()
+	rts
 }
-	
+
+/*	
 // A branch is effected only if the carry is set. Branch conditions are not changed.
 BRANCH_IF_CARRY_SET_TEST: {
 	.const REGISTER = 5
@@ -462,7 +487,7 @@ BRANCH_IF_NOT_MINUS_ONE_TEST: {
 	bnm1 SET_VAL_2
 	br SET_VAL_1
 }
-	
+*/	
 // A 6502 BRK (break) instruction is executed. SWEET 16 may be re-entered non destructively at SW16d after correcting the stack pointer to its value prior to executing the BRK.   This test uses an extension to SWEET16 which inserts a VICE break when the BK instruction is encountered after restoring the SP, Registers and Flags.  Note the additional argument to sweet16 to ensure the handler is setup as it is not by default.  The handler also deals with the setting up for the stack pointer and conntinuing execution from SW16D
 BREAK_TEST: {
 	sweet16 : 1
