@@ -140,7 +140,7 @@ POP_INDIRECT_TEST: {
 	.const VAL_1 = $04			// Arbitrary low order used
 	.const VAL_2 = $05			// Arbitrary low order used
 	.const VAL_3 = $06			// Arbitrary low order used
-	TestName("POP INDIRECT")
+	TestName("POP INDIRECT 1")
 	sweet16
 	set STACK : STACK_MEMORY	// Init stack pointer
 	set ACC : VAL_1				// Load into ACC
@@ -172,6 +172,8 @@ POP_INDIRECT_TEST: {
 	TestAssertEqualIndirectByte(ACC, STACK_MEMORY+2, "3")
 	rts
 !assertP3:
+	TestComplete()
+	TestName("POP INDIRECT 2")
 	TestAssertEqual(ACC, VAL_3, "P3")
 	rts
 !assertP2:
