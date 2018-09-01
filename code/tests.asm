@@ -304,14 +304,15 @@ COMPARE_TEST: {
 // The contents of Rn are incremented by 1. The carry is cleared and other branch conditions reflect the incremented value.
 INCREMENT_TEST: {
 	.const REGISTER = 5			// arbitrary register
+	TestName("INCREMENT")
 	sweet16
 	set REGISTER : TEST_MEMORY	// setup pointer
 	sub ACC						// clear ACC
 	sti REGISTER				// clear location TEST_MEMORY
 	inr REGISTER				// increment R5 to TEST_MEMORY + 2
 	rtn
-	ldxy REGISTER
-//	break()
+	TestAssertEqual(REGISTER, TEST_MEMORY + 2, "+2")
+	TestComplete()
 	rts
 }
 
