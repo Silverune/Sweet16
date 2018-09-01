@@ -534,20 +534,35 @@ BRANCH_IF_MINUS_ONE_TEST: {
 	rts
 }
 
-/*	
-
-
 // A branch effected only if the prior 'result' was not minus 1. Branch conditions are not changed
 BRANCH_IF_NOT_MINUS_ONE_TEST: {
 	.const DATA_REGISTER = 5
 	.const VALUE = 2
+	TestName("BRANCH IF !-1")
 	sweet16
 	set DATA_REGISTER : #VALUE
 	sub ACC									// Clear mem byte
 	sub DATA_REGISTER                       // Subtract from 0 value in R5
-	bnm1 SET_VAL_2
-	br SET_VAL_1
+	bnm1 !setVal2+
+	br !setVal1+
+!setVal1:
+	.const VAL_1 = $fedc
+	set ACC : VAL_1
+	br !finish+
+!setVal2:
+	.const VAL_2 = $0123
+	set ACC : VAL_2
+	br !finish+
+!finish:
+	rtn
+	TestAssertEqual(ACC, VAL_2, "2")
+	TestComplete()
+	rts
 }
+
+/*	
+
+
 */	
 // A 6502 BRK (break) instruction is executed. SWEET 16 may be re-entered non destructively at SW16d after correcting the stack pointer to its value prior to executing the BRK.   This test uses an extension to SWEET16 which inserts a VICE break when the BK instruction is encountered after restoring the SP, Registers and Flags.  Note the additional argument to sweet16 to ensure the handler is setup as it is not by default.  The handler also deals with the setting up for the stack pointer and conntinuing execution from SW16D
 BREAK_TEST: {
