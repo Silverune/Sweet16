@@ -282,18 +282,22 @@ POP_DOUBLE_BYTE_INDIRECT_TEST: {
 COMPARE_TEST: {
 	.const DATA_REGISTER = 5
 	.const LIMIT_REGISTER = 6
+	.const COUNT_REGISTER = 4
+	TestName("COMPARE")
 	sweet16
 	set DATA_REGISTER : TEST_MEMORY_SEQUENCE				// pointer to memory
 	set LIMIT_REGISTER : TEST_MEMORY_SEQUENCE + TMS_SIZE	// limit address
+	set COUNT_REGISTER : $000								// clear counter
 !loop:
+	inr COUNT_REGISTER	// inc counter
 	sub ACC				// zero data
 	std	DATA_REGISTER	// clear 2 locations
 	ld DATA_REGISTER	// compare pointer R5
 	cpr LIMIT_REGISTER	// to limit R6
 	bnc !loop-			// loop if C clear
 	rtn
-	ldxy CPR
-	break()
+	TestAssertEqual(COUNT_REGISTER, TMS_SIZE / 2, "COUNT")	// 16-bit
+	TestComplete()
 	rts	
 }
 
@@ -307,7 +311,7 @@ INCREMENT_TEST: {
 	inr REGISTER				// increment R5 to TEST_MEMORY + 2
 	rtn
 	ldxy REGISTER
-	break()
+//	break()
 	rts
 }
 
@@ -325,7 +329,7 @@ DECREMENT_TEST: {
 	bnz !loop-
 	rtn
 	ldxy DATA_REGISTER
-	break()
+//	break()
 	rts
 }
 
@@ -333,7 +337,7 @@ DECREMENT_TEST: {
 RETURN_TO_6502_MODE_TEST: {
 	sweet16
 	rtn
-	break()
+	//break()
 	rts
 }
 	
@@ -347,8 +351,8 @@ SET_0123:
 
 BRANCH_FINISH:
 	rtn
-	ldxy ACC
-	break()
+//	ldxy ACC
+//	break()
 	rts	
 
 // An effective address (ea) is calculated by adding the signed displacement byte (d) to the PC. The PC contains the address of the instruction immediately following the BR, or the address of the BR op plus 2. The displacement is a signed two's complement value from -128 to +127. Branch conditions are not changed.
@@ -392,7 +396,7 @@ BRANCH_IF_PLUS_TEST: {
 	cpr DATA_REGISTER						// to Pointer
 	bp !loop-								// Loop until done
 	rtn
-	break()
+//	break()
 	rts
 }
 
@@ -460,8 +464,8 @@ BREAK_TEST: {
 	set ACC : $0123
 	bk
 	rtn
-	ldxy ACC
-	break()
+//	ldxy ACC
+//	break()
 	rts
 }
 
@@ -497,8 +501,8 @@ RETURN_FROM_SUBROUTINE_TEST: {
 	set ACC : DEFAULT_VALUE
 	bs !overwrite+
 	rtn
-	ldxy ACC
-	break()
+//	ldxy ACC
+//	break()
 	rts
 	!overwrite:
 	set ACC : SUB_SET_VALUE
@@ -510,14 +514,13 @@ BRANCH_TO_SUBROUTINE_TEST: {
 	.const SOURCE = 5
 	.const SOURCE_LIMIT = 4
 	.const DEST = 6
-	break()
 	sweet16
 	set SOURCE : TEST_MEMORY_SEQUENCE					// Init source register
 	set SOURCE_LIMIT : TEST_MEMORY_SEQUENCE + TMS_SIZE 	// Init limit register
 	set DEST : TEST_MEMORY_SEQUENCE_2					// Init dest register
 	bs !move+											// call subroutine
 	rtn													
-	break()
+//	break()
 	rts
 !move:
 	ldi SOURCE											// move one byte
@@ -538,8 +541,8 @@ ABSOLUTE_JUMP_TEST: {
 
 !finished:
 	rtn									// exit SWEET16
-	ldxy NON_ACC_REGISTER
-	break()								// inspect value
+//	ldxy NON_ACC_REGISTER
+//	break()								// inspect value
 	rts
 
 !setter:
