@@ -5,7 +5,7 @@
 .const TITLE_COLOR = WHITE
 .const NAME_COLOR = LIGHT_GREY
 .const DESC_COLOR = LIGHT_BLUE
-.const TESTS_PER_PAGE = $0f
+.const TESTS_PER_PAGE = 21
 	
 TEST_SUCCESS:
 	.byte $73, $00

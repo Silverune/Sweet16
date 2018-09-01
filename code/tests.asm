@@ -560,20 +560,24 @@ BRANCH_IF_NOT_MINUS_ONE_TEST: {
 	rts
 }
 
-/*	
-
-
-*/	
 // A 6502 BRK (break) instruction is executed. SWEET 16 may be re-entered non destructively at SW16d after correcting the stack pointer to its value prior to executing the BRK.   This test uses an extension to SWEET16 which inserts a VICE break when the BK instruction is encountered after restoring the SP, Registers and Flags.  Note the additional argument to sweet16 to ensure the handler is setup as it is not by default.  The handler also deals with the setting up for the stack pointer and conntinuing execution from SW16D
 BREAK_TEST: {
-	sweet16 : 1
-	set ACC : $feed
+	.const REGISTER = ACC
+	.const VAL_1 = $feed
+	.const VAL_2 = $0123
+	TestName("BREAK")
+	sweet16 : 1					// NOTE: Installing handler to bring up VICE monitor if emulating
+	set REGISTER : VAL_1
 	bk
-	set ACC : $0123
+	xjsr !assertVal1+
+	set REGISTER : VAL_2
 	bk
 	rtn
-//	ldxy ACC
-//	break()
+	TestAssertEqual(REGISTER, VAL_2, "2")
+	TestComplete()
+	rts
+!assertVal1:
+	TestAssertEqual(REGISTER, VAL_1, "1")
 	rts
 }
 
@@ -600,6 +604,32 @@ INTERRUPT_BREAK_TEST: {
 	TestAssertEqual(ACC, VAL_2, "2")
 	rts
 }
+
+// A branch to the effective address (PC + 2 + d) is taken and execution is resumed in SWEET 16 mode. The current PC is pushed onto a SWEET 16 subroutine return address stack whose pointer is R12, and R12 is incremented by 2. The carry is cleared and branch conditions set to indicate the current ACC contents. EXAMPLE: Calling a 'memory move' subroutine to move TEST_MEMORY_SEQUENCE to TEST_MEMORY_SEQUENCE_2
+BRANCH_TO_SUBROUTINE_TEST: {
+	.const SOURCE = 5
+	.const SOURCE_LIMIT = 4
+	.const DEST = 6
+	TestName("BRANCH TO SUB")
+	sweet16
+	set SOURCE : TEST_MEMORY_SEQUENCE					// Init source register
+	set SOURCE_LIMIT : TEST_MEMORY_SEQUENCE + TMS_SIZE 	// Init limit register
+	set DEST : TEST_MEMORY_SEQUENCE_2					// Init dest register
+	bs !move+											// call subroutine
+	rtn
+	jmp !done+
+!move:
+	ldi SOURCE											// move one byte
+	sti DEST
+	ld SOURCE_LIMIT
+	cpr SOURCE											// test if done
+	bp !move-
+	rs													// return
+!done:
+	TestAssertEqualMemory(TEST_MEMORY_SEQUENCE, TEST_MEMORY_SEQUENCE_2, TMS_SIZE, "MEM")
+	TestComplete()
+	rts
+}
 	
 // RS terminates execution of a SWEET 16 subroutine and returns to the SWEET 16 calling program which resumes execution (in SWEET 16 mode). R12, which is the SWEET 16 subroutine return stack pointer, is decremented twice. Branch conditions are not changed.
 RETURN_FROM_SUBROUTINE_TEST: {
@@ -617,27 +647,6 @@ RETURN_FROM_SUBROUTINE_TEST: {
 	rs
 }
 	
-// A branch to the effective address (PC + 2 + d) is taken and execution is resumed in SWEET 16 mode. The current PC is pushed onto a SWEET 16 subroutine return address stack whose pointer is R12, and R12 is incremented by 2. The carry is cleared and branch conditions set to indicate the current ACC contents. EXAMPLE: Calling a 'memory move' subroutine to move TEST_MEMORY_SEQUENCE to TEST_MEMORY_SEQUENCE_2
-BRANCH_TO_SUBROUTINE_TEST: {
-	.const SOURCE = 5
-	.const SOURCE_LIMIT = 4
-	.const DEST = 6
-	sweet16
-	set SOURCE : TEST_MEMORY_SEQUENCE					// Init source register
-	set SOURCE_LIMIT : TEST_MEMORY_SEQUENCE + TMS_SIZE 	// Init limit register
-	set DEST : TEST_MEMORY_SEQUENCE_2					// Init dest register
-	bs !move+											// call subroutine
-	rtn													
-//	break()
-	rts
-!move:
-	ldi SOURCE											// move one byte
-	sti DEST
-	ld SOURCE_LIMIT
-	cpr SOURCE											// test if done
-	bp !move-
-	rs													// return
-}
 
 
 // Test the pseudocommand AJMP which allows SWEET16 to perform absolute jumps by directly setting the address of the PC (minus 1) in the ACC register.  Affect the value in the ACC and PC registers
