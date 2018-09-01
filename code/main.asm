@@ -32,6 +32,7 @@ Program:
 	jsr BRANCH_IF_NOT_MINUS_ONE_TEST
 	jsr BREAK_TEST
 	jsr BRANCH_TO_SUBROUTINE_TEST
+	jsr RETURN_FROM_SUBROUTINE_TEST
 
 	// extensions
 	jsr EXTERNAL_JSR_TEST
@@ -42,7 +43,6 @@ Program:
 	TestFinished()
 	
 	/*
-	jsr RETURN_FROM_SUBROUTINE_TEST
 	jsr ABSOLUTE_JUMP_TEST
 
 	.eval test_calculate_effective_address($1000)

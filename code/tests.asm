@@ -633,18 +633,22 @@ BRANCH_TO_SUBROUTINE_TEST: {
 	
 // RS terminates execution of a SWEET 16 subroutine and returns to the SWEET 16 calling program which resumes execution (in SWEET 16 mode). R12, which is the SWEET 16 subroutine return stack pointer, is decremented twice. Branch conditions are not changed.
 RETURN_FROM_SUBROUTINE_TEST: {
+	.const REGISTER = ACC
 	.const DEFAULT_VALUE = $1234
 	.const SUB_SET_VALUE = $5678
+	TestName("RETURN FROM SUB")
 	sweet16
-	set ACC : DEFAULT_VALUE
+	set REGISTER : DEFAULT_VALUE
 	bs !overwrite+
 	rtn
-//	ldxy ACC
-//	break()
-	rts
-	!overwrite:
-	set ACC : SUB_SET_VALUE
+	jmp !done+
+!overwrite:
+	set REGISTER : SUB_SET_VALUE
 	rs
+!done:
+	TestAssertEqual(REGISTER, SUB_SET_VALUE, "SUB")
+	TestComplete()
+	rts
 }
 	
 
