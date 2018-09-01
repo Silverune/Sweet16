@@ -590,3 +590,16 @@ SET_INDIRECT_TEST: {
 	TestComplete()
 	rts
 }
+
+// SETM is an extension added to the standard SWEET16 instructions to allow for a setting a register value indirectly by providing a memory location to source.  It puts the exact bytes into the register not Hight byte Low byte
+SET_MEMORY_TEST: {
+	.const REGISTER = 5			// arbitrary register
+	TestName("SET MEMORY")
+	sweet16
+	setm REGISTER : TEST_MEMORY	// set register with value at TEST_MEMORT
+	rtn
+	TestAssertEqualIndirect(REGISTER, TEST_MEMORY, "TEST MEM")	
+	TestComplete()
+	rts
+}
+	

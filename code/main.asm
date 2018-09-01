@@ -19,6 +19,7 @@ Program:
 	
 	jsr EXTERNAL_JSR_TEST
 	jsr SET_INDIRECT_TEST
+	jsr SET_MEMORY_TEST
 	jsr INTERRUPT_BREAK_TEST
 	
 	TestFinished()

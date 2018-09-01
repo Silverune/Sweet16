@@ -128,12 +128,12 @@
 }
 .pseudocommand SETI register : address { seti register : address }
 
-.pseudocommand sete register : address {
+.pseudocommand setm register : address {
 	.byte $0e
 	.word address.getValue()
 	.byte rl(register.getValue())
 }
-.pseudocommand SETE register : address { sete register : address }
+.pseudocommand SETM register : address { setm register : address }
 	
 // "You can perform absolute jumps within SWEET 16 by loading the ACC (R0) with the address you wish to jump to (minus 1) and executing a ST R15 instruction."  This is not a core SWEET16 instruction
 .pseudocommand ajmp address {
