@@ -74,10 +74,12 @@ SHOW_DIFFERECE:
 	jmp !eg+
 VAL_1_MEMORY:
 	!byte $12, $34
-!eg:	
+!eg:
+	SWEET16
 	SET REGISTER : VAL_1            // assigns VAL_1 to register 5 - in memory:  34 12 ...
 	SETM REGISTER : VAL_1_MEMORY    // assigns VAL_1_MEMORY memory to register 5: 12 34 ...
 	SETI REGISTER : VAL_1_MEMORY    // assigns VAL_1_MEMORY high / low to register 5: 34 21 ...
+	RTN
 	rts
 ```
 
