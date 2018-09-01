@@ -4,7 +4,7 @@ BasicUpstart2(Program)
 Program:
 	TestStart()
 
-	.eval test_calculate_effective_address($1000)
+//	.eval test_calculate_effective_address($1000)
 	
 	jsr SET_TEST
 	jsr LOAD_TEST
@@ -25,6 +25,8 @@ Program:
 	jsr BRANCH_ALWAYS_TEST
 	jsr BRANCH_IF_NO_CARRY_TEST	
 	jsr BRANCH_IF_CARRY_SET_TEST
+	jsr BRANCH_IF_PLUS_TEST
+	
 	
 	jsr EXTERNAL_JSR_TEST
 	jsr SET_INDIRECT_TEST
@@ -34,7 +36,6 @@ Program:
 	TestFinished()
 	
 	/*
-	jsr BRANCH_IF_PLUS_TEST
 	jsr BRANCH_IF_MINUS_TEST
 	jsr BRANCH_IF_ZERO_TEST
 	jsr BRANCH_IF_NONZERO_TEST

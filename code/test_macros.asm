@@ -131,6 +131,25 @@ memory:
 !done:	
 }
 
+.macro TestAssertEqualMemoryToConstant(source, constant, size, desc) {
+	TestAssertDescription(desc)
+	ldx #$ff
+!loop:
+	inx
+	cpx #size
+	beq !success+
+	lda #constant
+	cmp source,x
+	beq !loop-
+	jmp !failed+
+!success:
+	TestSuccess()
+	jmp !done+
+!failed:
+	TestFailure()
+!done:	
+}
+
 // compares the two bytes at the passed in address with the value off the address passed in (assumes its a 2-byte address)
 .macro TestAssertEqualMemoryDirect(addr, value, desc) {
 	TestAssertDescription(desc)
@@ -209,6 +228,22 @@ memory:
 !done:	
 }
 
+.macro TestAssertEqualRegisters(register1, register2, desc) {
+	TestAssertDescription(desc)
+	lda rl(register1)
+	cmp rl(register2)
+	bne !failed+
+	lda rh(register1)
+	cmp rh(register2)
+	bne !failed+
+	TestSuccess()
+	jmp !done+
+!failed:
+	TestFailure()
+!done:	
+}
+
+	
 .macro TestPause() {
 	OutputInColor(memory, WHITE)
 	jmp !no_key+

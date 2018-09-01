@@ -344,30 +344,17 @@ RETURN_TO_6502_MODE_TEST: {
 	rts
 }
 	
-.macro InsertBranches() {
-	.const VAL_1 = $fedc
-	.const VAL_2 = $0123
-!setVal1:
-	set ACC : VAL_1
-	br !finish+
-!setVal2:
-	set ACC : VAL_2
-	br !finish+
-!finish:
-	rtn
-}
-
 // An effective address (ea) is calculated by adding the signed displacement byte (d) to the PC. The PC contains the address of the instruction immediately following the BR, or the address of the BR op plus 2. The displacement is a signed two's complement value from -128 to +127. Branch conditions are not changed.
 BRANCH_ALWAYS_TEST: {
-	.const VAL_1 = $fedc
-	.const VAL_2 = $0123
 	TestName("BRANCH ALWAYS")
 	sweet16
 	br !setVal1+
 !setVal1:
+	.const VAL_1 = $fedc
 	set ACC : VAL_1
 	br !finish+
 !setVal2:
+	.const VAL_2 = $0123
 	set ACC : VAL_2
 	br !finish+
 !finish:
@@ -426,13 +413,12 @@ BRANCH_IF_CARRY_SET_TEST: {
 	TestComplete()
 	rts
 }
-	
-/*	
 
-// A branch is effected only if the prior 'result' (or most recently transferred dat) was positive. Branch conditions are not changed. e.g., Clear mem from TEST_MEMORY_SEQUENCE to SIZE
+// A branch is effected only if the prior 'result' (or most recently transferred data) was positive. Branch conditions are not changed. e.g., Clear mem from TEST_MEMORY_SEQUENCE to SIZE
 BRANCH_IF_PLUS_TEST: {
 	.const DATA_REGISTER = 5
 	.const LIMIT_REGISTER = 4
+	TestName("BRANCH IF +VE")
 	sweet16
 	set DATA_REGISTER : TEST_MEMORY_SEQUENCE		 		// Init pointer
 	set LIMIT_REGISTER : TEST_MEMORY_SEQUENCE + TMS_SIZE 	// Init limit
@@ -441,11 +427,19 @@ BRANCH_IF_PLUS_TEST: {
 	sti DATA_REGISTER						// Increment R5
 	ld LIMIT_REGISTER						// Compare limit
 	cpr DATA_REGISTER						// to Pointer
+	xjsr !debug+
 	bp !loop-								// Loop until done
 	rtn
-//	break()
+	break()
+	TestAssertEqualMemoryToConstant(TEST_MEMORY_SEQUENCE, $00, TMS_SIZE, "CLR")
+	TestComplete()
+	rts
+!debug:
+	break()
 	rts
 }
+	
+/*	
 
 // A branch is effected only if prior 'result' was minus (negative, MSB = 1). Branch conditions are not changed.
 BRANCH_IF_MINUS_TEST: {
