@@ -58,7 +58,7 @@ SWEET16 instructions fell into register and nonregister categories with the regi
 
 The implementation of SWEET16 required a few key things to achieve this.   The first is that the implementation of all the instructions are located on the same 256 byte memory page.  This way a jumptable can be used which only needs to specify a single byte as they will all share a common high byte.  Another requirement is that the registers themselves are located in zero page.  (More information can be found in Carsten Strotmann [article](http://www.6502.org/source/interpreters/sweet16.htm)) detailing porting SWEET16.
 
-# Extenstions
+# Extensions
 In addition to the standard SWEET16 mnemonics there was room for an additional 3 which I have created in this implmentation.  This is in addition to creating another ```pseudocommand``` that appears to be a SWEET16 call but is actually simply a macro calling two successive SWEET16 calls to provide the ability to perform an absolute jump.  These SWEET16 extensions are:
 
 - XJSR - Provides a means to calling 6502 code while still executing code as if within the SWEET16 metaprocessor.  All state is kept intact within the SWEET16 virtual environment and after a ```rts``` is executed in the regular 6502 SWEET16 continues execution.   This was found to be invaluable in the test suite for outputting intermediate results.
