@@ -4,8 +4,7 @@ BasicUpstart2(Program)
 Program:
 	TestStart()
 
-//	.eval test_calculate_effective_address($1000)
-	
+	// core sweet16
 	jsr SET_TEST
 	jsr LOAD_TEST
 	jsr STORE_TEST
@@ -29,7 +28,9 @@ Program:
 	jsr BRANCH_IF_MINUS_TEST
 	jsr BRANCH_IF_ZERO_TEST	
 	jsr BRANCH_IF_NONZERO_TEST
-	
+	jsr BRANCH_IF_MINUS_ONE_TEST
+
+	// extensions
 	jsr EXTERNAL_JSR_TEST
 	jsr SET_INDIRECT_TEST
 	jsr SET_MEMORY_TEST
@@ -38,7 +39,6 @@ Program:
 	TestFinished()
 	
 	/*
-	jsr BRANCH_IF_MINUS_ONE_TEST
 	jsr BRANCH_IF_NOT_MINUS_ONE_TEST
 	jsr BREAK_TEST
 	jsr BRANCH_TO_SUBROUTINE_TEST

@@ -508,20 +508,34 @@ BRANCH_IF_NONZERO_TEST: {
 	rts
 }
 
-/*	
-
-
 // A branch is effected only if the prior 'result' was minus one ($FFFF Hex). Branch conditions are not changed.
 BRANCH_IF_MINUS_ONE_TEST: {
 	.const DATA_REGISTER = 5
 	.const VALUE = 1
+	TestName("BRANCH IF -1")
 	sweet16
 	set DATA_REGISTER : #VALUE
 	sub ACC									// Clear mem byte
 	sub DATA_REGISTER                       // Subtract from 0 value in R5
-	bm1 SET_VAL_2
-	br SET_VAL_1
+	bm1 !setVal2+
+	br !setVal1+
+!setVal1:
+	.const VAL_1 = $fedc
+	set ACC : VAL_1
+	br !finish+
+!setVal2:
+	.const VAL_2 = $0123
+	set ACC : VAL_2
+	br !finish+
+!finish:
+	rtn
+	TestAssertEqual(ACC, VAL_2, "2")
+	TestComplete()
+	rts
 }
+
+/*	
+
 
 // A branch effected only if the prior 'result' was not minus 1. Branch conditions are not changed
 BRANCH_IF_NOT_MINUS_ONE_TEST: {
