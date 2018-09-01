@@ -379,8 +379,6 @@ BRANCH_ALWAYS_TEST: {
 
 // A branch to the effective address is taken only is the carry is clear, otherwise execution resumes as normal with the next instruction. Branch conditions are not changed.	
 BRANCH_IF_NO_CARRY_TEST: {
-	.const VAL_1 = $fedc
-	.const VAL_2 = $0123
 	.const REGISTER = 5
 	TestName("BRANCH NO CARRY")
 	sweet16
@@ -390,9 +388,11 @@ BRANCH_IF_NO_CARRY_TEST: {
 	bnc !setVal1+
 	br !setVal2+
 !setVal1:
+	.const VAL_1 = $fedc
 	set ACC : VAL_1
 	br !finish+
 !setVal2:
+	.const VAL_2 = $0123
 	set ACC : VAL_2
 	br !finish+
 !finish:
@@ -402,17 +402,32 @@ BRANCH_IF_NO_CARRY_TEST: {
 	rts
 }
 
-/*	
 // A branch is effected only if the carry is set. Branch conditions are not changed.
 BRANCH_IF_CARRY_SET_TEST: {
 	.const REGISTER = 5
+	TestName("BRANCH IF CARRY")
 	sweet16
 	set REGISTER : $1000
 	set ACC : $ffff
 	add REGISTER
-	bc SET_VAL_1
-	br SET_VAL_2
+	bc !setVal1+
+	br !setVal2+
+!setVal1:
+	.const VAL_1 = $fedc
+	set ACC : VAL_1
+	br !finish+
+!setVal2:
+	.const VAL_2 = $0123
+	set ACC : VAL_2
+	br !finish+
+!finish:
+	rtn
+	TestAssertEqual(ACC, VAL_1, "1")
+	TestComplete()
+	rts
 }
+	
+/*	
 
 // A branch is effected only if the prior 'result' (or most recently transferred dat) was positive. Branch conditions are not changed. e.g., Clear mem from TEST_MEMORY_SEQUENCE to SIZE
 BRANCH_IF_PLUS_TEST: {
