@@ -69,8 +69,8 @@ To elaborate:
 
 ```
 SHOW_DIFFERECE:
-	.const VAL_1 = $1234	       // arbitrary number
-	.const REGISTER = 5		       // arbitrary register (location $0021)
+	.const VAL_1 = $1234			// arbitrary number
+	.const REGISTER = 5				// arbitrary register (location $0021)
 	jmp !eg+
 VAL_1_MEMORY:
 	!byte $12, $34
@@ -81,7 +81,30 @@ VAL_1_MEMORY:
 	rts
 ```
 
+- AJMP - This is simply a convenience call which sets the SWEET16 PC to the values specified which causes a jump to the desired address.  To store this value in the PC it overwrites the value in the ACC register
+
 # Test Suite
+Each of the SWEET16 has some unit style tests around them.  These are usually quite trivial and not exhaustive but they have proven to be suitable for catching game-changing breakages when my experiments have gone too far.   Some do rely on my extension ```XJSR``` due to the nature of needing to call a lot of 6502 code to output the intermediate results to the monitor.   The other point looking at the branch tests is the need to place the jumps close within the calls themselves as the branches can only every be +/- 127 which causes issues when calling convenience routine to output to the monitor which can be quite a lot of code.
+
+# SWEET16 code changes
+There were a few things I needed to do to bring it into the C64 world.  First was to find a place in Zero Page which wouldn't cause too much damage.  I start at $0017 and take the next 34 bytes for registers and a convience zero page location I use as part of the ```SETI``` / ```SETM``` implementations.  This clobbers some BASIC important values but that doesn't impact this work.
+
+Its important to have the opcode lookup table all within the one page so that only a single address byte is required in the opcode itself.  It doesn't matter where else the subroutine calls after that as long as all 32 branches are on the same page.   As such some calls have had to be moved outside of this page to allow for the 3 new mnemonics.   Both ```POP```, ```SET``` and ```RTN``` mnemonics had the bulk of their implementation moved out of page.   This is not a big deal as only costs a single jump but is a difference from other SWEET16 implementations.
+
+Another difference is the introduction of a ```nop``` at the start of the page containing all the mnemonics.  The reasons for this is that Kick allows code to be page aligned which is done via the ```.align $100``` command.  This means it is now on a 256 byte page alignment.  However, SWEET16 uses ```JSR```'s as ```JMP``` by putting the address minus one onto the stack and then executing an ```RTS```.   In every case except being page aligned this works but the first call (```SET```) being page aligned at ```00``` in its low byte becomes ```ff``` after the minus one.  So to ensure this will always work a ```nop``` has been placed at the start of the table.   This is not a deficiency in SWEET16, rather an implementation detail that affected this particular port.
+
+# Debugging
+One aspect of using SWEET16 which at first might appear to be problematic is debugging.  While working in assembler a lot of time is spent inspecting memory location and registers and SWEET16 is not forgiving in this regard.  The registers you are inspecting are arbitrary memory locations outside of the normal 6502 ones and breakpoints don't work as well as would initially be expected due to this.   The implementations I've looked at for both Apple and Atari appear to be using a trick to inject the opcode for ```BRK``` (```00```) by making the jump table go to a location just after the ```LD``` implementation and execute a ```00```.  I instead made it a proper call and issue a ```BK``` which executes the the ISR for break.   This is usually not setup unless debugging so I have added two ways to set this up to assist in debugging SWEET16 programs "natively".  They both make the assumption the developer has access to VICE and is not developing on native hardware for this part of the development as it installs an ISR that produces a breakpoint in a VICE format.  So when run in debug mode once the SWEET16 call ```BR``` is encountered the monitor will appear and the developer can inspect the state of the metaprocessor.   There are two ways to achieve this.
+
+- Start SWEET16 with the optional flag to install the interrupt routine: ```sweet16 : 1```
+- While within SWEET16 execute the extension ```IBK``` which will ensure the ISR is installed (only needs to be done once - use ```BK``` from then onwards).
+
+In either case once the command is encountered (and assuming using VICE) the monitor will show up at that point.   Realise that the user is in 6502 world not SWEET16 so it is fine to inspect the mapped zero-page registers etc. However, once you continue execution the call will jump to ```SW16D``` which effectively continues where you left off.
+
+A more powerful alternative to this is using the extension of ```XJSR``` which will allow any 6502 routine to be called within SWEET16 execution to continue once it encounters a ```rts```.
+
+# Test Suite
+I've added a rudimentary test suite based on Woz's original descriptions for each mnemonic.  Very few look 1:1 with the description but they are similar in vibe.  Often to keep a single source of truth I'll use a Kick ```.const``` instead of the original value so that I can pass the same value to an assert routine.   The end code is the same but code maintainability and the flexibility is more-so in 2018 than it was in 1977.  In total there are 50 "unit" tests validating the original code, the extensions and my understanding of the metaprocessor.  I'm sure there is room for many more but I do think there are enough to give a vague guide to anyone putting their toes into SWEET16 for the first time some confidence about how it is meant to work.
 
 # Development
 - Cross-Assembler [Kick Assembler v4.19](http://www.theweb.dk/KickAssembler/Main.html#frontpage)
