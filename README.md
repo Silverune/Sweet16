@@ -61,9 +61,9 @@ The implementation of SWEET16 required a few key things to achieve this.   The f
 # Extensions
 In addition to the standard SWEET16 mnemonics there was room for an additional 3 which I have created in this implementation.  This is in addition to creating another ```pseudocommand``` that appears to be a SWEET16 call but is actually simply a macro calling two successive SWEET16 calls to provide the ability to perform an absolute jump.  These SWEET16 extensions are:
 
-- XJSR - Provides a means to calling 6502 code while still executing code as if within the SWEET16 metaprocessor.  All state is kept intact within the SWEET16 virtual environment and after a ```rts``` is executed in the regular 6502 SWEET16 continues execution.   This was found to be invaluable in the test suite for outputting intermediate results.
-- SETM - SWEET16 uses up half its mnemonics on setter routines which are only able to use direct absolute values.   The SETM extension allows an indirect memory address to be used which will have their values loaded directly into the register instead
-- SETI - Very similar to SETM except that the byte ordering is High to Low which is how SWEET16 treats 16-bit values passed as constants to registers.
+- ```XJSR``` - Provides a means to calling 6502 code while still executing code as if within the SWEET16 metaprocessor.  All state is kept intact within the SWEET16 virtual environment and after a ```rts``` is executed in the regular 6502 SWEET16 continues execution.   This was found to be invaluable in the test suite for outputting intermediate results.
+- ```SETM``` - SWEET16 uses up half its mnemonics on setter routines which are only able to use direct absolute values.   The ```SETM``` extension allows an indirect memory address to be used which will have their values loaded directly into the register instead
+- ```SETI``` - Very similar to ```SETM``` except that the byte ordering is High to Low which is how SWEET16 treats 16-bit values passed as constants to registers.
 
 To elaborate:
 
@@ -81,7 +81,12 @@ VAL_1_MEMORY:
 	rts
 ```
 
-- AJMP - This is simply a convenience call which sets the SWEET16 PC to the values specified which causes a jump to the desired address.  To store this value in the PC it overwrites the value in the ACC register
+- ```AJMP``` - This is simply a convenience call which sets the SWEET16 PC to the values specified which causes a jump to the desired address.  To store this value in the PC it overwrites the value in the ACC register
+
+# Convenience
+There are a lot of convenience routine created to make using and verifying SWEET16 more readily accessable:
+- ```IBK``` - (see below) Installs an ISR handler for working with VICE and calling ```BK```
+- ```ldyx``` - Loads the values from the passed in register to the ```X``` and ```Y``` registers.  Handy for debugging when you want to quickly inspect what is happening in SWEET16
 
 # Test Suite
 Each of the SWEET16 has some unit style tests around them.  These are usually quite trivial and not exhaustive but they have proven to be suitable for catching game-changing breakages when my experiments have gone too far.   Some do rely on my extension ```XJSR``` due to the nature of needing to call a lot of 6502 code to output the intermediate results to the monitor.   The other point looking at the branch tests is the need to place the jumps close within the calls themselves as the branches can only every be +/- 127 which causes issues when calling convenience routine to output to the monitor which can be quite a lot of code.
