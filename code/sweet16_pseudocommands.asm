@@ -73,10 +73,6 @@
 }
 .pseudocommand XJSR address { xjsr address }
 
-.pseudocommand ibk { .byte $0e }
-.pseudocommand IBK { ibk }
-
-	
 // Register Ops
 .pseudocommand set register : address {	register_encode($10, register, address) }
 .pseudocommand SET register : address { set register : address }
@@ -131,6 +127,13 @@
 	.byte rl(register.getValue())
 }
 .pseudocommand SETI register : address { seti register : address }
+
+.pseudocommand sete register : address {
+	.byte $0e
+	.word address.getValue()
+	.byte rl(register.getValue())
+}
+.pseudocommand SETE register : address { sete register : address }
 	
 // "You can perform absolute jumps within SWEET 16 by loading the ACC (R0) with the address you wish to jump to (minus 1) and executing a ST R15 instruction."  This is not a core SWEET16 instruction
 .pseudocommand ajmp address {

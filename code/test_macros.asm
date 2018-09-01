@@ -175,7 +175,6 @@ memory:
 .macro TestAssertEqual(register, value, desc) {
 	TestAssertDescription(desc)
 	ldxy register
-	break()
 	cpx #<value
 	bne !failed+
 	cpy #>value

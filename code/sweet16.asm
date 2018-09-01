@@ -140,7 +140,7 @@ BRTBL:
     .byte  <INR-1          // EX
     .byte  <XJSR-1         // D
     .byte  <DCR-1          // FX
-    .byte  <IBK-1          // E
+    .byte  <SETE-1         // E
     .byte  <NUL-1          // UNUSED
     .byte  <SETI-1         // F
 
@@ -172,11 +172,11 @@ BK:
 #endif
 	brk
 
-IBK:
+SETE:
 #if DEBUG
 	trace()
 #endif
-	jmp IBK_OUTOFPAGE 	// code will make block larger than 255 if placed here
+	jmp SETE_OUTOFPAGE 	// code will make block larger than 255 if placed here
 
 XJSR:
 #if DEBUG
@@ -510,7 +510,7 @@ BREAK_HANDLER:
 	lda TEMP_A
 	jmp SW16D
 
-SETI_OUTOFPAGE:
+SETIE_COMMON:
 	lda (R15L),Y       		// dest addr high
 	sta RL(ZP)
 	IncPC()
@@ -522,16 +522,25 @@ SETI_OUTOFPAGE:
 	tay
 	inc RL(ZP)
 	ldx #RL(ZP)
+	rts
+	
+SETI_OUTOFPAGE:
+	jsr SETIE_COMMON
 	lda ($00,X)
-	sta $00,Y				// loq order
+	sta $00,Y				// low order
 	dec RL(ZP)
 	lda ($00,X)
 	sta $01,Y				// high order
 	jmp SW16D				// back to SWEET16
 
-IBK_OUTOFPAGE:
-	BreakOnBrk()
-	jmp BK
+SETE_OUTOFPAGE:
+	jsr SETIE_COMMON
+	lda ($00,X)
+	sta $01,Y				// high order
+	dec RL(ZP)
+	lda ($00,X)
+	sta $00,Y				// low order
+	jmp SW16D				// back to SWEET16
 
 XJSR_OUTOFPAGE: {
 #if DEBUG	

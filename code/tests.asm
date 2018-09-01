@@ -467,14 +467,25 @@ BREAK_TEST: {
 
 // Shows the use of the extension "IBK" which operates like "BK" except that it is responsible for installing the 6502 "brk" which can also be done by starting SWEET16 with a "sweet16 : 1".  Once the interrupt handler has been set there is no need to call ibk again
 INTERRUPT_BREAK_TEST: {
+	.const VAL_1 = $feed
+	.const VAL_2 = $0123
+	TestName("INT BREAK")	
+	BreakOnBrk()
 	sweet16
-	set ACC : $feed
-	ibk
-	set ACC : $0123
+	set ACC : VAL_1
 	bk
+	xjsr !assert1+
+	set ACC : VAL_2
+	bk
+	xjsr !assert2+
 	rtn
-	ldxy ACC
-	break()
+	TestComplete()
+	rts
+!assert1:
+	TestAssertEqual(ACC, VAL_1, "1")
+	rts
+!assert2:
+	TestAssertEqual(ACC, VAL_2, "2")
 	rts
 }
 	

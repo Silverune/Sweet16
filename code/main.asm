@@ -19,7 +19,8 @@ Program:
 	
 	jsr EXTERNAL_JSR_TEST
 	jsr SET_INDIRECT_TEST
-
+	jsr INTERRUPT_BREAK_TEST
+	
 	TestFinished()
 	
 	/*
@@ -40,7 +41,6 @@ Program:
 	jsr BRANCH_TO_SUBROUTINE_TEST
 	jsr RETURN_FROM_SUBROUTINE_TEST
 	jsr ABSOLUTE_JUMP_TEST
-//	jsr INTERRUPT_BREAK_TEST
 
 	.eval test_calculate_effective_address($1000)
 */
