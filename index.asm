@@ -1,6 +1,7 @@
 // Sweet16 top-level
 #import "code/config.asm"
 #import "code/screen_macros.asm"
+#import "code/keyboard_macros.asm"
 #import "code/debug.asm"
 #import "code/sweet16_functions.asm"
 #import "code/sweet16_macros.asm"

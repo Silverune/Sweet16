@@ -4,6 +4,9 @@ TEST_COUNT:
 TEST_PASS_COUNT:
 	.byte $00
 
+TEST_NAME_COUNT:
+	.byte $00
+	
 TEST_TITLE:	
 	.text "SWEET16 TEST RUNNER"
 	Newline()
@@ -18,6 +21,7 @@ TEST_TITLE:
 	lda #$00
 	sta TEST_COUNT
 	sta TEST_PASS_COUNT
+	sta TEST_NAME_COUNT
 }
 
 .macro TestInc() {
@@ -44,13 +48,12 @@ memory_2:
 	.byte NULL
 memory_3:
 	Newline()
-/*color:
-	.byte	$00*/
-!done:	
+!done:
 }
 	
 .macro TestName(name) {
 	.const spacing = 2
+	inc TEST_NAME_COUNT
 	OutputInColor(memory, NAME_COLOR)
 	jmp !done+
 memory:
@@ -88,6 +91,13 @@ memory:
 memory:
 	Newline()
 !done:
+	ldx TEST_NAME_COUNT
+	cpx #TESTS_PER_PAGE
+	bne !exit+
+	TestPause()
+	ldx #$00
+	stx TEST_NAME_COUNT
+!exit:	
 }
 
 .macro TestAssertEqualIndirectByte(register, address, desc) {
@@ -119,7 +129,7 @@ memory:
 !failed:
 	TestFailure()
 !done:	
-	}
+}
 
 // compares the two bytes at the passed in address with the value off the address passed in (assumes its a 2-byte address)
 .macro TestAssertEqualMemoryDirect(addr, value, desc) {
@@ -184,4 +194,34 @@ memory:
 !failed:
 	TestFailure()
 !done:	
+}
+
+// mainly used to output desc and result - actual test performed externally	
+.macro TestAssertNonZero(value, desc) {
+	TestAssertDescription(desc)
+	ldx #value
+	beq !failed+
+!success:
+	TestSuccess()
+	jmp !done+
+!failed:
+	TestFailure()
+!done:	
+}
+
+.macro TestPause() {
+	OutputInColor(memory, WHITE)
+	jmp !no_key+
+memory:
+	.byte RETURN
+	.text "PRESS ANY KEY TO CONTINUE..."
+	Newline()
+!no_key:
+	KernalGetKey()
+	beq !no_key-
+	KernalOutput(newline)
+	jmp !done+
+newline:
+	Newline()
+!done:
 }

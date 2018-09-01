@@ -337,9 +337,11 @@ DECREMENT_TEST: {
 
 // Control is returned to the 6502 and program execution continues at the location immediately following the RTN instruction. the 6502 registers and status conditions are restored to their original contents (prior to entering SWEET 16 mode).
 RETURN_TO_6502_MODE_TEST: {
+	TestName("6502 MODE")
 	sweet16
 	rtn
-	//break()
+	TestAssertNonZero(1, "RTN")
+	TestComplete()
 	rts
 }
 	
