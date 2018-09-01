@@ -3,6 +3,8 @@ BasicUpstart2(Program)
 *=$0810 "Program"          // $080d is end of BASIC
 Program:
 	TestStart()
+
+//	jsr BRANCH_IF_NO_CARRY_TEST
 	
 	jsr SET_TEST
 	jsr LOAD_TEST
@@ -20,6 +22,7 @@ Program:
 	jsr INCREMENT_TEST
 	jsr DECREMENT_TEST
 	jsr RETURN_TO_6502_MODE_TEST
+	jsr BRANCH_ALWAYS_TEST
 	
 	jsr EXTERNAL_JSR_TEST
 	jsr SET_INDIRECT_TEST
@@ -29,9 +32,6 @@ Program:
 	TestFinished()
 	
 	/*
-	jsr RETURN_TO_6502_MODE_TEST
-	jsr BRANCH_ALWAYS_TEST
-	jsr BRANCH_IF_NO_CARRY_TEST
 	jsr BRANCH_IF_CARRY_SET_TEST
 	jsr BRANCH_IF_PLUS_TEST
 	jsr BRANCH_IF_MINUS_TEST

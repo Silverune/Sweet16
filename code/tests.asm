@@ -1,5 +1,4 @@
 // Simple tests for Sweet16.  Most of these are converted versions of Woz's originals in the description of each of the mnemonics / opcodes (http://www.6502.org/source/interpreters/sweet16.htm#Register_Instructions_).
-	
 
 // Setup some common blocks of memory to use for the testing
 TEST_MEMORY:
@@ -345,34 +344,38 @@ RETURN_TO_6502_MODE_TEST: {
 	rts
 }
 	
-SET_FEDC:
-	set ACC : $fedc
+SET_VAL_1:
+	.const VAL_1 = $fedc
+	set ACC : VAL_1
 	br BRANCH_FINISH
 
-SET_0123:
-	set ACC : $0123
+SET_VAL_2:
+	.const VAL_2 = $0123
+	set ACC : VAL_2
 	br BRANCH_FINISH
-
-BRANCH_FINISH:
-	rtn
-//	ldxy ACC
-//	break()
-	rts	
 
 // An effective address (ea) is calculated by adding the signed displacement byte (d) to the PC. The PC contains the address of the instruction immediately following the BR, or the address of the BR op plus 2. The displacement is a signed two's complement value from -128 to +127. Branch conditions are not changed.
 BRANCH_ALWAYS_TEST:
+	TestName("BRANCH ALWAYS")
 	sweet16
-	br SET_FEDC
+	br SET_VAL_1
+
+BRANCH_FINISH:
+	rtn
+	TestAssertEqual(ACC, VAL_1, "1")
+	TestComplete()
+	rts	
 
 // A branch to the effective address is taken only is the carry is clear, otherwise execution resumes as normal with the next instruction. Branch conditions are not changed.	
 BRANCH_IF_NO_CARRY_TEST: {
 	.const REGISTER = 5
+	TestName("BRANCH NO CARRY")
 	sweet16
 	set REGISTER : $1000
 	set ACC : $ffff
 	add REGISTER
-	bnc SET_FEDC
-	br SET_0123
+	bnc SET_VAL_1
+	br SET_VAL_2
 }
 	
 // A branch is effected only if the carry is set. Branch conditions are not changed.
@@ -382,8 +385,8 @@ BRANCH_IF_CARRY_SET_TEST: {
 	set REGISTER : $1000
 	set ACC : $ffff
 	add REGISTER
-	bc SET_FEDC
-	br SET_0123
+	bc SET_VAL_1
+	br SET_VAL_2
 }
 
 // A branch is effected only if the prior 'result' (or most recently transferred dat) was positive. Branch conditions are not changed. e.g., Clear mem from TEST_MEMORY_SEQUENCE to SIZE
@@ -412,16 +415,16 @@ BRANCH_IF_MINUS_TEST: {
 	set DATA_REGISTER : #VALUE
 	sub ACC									// Clear mem byte
 	sub DATA_REGISTER                       // Subtract from 0 value in R5
-	bm SET_0123
-	br SET_FEDC
+	bm SET_VAL_2
+	br SET_VAL_1
 }
 
 // A Branch is effected only if the prior 'result' was zero. Branch conditions are not changed.
 BRANCH_IF_ZERO_TEST: {
 	sweet16
 	sub ACC									// Clear mem byte
-	bz SET_0123
-	br SET_FEDC
+	bz SET_VAL_2
+	br SET_VAL_1
 }
 
 // A branch is effected only if the priot 'result' was non-zero Branch conditions are not changed.
@@ -432,8 +435,8 @@ BRANCH_IF_NONZERO_TEST: {
 	set DATA_REGISTER : #VALUE
 	sub ACC									// Clear mem byte
 	add DATA_REGISTER                       // Add from R5 value to 0 
-	bnz SET_0123
-	br SET_FEDC
+	bnz SET_VAL_2
+	br SET_VAL_1
 }
 
 // A branch is effected only if the prior 'result' was minus one ($FFFF Hex). Branch conditions are not changed.
@@ -444,8 +447,8 @@ BRANCH_IF_MINUS_ONE_TEST: {
 	set DATA_REGISTER : #VALUE
 	sub ACC									// Clear mem byte
 	sub DATA_REGISTER                       // Subtract from 0 value in R5
-	bm1 SET_0123
-	br SET_FEDC
+	bm1 SET_VAL_2
+	br SET_VAL_1
 }
 
 // A branch effected only if the prior 'result' was not minus 1. Branch conditions are not changed
@@ -456,8 +459,8 @@ BRANCH_IF_NOT_MINUS_ONE_TEST: {
 	set DATA_REGISTER : #VALUE
 	sub ACC									// Clear mem byte
 	sub DATA_REGISTER                       // Subtract from 0 value in R5
-	bnm1 SET_0123
-	br SET_FEDC
+	bnm1 SET_VAL_2
+	br SET_VAL_1
 }
 	
 // A 6502 BRK (break) instruction is executed. SWEET 16 may be re-entered non destructively at SW16d after correcting the stack pointer to its value prior to executing the BRK.   This test uses an extension to SWEET16 which inserts a VICE break when the BK instruction is encountered after restoring the SP, Registers and Flags.  Note the additional argument to sweet16 to ensure the handler is setup as it is not by default.  The handler also deals with the setting up for the stack pointer and conntinuing execution from SW16D
