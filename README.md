@@ -108,7 +108,7 @@ One aspect of using SWEET16 which at first might appear to be problematic is deb
 
 In either case once the command is encountered (and assuming using VICE) the monitor will show up at that point.   Realise that the user is in 6502 world not SWEET16 so it is fine to inspect the mapped zero-page registers etc. However, once you continue execution the call will jump to ```SW16D``` which effectively continues where you left off.
 
-A more powerful alternative to this is using the extension of ```XJSR``` which will allow any 6502 routine to be called within SWEET16 execution to continue once it encounters a ```rts```.
+A more powerful alternative to this is using the extension of ```XJSR``` which will allow any 6502 routine to be called within SWEET16 execution to continue once it encounters a ```RTS```.
 
 # Test Suite
 I've added a rudimentary test suite based on Woz's original descriptions for each mnemonic.  Very few look 1:1 with the description but they are similar in vibe.  Often to keep a single source of truth I'll use a Kick ```.const``` instead of the original value so that I can pass the same value to an assert routine.   The end code is the same but code maintainability and the flexibility is more-so in 2018 than it was in 1977.  In total there are 50 "unit" tests validating the original code, the extensions and my understanding of the metaprocessor.  I'm sure there is room for many more but I do think there are enough to give a vague guide to anyone putting their toes into SWEET16 for the first time some confidence about how it is meant to work.
