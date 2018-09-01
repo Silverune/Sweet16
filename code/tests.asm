@@ -320,6 +320,7 @@ INCREMENT_TEST: {
 DECREMENT_TEST: {
 	.const DATA_REGISTER = 5
 	.const COUNT_REGISTER = 4
+	TestName("DECREMENT")
 	sweet16
 	set DATA_REGISTER : TEST_MEMORY_SEQUENCE	// Init pointer
 	set COUNT_REGISTER : TMS_SIZE				// Init counter
@@ -329,8 +330,8 @@ DECREMENT_TEST: {
 	dcr COUNT_REGISTER							// Decrement count
 	bnz !loop-
 	rtn
-	ldxy DATA_REGISTER
-//	break()
+	TestAssertEqual(COUNT_REGISTER, $0000, "0")
+	TestComplete()
 	rts
 }
 
