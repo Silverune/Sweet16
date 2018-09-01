@@ -61,7 +61,7 @@ The implementation of SWEET16 required a few key things to achieve this.   The f
 # Extensions
 In addition to the standard SWEET16 mnemonics there was room for an additional 3 which I have created in this implementation.  This is in addition to creating another ```pseudocommand``` that appears to be a SWEET16 call but is actually simply a macro calling two successive SWEET16 calls to provide the ability to perform an absolute jump.  These SWEET16 extensions are:
 
-- ```XJSR``` - Provides a means to calling 6502 code while still executing code as if within the SWEET16 metaprocessor.  All state is kept intact within the SWEET16 virtual environment and after a ```rts``` is executed in the regular 6502 SWEET16 continues execution.   This was found to be invaluable in the test suite for outputting intermediate results.
+- ```XJSR``` - Provides a means to calling 6502 code while still executing code as if within the SWEET16 metaprocessor.  All state is kept intact within the SWEET16 virtual environment and after a ```RTS``` is executed in the regular 6502 SWEET16 continues execution.   This was found to be invaluable in the test suite for outputting intermediate results.
 - ```SETM``` - SWEET16 uses up half its mnemonics on setter routines which are only able to use direct absolute values.   The ```SETM``` extension allows an indirect memory address to be used which will have their values loaded directly into the register instead
 - ```SETI``` - Very similar to ```SETM``` except that the byte ordering is High to Low which is how SWEET16 treats 16-bit values passed as constants to registers.
 
