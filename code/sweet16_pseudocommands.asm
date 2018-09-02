@@ -89,17 +89,17 @@
 .pseudocommand sti register { .byte opcode($50, register) }
 .pseudocommand STI register { sti register }
 
-.pseudocommand ldd register { .byte opcode($60, register) }
-.pseudocommand LDD register { ldd register }
+.pseudocommand lddi register { .byte opcode($60, register) }
+.pseudocommand LDDI register { lddi register }
 
-.pseudocommand std register { .byte opcode($70, register) }
-.pseudocommand STD register { std register }
+.pseudocommand stdi register { .byte opcode($70, register) }
+.pseudocommand STDI register { stdi register }
 
-.pseudocommand pop register { .byte opcode($80, register) }
-.pseudocommand POP register { pop register }
+.pseudocommand popi register { .byte opcode($80, register) }
+.pseudocommand POPI register { popi register }
 
-.pseudocommand stp register { .byte opcode($90, register) }
-.pseudocommand STP register { stp register }
+.pseudocommand stpi register { .byte opcode($90, register) }
+.pseudocommand STPI register { stpi register }
 
 .pseudocommand add register { .byte opcode($a0, register) }
 .pseudocommand ADD register { add register }
@@ -107,8 +107,8 @@
 .pseudocommand sub register { .byte opcode($b0, register) }
 .pseudocommand SUB register { sub register }
 
-.pseudocommand popd register { .byte opcode($c0, register) }
-.pseudocommand POPD register { popd register }
+.pseudocommand popdi register { .byte opcode($c0, register) }
+.pseudocommand POPDI register { popdi register }
 
 .pseudocommand cpr register { .byte opcode($d0, register) }
 .pseudocommand CPR register { cpr register }

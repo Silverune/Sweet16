@@ -104,7 +104,7 @@ LOAD_DOUBLE_BYTE_INDIRECT_TEST: {
 	TestName("LOAD DOUBLE INDIRECT")
 	sweet16
 	set REGISTER : TEST_MEMORY	// The low-order ACC byte is loaded from
-	ldd REGISTER				// TEST_MEMORY, high-order from TEST_MEMORY+1
+	lddi REGISTER				// TEST_MEMORY, high-order from TEST_MEMORY+1
 								// NOTE - original had error of specifying "R6"
 								// R5 is incr by 2	
 	rtn
@@ -122,8 +122,8 @@ STORE_DOUBLE_BYTE_INDIRECT_TEST: {
 	sweet16
 	set SOURCE : TEST_MEMORY	// Load pointers R5, R6 with
 	set DEST : TEST_MEMORY_2	// memory values
-	ldd SOURCE					// Move double byte from
-    std DEST            		// TEST_MEMORY to TEST_MEMORY_2
+	lddi SOURCE					// Move double byte from
+    stdi DEST            		// TEST_MEMORY to TEST_MEMORY_2
                                 // Both pointers incremented by 2.
 	rtn
 	TestAssertEqualMemory(TEST_MEMORY, TEST_MEMORY_2, 2, "MEM")
@@ -151,11 +151,11 @@ POP_INDIRECT_TEST: {
 	set ACC : VAL_3				// Load into ACC
 	sti STACK					// Push onto stack
 	xjsr !assert3+
-	pop STACK					// Pop 6 off stack into ACC
+	popi STACK					// Pop 6 off stack into ACC
 	xjsr !assertP3+
-	pop STACK					// Pop 5 off stack into ACC
+	popi STACK					// Pop 5 off stack into ACC
 	xjsr !assertP2+
-	pop STACK					// Pop 4 off stack into ACC
+	popi STACK					// Pop 4 off stack into ACC
 	xjsr !assertP1+
 	rtn					
 	TestComplete()
@@ -191,10 +191,10 @@ STORE_POP_INDIRECT_TEST: {
 	sweet16
 	set SOURCE : TEST_MEMORY + 2	// Init pointers with 2 byte offset
 	set DEST : TEST_MEMORY_2 + 2 	// as moves down from this address -1 then -2
-	pop	SOURCE						// Move byte from
-    stp DEST            			// TEST_MEMORY + 1 to TEST_MEMORY_2 + 1
-	pop SOURCE						// Move byte from
-	stp DEST						// TEST_MEMORY to TEST_MEMORY_2
+	popi	SOURCE						// Move byte from
+    stpi DEST            			// TEST_MEMORY + 1 to TEST_MEMORY_2 + 1
+	popi SOURCE						// Move byte from
+	stpi DEST						// TEST_MEMORY to TEST_MEMORY_2
 	rtn
 	TestAssertEqualMemory(TEST_MEMORY, TEST_MEMORY, 2, "MEM")
 	TestComplete()
@@ -254,14 +254,14 @@ POP_DOUBLE_BYTE_INDIRECT_TEST: {
 	sweet16
 	set STACK : STACK_MEMORY	// Init stack pointer
 	set ACC : TEST_MEMORY		// Load TEST_MEMORY into ACC
-	std STACK					// Push TEST_MEMORY onto stack
+	stdi STACK					// Push TEST_MEMORY onto stack
 	xjsr !assertStd1+
 	set ACC : TEST_MEMORY_2		// Load TEST_MEMORY_2 into ACC
-	std STACK					// Push TEST_MEMORY_2 onto stack
+	stdi STACK					// Push TEST_MEMORY_2 onto stack
 	xjsr !assertStd2+
-	popd STACK					// Pop TEST_MEMORY_2 off stack
+	popdi STACK					// Pop TEST_MEMORY_2 off stack
 	xjsr !assertPop2+
-	popd STACK					// Pop TEST_MEMORY off stack
+	popdi STACK					// Pop TEST_MEMORY off stack
 	rtn
 	TestAssertEqualMemoryRegister(ACC, TEST_MEMORY, "P1")
 	TestComplete()
@@ -290,7 +290,7 @@ COMPARE_TEST: {
 !loop:
 	inr COUNT_REGISTER	// inc counter
 	sub ACC				// zero data
-	std	DATA_REGISTER	// clear 2 locations
+	stdi DATA_REGISTER	// clear 2 locations
 	ld DATA_REGISTER	// compare pointer R5
 	cpr LIMIT_REGISTER	// to limit R6
 	bnc !loop-			// loop if C clear
