@@ -68,7 +68,7 @@ newline:
 	.const zp = $fe
 	lda value
 	cmp #two_digit
-	bcc oneDigit
+	bcc !oneDigit+
 	CalcReference(value, two_digit)
 	tya
 	pha
@@ -85,7 +85,7 @@ newline:
 	Hex2Petscii() 					// display value
 	KernalOutputA()
 	jmp !done+
-oneDigit:
+!oneDigit:
 	Hex2Petscii() 					// display value
 	KernalOutputA()
 !done:	
@@ -98,7 +98,7 @@ oneDigit:
 	.const zp = $fe
 	lda value
 	cmp #three_digit
-	bcc twoDigit
+	bcc !twoDigit+
 	CalcReference(value, three_digit)
 	tya
 	pha
@@ -115,87 +115,11 @@ oneDigit:
 	sta zp
 	OutputNumber2Digit(zp)
 	jmp !done+
-twoDigit:
+!twoDigit:
 	OutputNumber2Digit(value)
 !done:	
 }
 
-.function UnusedZeroPage() {
-	.return $fe
-}
-
-.macro ClearScreenZeroPage() {
-	.const zeroPageAddress = UnusedZeroPage()
-	.const screenColumns = $28   // 40 cols
-	.const screenRows = $19      // 25 rows
-	.const screenAddressIndirect = $0288
-	.var screenColumnsAddress = $00
-	lda #screenColumns
-	sta screenColumnsAddress
-	ldx screenAddressIndirect    // pointer where where the screen RAM is
-	stx zeroPageAddress+1
-	lda #$00                     // address pointer only refers to high-byte
-	sta zeroPageAddress
-	ldx #$00
-!loop:
-	ldy #$00 // col offset
-!nextCol:
-	lda #spacebar
-	sta (zeroPageAddress),y
-	iny
-	cpy #screenColumns
-	bne !nextCol-
-!nextRow:
-	clc // in case carry flag is set
-	lda zeroPageAddress
-	adc screenColumnsAddress
-	sta zeroPageAddress
-	lda zeroPageAddress+1
-	adc #$00
-	sta zeroPageAddress+1
-	inx
-	cpx #screenRows
-	bne !loop-
-}
-
-.macro InvertCharactersOnScreen() {	
-	.const zeroPageAddress = UnusedZeroPage()
-	.const screenColumns = $28   // 40 cols
-	.const screenRows = $19      // 25 rows
-	.const screenAddressIndirect = $0288
-	.var screenColumnsAddress = $00
-	lda #screenColumns
-	sta screenColumnsAddress
-	ldx screenAddressIndirect    // pointer where where the screen RAM is
-	stx zeroPageAddress+1
-	lda #$00                     // address pointer only refers to high-byte
-	sta zeroPageAddress
-	ldx #$00
-!loop:
-	ldy #$00 // col offset
-!nextCol:
-	lda (zeroPageAddress),y
-	cmp #spacebar
-	beq !ignore+
-	eor #$80
-!ignore:
-	sta (zeroPageAddress),y
-	iny
-	cpy #screenColumns
-	bne !nextCol-
-!nextRow:
-	clc // in case carry flag is set
-	lda zeroPageAddress
-	adc screenColumnsAddress
-	sta zeroPageAddress
-	lda zeroPageAddress+1
-	adc #$00
-	sta zeroPageAddress+1
-	inx
-	cpx #screenRows
-	bne !loop-
-}
-	
 .macro ClearScreen(color) {
 	.const screen = $0400       // Default memory location of screen RAM	
 	.const background_color = $d021 // Background color
@@ -212,6 +136,7 @@ twoDigit:
 	bne !loop-
 }
 
+// KarnAl spelt the way CBM intended (for better or worse)
 .macro KernalOutput(msg) {
 	ldx #$00
 !loop:
@@ -223,6 +148,7 @@ twoDigit:
 !done:	
 }
 
+// KarnAl spelt the way CBM intended (for better or worse)
 .macro KernalOutputA() {
 	jsr kernal_chrout
 }

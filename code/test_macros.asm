@@ -13,7 +13,7 @@ TEST_TITLE:
 	
 .macro TestStart() {
 	ChangeScreen(BACKGROUND_COLOR, TITLE_COLOR)
-	ClearScreenZeroPage()
+	ClearScreen(BACKGROUND_COLOR)
 	ChangeCursor(0,0)
 	KernalOutput(TEST_TITLE)
 	ChangeColor(FOREGROUND_COLOR)
