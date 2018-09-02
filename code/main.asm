@@ -42,7 +42,8 @@ Program:
 	jsr INTERRUPT_BREAK_TEST
 	
 	TestFinished()
-	
+
+	// not a real test as routine not required in this implementation
 	.eval test_calculate_effective_address($1000)
 	
 	rts

@@ -1,3 +1,4 @@
+// Main translation from 6502 to SWEET16
 
 // convenience entry point
 // save - (optional) if non-zero will save registers on entry and restore on exit
@@ -19,7 +20,7 @@
 }
 .pseudocommand SWEET16 save : break_handler { sweet16 save : break_handler }
 
-// debugging conveniece to load into the X and Y regsiters the specified SWEET16 register
+// debugging convenience to load into the X and Y regsiters the specified SWEET16 register
 .pseudocommand ldxy register {
 	ldx rl(register.getValue())
 	ldy rh(register.getValue())

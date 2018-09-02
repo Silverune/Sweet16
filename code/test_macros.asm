@@ -167,6 +167,7 @@ memory:
 !done:	
 }
 
+// simply adds a convenience of doing the register lookup
 .macro TestAssertEqualMemoryRegister(register, value, desc) {
 	TestAssertEqualMemoryDirect(rl(register), value, desc)
 }
@@ -186,6 +187,7 @@ memory:
 !done:	
 }
 
+// equal to the value at the address passed in
 .macro TestAssertEqualIndirect(register, address, desc) {
 	TestAssertDescription(desc)
 	ldxy register
@@ -228,6 +230,7 @@ memory:
 !done:	
 }
 
+// compares two SWEET16 register contents
 .macro TestAssertEqualRegisters(register1, register2, desc) {
 	TestAssertDescription(desc)
 	lda rl(register1)
@@ -243,7 +246,7 @@ memory:
 !done:	
 }
 
-	
+// pauses output until the user hits a key to ensure all results are shown
 .macro TestPause() {
 	OutputInColor(memory, WHITE)
 	jmp !no_key+
