@@ -1,22 +1,23 @@
 // SWEET 16 INTERPRETER
 // APPLE-II  PSEUDO MACHINE INTERPRETER
 // COPYRIGHT (C) 1977 APPLE COMPUTER,  INC ALL  RIGHTS RESERVED S. WOZNIAK
-// Additimal Code: Copyright (C) 2018 Enable Software Pty Ltd, Inc All Rights Reservered Rhett D. Jacobs
+// Additional Code: Copyright (C) 2018 Enable Software Pty Ltd, Inc All Rights Reserved Rhett D. Jacobs
+// In general - capitalized code / comments are part of the original source while lower-case as not
 
-.const ZP_BASE = $17 // C64 start of 16 bit registers in zero page end at $39
+.const ZP_BASE = $17 // C64 start of 16 bit registers in zero page
 
 #if DEBUG
-.for (var i = 0; i < 17; i++) {
+.for (var i = 0; i < 17; i++) { // +1 for the ZP used by the extensions
 	label("RL" + i, RL(i))
 	label("RH" + i, RH(i))
 }
 #endif
 
-.const ACC = 0          // ACCUMULATOR
-.const RSP = 12			// SUBROUTINE RETURN POINTER
-.const CIR = 13	        // COMPARE INSTRUCTION RESULT
-.const SR = 14          // STACK REGISTER
-.const PC = 15			// PROGRAM COUNTER
+.const ACC = 0          // accumulator
+.const RSP = 12			// subroutine return pointer
+.const CIR = 13	        // compare instruction result
+.const SR = 14          // stack register
+.const PC = 15			// program counter
 .const ZP = 16			// Extension - Zero Page location used by SETI
 
 .const R0L = RL(ACC)
@@ -32,24 +33,24 @@
 .const R16L = RL(ZP)
 .const R16H = RH(ZP)
 
-SW16_NONE:		// Entry point if no need to preserve registers
+SW16_NONE:			    // Entry point if no need to preserve registers
 	lda #$00
 	sta SW16_SAVE_RESTORE
 	jmp SW160
 	
-SW16:			// Main entry point - should be called via pseudocommand "sweet16"
+SW16:				    // Main entry point - should be called via pseudocommand "sweet16"
 	lda #$01
 	sta SW16_SAVE_RESTORE
 	
 SW160:
 	beq SW16A
-	jsr SAVE           // PRESERVE 6502 REG CONTENTS
+	jsr SAVE            // PRESERVE 6502 REG CONTENTS
 	
 SW16A:
 	pla
-	sta R15L           // INIT SWEET16 PC
-	pla                // FROM RETURN
-	sta R15H	       // ADDRESS
+	sta R15L            // INIT SWEET16 PC
+	pla                 // FROM RETURN
+	sta R15H	        // ADDRESS
 
 SW16B:
 	jsr  SW16C          // INTERPRET and EXECUTE
@@ -149,12 +150,12 @@ BRTBL:
 .var page_start = *
 RTS_FIX:
 	nop                // otherwise RTS "cleverness" not so clever
-					   // due to minus if SET is placed at $00	
+					   // due to minus -1 yeilding $FF if SET is placed at $00	
 SET:
 #if DEBUG	
 	trace()
 #endif
-	jmp SETZ           // ALWAYS TAKEN
+	jmp SETZ           // ALWAYS TAKEN (moved out of page)
 
 LD:
 #if DEBUG
@@ -166,7 +167,7 @@ LD:
     sta  R0H
     rts
 
-BK:
+BK:						// set this explicity
 #if DEBUG
 	trace()
 #endif
@@ -229,7 +230,7 @@ LDDAT:
 #if DEBUG
 	trace()
 #endif
-	jsr  LDAT           // LOW ORDER BYTE TO R0, incR RX
+	jsr  LDAT           // LOW ORDER BYTE TO R0, INCR RX
     lda  (R0L,X)        // HIGH ORDER BYTE TO R0
     sta  R0H
     jmp  INR            // INCR RX
@@ -239,9 +240,9 @@ STDAT:
 	trace()
 #endif
 	jsr  STAT           // STORE INDIRECT LOW ORDER
-    lda  R0H            // BYTE and incR RX. THEN
+    lda  R0H            // BYTE AND INCR RX. THEN
     sta  (R0L,X)        // STORE HIGH ORDER BYTE.
-    jmp  INR            // INCR RX and RETURN
+    jmp  INR            // INCR RX AND RETURN
 	
 STPAT:
 #if DEBUG
@@ -274,7 +275,7 @@ CPR:
 #if DEBUG	
 	trace()
 #endif
-	sec                 // NOTE Y REG = 13*2 FOR cpr
+	sec                 // NOTE Y REG = 13*2 FOR CPR
     lda  R0L
     sbc  R0L,X
     sta  R0L,Y          // R0-RX TO RY
@@ -414,7 +415,7 @@ RS:
 #if DEBUG
 	trace()
 #endif
-	ldx  #$18           // 12*2 FOR R12 AS staCK POINTER
+	ldx  #$18           // 12*2 FOR R12 AS STACK POINTER
     jsr  DCR            // DECR STACK POINTER
     lda  (R0L,X)        // POP HIGH RETURN ADDRESS TO PC
     sta  R15H
@@ -445,7 +446,7 @@ SETI:
 RTN:
 #if DEBUG
 	trace()
-	.var page_size = * - page_start
+	.var page_size = * - page_start	// sanity check - all instructions need to be on same page
 	.errorif page_size > 255, "Must be located on same page"
 	.print "Page Size = " + page_size
 #endif
@@ -497,17 +498,16 @@ RESTORE:
     rts
 
 BREAK_HANDLER:
-	.const TEMP_A = $fc  // spare ZP address
 	pla		// Y
 	tay		// restore Y
 	pla		// X
 	tax		// restore X
 	pla		// restore A
-	sta TEMP_A
+	sta RL(ZP)
 	plp		// restore Status Flags
 	pla		// PCL discard - not useful
 	pla		// PCH discard - not useful
-	lda TEMP_A
+	lda RL(ZP)
 	jmp SW16D
 
 SETIM_COMMON:
