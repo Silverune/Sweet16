@@ -45,22 +45,7 @@ newline:
 	ChangeColor(foreground_color)
 }
 
-.macro CycleScreen() {
-	inc border_color
-	inc background_color
-}
-
-.macro ToggleBorderColor() {
-	lda border_color
-	eor #$7f
-	sta border_color
-}
-
-.macro Petscii2Binary() {
-	and #$0f
-}
-	
-.macro Binary2Petscii() {
+.macro Hex2Petscii() {
 	ora #$30
 }
 
@@ -87,7 +72,7 @@ newline:
 	CalcReference(value, two_digit)
 	tya
 	pha
-	Binary2Petscii() 					// display value
+	Hex2Petscii() 					// display value
 	KernalOutputA()
 	pla
 	tay
@@ -97,11 +82,11 @@ newline:
 	sbc #two_digit
 	dey
 	bne !subby-
-	Binary2Petscii() 					// display value
+	Hex2Petscii() 					// display value
 	KernalOutputA()
 	jmp !done+
 oneDigit:
-	Binary2Petscii() 					// display value
+	Hex2Petscii() 					// display value
 	KernalOutputA()
 !done:	
 }
@@ -117,7 +102,7 @@ oneDigit:
 	CalcReference(value, three_digit)
 	tya
 	pha
-	Binary2Petscii() 					// display value
+	Hex2Petscii() 					// display value
 	KernalOutputA()
 	pla
 	tay
