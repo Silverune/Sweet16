@@ -1,3 +1,4 @@
+// Broad configuration settings
 .const BACKGROUND_COLOR = BLACK
 .const FOREGROUND_COLOR = GREY
 .const SUCCESS_COLOR = GREEN
