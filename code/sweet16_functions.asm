@@ -20,12 +20,6 @@
 	.error "Register must be a number"
 }
 
-.function _16bitnextArgument(arg) {
-	.if (arg.getType()==AT_IMMEDIATE)
-		.return CmdArgument(arg.getType(),>arg.getValue())
-	.return CmdArgument(arg.getType(),arg.getValue()+1)
-}
-
 // An effective address (ea) is calculated by adding the signed displacement byte (d) to the PC. The PC contains the address of the instruction immediately following the BR, or the address of the BR op plus 2. The displacement is a signed two's complement value from -128 to +127. Branch conditions are not changed.	
 .function calc_effective_address(d, currentAddress) {
 	.var finalAddress

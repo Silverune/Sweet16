@@ -113,6 +113,13 @@ A more powerful alternative to this is using the extension of ```XJSR``` which w
 # Test Suite
 I've added a rudimentary test suite based on Woz's original descriptions for each mnemonic.  Very few look 1:1 with the description but they are similar in vibe.  Often (to keep a single source of truth) I'll use a Kick ```.const``` instead of the original value so that I can pass the same value to an assert routine.   The end code is the same but code maintainability and the flexibility is more-so in 2018 than it was in 1977.  In total there are over 50 "unit" tests validating the original code, the extensions and my understanding of the metaprocessor.  I'm sure there is room for many more but I do think there are enough to give a vague guide to anyone putting their toes into SWEET16 for the first time some confidence about how it is meant to work.
 
+# External Use
+There are only four main files required to use this implementation of SWEET16:
+- ```sweet16.asm```: the core implememtation with some extensions
+- ```sweet16_pseudocommands.asm```: Kick Assembler pseudo commands to map mnemonics to SWEET16
+- ```sweet16_macros.asm```: macro's used by the pseudo commands and core extensions
+- ```sweet16_functions.asm```: functions used by the pseudo commands
+
 # Development
 - Cross-Assembler [Kick Assembler v4.19](http://www.theweb.dk/KickAssembler/Main.html#frontpage)
 - Emulator [VICE v3.1](http://vice-emu.sourceforge.net/)
