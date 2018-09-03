@@ -127,6 +127,7 @@ There are only four main files required to use this implementation of SWEET16:
 
 # Binaries
 - .PRG format [sweet16.prg](https://github.com/Silverune/Sweet16/blob/master/build/sweet16.prg)
+- .D64 format (1541 disk image) [sweet16.d64](https://github.com/Silverune/Sweet16/blob/master/build/sweet16.d64)
 
 # Development
 - Cross-Assembler [Kick Assembler v4.19](http://www.theweb.dk/KickAssembler/Main.html#frontpage)
