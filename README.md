@@ -123,7 +123,10 @@ There are only four main files required to use this implementation of SWEET16:
 # Screenshots
 | Screen One | Screen Two |
 | ------------- |:----------:|
-| ![alt text](https://github.com/Silverune/ImageModes/blob/master/screenshots/first_test_screen.jpg "First Test Screen") | ![alt text](https://github.com/Silverune/Sweet16/blob/master/screenshots/second_test_screen.jpg "Second Test Screen") |
+| ![alt text](https://github.com/Silverune/Sweet16/blob/master/screenshots/first_test_screen.png "First Test Screen") | ![alt text](https://github.com/Silverune/Sweet16/blob/master/screenshots/second_test_screen.png "Second Test Screen") |
+
+# Binaries
+- .PRG format [sweet16.prg](https://github.com/Silverune/Sweet16/blob/master/build/sweet16.prg)
 
 # Development
 - Cross-Assembler [Kick Assembler v4.19](http://www.theweb.dk/KickAssembler/Main.html#frontpage)
