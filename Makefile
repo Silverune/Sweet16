@@ -38,7 +38,7 @@ EMULATOR_LINUX	= $(EMULATOR_PATH_LINUX)/x64
 DEBUGGER_LINUX  = $(3RD_PARTY_DIR)/C64Debugger/C64Debugger
 RUN_LINUX       = $(EMULATOR_LINUX) $(RUN_FLAGS) $(OUTPUT_PRG)
 DEBUG_VICE_LINUX= $(EMULATOR_LINUX) $(DEBUG_FLAGS_VICE) $(OUTPUT_PRG)
-DRIVE_LINUX	= $(EMULATOR_PATH_OSX)/$(DRIVE)
+DRIVE_LINUX	= $(EMULATOR_PATH_LINUX)/$(DRIVE)
 
 all:	$(PROGS)
 
@@ -82,12 +82,6 @@ andrunx: all
 
 encode:	all
 		cat $(OUTPUT_PRG) | base64 > $(OUTPUT)/$(APP).b64
-
-spritepad:
-		wine $(3RD_PARTY_DIR)/SpritePad\ 1.8/SpritePad.exe
-
-charpad:
-		wine $(3RD_PARTY_DIR)/CharPad\ 1.8/CharPad.exe
 
 diskx:
 		$(DRIVE_OSX) -format $(APP),DF d64 $(OUTPUT)/$(DISK)
