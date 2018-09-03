@@ -120,6 +120,11 @@ There are only four main files required to use this implementation of SWEET16:
 - ```sweet16_macros.asm```: macro's used by the pseudo commands and core extensions
 - ```sweet16_functions.asm```: functions used by the pseudo commands
 
+# Screenshots
+| Screen One | Screen Two |
+| ------------- |:----------:|
+| ![alt text](https://github.com/Silverune/ImageModes/blob/master/screenshots/first_test_screen.jpg "First Test Screen") | ![alt text](https://github.com/Silverune/Sweet16/blob/master/screenshots/second_test_screen.jpg "Second Test Screen") |
+
 # Development
 - Cross-Assembler [Kick Assembler v4.19](http://www.theweb.dk/KickAssembler/Main.html#frontpage)
 - Emulator [VICE v3.1](http://vice-emu.sourceforge.net/)
