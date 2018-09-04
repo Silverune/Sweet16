@@ -44,6 +44,8 @@ Program:
 	TestFinished()
 
 	// not a real test as routine not required in this implementation
+#if DEBUG
 	.eval test_calculate_effective_address($1000)
-	
+#endif
+
 	rts

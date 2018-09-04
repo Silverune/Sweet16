@@ -446,10 +446,9 @@ SETI:
 RTN:
 #if DEBUG
 	trace()
-	.var page_size = * - page_start	// sanity check - all instructions need to be on same page
-	.errorif page_size > 255, "Must be located on same page"
-	.print "Page Size = " + page_size
 #endif
+	.var page_size = * - page_start	// sanity check
+	.errorif page_size > 255, "All table entries must jump to same 255 byte page, currently: " + page_size
 	jmp  RTNZ
 
 POP2:
