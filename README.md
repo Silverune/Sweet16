@@ -1,5 +1,5 @@
 # Sweet16
-A C64 / Kick Assembler port of Steven Wozniak's ("Woz") 16-bit metaprocessor processor
+A C64 / Kick Assembler port of Steve Wozniak's ("Woz") 16-bit metaprocessor processor
 - [Original BYTE Article](https://archive.org/stream/byte-magazine-1977-11-rescan/1977_11_BYTE_02-11_Memory_Mapped_IO#page/n151)
 - [Text Only BYTE Article](http://amigan.1emu.net/kolsen/programming/sweet16.html)
 - [Porting](http://www.6502.org/source/interpreters/sweet16.htm)
@@ -53,7 +53,7 @@ LOOP:
 ```
 
 # Overview
-In 1977, Stephen Wozniak wrote an article for BYTE magazine about a 16-bit "metaprocessor" that he had invented to deal with manipulating 16-bit values on an 8-bit CPU (6502) for the AppleBASIC he was writing at the time.  What he came up with was "SWEET16"  which he referred to "as a 6502 enhancement package, not a stand alone processor".  It defined sixteen 16-bit registers (R0 to R15) which under the bonnet were implemented as 32 memory locations located in zero page. Some of the registers were dual purpose (e.g., R0 doubled as the SWEET16 accumulator).  
+In 1977, Steve Wozniak wrote an article for BYTE magazine about a 16-bit "metaprocessor" that he had invented to deal with manipulating 16-bit values on an 8-bit CPU (6502) for the AppleBASIC he was writing at the time.  What he came up with was "SWEET16"  which he referred to "as a 6502 enhancement package, not a stand alone processor".  It defined sixteen 16-bit registers (R0 to R15) which under the bonnet were implemented as 32 memory locations located in zero page. Some of the registers were dual purpose (e.g., R0 doubled as the SWEET16 accumulator).  
 
 SWEET16 instructions fell into register and nonregister categories with the register operations specifying one of the 16 registers to be used as either a data element or a pointer to data in memory depending on the specific instruction.  Except for the ```SET``` instruction, register operations only require one byte. The nonregister operations were primarily 6502 style branches with the second byte specifying a +/-127 byte displacement relative to the address of the following instruction. If a prior register operation result meets a specified branch condition, the displacement was added to SWEET16's program counter, effecting a branch.
 
