@@ -3,6 +3,7 @@
 COMPILER_PATH   = $(3RD_PARTY_DIR)/KickAssembler
 COMPILER	= java -jar $(COMPILER_PATH)/KickAss.jar
 CFLAGS		= -o $(OUTPUT)/$(PRG) -afo -aom $(SYMBOLS) -libdir $(LIB_DIR) -excludeillegal
+CRT_CFLAGS	= -o $(OUTPUT)/$(CRT) -afo -aom $(SYMBOLS) -libdir $(LIB_DIR) -excludeillegal
 CFLAGS_DISK	= -o $(OUTPUT)/$(DISK) -afo -aom $(SYMBOLS) -libdir $(LIB_DIR) -excludeillegal
 DEBUG_DEFINES   = -define DEBUG
 BYTE_DUMP       = -bytedumpfile $(OUTPUT)/$(APP)_bytedump.txt
@@ -16,8 +17,10 @@ CFLAGS_DEBUG = $(CFLAGS) -debug $(DEBUG_DEFINES) -showmem -vicesymbols $(LOG) $(
 PROGS		= index
 APP			= sweet16
 PRG			= $(APP).prg
+CRT			= $(APP).crt
 DISK        = $(APP).d64
 DRIVE		= c1541
+TOOLS		= tools
 OUTPUT		= build
 OUTPUT_PRG	= $(OUTPUT)/$(PRG)
 DEBUG_FLAGS_VICE= -moncommands $(shell pwd)/breakpoints.txt +remotemonitor -remotemonitoraddress 6510 -autostartprgmode 1 -autostart-warp +truedrive +cart
@@ -44,6 +47,9 @@ all:	$(PROGS)
 
 index:	index.asm
 		$(COMPILER) $(CFLAGS) index.asm
+
+crt:	index.asm
+		$(COMPILER) $(CRT_CFLAGS) index.asm
 
 debugold:	all
 		$(COMPILER) $(CFLAGS_DEBUG) index.asm
@@ -89,3 +95,13 @@ diskx:
 disk:
 		$(DRIVE_LINUX) -format $(APP),DF d64 $(OUTPUT)/$(DISK)
 		$(DRIVE_LINUX) -attach $(OUTPUT)/$(DISK) -write $(OUTPUT_PRG)
+
+exomizer:
+		$(TOOLS)/exomizer sfx 2064 $(OUTPUT_PRG) -t64 -n -o $(OUTPUT)/sweet16crunched.prg
+#gamecrunched.bin
+
+cartridge:
+	$(EMULATOR_PATH_LINUX)/cartconv -t normal -name "$(APP)" -i $(OUTPUT)/sweet16crunched.prg -o $(OUTPUT)/$(APP).crt
+#	$(EMULATOR_PATH_LINUX)/cartconv -t normal -name "$(APP)" -i $(OUTPUT_PRG) -o $(OUTPUT)/$(APP).crt
+runcart:
+	$(EMULATOR_LINUX) -cartcrt  $(OUTPUT)/$(APP).crt
