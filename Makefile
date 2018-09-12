@@ -17,10 +17,8 @@ CFLAGS_DEBUG = $(CFLAGS) -debug $(DEBUG_DEFINES) -showmem -vicesymbols $(LOG) $(
 PROGS		= index
 APP			= sweet16
 PRG			= $(APP).prg
-CRT			= $(APP).crt
 DISK        = $(APP).d64
 DRIVE		= c1541
-TOOLS		= tools
 OUTPUT		= build
 OUTPUT_PRG	= $(OUTPUT)/$(PRG)
 DEBUG_FLAGS_VICE= -moncommands $(shell pwd)/breakpoints.txt +remotemonitor -remotemonitoraddress 6510 -autostartprgmode 1 -autostart-warp +truedrive +cart
@@ -47,9 +45,6 @@ all:	$(PROGS)
 
 index:	index.asm
 		$(COMPILER) $(CFLAGS) index.asm
-
-crt:	index.asm
-		$(COMPILER) $(CRT_CFLAGS) index.asm
 
 debugold:	all
 		$(COMPILER) $(CFLAGS_DEBUG) index.asm
@@ -87,7 +82,8 @@ andrunx: all
 		$(RUN_OSX)
 
 encode:	all
-		cat $(OUTPUT_PRG) | base64 > $(OUTPUT)/$(APP).b64
+		zip $(OUTPUT)/$(APP).zip $(OUTPUT_PRG)	
+		cat $(OUTPUT)/$(APP).zip | base64 > $(OUTPUT)/$(APP).b64
 
 diskx:
 		$(DRIVE_OSX) -format $(APP),DF d64 $(OUTPUT)/$(DISK)
@@ -95,13 +91,3 @@ diskx:
 disk:
 		$(DRIVE_LINUX) -format $(APP),DF d64 $(OUTPUT)/$(DISK)
 		$(DRIVE_LINUX) -attach $(OUTPUT)/$(DISK) -write $(OUTPUT_PRG)
-
-exomizer:
-		$(TOOLS)/exomizer sfx 2064 $(OUTPUT_PRG) -t64 -n -o $(OUTPUT)/sweet16crunched.prg
-#gamecrunched.bin
-
-cartridge:
-	$(EMULATOR_PATH_LINUX)/cartconv -t normal -name "$(APP)" -i $(OUTPUT)/sweet16crunched.prg -o $(OUTPUT)/$(APP).crt
-#	$(EMULATOR_PATH_LINUX)/cartconv -t normal -name "$(APP)" -i $(OUTPUT_PRG) -o $(OUTPUT)/$(APP).crt
-runcart:
-	$(EMULATOR_LINUX) -cartcrt  $(OUTPUT)/$(APP).crt
