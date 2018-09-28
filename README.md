@@ -130,7 +130,7 @@ There are only four main files required to use this implementation of SWEET16:
 - .PRG format [sweet16.prg](https://github.com/Silverune/Sweet16/blob/master/build/sweet16.prg)
 - .D64 format (1541 disk image) [sweet16.d64](https://github.com/Silverune/Sweet16/blob/master/build/sweet16.d64)
 - .T64 format (VICE tape image) [sweet16.t64](https://github.com/Silverune/Sweet16/blob/master/build/sweet16.t64)
-- .TAP format (raw tape image) [sweet16.tap](https://github.com/Silverune/Sweet16/blob/master/build/sweet16.tap)
+- .TAP format (Raw tape image) [sweet16.tap](https://github.com/Silverune/Sweet16/blob/master/build/sweet16.tap)
 - .B64 format (Base64 zip encoded) [sweet16.b64](https://github.com/Silverune/Sweet16/blob/master/build/sweet16.b64)
 
 # Online Emulator
