@@ -3,7 +3,6 @@
 COMPILER_PATH   = $(3RD_PARTY_DIR)/KickAssembler
 COMPILER	= java -jar $(COMPILER_PATH)/KickAss.jar
 CFLAGS		= -o $(OUTPUT)/$(PRG) -afo -aom $(SYMBOLS) -libdir $(LIB_DIR) -excludeillegal
-CFLAGS_DISK	= -o $(OUTPUT)/$(DISK) -afo -aom $(SYMBOLS) -libdir $(LIB_DIR) -excludeillegal
 DEBUG_DEFINES   = -define DEBUG
 BYTE_DUMP       = -bytedumpfile $(OUTPUT)/$(APP)_bytedump.txt
 SYMBOLS		= -symbolfiledir $(OUTPUT)
@@ -12,11 +11,10 @@ SOURCE_DIR	= ~/Documents/Source
 APP_DIR		= ~/Documents/Source
 3RD_PARTY_DIR   = ~/Documents/C64
 LIB_DIR		= resources
-CFLAGS_DEBUG = $(CFLAGS) -debug $(DEBUG_DEFINES) -showmem -vicesymbols $(LOG) $(BYTE_DUMP) $(SYMBOLS)
+CFLAGS_DEBUG = $(CFLAGS) -debug $(DEBUG_DEFINES) -showmem -bytedump -debugdump -vicesymbols $(LOG) $(BYTE_DUMP) $(SYMBOLS)
 PROGS		= index
 APP			= sweet16
 PRG			= $(APP).prg
-DISK        = $(APP).d64
 DRIVE		= c1541
 OUTPUT		= build
 OUTPUT_PRG	= $(OUTPUT)/$(PRG)
@@ -84,9 +82,14 @@ encode:	all
 		zip $(OUTPUT)/$(APP).zip $(OUTPUT_PRG)	
 		cat $(OUTPUT)/$(APP).zip | base64 > $(OUTPUT)/$(APP).b64
 
+disk_common:
+		$(DRIVE) -format $(APP),DF $(FORMAT) $(OUTPUT)/$(APP).$(FORMAT)
+		$(DRIVE) -attach $(OUTPUT)/$(APP).$(FORMAT) -write $(OUTPUT_PRG)
+		$(DRIVE) -attach $(OUTPUT)/$(APP).$(FORMAT) -list
+
 diskx:
-		$(DRIVE_OSX) -format $(APP),DF d64 $(OUTPUT)/$(DISK)
-		$(DRIVE_OSX) -attach $(OUTPUT)/$(DISK) -write $(OUTPUT_PRG)
+		export	DRIVE=$(DRIVE_OS)
+		make disk_common
 disk:
-		$(DRIVE_LINUX) -format $(APP),DF d64 $(OUTPUT)/$(DISK)
-		$(DRIVE_LINUX) -attach $(OUTPUT)/$(DISK) -write $(OUTPUT_PRG)
+		export	DRIVE=$(DRIVE_LINUX)
+		make disk_common
