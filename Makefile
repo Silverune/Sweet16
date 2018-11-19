@@ -82,14 +82,12 @@ encode:	all
 		zip $(OUTPUT)/$(APP).zip $(OUTPUT_PRG)	
 		cat $(OUTPUT)/$(APP).zip | base64 > $(OUTPUT)/$(APP).b64
 
-disk_common:
-		$(DRIVE) -format $(APP),DF $(FORMAT) $(OUTPUT)/$(APP).$(FORMAT)
-		$(DRIVE) -attach $(OUTPUT)/$(APP).$(FORMAT) -write $(OUTPUT_PRG)
-		$(DRIVE) -attach $(OUTPUT)/$(APP).$(FORMAT) -list
-
 diskx:
-		export	DRIVE=$(DRIVE_OS)
-		make disk_common
+		$(DRIVE_OSX) -format $(APP),DF $(FORMAT) $(OUTPUT)/$(APP).$(FORMAT)
+		$(DRIVE_OSX) -attach $(OUTPUT)/$(APP).$(FORMAT) -write $(OUTPUT_PRG)
+		$(DRIVE_OSX) -attach $(OUTPUT)/$(APP).$(FORMAT) -list
+
 disk:
-		export	DRIVE=$(DRIVE_LINUX)
-		make disk_common
+		$(DRIVE_LINUX) -format $(APP),DF $(FORMAT) $(OUTPUT)/$(APP).$(FORMAT)
+		$(DRIVE_LINUX) -attach $(OUTPUT)/$(APP).$(FORMAT) -write $(OUTPUT_PRG)
+		$(DRIVE_LINUX) -attach $(OUTPUT)/$(APP).$(FORMAT) -list
