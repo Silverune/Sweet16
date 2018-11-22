@@ -4,10 +4,11 @@
 #  COMPILER_PATH - full path to where the KickAssembler .JAR file is
 #
 # e.g., 
-# export EMULATOR_PATH=/usr/local/bin
-# export COMPILER_PATH=~/Documents/C64/KickAssembler
+# export EMULATOR_PATH=/usr/local/bin/x64
+# export COMPILER_PATH=~/Documents/C64/KickAssembler/KickAss.jar
+# export DRIVE_PATH=/usr/local/bin/c1541
 
-COMPILER	= java -jar $(COMPILER_PATH)/KickAss.jar
+COMPILER	= java -jar $(COMPILER_PATH)
 CFLAGS		= -o $(OUTPUT)/$(PRG) -afo -aom $(SYMBOLS) -libdir $(LIB_DIR) -excludeillegal
 DEBUG_DEFINES   = -define DEBUG
 BYTE_DUMP       = -bytedumpfile $(OUTPUT)/$(APP)_bytedump.txt
@@ -23,10 +24,10 @@ OUTPUT_PRG	= $(OUTPUT)/$(PRG)
 DEBUG_FLAGS_VICE= -moncommands $(shell pwd)/breakpoints.txt +remotemonitor -remotemonitoraddress 6510 -autostartprgmode 1 -autostart-warp +truedrive +cart
 RUN_FLAGS	= -autostartprgmode 1 -autostart-warp +truedrive +cart
 DEBUG_FLAGS	= -vicesymbols $(OUTPUT)/index.vs -prg $(OUTPUT_PRG)
-EMULATOR	= $(EMULATOR_PATH)/x64
+EMULATOR	= $(EMULATOR_PATH)
 RUN       = $(EMULATOR) $(RUN_FLAGS) $(OUTPUT_PRG)
 DEBUG_VICE= $(EMULATOR) $(DEBUG_FLAGS_VICE) $(OUTPUT_PRG)
-DRIVE	= $(EMULATOR_PATH)/c1541
+DRIVE	= $(DRIVE_PATH)
 
 
 all:	$(PROGS)
