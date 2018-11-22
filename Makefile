@@ -1,7 +1,8 @@
 # Makefile for Sweet16
 # The following variables need to be set:
-#  EMULATOR_PATH - full path to where the x64 VICE emulator is
+#  EMULATOR_PATH - full path and executable to the x64 VICE emulator
 #  COMPILER_PATH - full path to where the KickAssembler .JAR file is
+#  DRIVE_PATH - full path and executable to c1541
 #
 # e.g., 
 # export EMULATOR_PATH=/usr/local/bin/x64
