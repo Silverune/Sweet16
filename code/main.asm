@@ -5,6 +5,7 @@ Program:
 	TestStart()
 
 	// core sweet16
+
 	jsr SET_TEST
 	jsr LOAD_TEST
 	jsr STORE_TEST
