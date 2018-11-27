@@ -1,5 +1,7 @@
 // Code for creating the breakpoint file sent to VICE
-.var brkFile = createFile("breakpoints.txt")
+#if DEBUG
+.var brkFile = createFile(cmdLineVars.get( "BREAKPOINTS" ))
+#endif
 
 .macro break() {
 #if DEBUG

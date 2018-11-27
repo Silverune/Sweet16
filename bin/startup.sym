@@ -5,8 +5,10 @@
 }
 .label TEST_COUNT=$22ab
 .label SET2=$2064
-.label POPD=$21ec
-.label SUB=$215d
+.label POPD=$21ec {
+}
+.label SUB=$215d {
+}
 .label INR2=$212b
 .label BRANCH_IF_NONZERO_TEST=$4413 {
 }
@@ -15,7 +17,8 @@
 .label TOBR=$2043
 .label ADD_TEST=$32c9 {
 }
-.label POP=$21e8
+.label POP=$21e8 {
+}
 .label DECREMENT_TEST=$3ac1 {
 }
 .label SUB2=$216b
@@ -25,40 +28,55 @@
 }
 .label BRANCH_IF_PLUS_TEST=$4089 {
 }
-.label STPAT=$214a
+.label STPAT=$214a {
+}
 .label RETURN_FROM_SUBROUTINE_TEST=$4c13 {
 }
-.label BC=$219e
-.label RS=$21d7
+.label BC=$219e {
+}
+.label RS=$21d7 {
+}
 .label TOBR2=$2049
-.label SET=$2101
+.label SET=$2101 {
+}
 .label SUBTRACT_TEST=$345d {
 }
-.label BM1=$21c1
+.label BM1=$21c1 {
+}
 .label BRANCH_IF_NO_CARRY_TEST=$3e21 {
 }
-.label BK=$210d
-.label BM=$21a8
-.label RTN=$21f8
-.label BP=$21a1
-.label BR=$218c
-.label BS=$2182
+.label BK=$210d {
+}
+.label BM=$21a8 {
+}
+.label RTN=$21f8 {
+}
+.label BP=$21a1 {
+}
+.label BR=$218c {
+}
+.label BS=$2182 {
+}
 .label YREG=$22a8
 .label LOAD_INDIRECT_TEST=$264b {
 }
 .label STACK_MEMORY=$22e9 {
 }
-.label BZ=$21af
-.label RESTORE=$2226
+.label BZ=$21af {
+}
+.label RESTORE=$2226 {
+}
 .label INCREMENT_TEST=$39a1 {
 }
 .label COMPARE_TEST=$3876 {
 }
-.label SAVE=$2216
+.label SAVE=$2216 {
+}
 .label TEST_PASS_COUNT=$22ac
 .label SW16B=$201c
 .label SW16A=$2016
-.label ST=$2114
+.label ST=$2114 {
+}
 .label SETI=$21f5
 .label BREAK_HANDLER=$2235
 .label STORE_DOUBLE_BYTE_INDIRECT_TEST=$2b80 {
@@ -69,26 +87,35 @@
 }
 .label SW16C=$2022
 .label OPTBL=$2065
-.label NUL=$21d6
+.label NUL=$21d6 {
+}
 .label SETM_OUTOFPAGE=$2278
 .label LOAD_DOUBLE_BYTE_INDIRECT_TEST=$29e6 {
 }
-.label SETM=$210e
+.label SETM=$210e {
+}
 .label BRANCH_IF_ZERO_TEST=$42e9 {
 }
-.label STAT=$211d
+.label STAT=$211d {
+}
 .label TEST_SUCCESS=$2000
 .label TEST_FAILURE=$2002
-.label BNC=$218d
-.label LD=$2104
+.label BNC=$218d {
+}
+.label LD=$2104 {
+}
 .label SW160=$2011
 .label SETZ=$2051
-.label ADD=$2174
-.label CPR=$215f
+.label ADD=$2174 {
+}
+.label CPR=$215f {
+}
 .label BNC2=$219d
 .label BRTBL=$2066
-.label LDAT=$212c
-.label BNZ=$21b8
+.label LDAT=$212c {
+}
+.label BNZ=$21b8 {
+}
 .label STATUS=$22a9
 .label STORE_INDIRECT_TEST=$27da {
 }
@@ -106,8 +133,10 @@
 }
 .label SW16=$200c
 .label TEST_MEMORY_2=$22c5
-.label LDDAT=$2136
-.label DCR=$2154
+.label LDDAT=$2136 {
+}
+.label DCR=$2154 {
+}
 .label SETIM_COMMON=$2244
 .label TEST_MEMORY_3=$22c7
 .label BRANCH_ALWAYS_TEST=$3cf8 {
@@ -120,9 +149,12 @@
 .label DCR2=$215a
 .label EXTERNAL_JSR_TEST=$4e6d {
 }
-.label INR=$2125
-.label STDAT=$2140
-.label BNM1=$21cc
+.label INR=$2125 {
+}
+.label STDAT=$2140 {
+}
+.label BNM1=$21cc {
+}
 .label XJSR_OUTOFPAGE=$228a {
 }
 .label SET_INDIRECT_TEST=$508a {
@@ -149,4 +181,5 @@
 .label RETURN_TO_6502_MODE_TEST=$3be5 {
 }
 .label ACCUMULATOR=$22a6
-.label XJSR=$2111
+.label XJSR=$2111 {
+}

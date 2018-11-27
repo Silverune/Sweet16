@@ -13,16 +13,17 @@ COMPILER	= java -jar $(COMPILER_PATH)
 CFLAGS		= -odir $(OUTPUT) -o $(OUTPUT_PRG) -afo -aom -libdir $(LIB_DIR) -excludeillegal
 DEBUG_DEFINES   = -define DEBUG
 BYTE_DUMP       = -bytedumpfile $(APP)_bytedump.txt
-LOG		= -log $(OUTPUT)/$(APP)_log.txt
+LOG			= -log $(OUTPUT)/$(APP)_log.txt
 LIB_DIR		= resources
-CFLAGS_DEBUG = $(CFLAGS) -debug $(DEBUG_DEFINES) -showmem -bytedump -debugdump -vicesymbols $(LOG) $(BYTE_DUMP) $(SYMBOLS)
+BREAKPOINTS = breakpoints.txt
+CFLAGS_DEBUG = $(CFLAGS) -debug $(DEBUG_DEFINES) :BREAKPOINTS=$(BREAKPOINTS) -showmem -bytedump -debugdump -vicesymbols $(LOG) $(BYTE_DUMP) $(SYMBOLS)
 APP			= sweet16
 PROG		= startup
 PROGRAM		= $(PROG).asm
 PRG			= $(APP).prg
 OUTPUT		= bin
 OUTPUT_PRG	= $(OUTPUT)/$(PRG)
-DEBUG_FLAGS_VICE= -moncommands $(shell pwd)/$(OUTPUT)/breakpoints.txt +remotemonitor -remotemonitoraddress 6510 -autostartprgmode 1 -autostart-warp +truedrive +cart
+DEBUG_FLAGS_VICE= -moncommands $(shell pwd)/$(OUTPUT)/$(BREAKPOINTS) +remotemonitor -remotemonitoraddress 6510 -autostartprgmode 1 -autostart-warp +truedrive +cart
 RUN_FLAGS	= -autostartprgmode 1 -autostart-warp +truedrive +cart
 DEBUG_FLAGS	= -vicesymbols $(OUTPUT)/$(PROG).vs -prg $(OUTPUT_PRG)
 EMULATOR	= $(EMULATOR_PATH)
@@ -41,7 +42,7 @@ debugonly:
 
 debug:	
 		$(COMPILER) $(CFLAGS_DEBUG) $(PROGRAM)
-		cat $(OUTPUT)/$(PROG).vs | sort >> breakpoints.txt
+		cat $(OUTPUT)/$(PROG).vs | sort >> $(OUTPUT)/breakpoints.txt
 		$(DEBUG_VICE)
 
 run:		
