@@ -152,15 +152,9 @@ RTS_FIX:
 	nop                // otherwise RTS "cleverness" not so clever
 					   // due to minus -1 yeilding $FF if SET is placed at $00	
 SET:
-#if DEBUG	
-	trace()
-#endif
 	jmp SETZ           // ALWAYS TAKEN (moved out of page)
 
 LD:
-#if DEBUG
-	trace()
-#endif
 	lda  R0L,X
     sta  R0L
     lda  R0H,X          // MOVE RX TO R0
@@ -168,27 +162,15 @@ LD:
     rts
 
 BK:						// set this explicity
-#if DEBUG
-	trace()
-#endif
 	brk
 
 SETM:
-#if DEBUG
-	trace()
-#endif
 	jmp SETM_OUTOFPAGE 	// code will make block larger than 255 if placed here
 
 XJSR:
-#if DEBUG
-	trace()
-#endif
 	jmp XJSR_OUTOFPAGE 	// code will make block larger than 255 if placed here
 
 ST:
-#if DEBUG	
-	trace()
-#endif
 	lda  R0L
     sta  R0L,X          // MOVE R0 TO RX
     lda  R0H
@@ -196,9 +178,6 @@ ST:
     rts
 
 STAT:
-#if DEBUG	
-	trace()
-#endif
 	lda  R0L	
 STAT2:
 	sta  (R0L,X)        // STORE BYTE INDIRECT
@@ -207,9 +186,6 @@ STAT3:
 	sty  R14H           // INDICATE R0 IS RESULT NEG
 	
 INR:
-#if DEBUG
-	trace()
-#endif
 	inc  R0L,X
     bne  INR2           // INCR RX
     inc  R0H,X	
@@ -217,9 +193,6 @@ INR2:
 	rts
 	
 LDAT:
-#if DEBUG
-	trace()
-#endif
 	lda  (R0L,X)        // LOAD INDIRECT (RX)
     sta  R0L            // TO R0
     ldy  #$00
@@ -227,36 +200,24 @@ LDAT:
     beq  STAT3          // ALWAYS TAKEN
 	
 LDDAT:
-#if DEBUG
-	trace()
-#endif
 	jsr  LDAT           // LOW ORDER BYTE TO R0, INCR RX
     lda  (R0L,X)        // HIGH ORDER BYTE TO R0
     sta  R0H
     jmp  INR            // INCR RX
 	
 STDAT:
-#if DEBUG
-	trace()
-#endif
 	jsr  STAT           // STORE INDIRECT LOW ORDER
     lda  R0H            // BYTE AND INCR RX. THEN
     sta  (R0L,X)        // STORE HIGH ORDER BYTE.
     jmp  INR            // INCR RX AND RETURN
 	
 STPAT:
-#if DEBUG
-	trace()
-#endif
 	jsr  DCR            // DECR RX
     lda  R0L
     sta  (R0L,X)        // STORE R0 LOW BYTE @RX
     jmp  POP3           // INDICATE R0 AS LAST RESULT REG
 
 DCR:
-#if DEBUG
-	trace()
-#endif
 	lda  R0L,X
     bne  DCR2           // DECR RX
     dec  R0H,X
@@ -266,15 +227,9 @@ DCR2:
 	
 
 SUB:
-#if DEBUG	
-	trace()
-#endif
 	ldy  #$00           // RESULT TO R0
 
 CPR:
-#if DEBUG	
-	trace()
-#endif
 	sec                 // NOTE Y REG = 13*2 FOR CPR
     lda  R0L
     sbc  R0L,X
@@ -289,9 +244,6 @@ SUB2:
     rts
 
 ADD:
-#if DEBUG
-	trace()
-#endif
 	lda  R0L
     adc  R0L,X
     sta  R0L            // R0+RX TO R0
@@ -301,24 +253,15 @@ ADD:
     beq  SUB2           // FINISH ADD
 	
 BS:
-#if DEBUG	
-	trace()
-#endif
 	lda  R15L           // NOTE X REG IS 12*2!
     jsr  STAT2          // PUSH LOW PC BYTE VIA R12
     lda  R15H
     jsr  STAT2          // PUSH HIGH ORDER PC BYTE
 	
 BR:
-#if DEBUG	
-	trace()
-#endif
 	clc
 	
 BNC:
-#if DEBUG	
-	trace()
-#endif
 	bcs  BNC2           // NO CARRY TEST	
 BR1:
 	lda  (R15L),Y       // DISPLACEMENT BYTE
@@ -334,16 +277,10 @@ BNC2:
 	rts
 
 BC:
-#if DEBUG	
-	trace()
-#endif
 	bcs  BR
     rts
 
 BP:
-#if DEBUG	
-	trace()
-#endif
 	asl                 // DOUBLE RESULT-REG INDEX
     tax                 // TO X REG FOR INDEXING
     lda  R0H,X          // TEST FOR PLUS
@@ -351,9 +288,6 @@ BP:
     rts
 
 BM:
-#if DEBUG	
-	trace()
-#endif
 	asl                 // DOUBLE RESULT-REG INDEX
     tax
     lda  R0H,X          // TEST FOR MINUS
@@ -361,9 +295,6 @@ BM:
     rts
 
 BZ:
-#if DEBUG
-	trace()
-#endif
 	asl                 // DOUBLE RESULT-REG INDEX
     tax
     lda  R0L,X          // TEST FOR ZERO
@@ -372,9 +303,6 @@ BZ:
     rts
 	
 BNZ:
-#if DEBUG
-	trace()
-#endif
 	asl                 // DOUBLE RESULT-REG INDEX
     tax
     lda  R0L,X          // TEST FOR NON-ZERO
@@ -383,9 +311,6 @@ BNZ:
     rts	
 
 BM1:
-#if DEBUG
-	trace()
-#endif
 	asl                 // DOUBLE RESULT-REG INDEX
     tax
     lda  R0L,X          // CHECK BOTH BYTES
@@ -395,9 +320,6 @@ BM1:
     rts
 	
 BNM1:
-#if DEBUG
-	trace()
-#endif
 	asl                 // DOUBLE RESULT-REG INDEX
     tax
     lda  R0L,X
@@ -406,15 +328,9 @@ BNM1:
     bne  BR1            // BRANCH IF NOT MINUS 1
 	
 NUL:
-#if DEBUG
-	trace()
-#endif
 	rts
 	
 RS:
-#if DEBUG
-	trace()
-#endif
 	ldx  #$18           // 12*2 FOR R12 AS STACK POINTER
     jsr  DCR            // DECR STACK POINTER
     lda  (R0L,X)        // POP HIGH RETURN ADDRESS TO PC
@@ -425,16 +341,10 @@ RS:
     rts
 
 POP:
-#if DEBUG	
-	trace()
-#endif
 	ldy  #$00           // HIGH ORDER BYTE = 0
     beq  POP2           // ALWAYS TAKEN
 
 POPD:
-#if DEBUG
-	trace()
-#endif
 	jsr  DCR            // DECR RX
     lda  (R0L,X)        // POP HIGH ORDER BYTE @RX
     tay                 // SAVE IN Y REG	
@@ -444,9 +354,6 @@ SETI:
 	jmp SETI_OUTOFPAGE
 	
 RTN:
-#if DEBUG
-	trace()
-#endif
 	.var page_size = * - page_start	// sanity check
 	.errorif page_size > 255, "All table entries must jump to same 255 byte page, currently: " + page_size
 	jmp  RTNZ
@@ -472,9 +379,6 @@ RESTORED:
     jmp  (R15L)         // RETURN TO 6502 CODE VIA PC
 
 SAVE:
-#if DEBUG
-	trace()
-#endif
     sta ACCUMULATOR
     stx XREG
     sty YREG
@@ -485,9 +389,6 @@ SAVE:
     rts
 
 RESTORE:
-#if DEBUG
-	trace()
-#endif
     lda STATUS
     pha
     lda ACCUMULATOR
@@ -542,9 +443,6 @@ SETM_OUTOFPAGE:
 	jmp SW16D				// back to SWEET16
 
 XJSR_OUTOFPAGE: {
-#if DEBUG	
-	trace()
-#endif
 	lda #>((!returned+)-1)	// so we know where to come back to as we're
 	pha						// using rts as jmps here
 	lda #<((!returned+)-1)

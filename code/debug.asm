@@ -3,12 +3,6 @@
 .var brkFile = createFile(cmdLineVars.get( "BREAKPOINTS" ))
 #endif
 
-.macro break() {
-#if DEBUG
-	.eval brkFile.writeln("break exec " + toHexString(*))
-#endif
-}
-
 .macro trace() {
 #if DEBUG
 	.eval brkFile.writeln("trace exec " + toHexString(*))
