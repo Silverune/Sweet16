@@ -79,7 +79,7 @@ VAL_1_MEMORY:
 	SWEET16
 	SET REGISTER : VAL_1            // assigns VAL_1 to register 5 - in memory:  34 12 ...
 	SETM REGISTER : VAL_1_MEMORY    // assigns VAL_1_MEMORY memory to register 5: 12 34 ...
-	SETI REGISTER : VAL_1_MEMORY    // assigns VAL_1_MEMORY high / low to register 5: 34 21 ...
+	SETI REGISTER : VAL_1_MEMORY    // assigns VAL_1_MEMORY high / low to register 5: 34 12 ...
 	RTN
 	rts
 ```
@@ -87,7 +87,7 @@ VAL_1_MEMORY:
 - ```AJMP``` - This is simply a convenience call which sets the SWEET16 PC to the values specified which causes a jump to the desired address.  To store this value in the PC it overwrites the value in the ACC register
 
 # Convenience
-There are a number of convenience routine created to make using and verifying SWEET16 more readily accessable:
+There are a number of convenience routine created to make using and verifying SWEET16 more readily accessible:
 - ```ibk``` - (see below) Installs an ISR handler for working with VICE and calling ```BK```
 - ```ldyx``` - Loads the values from the passed in register to the ```X``` and ```Y``` registers.  This is handy for debugging when you want to quickly inspect what is happening in SWEET16
 
@@ -112,7 +112,7 @@ In either case once the command is encountered (and assuming using VICE) the mon
 A more powerful alternative to this is using the extension of ```XJSR``` which will allow any 6502 routine to be called within SWEET16 execution to continue once it encounters a ```RTS```.
 
 # Test Suite
-I've added a rudimentary test suite based on Woz's original descriptions for each mnemonic.  Very few look 1:1 with the description but they are similar in vibe.  Often (to keep a single source of truth) I'll use a Kick ```.const``` instead of the original value so that I can pass the same value to an assert routine.   The end code is the same but code maintainability and the flexibility is more-so in 2018 than it was in 1977.  In total there are over 50 "unit" tests validating the original code, the extensions and my understanding of the metaprocessor.  I'm sure there is room for many more but I do think there are enough to give a vague guide to anyone putting their toes into SWEET16 for the first time some confidence about how it is meant to work.
+I've added a rudimentary test suite based on Woz's original descriptions for each mnemonic.  Very few look 1:1 with the description but they are similar in vibe.  Often (to keep a single source of truth) I'll use a Kick ```.const``` instead of the original value so that I can pass the same value to an assert routine.   The end code is the same but code maintainability and the flexibility is more-so today than it was in 1977.  In total there are over 50 "unit" tests validating the original code, the extensions and my understanding of the metaprocessor.  I'm sure there is room for many more but I do think there are enough to give a vague guide to anyone putting their toes into SWEET16 for the first time some confidence about how it is meant to work.
 
 # External Use
 There are only four main files required to use this implementation of SWEET16:

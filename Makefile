@@ -14,6 +14,7 @@
 # - Make breakpoints file more consistent.  Kick and Make using "breakpoints.txt" VSC using "startup.breakpoints"
 # - VSA needs ability to pass in directives depending on debug or not
 # - VSA needs user configurable breakfile naming
+# - VSA needs a Startup Build and Run option
 #
 COMPILER	= java -jar $(COMPILER_PATH)
 CFLAGS		= -odir $(OUTPUT) -o $(OUTPUT_PRG) -afo -aom -libdir $(LIB_DIR) -excludeillegal
