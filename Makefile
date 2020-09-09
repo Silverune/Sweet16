@@ -18,7 +18,10 @@ FORMAT=							d64
 BREAKPOINTS=					breakpoints.txt
 COMPILE=						java -jar $(COMPILER)
 CFLAGS=							-odir $(OUTPUT) -o $(OUTPUT_PRG) -afo -aom -libdir $(LIB_DIR) -asminfo all
+# $(PRG_DEFINES)
 DEBUG_DEFINES=					-define DEBUG
+DISK_DEFINES=					-define DISK
+PRG_DEFINES=					-define PRG
 BYTE_DUMP=						-bytedumpfile $(APP)_bytedump.txt
 LOG=							-log $(OUTPUT)/$(APP)_log.txt
 CFLAGS_DEBUG=					$(CFLAGS) -debug $(DEBUG_DEFINES) :BREAKPOINTS=$(BREAKPOINTS) -showmem -bytedump -debugdump -vicesymbols $(LOG) $(BYTE_DUMP) $(SYMBOLS)
