@@ -35,6 +35,8 @@
 .const R16L = RL(ZP)
 .const R16H = RH(ZP)
 
+.segment Sweet16
+
 SW16_NONE:			    // Entry point if no need to preserve registers
 	lda #$00
 	sta SW16_SAVE_RESTORE
@@ -111,6 +113,8 @@ SETZ:
 SET2:
 	rts
 
+.segment Sweet16JumpTable
+
 OPTBL:
 	.byte <SET-1          // 1X
 
@@ -148,7 +152,8 @@ BRTBL:
     .byte  <SETI-1         // F
 
 // THE FOLLOWING CODE MUST BE CONTAINED ON A SINGLE PAGE!
-.align $100            // ensures page aligned
+.segment Sweet16Page 
+//.align $100            // ensures page aligned
 .var page_start = *
 RTS_FIX:
 	nop                // otherwise RTS "cleverness" not so clever
@@ -426,6 +431,8 @@ SETIM_COMMON:
 	ldx #RL(ZP)
 	rts
 	
+.segment Sweet16OutOfPage
+
 SETI_OUTOFPAGE:
 	jsr SETIM_COMMON
 	lda ($00,X)
@@ -459,7 +466,9 @@ XJSR_OUTOFPAGE: {
 !returned:
 	jmp SW16D				// back to SWEET16
 }
-	
+
+.segment Sweet16Data	
+
 ACCUMULATOR:
 	.byte 0
 XREG:
@@ -470,3 +479,5 @@ STATUS:
 	.byte 0
 SW16_SAVE_RESTORE:
 	.byte 0
+
+.segment Default

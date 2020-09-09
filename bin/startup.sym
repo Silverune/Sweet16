@@ -1,43 +1,43 @@
 .label RESTORED=$a13
 .label POP2=$9fb
 .label POP3=$a04
-.label BRANCH_IF_CARRY_SET_TEST=$3cae {
+.label BRANCH_IF_CARRY_SET_TEST=$2707 {
 }
-.label TEST_COUNT=$2004
+.label TEST_COUNT=$3cee
 .label SET2=$874
 .label POPD=$9ec
-.label TestRun=$5033 {
+.label TestRun=$3a8c {
 }
 .label SUB=$95d
 .label INR2=$92b
-.label BRANCH_IF_NONZERO_TEST=$416c {
+.label BRANCH_IF_NONZERO_TEST=$2bc5 {
 }
-.label ABSOLUTE_JUMP_TEST=$4a99 {
+.label ABSOLUTE_JUMP_TEST=$34f2 {
 }
 .label TOBR=$853
-.label ADD_TEST=$3022 {
+.label ADD_TEST=$1a7b {
 }
 .label POP=$9e8
-.label DECREMENT_TEST=$381a {
+.label DECREMENT_TEST=$2273 {
 }
 .label SUB2=$96b
 .label XREG=$aa7
 .label SW16_SAVE_RESTORE=$aaa
-.label POP_DOUBLE_BYTE_INDIRECT_TEST=$334c {
+.label POP_DOUBLE_BYTE_INDIRECT_TEST=$1da5 {
 }
-.label BRANCH_IF_PLUS_TEST=$3de2 {
+.label BRANCH_IF_PLUS_TEST=$283b {
 }
 .label STPAT=$94a
-.label RETURN_FROM_SUBROUTINE_TEST=$496c {
+.label RETURN_FROM_SUBROUTINE_TEST=$33c5 {
 }
 .label BC=$99e
 .label RS=$9d7
 .label TOBR2=$859
 .label SET=$901
-.label SUBTRACT_TEST=$31b6 {
+.label SUBTRACT_TEST=$1c0f {
 }
 .label BM1=$9c1
-.label BRANCH_IF_NO_CARRY_TEST=$3b7a {
+.label BRANCH_IF_NO_CARRY_TEST=$25d3 {
 }
 .label BK=$90d
 .label BM=$9a8
@@ -46,41 +46,41 @@
 .label BR=$98c
 .label BS=$982
 .label YREG=$aa8
-.label LOAD_INDIRECT_TEST=$23a4 {
+.label LOAD_INDIRECT_TEST=$dfd {
 }
-.label STACK_MEMORY=$2042 {
+.label STACK_MEMORY=$3d2c {
 }
 .label BZ=$9af
 .label RESTORE=$a26
-.label INCREMENT_TEST=$36fa {
+.label INCREMENT_TEST=$2153 {
 }
-.label COMPARE_TEST=$35cf {
+.label COMPARE_TEST=$2028 {
 }
 .label SAVE=$a16
-.label TEST_PASS_COUNT=$2005
+.label TEST_PASS_COUNT=$3cef
 .label SW16B=$82c
 .label SW16A=$826
 .label ST=$914
 .label SETI=$9f5
 .label BREAK_HANDLER=$a35
-.label STORE_DOUBLE_BYTE_INDIRECT_TEST=$28d9 {
+.label STORE_DOUBLE_BYTE_INDIRECT_TEST=$1332 {
 }
 .label SW16_NONE=$814
 .label SW16D=$838
-.label BRANCH_IF_MINUS_TEST=$3f12 {
+.label BRANCH_IF_MINUS_TEST=$296b {
 }
 .label SW16C=$832
 .label OPTBL=$875
 .label NUL=$9d6
 .label SETM_OUTOFPAGE=$a78
-.label LOAD_DOUBLE_BYTE_INDIRECT_TEST=$273f {
+.label LOAD_DOUBLE_BYTE_INDIRECT_TEST=$1198 {
 }
 .label SETM=$90e
-.label BRANCH_IF_ZERO_TEST=$4042 {
+.label BRANCH_IF_ZERO_TEST=$2a9b {
 }
 .label STAT=$91d
-.label TEST_SUCCESS=$2000
-.label TEST_FAILURE=$2002
+.label TEST_SUCCESS=$3cea
+.label TEST_FAILURE=$3cec
 .label BNC=$98d
 .label LD=$904
 .label SW160=$821
@@ -92,61 +92,61 @@
 .label LDAT=$92c
 .label BNZ=$9b8
 .label STATUS=$aa9
-.label STORE_INDIRECT_TEST=$2533 {
+.label STORE_INDIRECT_TEST=$f8c {
 }
-.label STORE_POP_INDIRECT_TEST=$2ef3 {
+.label STORE_POP_INDIRECT_TEST=$194c {
 }
-.label BRANCH_IF_NOT_MINUS_ONE_TEST=$43ca {
+.label BRANCH_IF_NOT_MINUS_ONE_TEST=$2e23 {
 }
-.label SET_TEST=$2052 {
+.label SET_TEST=$aab {
 }
 .label RTNZ=$a09
 .label SETI_OUTOFPAGE=$a66
-.label BREAK_TEST=$44fa {
+.label BREAK_TEST=$2f53 {
 }
 .label SW16=$81c
-.label TEST_MEMORY_2=$201e
+.label TEST_MEMORY_2=$3d08
 .label LDDAT=$936
 .label DCR=$954
 .label SETIM_COMMON=$a44
-.label TEST_MEMORY_3=$2020
-.label BRANCH_ALWAYS_TEST=$3a51 {
+.label TEST_MEMORY_3=$3d0a
+.label BRANCH_ALWAYS_TEST=$24aa {
 }
-.label INTERRUPT_BREAK_TEST=$4692 {
+.label INTERRUPT_BREAK_TEST=$30eb {
 }
-.label TEST_TITLE=$2007
-.label BRANCH_TO_SUBROUTINE_TEST=$4832 {
+.label TEST_TITLE=$3cf1
+.label BRANCH_TO_SUBROUTINE_TEST=$328b {
 }
 .label DCR2=$95a
-.label EXTERNAL_JSR_TEST=$4bc6 {
+.label EXTERNAL_JSR_TEST=$361f {
 }
 .label INR=$925
 .label STDAT=$940
 .label BNM1=$9cc
 .label XJSR_OUTOFPAGE=$a8a {
 }
-.label SET_INDIRECT_TEST=$4de3 {
+.label SET_INDIRECT_TEST=$383c {
 }
 .label RTS_FIX=$900
 .label BR1=$98f
-.label TEST_MEMORY=$201c
+.label TEST_MEMORY=$3d06
 .label BR2=$994
-.label BRANCH_IF_MINUS_ONE_TEST=$429b {
+.label BRANCH_IF_MINUS_ONE_TEST=$2cf4 {
 }
-.label TEST_MEMORY_SEQUENCE=$2022
-.label LOAD_TEST=$216c {
+.label TEST_MEMORY_SEQUENCE=$3d0c
+.label LOAD_TEST=$bc5 {
 }
 .label STAT2=$91f
 .label STAT3=$923
-.label POP_INDIRECT_TEST=$2ae4 {
+.label POP_INDIRECT_TEST=$153d {
 }
-.label TEST_MEMORY_SEQUENCE_2=$2032
-.label TEST_NAME_COUNT=$2006
-.label SET_MEMORY_TEST=$4f0c {
+.label TEST_MEMORY_SEQUENCE_2=$3d1c
+.label TEST_NAME_COUNT=$3cf0
+.label SET_MEMORY_TEST=$3965 {
 }
-.label STORE_TEST=$2286 {
+.label STORE_TEST=$cdf {
 }
-.label RETURN_TO_6502_MODE_TEST=$393e {
+.label RETURN_TO_6502_MODE_TEST=$2397 {
 }
 .label ACCUMULATOR=$aa6
 .label XJSR=$911

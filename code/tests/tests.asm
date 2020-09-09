@@ -1,5 +1,4 @@
-.segmentdef TestRoutines [startAfter="TestData"]
-.segment TestRoutines
+.segment Tests
 
 // Simple tests for Sweet16.  Most of these are converted versions of Woz's originals in the description of each of the mnemonics / opcodes (http://www.6502.org/source/interpreters/sweet16.htm#Register_Instructions_).
 

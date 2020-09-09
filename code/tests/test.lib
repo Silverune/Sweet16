@@ -1,3 +1,4 @@
+.segmentdef TestData [startAfter="Tests"]
 
 #import "test_data.asm"
 #import "config.asm"

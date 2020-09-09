@@ -250,3 +250,5 @@ newline:
 	Newline()
 !done:
 }
+
+.segment Default

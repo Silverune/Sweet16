@@ -1,4 +1,3 @@
-.segmentdef TestData
 .segment TestData
 
 TEST_SUCCESS:
