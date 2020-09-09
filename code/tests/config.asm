@@ -7,9 +7,3 @@
 .const NAME_COLOR = LIGHT_GREY
 .const DESC_COLOR = LIGHT_BLUE
 .const TESTS_PER_PAGE = 21
-	
-TEST_SUCCESS:
-	.byte $73, $00
-	
-TEST_FAILURE:
-	.byte $76, $00

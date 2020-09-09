@@ -1,3 +1,5 @@
+#importonce
+
 .function RL(register) {
 	.return ZP_BASE + (register * 2)
 }
@@ -37,7 +39,6 @@
 .function test_calculate_effective_address(currentAddress) {
 	.var values = List().add($80, $81, $ff, $00, $01, $7e, $7f)
 	.for (var i = 0	; i < values.size(); i++) {
-		.print "i = $" + toHexString(values.get(i)) + " -> $" + toHexString(calc_effective_address(values.get(i), currentAddress))
 	}
 }
 	

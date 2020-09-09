@@ -1,26 +1,7 @@
+.segmentdef TestRoutines [startAfter="TestData"]
+.segment TestRoutines
+
 // Simple tests for Sweet16.  Most of these are converted versions of Woz's originals in the description of each of the mnemonics / opcodes (http://www.6502.org/source/interpreters/sweet16.htm#Register_Instructions_).
-
-// Setup some common blocks of memory to use for the testing
-TEST_MEMORY:
-	.byte $12,$34
-
-TEST_MEMORY_2:
-	.byte $56,$78
-
-TEST_MEMORY_3:
-	.byte $9a,$bc
-
-.const TMS_SIZE = 16
-TEST_MEMORY_SEQUENCE:
-	.fill TMS_SIZE, i
-
-TEST_MEMORY_SEQUENCE_2:
-	.fill TMS_SIZE, $ff
-	
-STACK_MEMORY: {
-	.const STACK_SIZE = 16
-	.fill STACK_SIZE, 0
-}
 
 // The 2-byte constant is loaded into Rn (n=0 to F, Hex) and branch conditions set accordingly. The carry is cleared.
 SET_TEST: {
@@ -730,7 +711,6 @@ SET_MEMORY_TEST: {
 	rts
 }
 
-
 TestRun:
 	TestStart()
 
@@ -779,3 +759,5 @@ TestRun:
 	.eval test_calculate_effective_address($1000)
 #endif
 	rts
+
+.segment Default

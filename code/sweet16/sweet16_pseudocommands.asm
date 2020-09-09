@@ -1,3 +1,5 @@
+#importonce
+
 // Main translation from 6502 to SWEET16
 
 // convenience entry point

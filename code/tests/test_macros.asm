@@ -1,16 +1,3 @@
-TEST_COUNT:
-	.byte $00
-
-TEST_PASS_COUNT:
-	.byte $00
-
-TEST_NAME_COUNT:
-	.byte $00
-	
-TEST_TITLE:	
-	.text "SWEET16 TEST RUNNER"
-	Newline()
-	
 .macro TestStart() {
 	ChangeScreen(BACKGROUND_COLOR, TITLE_COLOR)
 	ClearScreen(BACKGROUND_COLOR)

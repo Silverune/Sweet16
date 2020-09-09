@@ -1,6 +1,5 @@
-BasicUpstart2(Program)
+.segment Main
 
-*=$0810 "Program"          // $080d is end of BASIC
-Program:
+Main:
 	jsr TestRun
 	rts

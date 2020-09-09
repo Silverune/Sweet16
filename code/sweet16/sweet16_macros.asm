@@ -1,3 +1,5 @@
+#importonce
+
 .macro register_encode(op, register, address) {
 	.byte opcode(op, register)
 	.word address.getValue()

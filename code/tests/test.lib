@@ -1,3 +1,7 @@
+
+#import "test_data.asm"
 #import "config.asm"
 #import "test_macros.asm"
 #import "tests.asm"
+
+.segment Default

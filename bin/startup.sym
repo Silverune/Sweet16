@@ -1,154 +1,153 @@
-.label RESTORED=$2213
-.label POP2=$21fb
-.label POP3=$2204
-.label BRANCH_IF_CARRY_SET_TEST=$3f59 {
+.label RESTORED=$a13
+.label POP2=$9fb
+.label POP3=$a04
+.label BRANCH_IF_CARRY_SET_TEST=$3cae {
 }
-.label TEST_COUNT=$22af
-.label SET2=$2060
-.label POPD=$21ec
-.label TestRun=$52de {
+.label TEST_COUNT=$2004
+.label SET2=$874
+.label POPD=$9ec
+.label TestRun=$5033 {
 }
-.label SUB=$215d
-.label INR2=$212b
-.label BRANCH_IF_NONZERO_TEST=$4417 {
+.label SUB=$95d
+.label INR2=$92b
+.label BRANCH_IF_NONZERO_TEST=$416c {
 }
-.label ABSOLUTE_JUMP_TEST=$4d44 {
+.label ABSOLUTE_JUMP_TEST=$4a99 {
 }
-.label TOBR=$203f
-.label ADD_TEST=$32cd {
+.label TOBR=$853
+.label ADD_TEST=$3022 {
 }
-.label POP=$21e8
-.label DECREMENT_TEST=$3ac5 {
+.label POP=$9e8
+.label DECREMENT_TEST=$381a {
 }
-.label SUB2=$216b
-.label XREG=$22a7
-.label SW16_SAVE_RESTORE=$22aa
-.label POP_DOUBLE_BYTE_INDIRECT_TEST=$35f7 {
+.label SUB2=$96b
+.label XREG=$aa7
+.label SW16_SAVE_RESTORE=$aaa
+.label POP_DOUBLE_BYTE_INDIRECT_TEST=$334c {
 }
-.label BRANCH_IF_PLUS_TEST=$408d {
+.label BRANCH_IF_PLUS_TEST=$3de2 {
 }
-.label STPAT=$214a
-.label RETURN_FROM_SUBROUTINE_TEST=$4c17 {
+.label STPAT=$94a
+.label RETURN_FROM_SUBROUTINE_TEST=$496c {
 }
-.label BC=$219e
-.label RS=$21d7
-.label TOBR2=$2045
-.label SET=$2101
-.label SUBTRACT_TEST=$3461 {
+.label BC=$99e
+.label RS=$9d7
+.label TOBR2=$859
+.label SET=$901
+.label SUBTRACT_TEST=$31b6 {
 }
-.label BM1=$21c1
-.label BRANCH_IF_NO_CARRY_TEST=$3e25 {
+.label BM1=$9c1
+.label BRANCH_IF_NO_CARRY_TEST=$3b7a {
 }
-.label BK=$210d
-.label BM=$21a8
-.label RTN=$21f8
-.label BP=$21a1
-.label BR=$218c
-.label BS=$2182
-.label YREG=$22a8
-.label LOAD_INDIRECT_TEST=$264f {
+.label BK=$90d
+.label BM=$9a8
+.label RTN=$9f8
+.label BP=$9a1
+.label BR=$98c
+.label BS=$982
+.label YREG=$aa8
+.label LOAD_INDIRECT_TEST=$23a4 {
 }
-.label STACK_MEMORY=$22ed {
+.label STACK_MEMORY=$2042 {
 }
-.label BZ=$21af
-.label RESTORE=$2226
-.label INCREMENT_TEST=$39a5 {
+.label BZ=$9af
+.label RESTORE=$a26
+.label INCREMENT_TEST=$36fa {
 }
-.label COMPARE_TEST=$387a {
+.label COMPARE_TEST=$35cf {
 }
-.label SAVE=$2216
-.label TEST_PASS_COUNT=$22b0
-.label SW16B=$2018
-.label SW16A=$2012
-.label ST=$2114
-.label SETI=$21f5
-.label BREAK_HANDLER=$2235
-.label STORE_DOUBLE_BYTE_INDIRECT_TEST=$2b84 {
+.label SAVE=$a16
+.label TEST_PASS_COUNT=$2005
+.label SW16B=$82c
+.label SW16A=$826
+.label ST=$914
+.label SETI=$9f5
+.label BREAK_HANDLER=$a35
+.label STORE_DOUBLE_BYTE_INDIRECT_TEST=$28d9 {
 }
-.label SW16_NONE=$2000
-.label SW16D=$2024
-.label BRANCH_IF_MINUS_TEST=$41bd {
+.label SW16_NONE=$814
+.label SW16D=$838
+.label BRANCH_IF_MINUS_TEST=$3f12 {
 }
-.label SW16C=$201e
-.label OPTBL=$2061
-.label NUL=$21d6
-.label SETM_OUTOFPAGE=$2278
-.label LOAD_DOUBLE_BYTE_INDIRECT_TEST=$29ea {
+.label SW16C=$832
+.label OPTBL=$875
+.label NUL=$9d6
+.label SETM_OUTOFPAGE=$a78
+.label LOAD_DOUBLE_BYTE_INDIRECT_TEST=$273f {
 }
-.label SETM=$210e
-.label BRANCH_IF_ZERO_TEST=$42ed {
+.label SETM=$90e
+.label BRANCH_IF_ZERO_TEST=$4042 {
 }
-.label STAT=$211d
-.label TEST_SUCCESS=$22ab
-.label TEST_FAILURE=$22ad
-.label BNC=$218d
-.label LD=$2104
-.label SW160=$200d
-.label SETZ=$204d
-.label ADD=$2174
-.label CPR=$215f
-.label BNC2=$219d
-.label BRTBL=$2062
-.label LDAT=$212c
-.label BNZ=$21b8
-.label STATUS=$22a9
-.label STORE_INDIRECT_TEST=$27de {
+.label STAT=$91d
+.label TEST_SUCCESS=$2000
+.label TEST_FAILURE=$2002
+.label BNC=$98d
+.label LD=$904
+.label SW160=$821
+.label SETZ=$861
+.label ADD=$974
+.label CPR=$95f
+.label BNC2=$99d
+.label BRTBL=$876
+.label LDAT=$92c
+.label BNZ=$9b8
+.label STATUS=$aa9
+.label STORE_INDIRECT_TEST=$2533 {
 }
-.label STORE_POP_INDIRECT_TEST=$319e {
+.label STORE_POP_INDIRECT_TEST=$2ef3 {
 }
-.label BRANCH_IF_NOT_MINUS_ONE_TEST=$4675 {
+.label BRANCH_IF_NOT_MINUS_ONE_TEST=$43ca {
 }
-.label Program=$810 {
+.label SET_TEST=$2052 {
 }
-.label SET_TEST=$22fd {
+.label RTNZ=$a09
+.label SETI_OUTOFPAGE=$a66
+.label BREAK_TEST=$44fa {
 }
-.label RTNZ=$2209
-.label SETI_OUTOFPAGE=$2266
-.label BREAK_TEST=$47a5 {
+.label SW16=$81c
+.label TEST_MEMORY_2=$201e
+.label LDDAT=$936
+.label DCR=$954
+.label SETIM_COMMON=$a44
+.label TEST_MEMORY_3=$2020
+.label BRANCH_ALWAYS_TEST=$3a51 {
 }
-.label SW16=$2008
-.label TEST_MEMORY_2=$22c9
-.label LDDAT=$2136
-.label DCR=$2154
-.label SETIM_COMMON=$2244
-.label TEST_MEMORY_3=$22cb
-.label BRANCH_ALWAYS_TEST=$3cfc {
+.label INTERRUPT_BREAK_TEST=$4692 {
 }
-.label INTERRUPT_BREAK_TEST=$493d {
+.label TEST_TITLE=$2007
+.label BRANCH_TO_SUBROUTINE_TEST=$4832 {
 }
-.label TEST_TITLE=$22b2
-.label BRANCH_TO_SUBROUTINE_TEST=$4add {
+.label DCR2=$95a
+.label EXTERNAL_JSR_TEST=$4bc6 {
 }
-.label DCR2=$215a
-.label EXTERNAL_JSR_TEST=$4e71 {
+.label INR=$925
+.label STDAT=$940
+.label BNM1=$9cc
+.label XJSR_OUTOFPAGE=$a8a {
 }
-.label INR=$2125
-.label STDAT=$2140
-.label BNM1=$21cc
-.label XJSR_OUTOFPAGE=$228a {
+.label SET_INDIRECT_TEST=$4de3 {
 }
-.label SET_INDIRECT_TEST=$508e {
+.label RTS_FIX=$900
+.label BR1=$98f
+.label TEST_MEMORY=$201c
+.label BR2=$994
+.label BRANCH_IF_MINUS_ONE_TEST=$429b {
 }
-.label RTS_FIX=$2100
-.label BR1=$218f
-.label TEST_MEMORY=$22c7
-.label BR2=$2194
-.label BRANCH_IF_MINUS_ONE_TEST=$4546 {
+.label TEST_MEMORY_SEQUENCE=$2022
+.label LOAD_TEST=$216c {
 }
-.label TEST_MEMORY_SEQUENCE=$22cd
-.label LOAD_TEST=$2417 {
+.label STAT2=$91f
+.label STAT3=$923
+.label POP_INDIRECT_TEST=$2ae4 {
 }
-.label STAT2=$211f
-.label STAT3=$2123
-.label POP_INDIRECT_TEST=$2d8f {
+.label TEST_MEMORY_SEQUENCE_2=$2032
+.label TEST_NAME_COUNT=$2006
+.label SET_MEMORY_TEST=$4f0c {
 }
-.label TEST_MEMORY_SEQUENCE_2=$22dd
-.label TEST_NAME_COUNT=$22b1
-.label SET_MEMORY_TEST=$51b7 {
+.label STORE_TEST=$2286 {
 }
-.label STORE_TEST=$2531 {
+.label RETURN_TO_6502_MODE_TEST=$393e {
 }
-.label RETURN_TO_6502_MODE_TEST=$3be9 {
-}
-.label ACCUMULATOR=$22a6
-.label XJSR=$2111
+.label ACCUMULATOR=$aa6
+.label XJSR=$911
+.label Main=$810
