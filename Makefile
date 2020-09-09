@@ -1,66 +1,105 @@
-# Makefile for Sweet16
+# Makefile
 # The following variables need to be set:
 #  EMULATOR_PATH - full path and executable to the x64 VICE emulator
 #  COMPILER_PATH - full path to where the KickAssembler .JAR file is
 #  DRIVE_PATH - full path and executable to c1541
+# Output file can be changed by passing in different APP.  e.g., make APP=blah
 #
 # e.g., 
-# export EMULATOR_PATH=/usr/local/bin/x64
-# export COMPILER_PATH=~/Documents/C64/KickAssembler/KickAss.jar
-# export DRIVE_PATH=/usr/local/bin/c1541
+# export EMULATOR_PATH="/usr/local/bin/x64"
+# export COMPILER_PATH="/usr/local/blah/Documents/C64/KickAssembler/KickAss.jar"
+# export DRIVE_PATH="/usr/local/bin/c1541"
 #
-# TODO
-# - Cleanup null endings on all strings
-# - Make breakpoints file more consistent.  Kick and Make using "breakpoints.txt" VSC using "startup.breakpoints"
-# - VSA needs ability to pass in directives depending on debug or not
-# - VSA needs user configurable breakfile naming
-# - VSA needs a Startup Build and Run option
-#
-COMPILER	= java -jar $(COMPILER_PATH)
-CFLAGS		= -odir $(OUTPUT) -o $(OUTPUT_PRG) -afo -aom -libdir $(LIB_DIR) -excludeillegal
-DEBUG_DEFINES	= -define DEBUG
-BYTE_DUMP   = -bytedumpfile $(APP)_bytedump.txt
-LOG			= -log $(OUTPUT)/$(APP)_log.txt
-LIB_DIR		= resources
-BREAKPOINTS = breakpoints.txt
-CFLAGS_DEBUG	= $(CFLAGS) -debug $(DEBUG_DEFINES) :BREAKPOINTS=$(BREAKPOINTS) -showmem -bytedump -debugdump -vicesymbols $(LOG) $(BYTE_DUMP) $(SYMBOLS)
-APP			= sweet16
-PROG		= startup
-PROGRAM		= $(PROG).asm
-PRG			= $(APP).prg
-OUTPUT		= bin
-OUTPUT_PRG	= $(OUTPUT)/$(PRG)
-DEBUG_FLAGS_VICE	= -moncommands $(shell pwd)/$(OUTPUT)/$(BREAKPOINTS) +remotemonitor -remotemonitoraddress 6510 -autostartprgmode 1 -autostart-warp +truedrive +cart
-RUN_FLAGS	= -autostartprgmode 1 -autostart-warp +truedrive +cart
-DEBUG_FLAGS	= -vicesymbols $(OUTPUT)/$(PROG).vs -prg $(OUTPUT_PRG)
-EMULATOR	= $(EMULATOR_PATH)
-RUN       	= $(EMULATOR) $(RUN_FLAGS) $(OUTPUT_PRG)
-DEBUG_VICE	= $(EMULATOR) $(DEBUG_FLAGS_VICE) $(OUTPUT_PRG)
-DRIVE		= $(DRIVE_PATH)
+APP=							sweet16
+PROG=							startup
+OUTPUT=							bin
+LIB_DIR=						resources -libdir ../Core/code
+FORMAT=							d64
+BREAKPOINTS=					breakpoints.txt
+COMPILE=						java -jar $(COMPILER)
+CFLAGS=							-odir $(OUTPUT) -o $(OUTPUT_PRG) -afo -aom -libdir $(LIB_DIR) -asminfo all
+DEBUG_DEFINES=					-define DEBUG
+BYTE_DUMP=						-bytedumpfile $(APP)_bytedump.txt
+LOG=							-log $(OUTPUT)/$(APP)_log.txt
+CFLAGS_DEBUG=					$(CFLAGS) -debug $(DEBUG_DEFINES) :BREAKPOINTS=$(BREAKPOINTS) -showmem -bytedump -debugdump -vicesymbols $(LOG) $(BYTE_DUMP) $(SYMBOLS)
+PROGRAM=						$(PROG).asm
+PRG=							$(APP).prg
+OUTPUT_PRG=						$(OUTPUT)/$(PRG)
+RUN_FLAGS=						-autostartprgmode 1 -autostart-warp +truedrive +cart
+DEBUG_VICE=						$(EMULATOR) $(DEBUG_FLAGS_VICE) $(OUTPUT_PRG)
+
+ifeq ($(OS),Windows_NT)
+	COMPILER=					$(COMPILER_PATH)
+	DEBUG_CLEAN=				del $(OUTPUT)\$(BREAKPOINTS)
+	DEBUG_FLAGS_VICE=			-moncommands "$(shell chdir)\$(OUTPUT)\$(BREAKPOINTS)" +remotemonitor -remotemonitoraddress 6510 -autostartprgmode 1 -autostart-warp +truedrive +cart
+	EMULATOR=					$(EMULATOR_PATH)
+	RUN=						$(EMULATOR) $(RUN_FLAGS) $(OUTPUT_PRG)
+	DEBUG_VICE=					$(EMULATOR) $(DEBUG_FLAGS_VICE) $(OUTPUT_PRG)
+	GENERATE_BREAKPOINTS=		type $(OUTPUT)\$(PROG).vs | sort >> $(OUTPUT)\$(BREAKPOINTS)
+	DRIVE=						$(DRIVE_PATH)
+	ZIP=						tar.exe -a -c -f 
+	GENERATE_ENCODING=			certutil -f -encode $(OUTPUT)\$(APP).zip $(OUTPUT)\$(APP).b64
+else
+    UNAME_S := $(shell uname -s)
+    ifeq ($(UNAME_S),Linux)
+		UNIX=					true
+		RUN=					$(EMULATOR) $(RUN_FLAGS) $(OUTPUT_PRG)
+		DEBUG_VICE=				$(EMULATOR) $(DEBUG_FLAGS_VICE) $(OUTPUT_PRG)	
+    endif
+    ifeq ($(UNAME_S),Darwin)
+		UNIX=					true
+		RUN=					open -a $(EMULATOR) $(OUTPUT_PRG) --args $(RUN_FLAGS)
+		DEBUG_VICE=				open -a $(EMULATOR) $(OUTPUT_PRG) --args $(DEBUG_FLAGS_VICE)
+    endif
+    UNAME_P := $(shell uname -p)
+    ifeq ($(UNAME_P),x86_64)
+        # TODO: amd64
+		UNSUPPORTED=true
+    endif
+    ifneq ($(filter %86,$(UNAME_P)),)
+		# TODO: ia32
+		UNSUPPORTED=true
+    endif
+    ifneq ($(filter arm%,$(UNAME_P)),)
+		# TODO: arm
+		UNSUPPORTED=true
+    endif
+
+	ifdef UNIX
+		COMPILER=				"$(COMPILER_PATH)"
+		DEBUG_CLEAN=			rm -f $(OUTPUT)/$(BREAKPOINTS)
+		DEBUG_FLAGS_VICE=		-moncommands "$(shell pwd)/$(OUTPUT)/$(BREAKPOINTS)" +remotemonitor -remotemonitoraddress 6510 -autostartprgmode 1 -autostart-warp +truedrive +cart
+		EMULATOR= 				"$(EMULATOR_PATH)"
+		GENERATE_BREAKPOINTS=	cat $(OUTPUT)/$(PROG).vs | sort >> $(OUTPUT)/$(BREAKPOINTS)
+		DRIVE=					"$(DRIVE_PATH)"
+		ZIP=					zip
+		GENERATE_ENCODING=		cat $(OUTPUT)/$(APP).zip | base64 > $(OUTPUT)/$(APP).b64
+	endif
+endif
 
 all:	index
 
 index: $(PROGRAM)
-		$(COMPILER) $(CFLAGS) $(PROGRAM)
+		$(COMPILE) $(CFLAGS) $(PROGRAM)
 
 debugonly:	
-		$(COMPILER) $(CFLAGS_DEBUG) $(PROGRAM)
-
-debug:	
-		$(COMPILER) $(CFLAGS_DEBUG) $(PROGRAM)
-		cat $(OUTPUT)/$(PROG).vs | sort >> $(OUTPUT)/$(BREAKPOINTS)
 		$(DEBUG_VICE)
 
+debug:	
+		$(DEBUG_CLEAN)
+		$(COMPILE) $(CFLAGS_DEBUG) $(PROGRAM)
+		$(GENERATE_BREAKPOINTS)
+		$(DEBUG_VICE)
 run:		
 		$(RUN)
 
 andrun: all
-		$(COMPILER) $(CFLAGS) $(PROGRAM)
+		$(COMPILE) $(CFLAGS) $(PROGRAM)
 		$(RUN)
 
-encode:	all
-		zip $(OUTPUT)/$(APP).zip $(OUTPUT_PRG)	
-		cat $(OUTPUT)/$(APP).zip | base64 > $(OUTPUT)/$(APP).b64
+encode:
+		$(ZIP) $(OUTPUT)/$(APP).zip $(OUTPUT_PRG)	
+		$(GENERATE_ENCODING)
 
 disk:
 		$(DRIVE) -format $(APP),DF $(FORMAT) $(OUTPUT)/$(APP).$(FORMAT)

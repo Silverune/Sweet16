@@ -1,41 +1,43 @@
 .label RESTORED=$2213
 .label POP2=$21fb
 .label POP3=$2204
-.label BRANCH_IF_CARRY_SET_TEST=$3f55 {
+.label BRANCH_IF_CARRY_SET_TEST=$3f59 {
 }
-.label TEST_COUNT=$22ab
-.label SET2=$2064
+.label TEST_COUNT=$22af
+.label SET2=$2060
 .label POPD=$21ec
+.label TestRun=$52de {
+}
 .label SUB=$215d
 .label INR2=$212b
-.label BRANCH_IF_NONZERO_TEST=$4413 {
+.label BRANCH_IF_NONZERO_TEST=$4417 {
 }
-.label ABSOLUTE_JUMP_TEST=$4d40 {
+.label ABSOLUTE_JUMP_TEST=$4d44 {
 }
-.label TOBR=$2043
-.label ADD_TEST=$32c9 {
+.label TOBR=$203f
+.label ADD_TEST=$32cd {
 }
 .label POP=$21e8
-.label DECREMENT_TEST=$3ac1 {
+.label DECREMENT_TEST=$3ac5 {
 }
 .label SUB2=$216b
 .label XREG=$22a7
 .label SW16_SAVE_RESTORE=$22aa
-.label POP_DOUBLE_BYTE_INDIRECT_TEST=$35f3 {
+.label POP_DOUBLE_BYTE_INDIRECT_TEST=$35f7 {
 }
-.label BRANCH_IF_PLUS_TEST=$4089 {
+.label BRANCH_IF_PLUS_TEST=$408d {
 }
 .label STPAT=$214a
-.label RETURN_FROM_SUBROUTINE_TEST=$4c13 {
+.label RETURN_FROM_SUBROUTINE_TEST=$4c17 {
 }
 .label BC=$219e
 .label RS=$21d7
-.label TOBR2=$2049
+.label TOBR2=$2045
 .label SET=$2101
-.label SUBTRACT_TEST=$345d {
+.label SUBTRACT_TEST=$3461 {
 }
 .label BM1=$21c1
-.label BRANCH_IF_NO_CARRY_TEST=$3e21 {
+.label BRANCH_IF_NO_CARRY_TEST=$3e25 {
 }
 .label BK=$210d
 .label BM=$21a8
@@ -44,109 +46,109 @@
 .label BR=$218c
 .label BS=$2182
 .label YREG=$22a8
-.label LOAD_INDIRECT_TEST=$264b {
+.label LOAD_INDIRECT_TEST=$264f {
 }
-.label STACK_MEMORY=$22e9 {
+.label STACK_MEMORY=$22ed {
 }
 .label BZ=$21af
 .label RESTORE=$2226
-.label INCREMENT_TEST=$39a1 {
+.label INCREMENT_TEST=$39a5 {
 }
-.label COMPARE_TEST=$3876 {
+.label COMPARE_TEST=$387a {
 }
 .label SAVE=$2216
-.label TEST_PASS_COUNT=$22ac
-.label SW16B=$201c
-.label SW16A=$2016
+.label TEST_PASS_COUNT=$22b0
+.label SW16B=$2018
+.label SW16A=$2012
 .label ST=$2114
 .label SETI=$21f5
 .label BREAK_HANDLER=$2235
-.label STORE_DOUBLE_BYTE_INDIRECT_TEST=$2b80 {
+.label STORE_DOUBLE_BYTE_INDIRECT_TEST=$2b84 {
 }
-.label SW16_NONE=$2004
-.label SW16D=$2028
-.label BRANCH_IF_MINUS_TEST=$41b9 {
+.label SW16_NONE=$2000
+.label SW16D=$2024
+.label BRANCH_IF_MINUS_TEST=$41bd {
 }
-.label SW16C=$2022
-.label OPTBL=$2065
+.label SW16C=$201e
+.label OPTBL=$2061
 .label NUL=$21d6
 .label SETM_OUTOFPAGE=$2278
-.label LOAD_DOUBLE_BYTE_INDIRECT_TEST=$29e6 {
+.label LOAD_DOUBLE_BYTE_INDIRECT_TEST=$29ea {
 }
 .label SETM=$210e
-.label BRANCH_IF_ZERO_TEST=$42e9 {
+.label BRANCH_IF_ZERO_TEST=$42ed {
 }
 .label STAT=$211d
-.label TEST_SUCCESS=$2000
-.label TEST_FAILURE=$2002
+.label TEST_SUCCESS=$22ab
+.label TEST_FAILURE=$22ad
 .label BNC=$218d
 .label LD=$2104
-.label SW160=$2011
-.label SETZ=$2051
+.label SW160=$200d
+.label SETZ=$204d
 .label ADD=$2174
 .label CPR=$215f
 .label BNC2=$219d
-.label BRTBL=$2066
+.label BRTBL=$2062
 .label LDAT=$212c
 .label BNZ=$21b8
 .label STATUS=$22a9
-.label STORE_INDIRECT_TEST=$27da {
+.label STORE_INDIRECT_TEST=$27de {
 }
-.label STORE_POP_INDIRECT_TEST=$319a {
+.label STORE_POP_INDIRECT_TEST=$319e {
 }
-.label BRANCH_IF_NOT_MINUS_ONE_TEST=$4671 {
+.label BRANCH_IF_NOT_MINUS_ONE_TEST=$4675 {
 }
 .label Program=$810 {
 }
-.label SET_TEST=$22f9 {
+.label SET_TEST=$22fd {
 }
 .label RTNZ=$2209
 .label SETI_OUTOFPAGE=$2266
-.label BREAK_TEST=$47a1 {
+.label BREAK_TEST=$47a5 {
 }
-.label SW16=$200c
-.label TEST_MEMORY_2=$22c5
+.label SW16=$2008
+.label TEST_MEMORY_2=$22c9
 .label LDDAT=$2136
 .label DCR=$2154
 .label SETIM_COMMON=$2244
-.label TEST_MEMORY_3=$22c7
-.label BRANCH_ALWAYS_TEST=$3cf8 {
+.label TEST_MEMORY_3=$22cb
+.label BRANCH_ALWAYS_TEST=$3cfc {
 }
-.label INTERRUPT_BREAK_TEST=$4939 {
+.label INTERRUPT_BREAK_TEST=$493d {
 }
-.label TEST_TITLE=$22ae
-.label BRANCH_TO_SUBROUTINE_TEST=$4ad9 {
+.label TEST_TITLE=$22b2
+.label BRANCH_TO_SUBROUTINE_TEST=$4add {
 }
 .label DCR2=$215a
-.label EXTERNAL_JSR_TEST=$4e6d {
+.label EXTERNAL_JSR_TEST=$4e71 {
 }
 .label INR=$2125
 .label STDAT=$2140
 .label BNM1=$21cc
 .label XJSR_OUTOFPAGE=$228a {
 }
-.label SET_INDIRECT_TEST=$508a {
+.label SET_INDIRECT_TEST=$508e {
 }
 .label RTS_FIX=$2100
 .label BR1=$218f
-.label TEST_MEMORY=$22c3
+.label TEST_MEMORY=$22c7
 .label BR2=$2194
-.label BRANCH_IF_MINUS_ONE_TEST=$4542 {
+.label BRANCH_IF_MINUS_ONE_TEST=$4546 {
 }
-.label TEST_MEMORY_SEQUENCE=$22c9
-.label LOAD_TEST=$2413 {
+.label TEST_MEMORY_SEQUENCE=$22cd
+.label LOAD_TEST=$2417 {
 }
 .label STAT2=$211f
 .label STAT3=$2123
-.label POP_INDIRECT_TEST=$2d8b {
+.label POP_INDIRECT_TEST=$2d8f {
 }
-.label TEST_MEMORY_SEQUENCE_2=$22d9
-.label TEST_NAME_COUNT=$22ad
-.label SET_MEMORY_TEST=$51b3 {
+.label TEST_MEMORY_SEQUENCE_2=$22dd
+.label TEST_NAME_COUNT=$22b1
+.label SET_MEMORY_TEST=$51b7 {
 }
-.label STORE_TEST=$252d {
+.label STORE_TEST=$2531 {
 }
-.label RETURN_TO_6502_MODE_TEST=$3be5 {
+.label RETURN_TO_6502_MODE_TEST=$3be9 {
 }
 .label ACCUMULATOR=$22a6
 .label XJSR=$2111
