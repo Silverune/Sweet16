@@ -388,10 +388,34 @@ Misc;function;LoadBinary;
 directive;1,1,1,11,0
 directive;2,1,2,11,0
 directive;3,1,3,11,0
-directive;5,1,5,5,0
-symbolReference;9,12,9,15,0
-directive;12,1,12,5,0
-ppDirective;21,1,21,7,0
+directive;5,1,5,4,0
+ppDirective;6,1,6,3,0
+symbolReference;5,13,5,23,0
+objFunctionCall;5,25,5,27,0
+objFunctionCall;5,37,5,42,0
+directive;7,1,7,5,0
+ppDirective;14,1,14,6,0
+ppDirective;16,1,16,3,0
+symbolReference;8,10,8,13,0
+operator;8,15,8,15,0
+symbolReference;11,12,11,15,0
+directive;18,1,18,5,0
+symbolReference;18,17,18,20,0
+operator;18,22,18,22,0
+symbolReference;18,30,18,40,0
+objFunctionCall;18,42,18,44,0
+objFunctionCall;18,56,18,61,0
+operator;18,28,18,28,0
+symbolReference;18,71,18,74,0
+objFunctionCall;18,76,18,86,0
+symbolReference;18,94,18,104,0
+objFunctionCall;18,106,18,108,0
+objFunctionCall;18,116,18,121,0
+directive;27,1,27,8,0
+comment;30,1,30,40,0
+macroExecution;28,1,28,13,0
+ppDirective;32,1,32,6,0
+ppDirective;34,1,34,7,0
 ppDirective;1,1,1,7,1
 comment;1,1,1,46,2
 comment;3,1,3,34,2
@@ -418,7 +442,7 @@ comment;124,30,124,71,3
 comment;125,34,125,53,3
 comment;139,1,139,59,3
 comment;151,1,151,59,3
-ppDirective;22,1,22,7,0
+ppDirective;35,1,35,7,0
 ppDirective;1,1,1,11,4
 ppDirective;8,1,8,7,4
 ppDirective;1,1,1,11,5
@@ -626,7 +650,8 @@ comment;71,1,71,14,8
 comment;79,1,79,16,8
 comment;126,1,126,14,8
 comment;141,1,141,199,8
-ppDirective;23,1,23,7,0
+symbolReference;28,15,28,18,0
+ppDirective;36,1,36,7,0
 ppDirective;3,1,3,7,9
 comment;22,1,22,61,10
 ppDirective;4,1,4,7,9
@@ -1016,7 +1041,7 @@ symbolReference;160,15,160,17,3
 mnemonic;161,2,161,4,3
 symbolReference;162,6,162,21,3
 mnemonic;162,2,162,4,3
-ppDirective;24,1,24,7,0
+ppDirective;37,1,37,7,0
 directive;3,1,3,11,4
 directive;4,1,4,11,4
 directive;5,1,5,11,4
@@ -3596,9 +3621,6 @@ label;3,1,3,5,14
 symbolReference;4,6,4,12,14
 mnemonic;4,2,4,4,14
 mnemonic;5,2,5,4,14
-directive;26,1,26,8,0
-macroExecution;27,1,27,13,0
-symbolReference;27,15,27,18,0
 comment;1,1,24,2,15
 comment;26,1,26,34,15
 comment;27,1,27,10,15
@@ -3638,19 +3660,19 @@ label;61,1,61,11,15
 directive;62,5,62,9,15
 directive;63,5,63,5,15
 [files]
-0;/Users/rhett/Google Drive/Source/C64/Sweet16/startup.asm
-1;/Users/rhett/Google Drive/Source/C64/Sweet16/code/util/util.lib
-2;/Users/rhett/Google Drive/Source/C64/Sweet16/code/util/keyboard_macros.asm
-3;/Users/rhett/Google Drive/Source/C64/Sweet16/code/util/screen_macros.asm
-4;/Users/rhett/Google Drive/Source/C64/Sweet16/code/sweet16/sweet16.lib
-5;/Users/rhett/Google Drive/Source/C64/Sweet16/code/sweet16/sweet16_functions.asm
-6;/Users/rhett/Google Drive/Source/C64/Sweet16/code/sweet16/sweet16_macros.asm
-7;/Users/rhett/Google Drive/Source/C64/Sweet16/code/sweet16/sweet16.asm
-8;/Users/rhett/Google Drive/Source/C64/Sweet16/code/sweet16/sweet16_pseudocommands.asm
-9;/Users/rhett/Google Drive/Source/C64/Sweet16/code/tests/test.lib
-10;/Users/rhett/Google Drive/Source/C64/Sweet16/code/tests/test_data.asm
-11;/Users/rhett/Google Drive/Source/C64/Sweet16/code/tests/config.asm
-12;/Users/rhett/Google Drive/Source/C64/Sweet16/code/tests/test_macros.asm
-13;/Users/rhett/Google Drive/Source/C64/Sweet16/code/tests/tests.asm
-14;/Users/rhett/Google Drive/Source/C64/Sweet16/code/main.asm
+0;C:\Users\Rhett.Jacobs\OneDrive - Australian Research Council\Documents\Source\6502\Sweet16\startup.asm
+1;C:\Users\Rhett.Jacobs\OneDrive - Australian Research Council\Documents\Source\6502\Sweet16\code\util\util.lib
+2;C:\Users\Rhett.Jacobs\OneDrive - Australian Research Council\Documents\Source\6502\Sweet16\code\util\keyboard_macros.asm
+3;C:\Users\Rhett.Jacobs\OneDrive - Australian Research Council\Documents\Source\6502\Sweet16\code\util\screen_macros.asm
+4;C:\Users\Rhett.Jacobs\OneDrive - Australian Research Council\Documents\Source\6502\Sweet16\code\sweet16\sweet16.lib
+5;C:\Users\Rhett.Jacobs\OneDrive - Australian Research Council\Documents\Source\6502\Sweet16\code\sweet16\sweet16_functions.asm
+6;C:\Users\Rhett.Jacobs\OneDrive - Australian Research Council\Documents\Source\6502\Sweet16\code\sweet16\sweet16_macros.asm
+7;C:\Users\Rhett.Jacobs\OneDrive - Australian Research Council\Documents\Source\6502\Sweet16\code\sweet16\sweet16.asm
+8;C:\Users\Rhett.Jacobs\OneDrive - Australian Research Council\Documents\Source\6502\Sweet16\code\sweet16\sweet16_pseudocommands.asm
+9;C:\Users\Rhett.Jacobs\OneDrive - Australian Research Council\Documents\Source\6502\Sweet16\code\tests\test.lib
+10;C:\Users\Rhett.Jacobs\OneDrive - Australian Research Council\Documents\Source\6502\Sweet16\code\tests\test_data.asm
+11;C:\Users\Rhett.Jacobs\OneDrive - Australian Research Council\Documents\Source\6502\Sweet16\code\tests\config.asm
+12;C:\Users\Rhett.Jacobs\OneDrive - Australian Research Council\Documents\Source\6502\Sweet16\code\tests\test_macros.asm
+13;C:\Users\Rhett.Jacobs\OneDrive - Australian Research Council\Documents\Source\6502\Sweet16\code\tests\tests.asm
+14;C:\Users\Rhett.Jacobs\OneDrive - Australian Research Council\Documents\Source\6502\Sweet16\code\main.asm
 15;KickAss.jar:/include/autoinclude.asm

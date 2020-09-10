@@ -14,11 +14,13 @@ APP=							sweet16
 PROG=							startup
 OUTPUT=							bin
 LIB_DIR=						resources -libdir ../Core/code
-FORMAT=							d64
+FORMAT_D64=						d64
+FORMAT_D71=						d71
+FORMAT_D81=						d81
 BREAKPOINTS=					breakpoints.txt
 COMPILE=						java -jar $(COMPILER)
-CFLAGS=							-odir $(OUTPUT) -o $(OUTPUT_PRG) -afo -aom -libdir $(LIB_DIR) -asminfo all
-# $(PRG_DEFINES)
+KICK_VARS=						:name="$(APP)" :id="5150!" :format="$(FORMAT_D64)"
+CFLAGS=							-odir $(OUTPUT) -o $(OUTPUT_PRG) -afo -aom -libdir $(LIB_DIR) -asminfo all $(PRG_DEFINES) $(KICK_VARS)
 DEBUG_DEFINES=					-define DEBUG
 DISK_DEFINES=					-define DISK
 PRG_DEFINES=					-define PRG
@@ -104,7 +106,23 @@ encode:
 		$(ZIP) $(OUTPUT)/$(APP).zip $(OUTPUT_PRG)	
 		$(GENERATE_ENCODING)
 
-disk:
-		$(DRIVE) -format $(APP),DF $(FORMAT) $(OUTPUT)/$(APP).$(FORMAT)
-		$(DRIVE) -attach $(OUTPUT)/$(APP).$(FORMAT) -write $(OUTPUT_PRG)
-		$(DRIVE) -attach $(OUTPUT)/$(APP).$(FORMAT) -list
+disk: 	$(PROGRAM)
+		$(COMPILE) $(CFLAGS) $(DISK_DEFINES) $(PROGRAM) $(D64_FORMAT)
+
+# Legacy disk creation calls using third party c1541.
+
+d64:
+		$(DRIVE) -format $(APP),DF $(FORMAT_D64) $(OUTPUT)/$(APP).$(FORMAT_D64)
+		$(DRIVE) -attach $(OUTPUT)/$(APP).$(FORMAT_D64) -write $(OUTPUT_PRG)
+		$(DRIVE) -attach $(OUTPUT)/$(APP).$(FORMAT_D64) -list
+
+
+d71:
+		$(DRIVE) -format $(APP),DF $(FORMAT_D71) $(OUTPUT)/$(APP).$(FORMAT_D71)
+		$(DRIVE) -attach $(OUTPUT)/$(APP).$(FORMAT_D71) -write $(OUTPUT_PRG)
+		$(DRIVE) -attach $(OUTPUT)/$(APP).$(FORMAT_D71) -list
+
+d81:
+		$(DRIVE) -format $(APP),DF $(FORMAT_D81) $(OUTPUT)/$(APP).$(FORMAT_D81)
+		$(DRIVE) -attach $(OUTPUT)/$(APP).$(FORMAT_D81) -write $(OUTPUT_PRG)
+		$(DRIVE) -attach $(OUTPUT)/$(APP).$(FORMAT_D81) -list
