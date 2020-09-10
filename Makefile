@@ -30,7 +30,7 @@ CFLAGS_DEBUG=					$(CFLAGS) -debug $(DEBUG_DEFINES) :BREAKPOINTS=$(BREAKPOINTS) 
 PROGRAM=						$(PROG).asm
 PRG=							$(APP).prg
 OUTPUT_PRG=						$(OUTPUT)/$(PRG)
-RUN_FLAGS=						-autostartprgmode 1 -autostart-warp +truedrive +cart
+RUN_FLAGS=						-autostartprgmode 1 -autostart-warp +truedrive +cart -8 $(OUTPUT)/$(APP).$(FORMAT_D64)
 DEBUG_VICE=						$(EMULATOR) $(DEBUG_FLAGS_VICE) $(OUTPUT_PRG)
 
 ifeq ($(OS),Windows_NT)

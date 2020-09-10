@@ -4,17 +4,18 @@
 .label BRANCH_IF_CARRY_SET_TEST=$2707 {
 }
 .label TEST_COUNT=$3cee
-.label SET2=$874
+.label SET2=$889
 .label POPD=$9ec
 .label TestRun=$3a8c {
 }
 .label SUB=$95d
+.label Anykey=$81d
 .label INR2=$92b
 .label BRANCH_IF_NONZERO_TEST=$2bc5 {
 }
 .label ABSOLUTE_JUMP_TEST=$34f2 {
 }
-.label TOBR=$853
+.label TOBR=$868
 .label ADD_TEST=$1a7b {
 }
 .label POP=$9e8
@@ -32,7 +33,7 @@
 }
 .label BC=$99e
 .label RS=$9d7
-.label TOBR2=$859
+.label TOBR2=$86e
 .label SET=$901
 .label SUBTRACT_TEST=$1c0f {
 }
@@ -58,19 +59,19 @@
 }
 .label SAVE=$a16
 .label TEST_PASS_COUNT=$3cef
-.label SW16B=$82c
-.label SW16A=$826
+.label SW16B=$841
+.label SW16A=$83b
 .label ST=$914
 .label SETI=$9f5
 .label BREAK_HANDLER=$a35
 .label STORE_DOUBLE_BYTE_INDIRECT_TEST=$1332 {
 }
-.label SW16_NONE=$814
-.label SW16D=$838
+.label SW16_NONE=$829
+.label SW16D=$84d
 .label BRANCH_IF_MINUS_TEST=$296b {
 }
-.label SW16C=$832
-.label OPTBL=$875
+.label SW16C=$847
+.label OPTBL=$88a
 .label NUL=$9d6
 .label SETM_OUTOFPAGE=$a78
 .label LOAD_DOUBLE_BYTE_INDIRECT_TEST=$1198 {
@@ -83,12 +84,12 @@
 .label TEST_FAILURE=$3cec
 .label BNC=$98d
 .label LD=$904
-.label SW160=$821
-.label SETZ=$861
+.label SW160=$836
+.label SETZ=$876
 .label ADD=$974
 .label CPR=$95f
 .label BNC2=$99d
-.label BRTBL=$876
+.label BRTBL=$88b
 .label LDAT=$92c
 .label BNZ=$9b8
 .label STATUS=$aa9
@@ -98,13 +99,14 @@
 }
 .label BRANCH_IF_NOT_MINUS_ONE_TEST=$2e23 {
 }
+.label Reset=$826
 .label SET_TEST=$aab {
 }
 .label RTNZ=$a09
 .label SETI_OUTOFPAGE=$a66
 .label BREAK_TEST=$2f53 {
 }
-.label SW16=$81c
+.label SW16=$831
 .label TEST_MEMORY_2=$3d08
 .label LDDAT=$936
 .label DCR=$954
@@ -128,6 +130,7 @@
 .label SET_INDIRECT_TEST=$383c {
 }
 .label RTS_FIX=$900
+.label Bootstrap=$3d3c
 .label BR1=$98f
 .label TEST_MEMORY=$3d06
 .label BR2=$994

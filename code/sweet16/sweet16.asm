@@ -10,8 +10,7 @@
 
 #if DEBUG
 .for (var i = 0; i < 17; i++) { // +1 for the ZP used by the extensions
-	label("RL" + i, RL(i))
-	label("RH" + i, RH(i))
+	Register(RL(i), RH(i))
 }
 #endif
 

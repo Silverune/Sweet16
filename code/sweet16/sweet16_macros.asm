@@ -23,3 +23,8 @@
     inc R15H
 !incremented:
 }
+
+.macro Register(addrLow, addrHigh) {
+    .label RL = addrLow
+    .label RH = addrHigh
+}

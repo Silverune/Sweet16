@@ -1,0 +1,15 @@
+User Arguments: name=sweet16, format=d64, id=5150!, BREAKPOINTS=breakpoints.txt
+parsing
+flex pass 1
+
+   lda #$00      // $00 means: load to memory (not verify)
+   //jsr $ffd5     // call load
+   jsr ($330)
+   ^
+
+Error: invalid adressingmode. 'jsr' doesn't support INDIRECT mode
+at line 35, column 4 in bootstrap.asm
+called at line 7, column 5 in bootstrap.asm
+called at line 50, column 9 in C:\Users\Rhett.Jacobs\OneDrive - Australian Research Council\Documents\Source\6502\Sweet16\startup.asm
+
+

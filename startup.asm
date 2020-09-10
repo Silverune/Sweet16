@@ -2,32 +2,42 @@
 .segmentdef Sweet16 [startAfter="Main", segments="Sweet16JumpTable, Sweet16Page, Sweet16OutOfPage, Sweet16Data"]
 .segmentdef Tests[startAfter="Sweet16Data", segments="TestData"]
 
+//#if DISK
+.segmentdef Bootstrap [startAfter="TestData"]
+//.segmentdef Bootstrap [startAfter="Utils"]
+//#endif
+
 .var name = cmdLineVars.get("name").string()
 #if PRG
 .file [
     name=name + ".prg",
-    segments="Main, Sweet16, Tests",
+    segments="Bootstrap, Main, Sweet16, Tests",
     modify="BasicUpstart",
     _start=Main
 ]
 
+// .file [
+//     name="Tests.prg", mbfiles, segments="Tests"
+// ]
+
 #endif
 
+.var libraryFilename="---    LIB    ---"
+
 #if DISK
+
+.var testsFilename="---   TESTS   ---"
 
 .disk [filename=name + "." + cmdLineVars.get("format").string(), name=name.toUpperCase(), id=cmdLineVars.get("id").string(), showInfo ] {
     [name="-----------------", type="rel" ],
     [name="---  SWEET16  ---", type="prg", segments="Bootstrap, Main, Sweet16, Tests" ],
     [name="-----------------", type="rel" ],
-    [name="---    LIB    ---", type="prg", segments="Sweet16" ],
-    [name="---   TESTS   ---", type="prg", segments="Tests" ],
+    [name=libraryFilename, type="prg", segments="Sweet16" ],
+    [name=testsFilename, type="prg", segments="Tests" ],
     [name="-----------------", type="rel" ],
 }
 
-.segment Bootstrap []
-BasicUpstart2(Main)
-
-// TODO - add loaders for LIB and TESTS
+BasicUpstart2(Bootstrap)
 
 #endif
 
@@ -36,3 +46,6 @@ BasicUpstart2(Main)
 #import "code/tests/test.lib"
 #import "code/main.asm"
 
+//#if DISK
+#import "code/bootstrap.asm"
+//#endif
