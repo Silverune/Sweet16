@@ -1,18 +1,12 @@
 // Startup routines for when loaded from disk
 .segment Bootstrap
 
-Bootstrap:
-!:
-    .break
-    LoadPrgFile(libraryFilename, libraryFilename.size())
-    inx 
-    stx $d021
-    jmp !-
+BasicUpstart2(Bootstrap)
 
-    // TODO - load Sweet16
-    // TODO - load Tests16
-//    jmp Main
-    rts
+Bootstrap:
+    LoadPrgFile(libraryFilename, libraryFilename.size())
+    LoadPrgFile(testsFilename, testsFilename.size())
+    jmp Main
 
 // Loading a file to memory at address stored in file
 // Reference: https://codebase64.org/doku.php?id=base:loading_a_file
@@ -33,7 +27,7 @@ Bootstrap:
    lda #$00      // $00 means: load to memory (not verify)
    jsr $ffd5     // call load
    bcs !error+    // if carry set, a load error has happened
-   rts
+   jmp !done+
 !error:
 .label Error = *
 	// accumulator contains basic error code
@@ -47,4 +41,5 @@ Bootstrap:
     rts
 fname:
     .text filename
+!done:
 }

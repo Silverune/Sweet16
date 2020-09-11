@@ -1,15 +1,41 @@
 User Arguments: name=sweet16, format=d64, id=5150!, BREAKPOINTS=breakpoints.txt
 parsing
 flex pass 1
+flex pass 2
+flex pass 3
+flex pass 4
+Output pass
+Writing prg file: sweet16.prg
 
-   lda #$00      // $00 means: load to memory (not verify)
-   //jsr $ffd5     // call load
-   jsr ($330)
-   ^
+Memory Map
+----------
+Main-segment:
+  $0810-$0828 Main
 
-Error: invalid adressingmode. 'jsr' doesn't support INDIRECT mode
-at line 35, column 4 in bootstrap.asm
-called at line 7, column 5 in bootstrap.asm
-called at line 50, column 9 in C:\Users\Rhett.Jacobs\OneDrive - Australian Research Council\Documents\Source\6502\Sweet16\startup.asm
+Sweet16-segment:
+  $0829-$0889 Sweet16
 
+Tests-segment:
+  $0aab-$0bc4 Set
+  $0bc5-$3ce9 Load
 
+Bootstrap-segment:
+  $3d3c-$3d73 Bootstrap
+
+Sweet16JumpTable-segment:
+  $088a-$08a9 Sweet16JumpTable
+
+Sweet16Page-segment:
+  $0900-$0a65 Sweet16Page
+
+Sweet16OutOfPage-segment:
+  $0a66-$0aa5 Sweet16OutOfPage
+
+Sweet16Data-segment:
+  $0aa6-$0aaa Sweet16Data
+
+TestData-segment:
+  $3cea-$3d3b TestData
+
+Writing Vice symbol file: /Users/rhett/Google Drive/Source/C64/Sweet16/bin/startup.vs
+Writing Symbol file: startup.sym

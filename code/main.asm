@@ -1,7 +1,6 @@
 .segment Main
 
 Main:
-	jsr Bootstrap
 	jsr TestRun
 	jsr Anykey
 	jmp Reset
