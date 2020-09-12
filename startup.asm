@@ -26,7 +26,7 @@
 
 .disk [filename=name + "." + cmdLineVars.get("format").string(), name=name.toUpperCase(), id=cmdLineVars.get("id").string(), showInfo ] {
     [name="-----------------", type="rel" ],
-    [name="---  SWEET16  ---", type="prg", segments="Bootstrap, Main, Util"], //, Sweet16, Tests" ],
+    [name="---  SWEET16  ---", type="prg", segments="Bootstrap, Main, Util"],
     [name="-----------------", type="rel" ],
     [name=libraryFilename, type="prg", segments="Sweet16" ],
     [name=testsFilename, type="prg", segments="Tests" ],

@@ -1,138 +1,152 @@
-.label RESTORED=$a13
-.label POP2=$9fb
-.label POP3=$a04
-.label BRANCH_IF_CARRY_SET_TEST=$280c {
+.label TestsFile=$886
+.label RESTORED=$b13
+.label POP2=$afb
+.label POP3=$b04
+.label BRANCH_IF_CARRY_SET_TEST=$295a {
 }
-.label TEST_COUNT=$3df3
-.label SET2=$8de
-.label POPD=$9ec
-.label TestRun=$3b91 {
+.label TEST_COUNT=$3f41
+.label SET2=$90d
+.label POPD=$aec
+.label TestRun=$3cdf {
 }
-.label ManagedBuffer256=$aad {
-  .label totalSize=$aad {
+.label ManagedBuffer256=$bad {
+  .label totalSize=$bad {
   }
-  .label allocSize=$aaf {
+  .label allocSize=$baf {
   }
-  .label buffer=$ab1
+  .label buffer=$bb1
 }
-.label SUB=$95d
-.label Anykey=$868
-.label INR2=$92b
-.label BRANCH_IF_NONZERO_TEST=$2cca {
+.label SUB=$a5d
+.label Anykey=$8a1
+.label INR2=$a2b
+.label BRANCH_IF_NONZERO_TEST=$2e18 {
 }
-.label ABSOLUTE_JUMP_TEST=$35f7 {
+.label ABSOLUTE_JUMP_TEST=$3745 {
 }
-.label TOBR=$8bd
-.label ADD_TEST=$1b80 {
+.label TOBR=$8ec
+.label ADD_TEST=$1cce {
 }
-.label POP=$9e8
-.label DECREMENT_TEST=$2378 {
+.label POP=$ae8
+.label DECREMENT_TEST=$24c6 {
 }
-.label SUB2=$96b
-.label XREG=$aa7
-.label SW16_SAVE_RESTORE=$aaa
-.label POP_DOUBLE_BYTE_INDIRECT_TEST=$1eaa {
+.label SUB2=$a6b
+.label XREG=$ba7
+.label SW16_SAVE_RESTORE=$baa
+.label POP_DOUBLE_BYTE_INDIRECT_TEST=$1ff8 {
 }
-.label BRANCH_IF_PLUS_TEST=$2940 {
+.label BRANCH_IF_PLUS_TEST=$2a8e {
 }
-.label STPAT=$94a
-.label RETURN_FROM_SUBROUTINE_TEST=$34ca {
+.label STPAT=$a4a
+.label RETURN_FROM_SUBROUTINE_TEST=$3618 {
 }
-.label BC=$99e
-.label RS=$9d7
-.label TOBR2=$8c3
-.label SET=$901
-.label SUBTRACT_TEST=$1d14 {
+.label BC=$a9e
+.label RS=$ad7
+.label TOBR2=$8f2
+.label SET=$a01
+.label SUBTRACT_TEST=$1e62 {
 }
-.label BM1=$9c1
-.label BRANCH_IF_NO_CARRY_TEST=$26d8 {
+.label BM1=$ac1
+.label BRANCH_IF_NO_CARRY_TEST=$2826 {
 }
-.label BK=$90d
-.label Newline=$aab {
+.label BK=$a0d
+.label Newline=$bab {
 }
-.label BM=$9a8
-.label RTN=$9f8
-.label BP=$9a1
-.label BR=$98c
-.label BS=$982
-.label YREG=$aa8
-.label LOAD_INDIRECT_TEST=$f02 {
+.label BM=$aa8
+.label RTN=$af8
+.label BP=$aa1
+.label BR=$a8c
+.label BS=$a82
+.label YREG=$ba8
+.label LoadPrgFileFromManagedBuffer=$cdd {
+  .label Error=$cfd
 }
-.label STACK_MEMORY=$3e31 {
+.label LOAD_INDIRECT_TEST=$1050 {
 }
-.label BZ=$9af
-.label RESTORE=$a26
-.label INCREMENT_TEST=$2258 {
+.label STACK_MEMORY=$3f7f {
 }
-.label COMPARE_TEST=$212d {
+.label BZ=$aaf
+.label RESTORE=$b26
+.label INCREMENT_TEST=$23a6 {
 }
-.label SAVE=$a16
-.label TEST_PASS_COUNT=$3df4
-.label SW16B=$896
-.label SW16A=$890
-.label ST=$914
-.label SETI=$9f5
-.label BREAK_HANDLER=$a35
-.label STORE_DOUBLE_BYTE_INDIRECT_TEST=$1437 {
+.label COMPARE_TEST=$227b {
 }
-.label SW16_NONE=$87e
-.label SW16D=$8a2
-.label BRANCH_IF_MINUS_TEST=$2a70 {
+.label SAVE=$b16
+.label TEST_PASS_COUNT=$3f42
+.label SW16B=$8c5
+.label SW16A=$8bf
+.label ST=$a14
+.label SETI=$af5
+.label BREAK_HANDLER=$b35
+.label STORE_DOUBLE_BYTE_INDIRECT_TEST=$1585 {
 }
-.label SW16C=$89c
-.label OPTBL=$8df
-.label NUL=$9d6
-.label SETM_OUTOFPAGE=$a78
-.label LOAD_DOUBLE_BYTE_INDIRECT_TEST=$129d {
+.label SW16_NONE=$8ad
+.label SW16D=$8d1
+.label BRANCH_IF_MINUS_TEST=$2bbe {
 }
-.label SETM=$90e
-.label BRANCH_IF_ZERO_TEST=$2ba0 {
+.label SW16C=$8cb
+.label OPTBL=$90e
+.label NUL=$ad6
+.label SETM_OUTOFPAGE=$b78
+.label LOAD_DOUBLE_BYTE_INDIRECT_TEST=$13eb {
 }
-.label STAT=$91d
-.label TEST_SUCCESS=$3def
-.label TEST_FAILURE=$3df1
-.label BNC=$98d
-.label LD=$904
-.label SW160=$88b
-.label SETZ=$8cb
-.label ADD=$974
-.label CPR=$95f
-.label BNC2=$99d
-.label BRTBL=$8e0
-.label LDAT=$92c
-.label BNZ=$9b8
-.label STATUS=$aa9
-.label STORE_INDIRECT_TEST=$1091 {
+.label SETM=$a0e
+.label BRANCH_IF_ZERO_TEST=$2cee {
 }
-.label STORE_POP_INDIRECT_TEST=$1a51 {
+.label STAT=$a1d
+.label TEST_SUCCESS=$3f3d
+.label TEST_FAILURE=$3f3f
+.label BNC=$a8d
+.label LD=$a04
+.label SW160=$8ba
+.label SETZ=$8fa
+.label ADD=$a74
+.label CPR=$a5f
+.label BNC2=$a9d
+.label BRTBL=$90f
+.label LDAT=$a2c
+.label LibFile=$875
+.label BNZ=$ab8
+.label STATUS=$ba9
+.label STORE_INDIRECT_TEST=$11df {
 }
-.label BRANCH_IF_NOT_MINUS_ONE_TEST=$2f28 {
+.label STORE_POP_INDIRECT_TEST=$1b9f {
 }
-.label Reset=$871
-.label SET_TEST=$bb0 {
+.label BRANCH_IF_NOT_MINUS_ONE_TEST=$3076 {
 }
-.label RTNZ=$a09
-.label SETI_OUTOFPAGE=$a66
-.label BREAK_TEST=$3058 {
+.label Reset=$8aa
+.label SET_TEST=$cfe {
 }
-.label SW16=$886
-.label TEST_MEMORY_2=$3e0d
-.label LDDAT=$936
-.label DCR=$954
-.label SETIM_COMMON=$a44
-.label TEST_MEMORY_3=$3e0f
-.label BRANCH_ALWAYS_TEST=$25af {
+.label RTNZ=$b09
+.label SETI_OUTOFPAGE=$b66
+.label BREAK_TEST=$31a6 {
 }
-.label INTERRUPT_BREAK_TEST=$31f0 {
+.label SW16=$8b5
+.label CopyMemoryZeroPageSize=$cb0 {
 }
-.label TEST_TITLE=$3df6
-.label BRANCH_TO_SUBROUTINE_TEST=$3390 {
+.label TEST_MEMORY_2=$3f5b
+.label LDDAT=$a36
+.label DCR=$a54
+.label SETIM_COMMON=$b44
+.label TEST_MEMORY_3=$3f5d
+.label BRANCH_ALWAYS_TEST=$26fd {
 }
-.label DCR2=$95a
-.label EXTERNAL_JSR_TEST=$3724 {
+.label INTERRUPT_BREAK_TEST=$333e {
 }
-.label INR=$925
-.label ZpVariables=$0 {
+.label TEST_TITLE=$3f44
+.label BRANCH_TO_SUBROUTINE_TEST=$34de {
+}
+.label DCR2=$a5a
+.label EXTERNAL_JSR_TEST=$3872 {
+}
+.label INR=$a25
+.label STDAT=$a40
+.label BNM1=$acc
+.label XJSR_OUTOFPAGE=$b8a {
+}
+.label SET_INDIRECT_TEST=$3a8f {
+}
+.label RTS_FIX=$a00
+.label ZpVar=$0 {
   .label One=$fb {
   }
   .label Four=$50 {
@@ -142,34 +156,28 @@
   .label Three=$4e {
   }
 }
-.label STDAT=$940
-.label BNM1=$9cc
-.label XJSR_OUTOFPAGE=$a8a {
+.label Bootstrap=$80e {
 }
-.label SET_INDIRECT_TEST=$3941 {
+.label BR1=$a8f
+.label TEST_MEMORY=$3f59
+.label BR2=$a94
+.label BRANCH_IF_MINUS_ONE_TEST=$2f47 {
 }
-.label RTS_FIX=$900
-.label Debug=$874
-.label BR1=$98f
-.label TEST_MEMORY=$3e0b
-.label BR2=$994
-.label BRANCH_IF_MINUS_ONE_TEST=$2df9 {
+.label TEST_MEMORY_SEQUENCE=$3f5f
+.label LOAD_TEST=$e18 {
 }
-.label TEST_MEMORY_SEQUENCE=$3e11
-.label LOAD_TEST=$cca {
+.label STAT2=$a1f
+.label STAT3=$a23
+.label POP_INDIRECT_TEST=$1790 {
 }
-.label STAT2=$91f
-.label STAT3=$923
-.label POP_INDIRECT_TEST=$1642 {
+.label TEST_MEMORY_SEQUENCE_2=$3f6f
+.label TEST_NAME_COUNT=$3f43
+.label SET_MEMORY_TEST=$3bb8 {
 }
-.label TEST_MEMORY_SEQUENCE_2=$3e21
-.label TEST_NAME_COUNT=$3df5
-.label SET_MEMORY_TEST=$3a6a {
+.label STORE_TEST=$f32 {
 }
-.label STORE_TEST=$de4 {
+.label RETURN_TO_6502_MODE_TEST=$25ea {
 }
-.label RETURN_TO_6502_MODE_TEST=$249c {
-}
-.label ACCUMULATOR=$aa6
-.label XJSR=$911
-.label Main=$810
+.label ACCUMULATOR=$ba6
+.label XJSR=$a11
+.label Main=$897

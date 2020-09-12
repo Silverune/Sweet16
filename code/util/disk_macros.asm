@@ -1,31 +1,21 @@
-.importonce
+//.importonce
 
-.segment UtilData
-
-Newline:
-    Newline()
-
-.memblock "ManagedBuffer256"
-ManagedBuffer256: {
-    totalSize:
-        LoHi($ff)
-    allocSize: 
-        LoHi(0)
-    buffer:
-        .fill $ff, $00
+// Loading a file to memory at address stored in file
+// Reference: https://codebase64.org/doku.php?id=base:loading_a_file
+// BASIC equivalent: LOAD "JUST A FILENAME",8,1
+.macro LoadPrgFile(filename, length) {
+    CopyToManagedBuffer(filename, ManagedBuffer256, length)
+    LoadAddress(ZpVar.One, ManagedBuffer256)
+    jsr LoadPrgFileFromManagedBuffer
 }
 
-CopyMemoryZeroPageSize: {
-    CopyMemoryZeroPageSize()
-    rts
-}
-
-// ZpVars.One - managed buffer containing filename
-// TODO - deal with ManagedBuffer fields
-LoadPrgFileFromManagedBuffer: {
-    lda #ZpVar.One+2
-    ldx #<ZpVar.One+4
-    ldy #>ZpVar.One+4
+// Loading a file to memory at address stored in file
+// Reference: https://codebase64.org/doku.php?id=base:loading_a_file
+// BASIC equivalent: LOAD "JUST A FILENAME",8,1
+.macro LoadPrgFileOriginal(filename, length) {
+    lda #length
+    ldx #<fname
+    ldy #>fname
     jsr $ffbd     // call setnam
     lda #$01
     ldx $ba       // last used device number
@@ -50,7 +40,7 @@ LoadPrgFileFromManagedBuffer: {
 	// a = $00 (break, run/stop has been pressed during loading)
 	// ... error handling ...
     rts
+fname:
+    .text filename
 !done:
 }
-
-.segment Default

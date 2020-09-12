@@ -1,11 +1,6 @@
 .segment Main
 
-	.var testString = "1234567890"
-Main:
-.break
-
-	CopyToManagedBuffer(Debug, ManagedBuffer256, testString.size())
-	
+Main:	
 	jsr TestRun
 	jsr Anykey
 	jmp Reset
@@ -20,6 +15,3 @@ Anykey:
 Reset:
 	jmp ($FFFC)
 
-Debug:
-.memblock "Debug"
-	.text testString

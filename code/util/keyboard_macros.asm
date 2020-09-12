@@ -1,5 +1,4 @@
 .importonce
-.segment Util
 
 // Macros dealing with reading keyboard state
 
@@ -10,5 +9,3 @@
 	jsr scnkey  // scan keyboard
 	jsr getin	// put result into A
 }
-
-.segment Default
