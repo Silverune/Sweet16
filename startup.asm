@@ -6,13 +6,14 @@
 #endif
 
 .segmentdef Sweet16 [startAfter="Main", segments="Sweet16JumpTable, Sweet16Page, Sweet16OutOfPage, Sweet16Data"]
-.segmentdef Tests[startAfter="Sweet16Data", segments="TestData"]
+.segmentdef Util[startAfter="Sweet16Data", segments="UtilData"]
+.segmentdef Tests[startAfter="UtilData", segments="TestData"]
 
 .var name = cmdLineVars.get("name").string()
 #if PRG
 .file [
     name=name + ".prg",
-    segments="Main, Sweet16, Tests",
+    segments="Main, Sweet16, Util, Tests",
     modify="BasicUpstart",
     _start=Main
 ]
@@ -25,7 +26,7 @@
 
 .disk [filename=name + "." + cmdLineVars.get("format").string(), name=name.toUpperCase(), id=cmdLineVars.get("id").string(), showInfo ] {
     [name="-----------------", type="rel" ],
-    [name="---  SWEET16  ---", type="prg", segments="Bootstrap, Main"], //, Sweet16, Tests" ],
+    [name="---  SWEET16  ---", type="prg", segments="Bootstrap, Main, Util"], //, Sweet16, Tests" ],
     [name="-----------------", type="rel" ],
     [name=libraryFilename, type="prg", segments="Sweet16" ],
     [name=testsFilename, type="prg", segments="Tests" ],

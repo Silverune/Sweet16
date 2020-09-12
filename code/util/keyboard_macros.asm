@@ -1,3 +1,6 @@
+.importonce
+.segment Util
+
 // Macros dealing with reading keyboard state
 
 // pressed keycode is stored in A
@@ -7,3 +10,5 @@
 	jsr scnkey  // scan keyboard
 	jsr getin	// put result into A
 }
+
+.segment Default

@@ -1,2 +1,8 @@
+.segmentdef UtilData [startAfter="Util"]
+
 #import "keyboard_macros.asm"
 #import "screen_macros.asm"
+#import "data.asm"
+
+.segment Default
+

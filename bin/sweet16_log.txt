@@ -3,27 +3,29 @@ parsing
 flex pass 1
 flex pass 2
 flex pass 3
-flex pass 4
 Output pass
 Writing prg file: sweet16.prg
 
 Memory Map
 ----------
 Main-segment:
-  $0810-$0828 Main
+  $0810-$0873 Main
+  $0874-$087d Debug
 
 Sweet16-segment:
-  $0829-$0889 Sweet16
+  $087e-$08de Sweet16
+
+Util-segment:
 
 Tests-segment:
-  $0aab-$0bc4 Set
-  $0bc5-$3ce9 Load
+  $0bb0-$0cc9 Set
+  $0cca-$3dee Load
 
-Bootstrap-segment:
-  $3d3c-$3d73 Bootstrap
+UtilData-segment:
+  $0aab-$0baf UtilData
 
 Sweet16JumpTable-segment:
-  $088a-$08a9 Sweet16JumpTable
+  $08df-$08fe Sweet16JumpTable
 
 Sweet16Page-segment:
   $0900-$0a65 Sweet16Page
@@ -35,7 +37,7 @@ Sweet16Data-segment:
   $0aa6-$0aaa Sweet16Data
 
 TestData-segment:
-  $3cea-$3d3b TestData
+  $3def-$3e40 TestData
 
-Writing Vice symbol file: /Users/rhett/Google Drive/Source/C64/Sweet16/bin/startup.vs
+Writing Vice symbol file: Z:\Google Drive\Source\C64\Sweet16\bin\startup.vs
 Writing Symbol file: startup.sym
