@@ -1,14 +1,16 @@
-//.importonce
+.importonce
 
 // Loading a file to memory at address stored in file
 // Reference: https://codebase64.org/doku.php?id=base:loading_a_file
 // BASIC equivalent: LOAD "JUST A FILENAME",8,1
 .macro LoadPrgFile(filename, length) {
     CopyToManagedBuffer(filename, ManagedBuffer256, length)
-    LoadAddress(ZpVar.One, ManagedBuffer256)
+    .memblock "HERE2"
+    LoadAddress(ManagedBuffer256, ZpVar.One)
+    .memblock "CRAZY"
     jsr LoadPrgFileFromManagedBuffer
 }
-
+/*
 // Loading a file to memory at address stored in file
 // Reference: https://codebase64.org/doku.php?id=base:loading_a_file
 // BASIC equivalent: LOAD "JUST A FILENAME",8,1
@@ -30,7 +32,7 @@
    bcs !error+    // if carry set, a load error has happened
    jmp !done+
 !error:
-.label Error = *
+    .label Error = *
 	// accumulator contains basic error code
 
 	// most likely errors:
@@ -43,4 +45,4 @@
 fname:
     .text filename
 !done:
-}
+}*/

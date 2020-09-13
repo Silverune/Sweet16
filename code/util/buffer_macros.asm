@@ -78,6 +78,8 @@ inc_msb:
 
 .macro CopyToManagedBuffer(sourceAddr, managedBuffer, size) {
 	// TODO - sanity check here not too large
+
+    *=* "WHEREAMI"
 	LoadAddress(sourceAddr, ZpVar.One)
 	LoadAddress(managedBuffer.buffer, ZpVar.Two)
 	LoadAddress(size, ZpVar.Three)
@@ -85,6 +87,7 @@ inc_msb:
 	jsr CopyMemoryZeroPageSize
 
 	// update managed
+    .memblock "SIZE_SET"
     lda #<size
 	sta managedBuffer.allocSize.lo
 	lda #>size

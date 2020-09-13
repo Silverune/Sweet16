@@ -151,7 +151,7 @@ newline:
 !done:	
 }
 
-// KarnAl spelt the way CBM intended (for better or worse)
+// KernAl spelt the way CBM intended (for better or worse)
 .macro KernalOutputA() {
 	jsr kernal_chrout
 }

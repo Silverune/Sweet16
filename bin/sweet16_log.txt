@@ -9,23 +9,23 @@ Writing prg file: sweet16.prg
 Memory Map
 ----------
 Main-segment:
-  $0810-$084a Main
-  $084b-$0854 Debug
+  $0810-$0825 Main
 
 Sweet16-segment:
-  $0855-$08b5 Sweet16
+  $0826-$0886 Sweet16
 
 Util-segment:
 
 Tests-segment:
-  $0bfe-$0d17 Set
-  $0d18-$3e3c Load
+  $0ce3-$0dfc Set
+  $0dfd-$3f21 Load
 
 UtilData-segment:
-  $0aab-$0bfd UtilData
+  $0aab-$0aac UtilData
+  $0aad-$0ce2 ManagedBuffer256
 
 Sweet16JumpTable-segment:
-  $08b6-$08d5 Sweet16JumpTable
+  $0887-$08a6 Sweet16JumpTable
 
 Sweet16Page-segment:
   $0900-$0a65 Sweet16Page
@@ -37,7 +37,7 @@ Sweet16Data-segment:
   $0aa6-$0aaa Sweet16Data
 
 TestData-segment:
-  $3e3d-$3e8e TestData
+  $3f22-$3f73 TestData
 
 Writing Vice symbol file: /Users/rhett/Google Drive/Source/C64/Sweet16/bin/startup.vs
 Writing Symbol file: startup.sym
