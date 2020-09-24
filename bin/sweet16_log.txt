@@ -9,35 +9,43 @@ Writing prg file: sweet16.prg
 Memory Map
 ----------
 Main-segment:
-  $0810-$0825 Main
+  $0810-$08c8 Main
+  $08c9-$08e3 WHEREAMI
+  $08e4-$08ed SIZE_SET
+  $08ee-$08f5 HERE2
+  $08f6-$094f CRAZY
+
+Sweet16Patch-segment:
+  $0950-$0951 Sweet16Patch
 
 Sweet16-segment:
-  $0826-$0886 Sweet16
+  $0950-$09b0 Sweet16
 
 Util-segment:
 
 Tests-segment:
-  $0ce3-$0dfc Set
-  $0dfd-$3f21 Load
+  $0dde-$0ef7 Set
+  $0ef8-$401c Load
 
 UtilData-segment:
-  $0aab-$0aac UtilData
-  $0aad-$0ce2 ManagedBuffer256
+  $0bab-$0bac UtilData
+  $0bad-$0cdc ManagedBuffer256
+  $0cdd-$0ddd HERE
 
 Sweet16JumpTable-segment:
-  $0887-$08a6 Sweet16JumpTable
+  $09b1-$09d0 Sweet16JumpTable
 
 Sweet16Page-segment:
-  $0900-$0a65 Sweet16Page
+  $0a00-$0b65 Sweet16Page
 
 Sweet16OutOfPage-segment:
-  $0a66-$0aa5 Sweet16OutOfPage
+  $0b66-$0ba5 Sweet16OutOfPage
 
 Sweet16Data-segment:
-  $0aa6-$0aaa Sweet16Data
+  $0ba6-$0baa Sweet16Data
 
 TestData-segment:
-  $3f22-$3f73 TestData
+  $401d-$406e TestData
 
-Writing Vice symbol file: /Users/rhett/Google Drive/Source/C64/Sweet16/bin/startup.vs
+Writing Vice symbol file: C:\Users\Rhett.Jacobs\OneDrive - Australian Research Council\Documents\Source\6502\Sweet16\bin\startup.vs
 Writing Symbol file: startup.sym

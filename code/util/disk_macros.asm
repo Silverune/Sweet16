@@ -5,9 +5,7 @@
 // BASIC equivalent: LOAD "JUST A FILENAME",8,1
 .macro LoadPrgFile(filename, length) {
     CopyToManagedBuffer(filename, ManagedBuffer256, length)
-    .memblock "HERE2"
     LoadAddress(ManagedBuffer256, ZpVar.One)
-    .memblock "CRAZY"
     jsr LoadPrgFileFromManagedBuffer
 }
 /*

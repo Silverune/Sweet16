@@ -20,6 +20,20 @@ CopyMemoryZeroPageSize: {
     rts
 }
 
+.macro CheckPatch(baseAddr) {
+	// checks if the patch placeholder is there - A non-zero if found
+    .break
+	lda baseAddr
+	cmp $fe
+	bne !nope+
+	lda baseAddr+1
+	cmp $ed
+	bne !nope+
+	lda #$00
+!nope:
+	lda #$01
+}
+
 // ZpVars.One - managed buffer containing filename
 // TODO - deal with ManagedBuffer fields
 LoadPrgFileFromManagedBuffer: {

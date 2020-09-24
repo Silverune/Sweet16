@@ -479,4 +479,9 @@ STATUS:
 SW16_SAVE_RESTORE:
 	.byte 0
 
+.segment Sweet16Patch
+sweet16_patch:
+    .byte $fe, $ed
+
 .segment Default
+

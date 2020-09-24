@@ -761,4 +761,8 @@ TestRun:
 #endif
 	rts
 
+.segment TestsPatch
+tests_patch:
+    .byte $fe, $ed
+
 .segment Default

@@ -1,4 +1,5 @@
 .importonce
+
 .segment Util
 
 .const kernal_chrout = $ffd2    // kernel CHROUT subroutine
@@ -40,6 +41,15 @@ newline:
 .macro ChangeColor(color) {
 	lda #color
 	sta foreground_color
+}
+
+.macro ChangeExistingTextColor(color) {
+	lda #color
+	sta $0286
+}
+
+.macro KernalClearScreen() {
+	jsr $e544
 }
 
 .macro ChangeScreen(background_color, foreground_color) {
@@ -163,6 +173,24 @@ newline:
 	KernalOutput(msg)
 	pla
 	sta foreground_color
+}
+
+.macro Output(msg) {
+	KernalOutput(!data+)
+	jmp !done+
+!data:
+	.text msg
+	.byte NULL
+!done:
+}
+
+.macro OutputLine(msg) {
+	KernalOutput(!data+)
+	jmp !done+
+!data:
+	.text msg
+	.byte RETURN, NULL
+!done:
 }
 
 .segment Default
