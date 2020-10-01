@@ -30,16 +30,20 @@ CFLAGS_DEBUG=					$(CFLAGS) -debug $(DEBUG_DEFINES) :BREAKPOINTS=$(BREAKPOINTS) 
 PROGRAM=						$(PROG).asm
 PRG=							$(APP).prg
 OUTPUT_PRG=						$(OUTPUT)/$(PRG)
-RUN_FLAGS=						-autostartprgmode 1 -autostart-warp +truedrive +cart -8 $(OUTPUT)/$(APP).$(FORMAT_D64)
-DEBUG_VICE=						$(EMULATOR) $(DEBUG_FLAGS_VICE) $(OUTPUT_PRG)
+RUN_COMMON=						-autostart-warp +truedrive 
+RUN_PRG_FLAGS=					$(RUN_COMMON) -autostartprgmode 1
 
 ifeq ($(OS),Windows_NT)
 	COMPILER=					$(COMPILER_PATH)
 	DEBUG_CLEAN=				del $(OUTPUT)\$(BREAKPOINTS)
-	DEBUG_FLAGS_VICE=			-moncommands "$(shell chdir)\$(OUTPUT)\$(BREAKPOINTS)" +remotemonitor -remotemonitoraddress 6510 -autostartprgmode 1 -autostart-warp +truedrive +cart
-	EMULATOR=					$(EMULATOR_PATH)
-	RUN=						$(EMULATOR) $(RUN_FLAGS) $(OUTPUT_PRG)
 	DEBUG_VICE=					$(EMULATOR) $(DEBUG_FLAGS_VICE) $(OUTPUT_PRG)
+	DEBUG_DISK_VICE=			$(EMULATOR) $(DEBUG_DISK_FLAGS_VICE) 
+	DEBUG_FLAGS_VICE=			-moncommands "$(shell chdir)\$(OUTPUT)\$(BREAKPOINTS)" +remotemonitor -remotemonitoraddress 6510 -autostartprgmode 1 -autostart-warp +truedrive +cart
+	DEBUG_DISK_FLAGS_VICE=		-moncommands "$(shell chdir)\$(OUTPUT)\$(BREAKPOINTS)" +remotemonitor -remotemonitoraddress 6510 -autostart-warp +truedrive +cart -8 "$(shell chdir)\$(OUTPUT)\$(APP).$(FORMAT_D64)"
+	EMULATOR=					$(EMULATOR_PATH)
+	RUN_PRG=					$(EMULATOR) $(RUN_PRG_FLAGS) $(OUTPUT_PRG)
+	RUN_DISK=					$(EMULATOR) $(RUN_DISK_FLAGS)
+	RUN_DISK_FLAGS=				$(RUN_COMMON) -8 "$(shell chdir)\$(OUTPUT)\$(APP).$(FORMAT_D64)"
 	GENERATE_BREAKPOINTS=		type $(OUTPUT)\$(PROG).vs | sort >> $(OUTPUT)\$(BREAKPOINTS)
 	DRIVE=						$(DRIVE_PATH)
 	ZIP=						tar.exe -a -c -f 
@@ -48,13 +52,17 @@ else
     UNAME_S := $(shell uname -s)
     ifeq ($(UNAME_S),Linux)
 		UNIX=					true
-		RUN=					$(EMULATOR) $(RUN_FLAGS) $(OUTPUT_PRG)
-		DEBUG_VICE=				$(EMULATOR) $(DEBUG_FLAGS_VICE) $(OUTPUT_PRG)	
+		RUN_PRG=				$(EMULATOR) $(RUN_PRG_FLAGS) $(OUTPUT_PRG)
+		RUN_DISK=				$(EMULATOR) $(RUN_DISK_FLAGS)
+		DEBUG_VICE=				$(EMULATOR) $(DEBUG_FLAGS_VICE) $(OUTPUT_PRG)
+		DEBUG_DISK_VICE=		$(EMULATOR) $(DEBUG_DISK_FLAGS_VICE)
     endif
     ifeq ($(UNAME_S),Darwin)
 		UNIX=					true
-		RUN=					open -a $(EMULATOR) $(OUTPUT_PRG) --args $(RUN_FLAGS)
+		RUN_PRG=				open -a $(EMULATOR) $(OUTPUT_PRG) --args $(RUN_PRG_FLAGS)
+		RUN_DISK=				open -a $(EMULATOR) --args $(RUN_DISK_FLAGS)
 		DEBUG_VICE=				open -a $(EMULATOR) $(OUTPUT_PRG) --args $(DEBUG_FLAGS_VICE)
+		DEBUG_DISK_VICE=		open -a $(EMULATOR) --args $(DEBUG_DISK_FLAGS_VICE)
     endif
     UNAME_P := $(shell uname -p)
     ifeq ($(UNAME_P),x86_64)
@@ -74,6 +82,8 @@ else
 		COMPILER=				"$(COMPILER_PATH)"
 		DEBUG_CLEAN=			rm -f $(OUTPUT)/$(BREAKPOINTS)
 		DEBUG_FLAGS_VICE=		-moncommands "$(shell pwd)/$(OUTPUT)/$(BREAKPOINTS)" +remotemonitor -remotemonitoraddress 6510 -autostartprgmode 1 -autostart-warp +truedrive +cart
+		DEBUG_DISK_FLAGS_VICE=	-moncommands "$(shell pwd)/$(OUTPUT)/$(BREAKPOINTS)" +remotemonitor -remotemonitoraddress 6510 -autostart-warp +truedrive +cart -8 "$(shell pwd)/$(OUTPUT)/$(APP).$(FORMAT_D64)"
+		RUN_DISK_FLAGS=			$(RUN_COMMON) -8 "$(shell pwd)/$(OUTPUT)/$(APP).$(FORMAT_D64)"
 		EMULATOR= 				"$(EMULATOR_PATH)"
 		GENERATE_BREAKPOINTS=	cat $(OUTPUT)/$(PROG).vs | sort >> $(OUTPUT)/$(BREAKPOINTS)
 		DRIVE=					"$(DRIVE_PATH)"
@@ -95,16 +105,26 @@ debug:
 		$(COMPILE) $(CFLAGS_DEBUG) $(PROGRAM)
 		$(GENERATE_BREAKPOINTS)
 		$(DEBUG_VICE)
+
+debugdisk:	
+		$(DEBUG_CLEAN)
+		$(COMPILE) $(CFLAGS_DEBUG) $(PROGRAM)
+		$(GENERATE_BREAKPOINTS)
+		$(DEBUG_DISK_VICE)
+
 run:		
-		$(RUN)
+		$(RUN_PRG)
 
 andrun: all
 		$(COMPILE) $(CFLAGS) $(PROGRAM)
-		$(RUN)
+		$(RUN_PRG)
 
 encode:
 		$(ZIP) $(OUTPUT)/$(APP).zip $(OUTPUT_PRG)	
 		$(GENERATE_ENCODING)
+
+rundisk:
+		$(RUN_DISK)
 
 disk: 	$(PROGRAM)
 		$(COMPILE) $(CFLAGS) $(DISK_DEFINES) $(PROGRAM) $(D64_FORMAT)
