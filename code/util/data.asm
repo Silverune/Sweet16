@@ -20,14 +20,20 @@ CopyMemoryZeroPageSize: {
     rts
 }
 
+.const MagicPatch = $feed;
+
+.macro PatchCode() {
+    .byte >MagicPatch, <MagicPatch
+}
+
 .macro CheckPatch(baseAddr) {
 	// checks if the patch placeholder is there - A non-zero if found
     .break
 	lda baseAddr
-	cmp $fe
+	cmp #(>MagicPatch) // opposite to normal so reads natural in memory inspection
 	bne !nope+
 	lda baseAddr+1
-	cmp $ed
+	cmp #(<MagicPatch)
 	bne !nope+
 	lda #$00
 !nope:
@@ -37,7 +43,6 @@ CopyMemoryZeroPageSize: {
 // ZpVars.One - managed buffer containing filename
 // TODO - deal with ManagedBuffer fields
 LoadPrgFileFromManagedBuffer: {
-    .memblock "HERE"
     ldy #2
     lda (ZpVar.One),Y
     pha           // store length on stack
@@ -83,7 +88,7 @@ LoadPrgFileFromManagedBuffer: {
 	// a = $00 (break, run/stop has been pressed during loading)
 
 fileNotFoundMessage:
-    .text " > FILE NOT FOUND: "
+    .text " > FILE NOT FOUND! "
     .byte NULL
 
 !fileNotFound:

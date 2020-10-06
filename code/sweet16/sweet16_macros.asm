@@ -28,3 +28,7 @@
     .label RL = addrLow
     .label RH = addrHigh
 }
+
+.macro Register2(value) {
+    .printnow value
+}

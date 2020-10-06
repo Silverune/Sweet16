@@ -5,47 +5,55 @@ flex pass 2
 flex pass 3
 Output pass
 Writing prg file: sweet16.prg
+Writing d64 file: sweet16.d64
+Info for disk 'SWEET16'
+  "---------------", sectors=0, startTS=0:0
+  "--  SWEET16  --", sectors=25, startTS=1:0
+  "---------------", sectors=0, startTS=0:0
+  "---    LIB    ---", sectors=3, startTS=2:19
+  "---   TESTS   ---", sectors=51, startTS=2:7
+  "---------------", sectors=0, startTS=0:0
 
 Memory Map
 ----------
 Main-segment:
-  $0810-$08c8 Main
-  $08c9-$08e3 WHEREAMI
-  $08e4-$08ed SIZE_SET
-  $08ee-$08f5 HERE2
-  $08f6-$094f CRAZY
-
-Sweet16Patch-segment:
-  $0950-$0951 Sweet16Patch
-
-Sweet16-segment:
-  $0950-$09b0 Sweet16
+  $0801-$080c Basic
+  $080e-$080d Basic End
+  $080e-$0a55 Main
 
 Util-segment:
 
+Sweet16Patch-segment:
+  $1000-$1001 Sweet16Patch
+
+Sweet16-segment:
+  $1000-$1060 Sweet16
+
+TestsPatch-segment:
+  $2000-$2001 TestsPatch
+
 Tests-segment:
-  $0dde-$0ef7 Set
-  $0ef8-$401c Load
+  $2000-$2119 Set
+  $211a-$523e Load
 
 UtilData-segment:
-  $0bab-$0bac UtilData
-  $0bad-$0cdc ManagedBuffer256
-  $0cdd-$0ddd HERE
+  $0a56-$0a57 UtilData
+  $0a58-$0c88 ManagedBuffer256
 
 Sweet16JumpTable-segment:
-  $09b1-$09d0 Sweet16JumpTable
+  $1061-$1080 Sweet16JumpTable
 
 Sweet16Page-segment:
-  $0a00-$0b65 Sweet16Page
+  $1100-$1265 Sweet16Page
 
 Sweet16OutOfPage-segment:
-  $0b66-$0ba5 Sweet16OutOfPage
+  $1266-$12a5 Sweet16OutOfPage
 
 Sweet16Data-segment:
-  $0ba6-$0baa Sweet16Data
+  $12a6-$12aa Sweet16Data
 
 TestData-segment:
-  $401d-$406e TestData
+  $523f-$5290 TestData
 
-Writing Vice symbol file: C:\Users\Rhett.Jacobs\OneDrive - Australian Research Council\Documents\Source\6502\Sweet16\bin\startup.vs
+Writing Vice symbol file: /Users/rhett/Google Drive/Source/C64/Sweet16/bin/startup.vs
 Writing Symbol file: startup.sym

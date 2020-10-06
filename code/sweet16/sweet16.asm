@@ -481,7 +481,7 @@ SW16_SAVE_RESTORE:
 
 .segment Sweet16Patch
 sweet16_patch:
-    .byte $fe, $ed
+    PatchCode()
 
 .segment Default
 

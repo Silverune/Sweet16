@@ -763,6 +763,6 @@ TestRun:
 
 .segment TestsPatch
 tests_patch:
-    .byte $fe, $ed
+    PatchCode()
 
 .segment Default

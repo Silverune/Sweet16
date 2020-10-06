@@ -1,6 +1,9 @@
 .segment Main
 
+BasicUpstart2(Main)
+
 Main:	
+.memblock "Main"
 	jsr loadAll
 	jsr ready
 
@@ -17,21 +20,22 @@ loadAll:
 	rts
 
 .macro LoadIfMissing(destAddress, description, filename) {
+	.break
 	Output("CHECKING FOR ")
 	Output(description)
 	Output("...")
-#if DISK
-//	CheckPatch(destAddress)
-//	bne !loaded+
+// #if DISK
+	CheckPatch(destAddress)
+	bne !loaded+
 	Output("LOADING...")
 	LoadPrgFile(!filenameInMemory+, filename.size())
 	OutputLine("DONE.")
 	jmp !done+
-#else
+// #else
 !loaded:
 	OutputLine("OK.")
 	jmp !done+
-#endif
+// #endif
 !filenameInMemory:
 	.text filename
 !done:
