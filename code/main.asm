@@ -20,22 +20,18 @@ loadAll:
 	rts
 
 .macro LoadIfMissing(destAddress, description, filename) {
-	.break
 	Output("CHECKING FOR ")
 	Output(description)
 	Output("...")
-// #if DISK
-	CheckPatch(destAddress)
-	bne !loaded+
-	Output("LOADING...")
+	CheckPatchPlaceholder(destAddress)
+	beq !alreadyLoaded+
+	Output("LOADING...[" + filename + "]")
 	LoadPrgFile(!filenameInMemory+, filename.size())
 	OutputLine("DONE.")
 	jmp !done+
-// #else
-!loaded:
+!alreadyLoaded:
 	OutputLine("OK.")
 	jmp !done+
-// #endif
 !filenameInMemory:
 	.text filename
 !done:
@@ -54,4 +50,4 @@ Anykey:
 	rts
 
 Reset:
-	jmp ($FFFC)
+	jmp ($FFFC)		// kernal reset vector

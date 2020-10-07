@@ -2,8 +2,8 @@ al C:fc .hi__0
 al C:fe .hi__1
 al C:4f .hi__2
 al C:51 .hi__3
-al C:a59 .hi__4
-al C:a5b .hi__5
+al C:a7f .hi__4
+al C:a81 .hi__5
 al C:1213 .RESTORED
 al C:11fb .POP2
 al C:1204 .POP3
@@ -12,9 +12,9 @@ al C:5243 .TEST_COUNT
 al C:1060 .SET2
 al C:4fe1 .TestRun
 al C:11ec .POPD
-al C:a58 .ManagedBuffer256
+al C:a7e .ManagedBuffer256
 al C:115d .SUB
-al C:a4a .Anykey
+al C:a70 .Anykey
 al C:112b .INR2
 al C:411a .BRANCH_IF_NONZERO_TEST
 al C:4a47 .ABSOLUTE_JUMP_TEST
@@ -74,17 +74,17 @@ al C:3b28 .BRANCH_IF_NO_CARRY_TEST
 al C:11c1 .BM1
 al C:110d .BK
 al C:80b .upstartEnd
-al C:a56 .Newline
+al C:a7c .Newline
 al C:11a8 .BM
 al C:11f8 .RTN
 al C:11a1 .BP
 al C:118c .BR
 al C:1182 .BS
 al C:12a8 .YREG
-al C:b88 .LoadPrgFileFromManagedBuffer
+al C:bae .LoadPrgFileFromManagedBuffer
 al C:2352 .LOAD_INDIRECT_TEST
 al C:5281 .STACK_MEMORY
-al C:b79 .inc_msb
+al C:b9f .inc_msb
 al C:11af .BZ
 al C:1226 .RESTORE
 al C:36a8 .INCREMENT_TEST
@@ -92,7 +92,7 @@ al C:1000 .sweet16_patch
 al C:357d .COMPARE_TEST
 al C:1216 .SAVE
 al C:5244 .TEST_PASS_COUNT
-al C:c5a .fileNotFoundMessage
+al C:c80 .fileNotFoundMessage
 al C:1018 .SW16B
 al C:1012 .SW16A
 al C:2887 .STORE_DOUBLE_BYTE_INDIRECT_TEST
@@ -119,14 +119,14 @@ al C:118d .BNC
 al C:1104 .LD
 al C:100d .SW160
 al C:104d .SETZ
-al C:c80 .errormessage
+al C:ca6 .errormessage
 al C:1174 .ADD
 al C:fb .lo__0
 al C:fd .lo__1
 al C:4e .lo__2
 al C:50 .lo__3
-al C:a58 .lo__4
-al C:a5a .lo__5
+al C:a7e .lo__4
+al C:a80 .lo__5
 al C:115f .CPR
 al C:119d .BNC2
 al C:1062 .BRTBL
@@ -170,16 +170,16 @@ al C:5021 .newline__34
 al C:24e1 .STORE_INDIRECT_TEST
 al C:12a9 .STATUS
 al C:2ea1 .STORE_POP_INDIRECT_TEST
-al C:a5c .buffer
+al C:a82 .buffer
 al C:4378 .BRANCH_IF_NOT_MINUS_ONE_TEST
-al C:a53 .Reset
+al C:a79 .Reset
 al C:2000 .SET_TEST
 al C:1209 .RTNZ
 al C:1266 .SETI_OUTOFPAGE
 al C:44a8 .BREAK_TEST
 al C:4e .Three
 al C:1008 .SW16
-al C:b5b .CopyMemoryZeroPageSize
+al C:b81 .CopyMemoryZeroPageSize
 al C:525d .TEST_MEMORY_2
 al C:1136 .LDDAT
 al C:1154 .DCR
@@ -346,7 +346,7 @@ al C:4f14 .memory__152
 al C:4f7a .memory__153
 al C:4fa1 .memory__154
 al C:5226 .memory__155
-al C:a5a .allocSize
+al C:a80 .allocSize
 al C:4b74 .EXTERNAL_JSR_TEST
 al C:814 .loadAll
 al C:1125 .INR
@@ -355,7 +355,7 @@ al C:11cc .BNM1
 al C:128a .XJSR_OUTOFPAGE
 al C:4d91 .SET_INDIRECT_TEST
 al C:1100 .RTS_FIX
-al C:a40 .ready
+al C:a66 .ready
 al C:0 .ZpVar
 al C:118f .BR1
 al C:525b .TEST_MEMORY
@@ -363,7 +363,7 @@ al C:4249 .BRANCH_IF_MINUS_ONE_TEST
 al C:1194 .BR2
 al C:211a .LOAD_TEST
 al C:5261 .TEST_MEMORY_SEQUENCE
-al C:bb0 .LoadPrgFileFromManagedBufferError
+al C:bd6 .LoadPrgFileFromManagedBufferError
 al C:111f .STAT2
 al C:1123 .STAT3
 al C:2a92 .POP_INDIRECT_TEST
@@ -373,11 +373,11 @@ al C:5245 .TEST_NAME_COUNT
 al C:4eba .SET_MEMORY_TEST
 al C:2234 .STORE_TEST
 al C:38ec .RETURN_TO_6502_MODE_TEST
-al C:a58 .totalSize
+al C:a7e .totalSize
 al C:12a6 .ACCUMULATOR
 al C:1111 .XJSR
 al C:80e .Main
 break 84e 
 break 897 
-break 93c 
-break 987 
+break 94f 
+break 99a 

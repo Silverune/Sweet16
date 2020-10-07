@@ -81,8 +81,8 @@ else
 	ifdef UNIX
 		COMPILER=				"$(COMPILER_PATH)"
 		DEBUG_CLEAN=			rm -f $(OUTPUT)/$(BREAKPOINTS)
-		DEBUG_FLAGS_VICE=		-moncommands "$(shell pwd)/$(OUTPUT)/$(BREAKPOINTS)" +remotemonitor -remotemonitoraddress 6510 -autostartprgmode 1 -autostart-warp +truedrive +cart
-		DEBUG_DISK_FLAGS_VICE=	-moncommands "$(shell pwd)/$(OUTPUT)/$(BREAKPOINTS)" +remotemonitor -remotemonitoraddress 6510 -autostart-warp +truedrive +cart -8 "$(shell pwd)/$(OUTPUT)/$(APP).$(FORMAT_D64)"
+		DEBUG_FLAGS_VICE=		-moncommands "$(shell pwd)/$(OUTPUT)/$(BREAKPOINTS)" -remotemonitor -remotemonitoraddress 6510 -autostartprgmode 1 -autostart-warp -truedrive
+		DEBUG_DISK_FLAGS_VICE=	-moncommands "$(shell pwd)/$(OUTPUT)/$(BREAKPOINTS)" -remotemonitor -remotemonitoraddress 6510 -autostart-warp -truedrive -8 "$(shell pwd)/$(OUTPUT)/$(APP).$(FORMAT_D64)"
 		RUN_DISK_FLAGS=			$(RUN_COMMON) -8 "$(shell pwd)/$(OUTPUT)/$(APP).$(FORMAT_D64)"
 		EMULATOR= 				"$(EMULATOR_PATH)"
 		GENERATE_BREAKPOINTS=	cat $(OUTPUT)/$(PROG).vs | sort >> $(OUTPUT)/$(BREAKPOINTS)

@@ -26,7 +26,7 @@ CopyMemoryZeroPageSize: {
     .byte >MagicPatch, <MagicPatch
 }
 
-.macro CheckPatch(baseAddr) {
+.macro CheckPatchPlaceholder(baseAddr) {
 	// checks if the patch placeholder is there - A non-zero if found
     .break
 	lda baseAddr
@@ -35,9 +35,11 @@ CopyMemoryZeroPageSize: {
 	lda baseAddr+1
 	cmp #(<MagicPatch)
 	bne !nope+
-	lda #$00
-!nope:
 	lda #$01
+    jmp !done+
+!nope:
+	lda #$00
+!done:
 }
 
 // ZpVars.One - managed buffer containing filename

@@ -44,3 +44,17 @@ fname:
     .text filename
 !done:
 }*/
+
+/*
+.function FancyFilename(name, border, lengthOverride) {
+   .const totalLength = 16
+   .var length = min(totalLength, lengthOverride)
+   .errorif (name.size() + border.size() * 2 > length), "Name too long, must be less than " + (length + 1).string()
+
+    .var retval = border + " " + name.toUpperCase() + " " + border
+    .return retval
+}
+*/
+//.print FancyFilename("sweet16", "--", 15)
+//.print FancyFilename("lib", "--", 15)
+// .print FancyFilename("tests", "--", 15)
