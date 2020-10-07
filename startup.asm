@@ -12,21 +12,27 @@
 .segmentdef Tests[start=TestLocation, segments="TestData", allowOverlap]
 
 .var name = cmdLineVars.get("name").string()
+
 .file [
     name=name + ".prg",
     segments="Main, Util, Sweet16, Tests",
 ]
 
-.var libraryFilename="---    LIB    ---"
-.var testsFilename="---   TESTS   ---"
+.var flair = "-";
+.var border = flair + flair + flair
+.var separator = FormatFilename("", "", flair)
+.var mainFilename = FormatFilename(name, border)
+.var libraryFilename=FormatFilename("lib", border)
+.var testsFilename=FormatFilename("tests", border)
 
 .disk [filename=name + "." + cmdLineVars.get("format").string(), name=name.toUpperCase(), id=cmdLineVars.get("id").string(), showInfo ] {
-    [name="---------------", type="rel" ],
-    [name="--  SWEET16  --", type="prg", segments="Main, Util, Sweet16Patch, TestsPatch"],
-    [name="---------------", type="rel" ],
+
+    [name=separator, type="rel" ],
+    [name=mainFilename, type="prg", segments="Main, Util, Sweet16Patch, TestsPatch"],
+    [name=separator, type="rel" ],
     [name=libraryFilename, type="prg", segments="Sweet16" ],
     [name=testsFilename, type="prg", segments="Tests" ],
-    [name="---------------", type="rel" ],
+    [name=separator, type="rel" ],
 }
 
 #import "code/util/util.lib"

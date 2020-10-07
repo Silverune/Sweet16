@@ -3,7 +3,6 @@
 // Simple tests for Sweet16.  Most of these are converted versions of Woz's originals in the description of each of the mnemonics / opcodes (http://www.6502.org/source/interpreters/sweet16.htm#Register_Instructions_).
 
 // The 2-byte constant is loaded into Rn (n=0 to F, Hex) and branch conditions set accordingly. The carry is cleared.
-*=* "Set"
 SET_TEST: {
 	.const REGISTER = 5			// arbitrary register
 	.const VALUE = $1234
@@ -17,7 +16,6 @@ SET_TEST: {
 }
 
 // The ACC (R0) is loaded from Rn and branch conditions set according to the data transferred. The carry is cleared and contents of Rn are not disturbed.
-*=* "Load"
 LOAD_TEST: {
 	.const REGISTER = 5			// arbitrary register
 	.const VALUE = $4321
