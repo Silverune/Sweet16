@@ -42,6 +42,79 @@ CopyMemoryZeroPageSize: {
 !done:
 }
 
+// Counts characters in string
+// Assumes:
+//  string is address with null (0) termination 
+// Returns:
+//  A - string length
+.macro Count(stringAddress) {
+    ldx #0
+!next:
+    lda stringAddress,X
+    beq !foundNull+
+    inx
+    jmp !next-
+!foundNull:
+    txa
+}
+
+.macro LoadFileWithNull(filenameAddr) {
+    Count(filenameAddr)
+    Load(filenameAddr)
+}
+
+.macro LoadFile(filenameAddr, length) {
+    .break
+    lda #length
+    Load(filenameAddr)
+}
+
+.macro Load(filenameAddr) {
+    ldx #<filenameAddr
+    ldy #>filenameAddr
+    jsr KernalLoad
+}
+
+// Uses Kernal routines to load in file, assumes registers already setup
+// Assumes:
+//  A - length
+//  X - LSB of filename
+//  Y - MSB of filename
+// Returns:
+//  X - non-zero if error has occurred
+//  A - error code if X non-zero
+KernalLoad:
+    KernalLoad()
+    rts
+
+.macro KernalLoad() {
+    jsr $ffbd     // call setnam
+    lda #$01
+    ldx $ba       // last used device number
+    bne !skip+
+    ldx #$08      // default to device 8
+!skip:
+   ldy #$01       // not $01 means: load to address stored in file
+   jsr $ffba      // call setlfs
+
+   lda #$00       // $00 means: load to memory (not verify)
+   jsr $ffd5      // call load
+   bcs !error+    // if carry set, a load error has happened
+   jmp !done+
+!error:
+	// most likely errors:
+	// a = $05 (device not present)
+	// a = $04 (file not found)
+	// a = $1d (load error)
+	// a = $00 (break, run/stop has been pressed during loading)
+    jmp *
+    ldx #1
+    rts
+!done:
+    ldx #0         // clear error flag in case set
+    rts
+}
+
 // ZpVars.One - managed buffer containing filename
 // TODO - deal with ManagedBuffer fields
 LoadPrgFileFromManagedBuffer: {
@@ -58,24 +131,14 @@ LoadPrgFileFromManagedBuffer: {
 
     pla
 
-    jsr $ffbd     // call setnam
-    lda #$01
-    ldx $ba       // last used device number
-    bne !skip+
-    ldx #$08      // default to device 8
-!skip:
-   ldy #$01      // not $01 means: load to address stored in file
-   jsr $ffba     // call setlfs
+    jsr KernalLoad
 
-   lda #$00      // $00 means: load to memory (not verify)
-   jsr $ffd5     // call load
-   bcs !error+    // if carry set, a load error has happened
-   jmp !done+
+    cpx #$00
+    bne !error+
+    jmp !done+
 !error:
 	// accumulator contains basic error code
-    .label LoadPrgFileFromManagedBufferError = *
-//    sta $d021
- //   sta $d020
+.label LoadPrgFileFromManagedBufferError = *
     sta ZpVar.Four
     KernalOutput(errormessage)
     OutputNumber(ZpVar.Four)

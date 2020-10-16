@@ -4,10 +4,23 @@
 // Reference: https://codebase64.org/doku.php?id=base:loading_a_file
 // BASIC equivalent: LOAD "JUST A FILENAME",8,1
 .macro LoadPrgFile(filename, length) {
-    CopyToManagedBuffer(filename, ManagedBuffer256, length)
-    LoadAddress(ManagedBuffer256, ZpVar.One)
-    jsr LoadPrgFileFromManagedBuffer
+    // Managed Buffer version
+    // CopyToManagedBuffer(filename, ManagedBuffer256, length)
+    // LoadAddress(ManagedBuffer256, ZpVar.One)
+    // jsr LoadPrgFileFromManagedBuffer
+
+   LoadFile(filename, length)
+   cpx #$00
+   beq !done+
+    // error
+    pha
+    Output("Load Error: ")
+    pla
+    KernalOutputA()
+    jmp *
+   !done:   
 }
+
 /*
 // Loading a file to memory at address stored in file
 // Reference: https://codebase64.org/doku.php?id=base:loading_a_file

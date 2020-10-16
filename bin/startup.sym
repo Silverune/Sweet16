@@ -8,15 +8,15 @@
 .label POPD=$11ec
 .label TestRun=$4fe1 {
 }
-.label ManagedBuffer256=$a80 {
-  .label totalSize=$a80 {
+.label ManagedBuffer256=$aa3 {
+  .label totalSize=$aa3 {
   }
-  .label allocSize=$a82 {
+  .label allocSize=$aa5 {
   }
-  .label buffer=$a84
+  .label buffer=$aa7
 }
 .label SUB=$115d
-.label Anykey=$a72
+.label Anykey=$a95
 .label INR2=$112b
 .label BRANCH_IF_NONZERO_TEST=$411a {
 }
@@ -26,6 +26,8 @@
 .label ADD_TEST=$2fd0 {
 }
 .label POP=$11e8
+.label KernalLoad=$bd3 {
+}
 .label DECREMENT_TEST=$37c8 {
 }
 .label SUB2=$116b
@@ -48,18 +50,20 @@
 .label BRANCH_IF_NO_CARRY_TEST=$3b28 {
 }
 .label BK=$110d
-.label Newline=$a7e {
+.label Newline=$aa1 {
 }
 .label BM=$11a8
 .label RTN=$11f8
 .label BP=$11a1
 .label BR=$118c
 .label BS=$1182
+.label eightBitDemo=$814 {
+}
 .label YREG=$12a8
-.label LoadPrgFileFromManagedBuffer=$bb0 {
-  .label errormessage=$ca8
-  .label LoadPrgFileFromManagedBufferError=$bd8
-  .label fileNotFoundMessage=$c82
+.label LoadPrgFileFromManagedBuffer=$bf7 {
+  .label errormessage=$cdf
+  .label LoadPrgFileFromManagedBufferError=$c0f
+  .label fileNotFoundMessage=$cb9
 }
 .label LOAD_INDIRECT_TEST=$2352 {
 }
@@ -115,7 +119,7 @@
 }
 .label BRANCH_IF_NOT_MINUS_ONE_TEST=$4378 {
 }
-.label Reset=$a7b
+.label Reset=$a9e
 .label SET_TEST=$2000 {
 }
 .label RTNZ=$1209
@@ -123,7 +127,7 @@
 .label BREAK_TEST=$44a8 {
 }
 .label SW16=$1008
-.label CopyMemoryZeroPageSize=$b83 {
+.label CopyMemoryZeroPageSize=$ba6 {
 }
 .label TEST_MEMORY_2=$525d
 .label LDDAT=$1136
@@ -140,7 +144,7 @@
 .label DCR2=$115a
 .label EXTERNAL_JSR_TEST=$4b74 {
 }
-.label loadAll=$814 {
+.label loadAll=$831 {
 }
 .label INR=$1125
 .label STDAT=$1140
@@ -150,7 +154,7 @@
 .label SET_INDIRECT_TEST=$4d91 {
 }
 .label RTS_FIX=$1100
-.label ready=$a68
+.label ready=$a8b
 .label ZpVar=$0 {
   .label One=$fb {
   }

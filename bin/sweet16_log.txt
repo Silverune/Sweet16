@@ -7,19 +7,19 @@ Output pass
 Writing prg file: sweet16.prg
 Writing d64 file: sweet16.d64
 Info for disk 'SWEET16'
-  "---------------", sectors=0, startTS=0:0
-  "--  SWEET16  --", sectors=25, startTS=1:0
-  "---------------", sectors=0, startTS=0:0
-  "---    LIB    ---", sectors=3, startTS=2:19
-  "---   TESTS   ---", sectors=51, startTS=2:7
-  "---------------", sectors=0, startTS=0:0
+  "----------------", sectors=0, startTS=0:0
+  "---  SWEET16 ---", sectors=25, startTS=1:0
+  "----------------", sectors=0, startTS=0:0
+  "---    LIB   ---", sectors=3, startTS=2:19
+  "---   TESTS  ---", sectors=51, startTS=2:7
+  "----------------", sectors=0, startTS=0:0
 
 Memory Map
 ----------
 Main-segment:
   $0801-$080c Basic
   $080e-$080d Basic End
-  $080e-$0a7b Main
+  $080e-$0a86 Main
 
 Util-segment:
 
@@ -33,12 +33,11 @@ TestsPatch-segment:
   $2000-$2001 TestsPatch
 
 Tests-segment:
-  $2000-$2119 Set
-  $211a-$523e Load
+  $2000-$523e Tests
 
 UtilData-segment:
-  $0a7c-$0a7d UtilData
-  $0a7e-$0cae ManagedBuffer256
+  $0a87-$0a88 UtilData
+  $0a89-$0cc6 ManagedBuffer256
 
 Sweet16JumpTable-segment:
   $1061-$1080 Sweet16JumpTable
@@ -55,5 +54,5 @@ Sweet16Data-segment:
 TestData-segment:
   $523f-$5290 TestData
 
-Writing Vice symbol file: C:\Users\Rhett.Jacobs\OneDrive - Australian Research Council\Documents\Source\6502\Sweet16\bin\startup.vs
+Writing Vice symbol file: /Users/rhett/Google Drive/Source/C64/Sweet16/bin/startup.vs
 Writing Symbol file: startup.sym
