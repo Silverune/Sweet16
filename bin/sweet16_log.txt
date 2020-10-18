@@ -19,7 +19,7 @@ Memory Map
 Main-segment:
   $0801-$080c Basic
   $080e-$080d Basic End
-  $080e-$0a86 Main
+  $080e-$0afc Main
 
 Util-segment:
 
@@ -36,8 +36,7 @@ Tests-segment:
   $2000-$523e Tests
 
 UtilData-segment:
-  $0a87-$0a88 UtilData
-  $0a89-$0cc6 ManagedBuffer256
+  $0afd-$0b22 UtilData
 
 Sweet16JumpTable-segment:
   $1061-$1080 Sweet16JumpTable

@@ -9,399 +9,311 @@
 080b: 00 00     - upstartEnd:
 
 [Main]
-080e: 20 31 08  - Main:   jsr loadAll
-0811: 20 71 0a  -         jsr ready
-0814: a9 ff     - eightBitDemo:lda #$FF                // maximum frequency value
-0816: 8d 0f d4  -         sta SID_VOICE_3         // voice 3 frequency low byte
-0819: 8d 10 d4  -         sta SID_VOICE_3 + 1     // voice 3 frequency high byte
-081c: a9 80     -         lda #$80                // noise waveform, gate bit off
-081e: 8d 12 d4  -         sta SID_VOICE_3_CONTROL // voice 3 control register             
-0821: ad 1b d4  -         lda SID_VOICE_3_WAVEFORM_OUTPUT
-0824: c9 02     -         cmp #range              // compare to U-L+1
-0826: b0 f9     -         bcs !loop-              // branch if value >  U-L+1
-0828: 69 cd     -         adc #low                // add L (don't need 'clc' as can't get here if carry set)
-082a: 20 d2 ff  -         jsr kernal_chrout
-082d: 4c 21 08  -         jmp !next-
-0830: 60        -         rts
-0831: a9 00     - loadAll:lda #color
-0833: 8d 20 d0  -         sta border_color
-0836: a9 00     -         lda #color
-0838: 8d 21 d0  -         sta background_color
-083b: 20 44 e5  -         jsr $e544
-083e: a2 00     -         ldx #$00
-0840: bd 4f 08  -         lda msg,x
-0843: f0 07     -         beq !done+
-0845: 20 d2 ff  -         jsr kernal_chrout
-0848: e8        -         inx
-0849: 4c 40 08  -         jmp !loop-
-084c: 4c 58 08  -         jmp !done+
-084f: 53 57 45 45 54 31 36                             -         .text msg
-0856: 0d 00     -         .byte RETURN, NULL
-0858: a2 00     -         ldx #$00
-085a: bd 69 08  -         lda msg,x
-085d: f0 07     -         beq !done+
-085f: 20 d2 ff  -         jsr kernal_chrout
-0862: e8        -         inx
-0863: 4c 5a 08  -         jmp !loop-
-0866: 4c 6b 08  -         jmp !done+
-0869: 0d 00     -         .byte RETURN, NULL
-086b: a2 00     -         ldx #$00
-086d: bd 7c 08  -         lda msg,x
-0870: f0 07     -         beq !done+
-0872: 20 d2 ff  -         jsr kernal_chrout
-0875: e8        -         inx
-0876: 4c 6d 08  -         jmp !loop-
-0879: 4c 8a 08  -         jmp !done+
-087c: 43 48 45 43 4b 49 4e 47 20 46 4f 52 20           -         .text msg
-0889: 00        -         .byte NULL
-088a: a2 00     -         ldx #$00
-088c: bd 9b 08  -         lda msg,x
-088f: f0 07     -         beq !done+
-0891: 20 d2 ff  -         jsr kernal_chrout
-0894: e8        -         inx
-0895: 4c 8c 08  -         jmp !loop-
-0898: 4c 9f 08  -         jmp !done+
-089b: 4c 49 42  -         .text msg
-089e: 00        -         .byte NULL
-089f: a2 00     -         ldx #$00
-08a1: bd b0 08  -         lda msg,x
-08a4: f0 07     -         beq !done+
-08a6: 20 d2 ff  -         jsr kernal_chrout
-08a9: e8        -         inx
-08aa: 4c a1 08  -         jmp !loop-
-08ad: 4c b4 08  -         jmp !done+
-08b0: 2e 2e 2e  -         .text msg
-08b3: 00        -         .byte NULL
-08b4: ad 00 10  -         lda baseAddr
-08b7: c9 fe     -         cmp #(>MagicPatch) // opposite to normal so reads natural in memory inspection
-08b9: d0 0c     -         bne !nope+
-08bb: ad 01 10  -         lda baseAddr+1
-08be: c9 ed     -         cmp #(<MagicPatch)
-08c0: d0 05     -         bne !nope+
-08c2: a9 01     -         lda #$01
-08c4: 4c c9 08  -         jmp !done+
-08c7: a9 00     -         lda #$00
-08c9: f0 6f     -         beq !alreadyLoaded+
-08cb: a2 00     -         ldx #$00
-08cd: bd dc 08  -         lda msg,x
-08d0: f0 07     -         beq !done+
-08d2: 20 d2 ff  -         jsr kernal_chrout
-08d5: e8        -         inx
-08d6: 4c cd 08  -         jmp !loop-
-08d9: 4c f9 08  -         jmp !done+
-08dc: 4c 4f 41 44 49 4e 47 2e 2e 2e 1b 2d 2d 2d 20 20  -         .text msg
-08ec: 20 20 4c 49 42 20 20 20 2d 2d 2d 1d             
-08f8: 00        -         .byte NULL
-08f9: a9 10     -         lda #length
-08fb: a2 53     -         ldx #<filenameAddr
-08fd: a0 09     -         ldy #>filenameAddr
-08ff: 20 bd ff  -         jsr $ffbd     // call setnam
-0902: a9 01     -         lda #$01
-0904: a6 ba     -         ldx $ba       // last used device number
-0906: d0 02     -         bne !skip+
-0908: a2 08     -         ldx #$08      // default to device 8
-090a: a0 01     -         ldy #$01       // not $01 means: load to address stored in file
-090c: 20 ba ff  -         jsr $ffba      // call setlfs
-090f: a9 00     -         lda #$00       // $00 means: load to memory (not verify)
-0911: 20 d5 ff  -         jsr $ffd5      // call load
-0914: b0 03     -         bcs !error+    // if carry set, a load error has happened
-0916: 4c 1c 09  -         jmp !done+
-0919: a2 01     -         ldx #1
-091b: 60        -         rts
-091c: a2 00     -         ldx #0         // clear error flag in case set
-091e: 60        -         rts
-091f: a2 00     -         ldx #$00
-0921: bd 30 09  -         lda msg,x
-0924: f0 07     -         beq !done+
-0926: 20 d2 ff  -         jsr kernal_chrout
-0929: e8        -         inx
-092a: 4c 21 09  -         jmp !loop-
-092d: 4c 37 09  -         jmp !done+
-0930: 44 4f 4e 45 2e                                   -         .text msg
-0935: 0d 00     -         .byte RETURN, NULL
-0937: 4c 63 09  -         jmp !done+
-093a: a2 00     -         ldx #$00
-093c: bd 4b 09  -         lda msg,x
-093f: f0 07     -         beq !done+
-0941: 20 d2 ff  -         jsr kernal_chrout
-0944: e8        -         inx
-0945: 4c 3c 09  -         jmp !loop-
-0948: 4c 50 09  -         jmp !done+
-094b: 4f 4b 2e  -         .text msg
-094e: 0d 00     -         .byte RETURN, NULL
-0950: 4c 63 09  -         jmp !done+
-0953: 2d 2d 2d 20 20 20 20 4c 49 42 20 20 20 2d 2d 2d  -         .text filename
-0963: a2 00     -         ldx #$00
-0965: bd 74 09  -         lda msg,x
-0968: f0 07     -         beq !done+
-096a: 20 d2 ff  -         jsr kernal_chrout
-096d: e8        -         inx
-096e: 4c 65 09  -         jmp !loop-
-0971: 4c 82 09  -         jmp !done+
-0974: 43 48 45 43 4b 49 4e 47 20 46 4f 52 20           -         .text msg
-0981: 00        -         .byte NULL
-0982: a2 00     -         ldx #$00
-0984: bd 93 09  -         lda msg,x
-0987: f0 07     -         beq !done+
-0989: 20 d2 ff  -         jsr kernal_chrout
-098c: e8        -         inx
-098d: 4c 84 09  -         jmp !loop-
-0990: 4c 99 09  -         jmp !done+
-0993: 54 45 53 54 53                                   -         .text msg
-0998: 00        -         .byte NULL
-0999: a2 00     -         ldx #$00
-099b: bd aa 09  -         lda msg,x
-099e: f0 07     -         beq !done+
-09a0: 20 d2 ff  -         jsr kernal_chrout
-09a3: e8        -         inx
-09a4: 4c 9b 09  -         jmp !loop-
-09a7: 4c ae 09  -         jmp !done+
-09aa: 2e 2e 2e  -         .text msg
-09ad: 00        -         .byte NULL
-09ae: ad 00 20  -         lda baseAddr
-09b1: c9 fe     -         cmp #(>MagicPatch) // opposite to normal so reads natural in memory inspection
-09b3: d0 0c     -         bne !nope+
-09b5: ad 01 20  -         lda baseAddr+1
-09b8: c9 ed     -         cmp #(<MagicPatch)
-09ba: d0 05     -         bne !nope+
-09bc: a9 01     -         lda #$01
-09be: 4c c3 09  -         jmp !done+
-09c1: a9 00     -         lda #$00
-09c3: f0 6f     -         beq !alreadyLoaded+
-09c5: a2 00     -         ldx #$00
-09c7: bd d6 09  -         lda msg,x
-09ca: f0 07     -         beq !done+
-09cc: 20 d2 ff  -         jsr kernal_chrout
-09cf: e8        -         inx
-09d0: 4c c7 09  -         jmp !loop-
-09d3: 4c f3 09  -         jmp !done+
-09d6: 4c 4f 41 44 49 4e 47 2e 2e 2e 1b 2d 2d 2d 20 20  -         .text msg
-09e6: 20 54 45 53 54 53 20 20 2d 2d 2d 1d             
-09f2: 00        -         .byte NULL
-09f3: a9 10     -         lda #length
-09f5: a2 4d     -         ldx #<filenameAddr
-09f7: a0 0a     -         ldy #>filenameAddr
-09f9: 20 bd ff  -         jsr $ffbd     // call setnam
-09fc: a9 01     -         lda #$01
-09fe: a6 ba     -         ldx $ba       // last used device number
-0a00: d0 02     -         bne !skip+
-0a02: a2 08     -         ldx #$08      // default to device 8
-0a04: a0 01     -         ldy #$01       // not $01 means: load to address stored in file
-0a06: 20 ba ff  -         jsr $ffba      // call setlfs
-0a09: a9 00     -         lda #$00       // $00 means: load to memory (not verify)
-0a0b: 20 d5 ff  -         jsr $ffd5      // call load
-0a0e: b0 03     -         bcs !error+    // if carry set, a load error has happened
-0a10: 4c 16 0a  -         jmp !done+
-0a13: a2 01     -         ldx #1
-0a15: 60        -         rts
-0a16: a2 00     -         ldx #0         // clear error flag in case set
-0a18: 60        -         rts
-0a19: a2 00     -         ldx #$00
-0a1b: bd 2a 0a  -         lda msg,x
-0a1e: f0 07     -         beq !done+
-0a20: 20 d2 ff  -         jsr kernal_chrout
-0a23: e8        -         inx
-0a24: 4c 1b 0a  -         jmp !loop-
-0a27: 4c 31 0a  -         jmp !done+
-0a2a: 44 4f 4e 45 2e                                   -         .text msg
-0a2f: 0d 00     -         .byte RETURN, NULL
-0a31: 4c 5d 0a  -         jmp !done+
-0a34: a2 00     -         ldx #$00
-0a36: bd 45 0a  -         lda msg,x
-0a39: f0 07     -         beq !done+
-0a3b: 20 d2 ff  -         jsr kernal_chrout
-0a3e: e8        -         inx
-0a3f: 4c 36 0a  -         jmp !loop-
-0a42: 4c 4a 0a  -         jmp !done+
-0a45: 4f 4b 2e  -         .text msg
-0a48: 0d 00     -         .byte RETURN, NULL
-0a4a: 4c 5d 0a  -         jmp !done+
-0a4d: 2d 2d 2d 20 20 20 54 45 53 54 53 20 20 2d 2d 2d  -         .text filename
-0a5d: a2 00     -         ldx #$00
-0a5f: bd 6e 0a  -         lda msg,x
-0a62: f0 07     -         beq !done+
-0a64: 20 d2 ff  -         jsr kernal_chrout
-0a67: e8        -         inx
-0a68: 4c 5f 0a  -         jmp !loop-
-0a6b: 4c 70 0a  -         jmp !done+
-0a6e: 0d 00     -         .byte RETURN, NULL
-0a70: 60        -         rts
-0a71: 20 e1 4f  - ready:  jsr TestRun
-0a74: 20 7b 0a  -         jsr Anykey
-0a77: 4c 84 0a  -         jmp Reset
-0a7a: 60        -         rts
-0a7b: 20 9f ff  - Anykey: jsr scnkey  // scan keyboard
-0a7e: 20 e4 ff  -         jsr getin	// put result into A
-0a81: f0 f8     -         beq !-	
-0a83: 60        -         rts
-0a84: 6c fc ff  - Reset:  jmp ($FFFC)		// kernal reset vector
+080e: 20 17 08  - Main:   jsr init
+0811: 20 b5 08  -         jsr loadAll
+0814: 20 e7 0a  -         jsr ready
+0817: 78        - init:   sei 
+0818: a0 7f     -         ldy #$7f    // $7f = %01111111
+081a: 8c 0d dc  -         sty $dc0d   // Turn off CIAs Timer interrupts
+081d: 8c 0d dd  -         sty $dd0d   // Turn off CIAs Timer interrupts
+0820: ad 0d dc  -         lda $dc0d   // cancel all CIA-IRQs in queue/unprocessed
+0823: ad 0d dd  -         lda $dd0d   // cancel all CIA-IRQs in queue/unprocessed
+0826: a9 01     -         lda #$01    // Set Interrupt Request Mask...
+0828: 8d 1a d0  -         sta $d01a   // ...we want IRQ by Rasterbeam
+082b: ad 14 03  -         lda $314			// save previous vector
+082e: ae 15 03  -         ldx $315
+0831: 8d 50 08  -         sta oldIrq
+0834: 8e 51 08  -         stx oldIrq + 1
+0837: a9 59     -         lda #<irq			// install our IRQ
+0839: a2 08     -         ldx #>irq
+083b: 8d 14 03  -         sta $314
+083e: 8e 15 03  -         stx $315
+0841: a9 ff     -         lda #$FF                // maximum frequency value
+0843: 8d 0f d4  -         sta SID_VOICE_3         // voice 3 frequency low byte
+0846: 8d 10 d4  -         sta SID_VOICE_3 + 1     // voice 3 frequency high byte
+0849: a9 80     -         lda #$80                // noise waveform, gate bit off
+084b: 8d 12 d4  -         sta SID_VOICE_3_CONTROL // voice 3 control register             
+084e: 58        -         cli
+084f: 60        -         rts
+0850: 00 00     - oldIrq: .byte 00, 00		// buffer for previous vector
+0852: ff        - counter:.byte $FF
+0853: 04        - whirlLength:.byte $04
+0854: 2d cd dd ce                                      - whirl:  .byte $2d, $cd, $dd, $ce
+0858: ff        - whirlIndex:.byte $ff
+0859: ce 19 d0  - irq:    dec $d019				// ack interrrupt
+085c: ee 52 08  -         inc counter
+085f: a9 ff     -         lda #$ff
+0861: 8d 52 08  -         sta counter
+0864: a9 a0     -         lda #$a0
+0866: 2c 52 08  -         bit counter
+0869: a9 04     -         lda #%00000100
+086b: 2c 52 08  -         bit counter
+086e: d0 03     -         bne !show+
+0870: 4c 7b 08  -         jmp !done+
+0873: 20 7e 08  -         jsr showWhirl
+0876: a9 ff     -         lda #$ff
+0878: 8d 52 08  -         sta counter
+087b: 6c 50 08  -         jmp (oldIrq)		// back to previous IRQ
+087e: 38        - showWhirl:sec			// set carry flag
+087f: 20 0a e5  -         jsr $e50a	// fetch current position
+0882: 8a        -         txa
+0883: 48        -         pha			// store x on stack
+0884: 98        -         tya
+0885: 48        -         pha			// store y on stack
+0886: ee 58 08  -         inc whirlIndex
+0889: ad 58 08  -         lda whirlIndex
+088c: cd 53 08  -         cmp whirlLength
+088f: 90 05     -         bcc !next+
+0891: a9 00     -         lda #$00
+0893: 8d 58 08  -         sta whirlIndex
+0896: ae 58 08  -         ldx whirlIndex
+0899: bd 54 08  -         lda whirl,x
+089c: 20 d2 ff  -         jsr kernal_chrout
+089f: 68        -         pla
+08a0: a8        -         tay
+08a1: 68        -         pla
+08a2: aa        -         tax
+08a3: 18        -         clc
+08a4: 20 0a e5  -         jsr $e50a
+08a7: 60        -         rts
+08a8: ad 1b d4  - eightBitDemo:lda SID_VOICE_3_WAVEFORM_OUTPUT
+08ab: c9 02     -         cmp #range              // compare to U-L+1
+08ad: b0 f9     -         bcs !loop-              // branch if value >  U-L+1
+08af: 69 cd     -         adc #low                // add L (don't need 'clc' as can't get here if carry set)
+08b1: 20 d2 ff  -         jsr kernal_chrout
+08b4: 60        -         rts
+08b5: a9 00     - loadAll:lda #color
+08b7: 8d 20 d0  -         sta border_color
+08ba: a9 00     -         lda #color
+08bc: 8d 21 d0  -         sta background_color
+08bf: 20 44 e5  -         jsr $e544
+08c2: a2 00     -         ldx #$00
+08c4: bd d3 08  -         lda msg,x
+08c7: f0 07     -         beq !done+
+08c9: 20 d2 ff  -         jsr kernal_chrout
+08cc: e8        -         inx
+08cd: 4c c4 08  -         jmp !loop-
+08d0: 4c dc 08  -         jmp !done+
+08d3: 53 57 45 45 54 31 36                             -         .text msg
+08da: 0d 00     -         .byte RETURN, NULL
+08dc: a2 00     -         ldx #$00
+08de: bd ed 08  -         lda msg,x
+08e1: f0 07     -         beq !done+
+08e3: 20 d2 ff  -         jsr kernal_chrout
+08e6: e8        -         inx
+08e7: 4c de 08  -         jmp !loop-
+08ea: 4c ef 08  -         jmp !done+
+08ed: 0d 00     -         .byte RETURN, NULL
+08ef: a2 00     -         ldx #$00
+08f1: bd 00 09  -         lda msg,x
+08f4: f0 07     -         beq !done+
+08f6: 20 d2 ff  -         jsr kernal_chrout
+08f9: e8        -         inx
+08fa: 4c f1 08  -         jmp !loop-
+08fd: 4c 0e 09  -         jmp !done+
+0900: 43 48 45 43 4b 49 4e 47 20 46 4f 52 20           -         .text msg
+090d: 00        -         .byte NULL
+090e: a2 00     -         ldx #$00
+0910: bd 1f 09  -         lda msg,x
+0913: f0 07     -         beq !done+
+0915: 20 d2 ff  -         jsr kernal_chrout
+0918: e8        -         inx
+0919: 4c 10 09  -         jmp !loop-
+091c: 4c 23 09  -         jmp !done+
+091f: 4c 49 42  -         .text msg
+0922: 00        -         .byte NULL
+0923: a2 00     -         ldx #$00
+0925: bd 34 09  -         lda msg,x
+0928: f0 07     -         beq !done+
+092a: 20 d2 ff  -         jsr kernal_chrout
+092d: e8        -         inx
+092e: 4c 25 09  -         jmp !loop-
+0931: 4c 38 09  -         jmp !done+
+0934: 2e 2e 2e  -         .text msg
+0937: 00        -         .byte NULL
+0938: ad 00 10  -         lda baseAddr
+093b: c9 fe     -         cmp #(>MagicPatch) // opposite to normal so reads natural in memory inspection
+093d: d0 0c     -         bne !nope+
+093f: ad 01 10  -         lda baseAddr+1
+0942: c9 ed     -         cmp #(<MagicPatch)
+0944: d0 05     -         bne !nope+
+0946: a9 01     -         lda #$01
+0948: 4c 4d 09  -         jmp !done+
+094b: a9 00     -         lda #$00
+094d: f0 69     -         beq !alreadyLoaded+
+094f: a2 00     -         ldx #$00
+0951: bd 60 09  -         lda msg,x
+0954: f0 07     -         beq !done+
+0956: 20 d2 ff  -         jsr kernal_chrout
+0959: e8        -         inx
+095a: 4c 51 09  -         jmp !loop-
+095d: 4c 68 09  -         jmp !done+
+0960: 4c 4f 41 44 49 4e 47                             -         .text msg
+0967: 00        -         .byte NULL
+0968: a9 10     -         lda #length
+096a: a2 d0     -         ldx #<filenameAddr
+096c: a0 09     -         ldy #>filenameAddr
+096e: 20 ff 0a  -         jsr KernalLoad
+0971: e0 00     -         cpx #$00
+0973: f0 26     -         beq !done+
+0975: 48        -         pha
+0976: a2 00     -         ldx #$00
+0978: bd 87 09  -         lda msg,x
+097b: f0 07     -         beq !done+
+097d: 20 d2 ff  -         jsr kernal_chrout
+0980: e8        -         inx
+0981: 4c 78 09  -         jmp !loop-
+0984: 4c 94 09  -         jmp !done+
+0987: 4c 0f 01 04 20 45 12 12 0f 12 3a 20              -         .text msg
+0993: 00        -         .byte NULL
+0994: 68        -         pla
+0995: 20 d2 ff  -         jsr kernal_chrout
+0998: 4c 98 09  -         jmp *
+099b: a2 00     -         ldx #$00
+099d: bd ac 09  -         lda msg,x
+09a0: f0 07     -         beq !done+
+09a2: 20 d2 ff  -         jsr kernal_chrout
+09a5: e8        -         inx
+09a6: 4c 9d 09  -         jmp !loop-
+09a9: 4c b5 09  -         jmp !done+
+09ac: 20 2d 20 44 4f 4e 45                             -         .text msg
+09b3: 0d 00     -         .byte RETURN, NULL
+09b5: 4c e0 09  -         jmp !done+
+09b8: a2 00     -         ldx #$00
+09ba: bd c9 09  -         lda msg,x
+09bd: f0 07     -         beq !done+
+09bf: 20 d2 ff  -         jsr kernal_chrout
+09c2: e8        -         inx
+09c3: 4c ba 09  -         jmp !loop-
+09c6: 4c cd 09  -         jmp !done+
+09c9: 4f 4b     -         .text msg
+09cb: 0d 00     -         .byte RETURN, NULL
+09cd: 4c e0 09  -         jmp !done+
+09d0: 2d 2d 2d 20 20 20 20 4c 49 42 20 20 20 2d 2d 2d  -         .text filename
+09e0: a2 00     -         ldx #$00
+09e2: bd f1 09  -         lda msg,x
+09e5: f0 07     -         beq !done+
+09e7: 20 d2 ff  -         jsr kernal_chrout
+09ea: e8        -         inx
+09eb: 4c e2 09  -         jmp !loop-
+09ee: 4c ff 09  -         jmp !done+
+09f1: 43 48 45 43 4b 49 4e 47 20 46 4f 52 20           -         .text msg
+09fe: 00        -         .byte NULL
+09ff: a2 00     -         ldx #$00
+0a01: bd 10 0a  -         lda msg,x
+0a04: f0 07     -         beq !done+
+0a06: 20 d2 ff  -         jsr kernal_chrout
+0a09: e8        -         inx
+0a0a: 4c 01 0a  -         jmp !loop-
+0a0d: 4c 16 0a  -         jmp !done+
+0a10: 54 45 53 54 53                                   -         .text msg
+0a15: 00        -         .byte NULL
+0a16: a2 00     -         ldx #$00
+0a18: bd 27 0a  -         lda msg,x
+0a1b: f0 07     -         beq !done+
+0a1d: 20 d2 ff  -         jsr kernal_chrout
+0a20: e8        -         inx
+0a21: 4c 18 0a  -         jmp !loop-
+0a24: 4c 2b 0a  -         jmp !done+
+0a27: 2e 2e 2e  -         .text msg
+0a2a: 00        -         .byte NULL
+0a2b: ad 00 20  -         lda baseAddr
+0a2e: c9 fe     -         cmp #(>MagicPatch) // opposite to normal so reads natural in memory inspection
+0a30: d0 0c     -         bne !nope+
+0a32: ad 01 20  -         lda baseAddr+1
+0a35: c9 ed     -         cmp #(<MagicPatch)
+0a37: d0 05     -         bne !nope+
+0a39: a9 01     -         lda #$01
+0a3b: 4c 40 0a  -         jmp !done+
+0a3e: a9 00     -         lda #$00
+0a40: f0 69     -         beq !alreadyLoaded+
+0a42: a2 00     -         ldx #$00
+0a44: bd 53 0a  -         lda msg,x
+0a47: f0 07     -         beq !done+
+0a49: 20 d2 ff  -         jsr kernal_chrout
+0a4c: e8        -         inx
+0a4d: 4c 44 0a  -         jmp !loop-
+0a50: 4c 5b 0a  -         jmp !done+
+0a53: 4c 4f 41 44 49 4e 47                             -         .text msg
+0a5a: 00        -         .byte NULL
+0a5b: a9 10     -         lda #length
+0a5d: a2 c3     -         ldx #<filenameAddr
+0a5f: a0 0a     -         ldy #>filenameAddr
+0a61: 20 ff 0a  -         jsr KernalLoad
+0a64: e0 00     -         cpx #$00
+0a66: f0 26     -         beq !done+
+0a68: 48        -         pha
+0a69: a2 00     -         ldx #$00
+0a6b: bd 7a 0a  -         lda msg,x
+0a6e: f0 07     -         beq !done+
+0a70: 20 d2 ff  -         jsr kernal_chrout
+0a73: e8        -         inx
+0a74: 4c 6b 0a  -         jmp !loop-
+0a77: 4c 87 0a  -         jmp !done+
+0a7a: 4c 0f 01 04 20 45 12 12 0f 12 3a 20              -         .text msg
+0a86: 00        -         .byte NULL
+0a87: 68        -         pla
+0a88: 20 d2 ff  -         jsr kernal_chrout
+0a8b: 4c 8b 0a  -         jmp *
+0a8e: a2 00     -         ldx #$00
+0a90: bd 9f 0a  -         lda msg,x
+0a93: f0 07     -         beq !done+
+0a95: 20 d2 ff  -         jsr kernal_chrout
+0a98: e8        -         inx
+0a99: 4c 90 0a  -         jmp !loop-
+0a9c: 4c a8 0a  -         jmp !done+
+0a9f: 20 2d 20 44 4f 4e 45                             -         .text msg
+0aa6: 0d 00     -         .byte RETURN, NULL
+0aa8: 4c d3 0a  -         jmp !done+
+0aab: a2 00     -         ldx #$00
+0aad: bd bc 0a  -         lda msg,x
+0ab0: f0 07     -         beq !done+
+0ab2: 20 d2 ff  -         jsr kernal_chrout
+0ab5: e8        -         inx
+0ab6: 4c ad 0a  -         jmp !loop-
+0ab9: 4c c0 0a  -         jmp !done+
+0abc: 4f 4b     -         .text msg
+0abe: 0d 00     -         .byte RETURN, NULL
+0ac0: 4c d3 0a  -         jmp !done+
+0ac3: 2d 2d 2d 20 20 20 54 45 53 54 53 20 20 2d 2d 2d  -         .text filename
+0ad3: a2 00     -         ldx #$00
+0ad5: bd e4 0a  -         lda msg,x
+0ad8: f0 07     -         beq !done+
+0ada: 20 d2 ff  -         jsr kernal_chrout
+0add: e8        -         inx
+0ade: 4c d5 0a  -         jmp !loop-
+0ae1: 4c e6 0a  -         jmp !done+
+0ae4: 0d 00     -         .byte RETURN, NULL
+0ae6: 60        -         rts
+0ae7: 20 e1 4f  - ready:  jsr TestRun
+0aea: 20 f1 0a  -         jsr Anykey
+0aed: 4c fa 0a  -         jmp Reset
+0af0: 60        -         rts
+0af1: 20 9f ff  - Anykey: jsr scnkey  // scan keyboard
+0af4: 20 e4 ff  -         jsr getin	// put result into A
+0af7: f0 f8     -         beq !-	
+0af9: 60        -         rts
+0afa: 6c fc ff  - Reset:  jmp ($FFFC)		// kernal reset vector
 ******************************** Segment: Util *********************************
 [UtilData]
-0a87: 0d 00     -         .byte RETURN, NULL
-
-[ManagedBuffer256]
-0a89: ff 00     -         .byte <value, >value
-0a8b: 00 00     -         .byte <value, >value
-0a8d: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  -         .fill $ff, $00
-0aad: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-0acd: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-0aed: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-0b0d: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-0b2d: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-0b4d: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-0b6d: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    
-0b8c: a0 00     -         ldy #$00
-0b8e: 84 50     -         sty ZpVar.Four.lo     // LSB size
-0b90: 84 51     -         sty ZpVar.Four.hi     // MSH size
-0b92: a5 4f     -         lda ZpVar.Three.hi
-0b94: c5 51     -         cmp ZpVar.Four.hi
-0b96: f0 17     -         beq !msb_match+
-0b98: b1 fb     -         lda (ZpVar.One.lo),y 
-0b9a: 91 fd     -         sta (ZpVar.Two.lo),y
-0b9c: e6 50     -         inc ZpVar.Four.lo
-0b9e: f0 0a     -         beq inc_msb
-0ba0: c8        -         iny
-0ba1: d0 ef     -         bne !loop-
-0ba3: e6 fc     -         inc ZpVar.One.hi 	// inc MSB source 
-0ba5: e6 fe     -         inc ZpVar.Two.hi 	// inc MSB dest 
-0ba7: 4c 92 0b  -         jmp !loop-
-0baa: e6 51     -         inc ZpVar.Four.hi
-0bac: 4c a0 0b  -         jmp !cont-
-0baf: a5 4e     -         lda ZpVar.Three.lo
-0bb1: c5 50     -         cmp ZpVar.Four.lo
-0bb3: f0 03     -         beq !done+
-0bb5: 4c 98 0b  -         jmp !copy-
-0bb8: 60        -         rts
-0bb9: a0 02     -         ldy #2
-0bbb: b1 fb     -         lda (ZpVar.One),Y
-0bbd: 48        -         pha           // store length on stack
-0bbe: 18        -         clc
-0bbf: a9 04     -         lda #$4
-0bc1: 65 fb     -         adc ZpVar.One
-0bc3: aa        -         tax
-0bc4: a4 fc     -         ldy ZpVar.One.hi
-0bc6: 68        -         pla
-0bc7: 20 bd ff  -         jsr $ffbd     // call setnam
-0bca: a9 01     -         lda #$01
-0bcc: a6 ba     -         ldx $ba       // last used device number
-0bce: d0 02     -         bne !skip+
-0bd0: a2 08     -         ldx #$08      // default to device 8
-0bd2: a0 01     -         ldy #$01       // not $01 means: load to address stored in file
-0bd4: 20 ba ff  -         jsr $ffba      // call setlfs
-0bd7: a9 00     -         lda #$00       // $00 means: load to memory (not verify)
-0bd9: 20 d5 ff  -         jsr $ffd5      // call load
-0bdc: b0 03     -         bcs !error+    // if carry set, a load error has happened
-0bde: 4c e4 0b  -         jmp !done+
-0be1: a2 01     -         ldx #1
-0be3: 60        -         rts
-0be4: a2 00     -         ldx #0         // clear error flag in case set
-0be6: 60        -         rts
-0be7: e0 00     -         cpx #$00
-0be9: d0 03     -         bne !error+
-0beb: 4c c6 0c  -         jmp !done+
-0bee: 85 50     -         sta ZpVar.Four
-0bf0: a2 00     -         ldx #$00
-0bf2: bd be 0c  -         lda msg,x
-0bf5: f0 07     -         beq !done+
-0bf7: 20 d2 ff  -         jsr kernal_chrout
-0bfa: e8        -         inx
-0bfb: 4c f2 0b  -         jmp !loop-
-0bfe: a5 50     -         lda value
-0c00: c9 64     -         cmp #three_digit
-0c02: 90 58     -         bcc !twoDigit+
-0c04: a5 50     -         lda value
-0c06: c9 64     -         cmp #reference
-0c08: 90 09     -         bcc !done+
-0c0a: a0 00     -         ldy #$00		// counter
-0c0c: c8        -         iny				// count references's
-0c0d: e9 64     -         sbc #reference
-0c0f: c9 64     -         cmp #reference
-0c11: b0 f9     -         bcs !loop-		// still larger than reference
-0c13: 98        -         tya
-0c14: 48        -         pha
-0c15: 09 30     -         ora #$30
-0c17: 20 d2 ff  -         jsr kernal_chrout
-0c1a: 68        -         pla
-0c1b: a8        -         tay
-0c1c: a5 50     -         lda value
-0c1e: 38        -         sec
-0c1f: e9 64     -         sbc #three_digit
-0c21: 88        -         dey
-0c22: d0 fa     -         bne !subby-
-0c24: 85 fe     -         sta zp
-0c26: a5 fe     -         lda value
-0c28: c9 0a     -         cmp #two_digit
-0c2a: 90 28     -         bcc !oneDigit+
-0c2c: a5 fe     -         lda value
-0c2e: c9 0a     -         cmp #reference
-0c30: 90 09     -         bcc !done+
-0c32: a0 00     -         ldy #$00		// counter
-0c34: c8        -         iny				// count references's
-0c35: e9 0a     -         sbc #reference
-0c37: c9 0a     -         cmp #reference
-0c39: b0 f9     -         bcs !loop-		// still larger than reference
-0c3b: 98        -         tya
-0c3c: 48        -         pha
-0c3d: 09 30     -         ora #$30
-0c3f: 20 d2 ff  -         jsr kernal_chrout
-0c42: 68        -         pla
-0c43: a8        -         tay
-0c44: a5 fe     -         lda value
-0c46: 38        -         sec
-0c47: e9 0a     -         sbc #two_digit
-0c49: 88        -         dey
-0c4a: d0 fa     -         bne !subby-
-0c4c: 09 30     -         ora #$30
-0c4e: 20 d2 ff  -         jsr kernal_chrout
-0c51: 4c 59 0c  -         jmp !done+
-0c54: 09 30     -         ora #$30
-0c56: 20 d2 ff  -         jsr kernal_chrout
-0c59: 4c 8f 0c  -         jmp !done+
-0c5c: a5 50     -         lda value
-0c5e: c9 0a     -         cmp #two_digit
-0c60: 90 28     -         bcc !oneDigit+
-0c62: a5 50     -         lda value
-0c64: c9 0a     -         cmp #reference
-0c66: 90 09     -         bcc !done+
-0c68: a0 00     -         ldy #$00		// counter
-0c6a: c8        -         iny				// count references's
-0c6b: e9 0a     -         sbc #reference
-0c6d: c9 0a     -         cmp #reference
-0c6f: b0 f9     -         bcs !loop-		// still larger than reference
-0c71: 98        -         tya
-0c72: 48        -         pha
-0c73: 09 30     -         ora #$30
-0c75: 20 d2 ff  -         jsr kernal_chrout
-0c78: 68        -         pla
-0c79: a8        -         tay
-0c7a: a5 50     -         lda value
-0c7c: 38        -         sec
-0c7d: e9 0a     -         sbc #two_digit
-0c7f: 88        -         dey
-0c80: d0 fa     -         bne !subby-
-0c82: 09 30     -         ora #$30
-0c84: 20 d2 ff  -         jsr kernal_chrout
-0c87: 4c 8f 0c  -         jmp !done+
-0c8a: 09 30     -         ora #$30
-0c8c: 20 d2 ff  -         jsr kernal_chrout
-0c8f: a5 50     -         lda ZpVar.Four
-0c91: c9 04     -         cmp #$04
-0c93: f0 17     -         beq !fileNotFound+
-0c95: 4c 95 0c  -         jmp *
-0c98: 20 3e 20 46 49 4c 45 20 4e 4f 54 20 46 4f 55 4e  -         .text " > FILE NOT FOUND! "
-0ca8: 44 21 20                                        
-0cab: 00        -         .byte NULL
-0cac: a2 00     -         ldx #$00
-0cae: bd 98 0c  -         lda msg,x
-0cb1: f0 07     -         beq !done+
-0cb3: 20 d2 ff  -         jsr kernal_chrout
-0cb6: e8        -         inx
-0cb7: 4c ae 0c  -         jmp !loop-
-0cba: 4c ba 0c  -         jmp *
-0cbd: 60        -         rts
-0cbe: 45 52 52 4f 52 3a 20                             -         .text "ERROR: "
-0cc5: 00        -         .byte NULL
-0cc6: 60        -         rts
+0afd: 0d 00     -         .byte RETURN, NULL
+0aff: 20 bd ff  -         jsr $ffbd     // call setnam
+0b02: a9 01     -         lda #$01
+0b04: a6 ba     -         ldx $ba       // last used device number
+0b06: d0 02     -         bne !skip+
+0b08: a2 08     -         ldx #$08      // default to device 8
+0b0a: a0 01     -         ldy #$01       // not $01 means: load to address stored in file
+0b0c: 20 ba ff  -         jsr $ffba      // call setlfs
+0b0f: a9 00     -         lda #$00       // $00 means: load to memory (not verify)
+0b11: 20 d5 ff  -         jsr $ffd5      // call load
+0b14: b0 03     -         bcs !error+    // if carry set, a load error has happened
+0b16: 4c 1f 0b  -         jmp !done+
+0b19: 4c 19 0b  -         jmp *
+0b1c: a2 01     -         ldx #1
+0b1e: 60        -         rts
+0b1f: a2 00     -         ldx #0         // clear error flag in case set
+0b21: 60        -         rts
+0b22: 60        -         rts
 **************************** Segment: Sweet16Patch *****************************
 [Sweet16Patch]
 1000: fe ed     - sweet16_patch:.byte >MagicPatch, <MagicPatch
@@ -6104,171 +6016,24 @@
 5281: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  -         .fill STACK_SIZE, 0
 ****************************** Segment: UtilData *******************************
 [UtilData]
-0a87: 0d 00     - Newline:.byte RETURN, NULL
-
-[ManagedBuffer256]
-0a89: ff 00     - ManagedBuffer256,totalSize,lo,hi-1:.byte <value, >value
-0a8b: 00 00     - allocSize,lo,hi-1:.byte <value, >value
-0a8d: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  - buffer: .fill $ff, $00
-0aad: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-0acd: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-0aed: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-0b0d: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-0b2d: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-0b4d: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-0b6d: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    
-0b8c: a0 00     - CopyMemoryZeroPageSize:ldy #$00
-0b8e: 84 50     -         sty ZpVar.Four.lo     // LSB size
-0b90: 84 51     -         sty ZpVar.Four.hi     // MSH size
-0b92: a5 4f     -         lda ZpVar.Three.hi
-0b94: c5 51     -         cmp ZpVar.Four.hi
-0b96: f0 17     -         beq !msb_match+
-0b98: b1 fb     -         lda (ZpVar.One.lo),y 
-0b9a: 91 fd     -         sta (ZpVar.Two.lo),y
-0b9c: e6 50     -         inc ZpVar.Four.lo
-0b9e: f0 0a     -         beq inc_msb
-0ba0: c8        -         iny
-0ba1: d0 ef     -         bne !loop-
-0ba3: e6 fc     -         inc ZpVar.One.hi 	// inc MSB source 
-0ba5: e6 fe     -         inc ZpVar.Two.hi 	// inc MSB dest 
-0ba7: 4c 92 0b  -         jmp !loop-
-0baa: e6 51     - inc_msb:inc ZpVar.Four.hi
-0bac: 4c a0 0b  -         jmp !cont-
-0baf: a5 4e     -         lda ZpVar.Three.lo
-0bb1: c5 50     -         cmp ZpVar.Four.lo
-0bb3: f0 03     -         beq !done+
-0bb5: 4c 98 0b  -         jmp !copy-
-0bb8: 60        -         rts
-0bb9: a0 02     - LoadPrgFileFromManagedBuffer:ldy #2
-0bbb: b1 fb     -         lda (ZpVar.One),Y
-0bbd: 48        -         pha           // store length on stack
-0bbe: 18        -         clc
-0bbf: a9 04     -         lda #$4
-0bc1: 65 fb     -         adc ZpVar.One
-0bc3: aa        -         tax
-0bc4: a4 fc     -         ldy ZpVar.One.hi
-0bc6: 68        -         pla
-0bc7: 20 bd ff  -         jsr $ffbd     // call setnam
-0bca: a9 01     -         lda #$01
-0bcc: a6 ba     -         ldx $ba       // last used device number
-0bce: d0 02     -         bne !skip+
-0bd0: a2 08     -         ldx #$08      // default to device 8
-0bd2: a0 01     -         ldy #$01       // not $01 means: load to address stored in file
-0bd4: 20 ba ff  -         jsr $ffba      // call setlfs
-0bd7: a9 00     -         lda #$00       // $00 means: load to memory (not verify)
-0bd9: 20 d5 ff  -         jsr $ffd5      // call load
-0bdc: b0 03     -         bcs !error+    // if carry set, a load error has happened
-0bde: 4c e4 0b  -         jmp !done+
-0be1: a2 01     -         ldx #1
-0be3: 60        -         rts
-0be4: a2 00     -         ldx #0         // clear error flag in case set
-0be6: 60        -         rts
-0be7: e0 00     -         cpx #$00
-0be9: d0 03     -         bne !error+
-0beb: 4c c6 0c  -         jmp !done+
-0bee: 85 50     - LoadPrgFileFromManagedBufferError:sta ZpVar.Four
-0bf0: a2 00     -         ldx #$00
-0bf2: bd be 0c  -         lda msg,x
-0bf5: f0 07     -         beq !done+
-0bf7: 20 d2 ff  -         jsr kernal_chrout
-0bfa: e8        -         inx
-0bfb: 4c f2 0b  -         jmp !loop-
-0bfe: a5 50     -         lda value
-0c00: c9 64     -         cmp #three_digit
-0c02: 90 58     -         bcc !twoDigit+
-0c04: a5 50     -         lda value
-0c06: c9 64     -         cmp #reference
-0c08: 90 09     -         bcc !done+
-0c0a: a0 00     -         ldy #$00		// counter
-0c0c: c8        -         iny				// count references's
-0c0d: e9 64     -         sbc #reference
-0c0f: c9 64     -         cmp #reference
-0c11: b0 f9     -         bcs !loop-		// still larger than reference
-0c13: 98        -         tya
-0c14: 48        -         pha
-0c15: 09 30     -         ora #$30
-0c17: 20 d2 ff  -         jsr kernal_chrout
-0c1a: 68        -         pla
-0c1b: a8        -         tay
-0c1c: a5 50     -         lda value
-0c1e: 38        -         sec
-0c1f: e9 64     -         sbc #three_digit
-0c21: 88        -         dey
-0c22: d0 fa     -         bne !subby-
-0c24: 85 fe     -         sta zp
-0c26: a5 fe     -         lda value
-0c28: c9 0a     -         cmp #two_digit
-0c2a: 90 28     -         bcc !oneDigit+
-0c2c: a5 fe     -         lda value
-0c2e: c9 0a     -         cmp #reference
-0c30: 90 09     -         bcc !done+
-0c32: a0 00     -         ldy #$00		// counter
-0c34: c8        -         iny				// count references's
-0c35: e9 0a     -         sbc #reference
-0c37: c9 0a     -         cmp #reference
-0c39: b0 f9     -         bcs !loop-		// still larger than reference
-0c3b: 98        -         tya
-0c3c: 48        -         pha
-0c3d: 09 30     -         ora #$30
-0c3f: 20 d2 ff  -         jsr kernal_chrout
-0c42: 68        -         pla
-0c43: a8        -         tay
-0c44: a5 fe     -         lda value
-0c46: 38        -         sec
-0c47: e9 0a     -         sbc #two_digit
-0c49: 88        -         dey
-0c4a: d0 fa     -         bne !subby-
-0c4c: 09 30     -         ora #$30
-0c4e: 20 d2 ff  -         jsr kernal_chrout
-0c51: 4c 59 0c  -         jmp !done+
-0c54: 09 30     -         ora #$30
-0c56: 20 d2 ff  -         jsr kernal_chrout
-0c59: 4c 8f 0c  -         jmp !done+
-0c5c: a5 50     -         lda value
-0c5e: c9 0a     -         cmp #two_digit
-0c60: 90 28     -         bcc !oneDigit+
-0c62: a5 50     -         lda value
-0c64: c9 0a     -         cmp #reference
-0c66: 90 09     -         bcc !done+
-0c68: a0 00     -         ldy #$00		// counter
-0c6a: c8        -         iny				// count references's
-0c6b: e9 0a     -         sbc #reference
-0c6d: c9 0a     -         cmp #reference
-0c6f: b0 f9     -         bcs !loop-		// still larger than reference
-0c71: 98        -         tya
-0c72: 48        -         pha
-0c73: 09 30     -         ora #$30
-0c75: 20 d2 ff  -         jsr kernal_chrout
-0c78: 68        -         pla
-0c79: a8        -         tay
-0c7a: a5 50     -         lda value
-0c7c: 38        -         sec
-0c7d: e9 0a     -         sbc #two_digit
-0c7f: 88        -         dey
-0c80: d0 fa     -         bne !subby-
-0c82: 09 30     -         ora #$30
-0c84: 20 d2 ff  -         jsr kernal_chrout
-0c87: 4c 8f 0c  -         jmp !done+
-0c8a: 09 30     -         ora #$30
-0c8c: 20 d2 ff  -         jsr kernal_chrout
-0c8f: a5 50     -         lda ZpVar.Four
-0c91: c9 04     -         cmp #$04
-0c93: f0 17     -         beq !fileNotFound+
-0c95: 4c 95 0c  -         jmp *
-0c98: 20 3e 20 46 49 4c 45 20 4e 4f 54 20 46 4f 55 4e  - fileNotFoundMessage:.text " > FILE NOT FOUND! "
-0ca8: 44 21 20                                        
-0cab: 00        -         .byte NULL
-0cac: a2 00     -         ldx #$00
-0cae: bd 98 0c  -         lda msg,x
-0cb1: f0 07     -         beq !done+
-0cb3: 20 d2 ff  -         jsr kernal_chrout
-0cb6: e8        -         inx
-0cb7: 4c ae 0c  -         jmp !loop-
-0cba: 4c ba 0c  -         jmp *
-0cbd: 60        -         rts
-0cbe: 45 52 52 4f 52 3a 20                             - errormessage:.text "ERROR: "
-0cc5: 00        -         .byte NULL
-0cc6: 60        -         rts
+0afd: 0d 00     - Newline:.byte RETURN, NULL
+0aff: 20 bd ff  - KernalLoad:jsr $ffbd     // call setnam
+0b02: a9 01     -         lda #$01
+0b04: a6 ba     -         ldx $ba       // last used device number
+0b06: d0 02     -         bne !skip+
+0b08: a2 08     -         ldx #$08      // default to device 8
+0b0a: a0 01     -         ldy #$01       // not $01 means: load to address stored in file
+0b0c: 20 ba ff  -         jsr $ffba      // call setlfs
+0b0f: a9 00     -         lda #$00       // $00 means: load to memory (not verify)
+0b11: 20 d5 ff  -         jsr $ffd5      // call load
+0b14: b0 03     -         bcs !error+    // if carry set, a load error has happened
+0b16: 4c 1f 0b  -         jmp !done+
+0b19: 4c 19 0b  -         jmp *
+0b1c: a2 01     -         ldx #1
+0b1e: 60        -         rts
+0b1f: a2 00     -         ldx #0         // clear error flag in case set
+0b21: 60        -         rts
+0b22: 60        -         rts
 ************************** Segment: Sweet16JumpTable ***************************
 [Sweet16JumpTable]
 1061: 00        - OPTBL:  .byte <SET-1          // 1X

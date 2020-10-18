@@ -3,22 +3,138 @@
 BasicUpstart2(Main)
 
 Main:	
-.memblock "Main"
-	//jsr eightBitDemo
+	.memblock "Main"
+
+	jsr init
+
+	//jsr install_update_isr
+
+	//jsr *
 
 	jsr loadAll
+
+	jsr *
 	jsr ready
 
-eightBitDemo: {
-	// 10 PRINT CHR$(205+RND(1)*2); : GOTO 10
-	// setup random
-	RandomInit()
+install_update_isr: {
+	sei
 
-	// generate piece
-!next:
-	RandomRange(205,206)
+	lda #$01    // Set Interrupt Request Mask
+	sta $d01a   // IRQ by Rasterbeam
+
+	lda $314			// save previous vector
+	ldx $315
+	sta oldIrq
+	stx oldIrq + 1
+
+	lda #<irq			// install our IRQ
+	ldx #>irq
+	sta $314
+	stx $315
+
+	cli
+	rts
+}
+
+uninstall_update_isr: {
+	sei 
+
+	lda #$00    // Unset Interrupt Request Mask
+	sta $d01a   // IRQ by Rasterbeam
+
+	lda oldIrq
+	ldx oldIrq + 1
+	sta $314
+	stx $315
+
+	cli
+	rts
+}
+
+init: {
+	sei 
+
+	ldy #$7f    // $7f = %01111111
+	sty $dc0d   // Turn off CIAs Timer interrupts
+	sty $dd0d   // Turn off CIAs Timer interrupts
+	lda $dc0d   // cancel all CIA-IRQs in queue/unprocessed
+	lda $dd0d   // cancel all CIA-IRQs in queue/unprocessed
+
+	cli
+	rts
+}
+
+oldIrq:
+	.byte 00, 00		// buffer for previous vector
+counterDot:
+	.byte $FF
+counterWhirl:
+	.byte $FF
+whirlLength:
+	.byte $04
+whirl:
+	// - \ | /
+	.byte $2d, $cd, $dd, $ce
+whirlIndex:
+	.byte $ff
+
+irq:
+	dec $d019				// ack interrrupt
+	
+//	TimerSub(counterDot, showDot, %01000000)
+	TimerSub(counterDot, showDot, %00001000)
+	TimerSub(counterWhirl, showWhirl, %00000100)
+
+	jmp (oldIrq)		// back to previous IRQ
+
+showDot: {
+	lda #$2e			// .
 	KernalOutputA()
-	jmp !next-
+	rts
+}
+
+.macro TimerSub(timerAddress, subroutine, updateMask) {
+	inc timerAddress
+	lda #updateMask
+	bit timerAddress
+	bne !callSub+
+	jmp !+
+!callSub:
+	jsr subroutine
+	lda #$ff			// reset
+	sta timerAddress
+!:
+}
+
+showWhirl: {
+
+	// get cursor position
+	sec			// set carry flag
+	jsr $e50a	// fetch current position
+	txa
+	pha			// store x on stack
+	tya
+	pha			// store y on stack
+
+	inc whirlIndex
+	lda whirlIndex
+	cmp whirlLength
+	bcc !next+
+	lda #$00
+	sta whirlIndex
+!next:
+	ldx whirlIndex
+	lda whirl,x
+	KernalOutputA()
+
+	// restore cursor position
+	pla
+	tay
+	pla
+	tax
+	clc
+	jsr $e50a
+
 	rts
 }
 
@@ -35,17 +151,17 @@ loadAll:
 	rts
 
 .macro LoadIfMissing(destAddress, description, filename) {
-	Output("CHECKING FOR ")
-	Output(description)
-	Output("...")
+	Output("CHECKING FOR " + description + " ")
 	CheckPatchPlaceholder(destAddress)
 	beq !alreadyLoaded+
-	Output("LOADING...[" + filename + "]")
+	Output("LOADING")
+	jsr install_update_isr
 	LoadPrgFile(!filenameInMemory+, filename.size())
-	OutputLine("DONE.")
+	jsr uninstall_update_isr
+	OutputLine(" DONE")
 	jmp !done+
 !alreadyLoaded:
-	OutputLine("OK.")
+	OutputLine("FOUND")
 	jmp !done+
 !filenameInMemory:
 	.text filename
@@ -66,32 +182,3 @@ Anykey:
 
 Reset:
 	jmp ($FFFC)		// kernal reset vector
-
-.macro RandomInit() {
-                .const SID_VOICE_3 = $d40f
-                .const SID_VOICE_3_CONTROL = $d412 
-                lda #$FF                // maximum frequency value
-                sta SID_VOICE_3         // voice 3 frequency low byte
-                sta SID_VOICE_3 + 1     // voice 3 frequency high byte
-                lda #$80                // noise waveform, gate bit off
-                sta SID_VOICE_3_CONTROL // voice 3 control register             
-}
-
-.macro Random(register) {
-                .const SID_VOICE_3_WAVEFORM_OUTPUT = $d41b
-    .if (register == 'a' || register == 'A')
-                lda SID_VOICE_3_WAVEFORM_OUTPUT
-    .if (register == 'x' || register == 'X')
-                ldx SID_VOICE_3_WAVEFORM_OUTPUT
-    .if (register == 'y' || register == 'Y')
-                ldy SID_VOICE_3_WAVEFORM_OUTPUT
-}
-
-.macro RandomRange(low, high) {
-                .var range = high - low + 1
-!loop:          
-                Random('a')             // get random value from 0-255   
-                cmp #range              // compare to U-L+1
-                bcs !loop-              // branch if value >  U-L+1
-                adc #low                // add L (don't need 'clc' as can't get here if carry set)
-            }

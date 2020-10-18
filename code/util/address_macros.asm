@@ -22,13 +22,3 @@
     .label hi = *+1     // naming consistency with .lohifill
     .byte <value, >value
 }
-
-.macro ByteTable(tableAddress, index, zpTempAddress) {
-    WordTable(tableAddress, index * 2, zpTempAddress)
-}
-
-.macro WordTable(tableAddress, index, zpTempAddress) {
-    LoadAddress(tableAddress, zpTempAddress)
-    ldy index
-    lda (zpTempAddress), Y
-}

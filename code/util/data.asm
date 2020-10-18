@@ -5,21 +5,6 @@
 Newline:
     Newline()
 
-.memblock "ManagedBuffer256"
-ManagedBuffer256: {
-    totalSize:
-        LoHi($ff)
-    allocSize: 
-        LoHi(0)
-    buffer:
-        .fill $ff, $00
-}
-
-CopyMemoryZeroPageSize: {
-    CopyMemoryZeroPageSize()
-    rts
-}
-
 .const MagicPatch = $feed;
 
 .macro PatchCode() {
@@ -28,7 +13,6 @@ CopyMemoryZeroPageSize: {
 
 .macro CheckPatchPlaceholder(baseAddr) {
 	// checks if the patch placeholder is there - A non-zero if found
-    .break
 	lda baseAddr
 	cmp #(>MagicPatch) // opposite to normal so reads natural in memory inspection
 	bne !nope+
@@ -42,29 +26,7 @@ CopyMemoryZeroPageSize: {
 !done:
 }
 
-// Counts characters in string
-// Assumes:
-//  string is address with null (0) termination 
-// Returns:
-//  A - string length
-.macro Count(stringAddress) {
-    ldx #0
-!next:
-    lda stringAddress,X
-    beq !foundNull+
-    inx
-    jmp !next-
-!foundNull:
-    txa
-}
-
-.macro LoadFileWithNull(filenameAddr) {
-    Count(filenameAddr)
-    Load(filenameAddr)
-}
-
 .macro LoadFile(filenameAddr, length) {
-    .break
     lda #length
     Load(filenameAddr)
 }
@@ -112,59 +74,6 @@ KernalLoad:
     rts
 !done:
     ldx #0         // clear error flag in case set
-    rts
-}
-
-// ZpVars.One - managed buffer containing filename
-// TODO - deal with ManagedBuffer fields
-LoadPrgFileFromManagedBuffer: {
-    ldy #2
-    lda (ZpVar.One),Y
-    pha           // store length on stack
-
-    clc
-    lda #$4
-    adc ZpVar.One
-    tax
-
-    ldy ZpVar.One.hi
-
-    pla
-
-    jsr KernalLoad
-
-    cpx #$00
-    bne !error+
-    jmp !done+
-!error:
-	// accumulator contains basic error code
-.label LoadPrgFileFromManagedBufferError = *
-    sta ZpVar.Four
-    KernalOutput(errormessage)
-    OutputNumber(ZpVar.Four)
-    lda ZpVar.Four
-    cmp #$04
-    beq !fileNotFound+
-    jmp *
-	// most likely errors:
-	// a = $05 (device not present)
-	// a = $04 (file not found)
-	// a = $1d (load error)
-	// a = $00 (break, run/stop has been pressed during loading)
-
-fileNotFoundMessage:
-    .text " > FILE NOT FOUND! "
-    .byte NULL
-
-!fileNotFound:
-    KernalOutput(fileNotFoundMessage)
-    jmp *
-    rts
-errormessage:
-    .text "ERROR: "
-    .byte NULL
-
-!done:
     rts
 }
 
