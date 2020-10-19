@@ -30,7 +30,7 @@ CFLAGS_DEBUG=					$(CFLAGS) -debug $(DEBUG_DEFINES) :BREAKPOINTS=$(BREAKPOINTS) 
 PROGRAM=						$(PROG).asm
 PRG=							$(APP).prg
 OUTPUT_PRG=						$(OUTPUT)/$(PRG)
-RUN_COMMON=						-autostart-warp +truedrive 
+RUN_COMMON=						-autostart-warp -truedrive 
 RUN_PRG_FLAGS=					$(RUN_COMMON) -autostartprgmode 1
 
 ifeq ($(OS),Windows_NT)
@@ -38,8 +38,8 @@ ifeq ($(OS),Windows_NT)
 	DEBUG_CLEAN=				del $(OUTPUT)\$(BREAKPOINTS)
 	DEBUG_VICE=					$(EMULATOR) $(DEBUG_FLAGS_VICE) $(OUTPUT_PRG)
 	DEBUG_DISK_VICE=			$(EMULATOR) $(DEBUG_DISK_FLAGS_VICE) 
-	DEBUG_FLAGS_VICE=			-moncommands "$(shell chdir)\$(OUTPUT)\$(BREAKPOINTS)" +remotemonitor -remotemonitoraddress 6510 -autostartprgmode 1 -autostart-warp +truedrive +cart
-	DEBUG_DISK_FLAGS_VICE=		-moncommands "$(shell chdir)\$(OUTPUT)\$(BREAKPOINTS)" +remotemonitor -remotemonitoraddress 6510 -autostart-warp +truedrive +cart -8 "$(shell chdir)\$(OUTPUT)\$(APP).$(FORMAT_D64)"
+	DEBUG_FLAGS_VICE=			-moncommands "$(shell chdir)\$(OUTPUT)\$(BREAKPOINTS)" -remotemonitor -remotemonitoraddress 6510 -autostartprgmode 1 -autostart-warp -truedrive -cart
+	DEBUG_DISK_FLAGS_VICE=		-moncommands "$(shell chdir)\$(OUTPUT)\$(BREAKPOINTS)" -remotemonitor -remotemonitoraddress 6510 -autostart-warp -truedrive -cart -8 "$(shell chdir)\$(OUTPUT)\$(APP).$(FORMAT_D64)"
 	EMULATOR=					$(EMULATOR_PATH)
 	RUN_PRG=					$(EMULATOR) $(RUN_PRG_FLAGS) $(OUTPUT_PRG)
 	RUN_DISK=					$(EMULATOR) $(RUN_DISK_FLAGS)
