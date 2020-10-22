@@ -1,8 +1,9 @@
 .segmentdef UtilData [startAfter="Util"]
 
 #import "address_macros.asm"
+#import "patch_macros.asm"
 #import "zp_var.asm"
-#import "buffer_macros.asm"
+#import "isr_macros.asm"
 #import "disk_macros.asm"
 #import "keyboard_macros.asm"
 #import "screen_macros.asm"

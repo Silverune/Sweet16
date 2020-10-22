@@ -9,7 +9,7 @@
 .label TestRun=$4fe1 {
 }
 .label SUB=$115d
-.label init=$849 {
+.label init=$817 {
 }
 .label Anykey=$aab
 .label INR2=$112b
@@ -51,7 +51,7 @@
 .label oldIrq=$ab7
 .label RTN=$11f8
 .label BP=$11a1
-.label whirl=$aba
+.label whirl=$ab9
 .label BR=$118c
 .label BS=$1182
 .label storeCursor=$872 {
@@ -86,7 +86,7 @@
 .label SW16C=$101e
 .label OPTBL=$1061
 .label NUL=$11d6
-.label whirlLength=$ab9
+.label whirlLength=$abd
 .label irq=$85a
 .label SETM_OUTOFPAGE=$1278
 .label LOAD_DOUBLE_BYTE_INDIRECT_TEST=$26ed {
@@ -94,13 +94,19 @@
 .label SETM=$110e
 .label BRANCH_IF_ZERO_TEST=$3ff0 {
 }
-.label install_update_isr=$817 {
+.label install_update_isr=$828 {
 }
 .label STAT=$111d
 .label TEST_SUCCESS=$523f
 .label TEST_FAILURE=$5241
 .label BNC=$118d
 .label LD=$1104
+.label ZpVarWord=$0 {
+  .label One=$fb {
+  }
+  .label Two=$fd {
+  }
+}
 .label SW160=$100d
 .label SETZ=$104d
 .label ADD=$1174
@@ -152,14 +158,14 @@
 }
 .label RTS_FIX=$1100
 .label ready=$aa1
-.label ZpVar=$0 {
-  .label One=$fb {
+.label ZpVar=$ff {
+  .label One=$4e {
   }
-  .label Four=$50 {
+  .label Four=$51 {
   }
-  .label Two=$fd {
+  .label Two=$4f {
   }
-  .label Three=$4e {
+  .label Three=$50 {
   }
 }
 .label BR1=$118f
@@ -188,6 +194,6 @@
 }
 .label ACCUMULATOR=$12a6
 .label XJSR=$1111
-.label uninstall_update_isr=$835 {
+.label uninstall_update_isr=$846 {
 }
 .label Main=$80e

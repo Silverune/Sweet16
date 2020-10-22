@@ -3,17 +3,26 @@
 .segment Default
 
 *=0 virtual
-ZpVar: {
+ZpVarWord: {
 *=$fb virtual
 One: 
 	WordAddr($fb)
 *=$fd virtual
 Two: 
 	WordAddr($fd)
+}
+
+ZpVar: {
 *=$4e virtual
-Three: 
-	WordAddr($4e)
+One: 
+	ByteAddr($4e)
+*=$4f virtual
+Two: 
+	ByteAddr($4f)
 *=$50 virtual
+Three: 
+	ByteAddr($50)
+*=$51 virtual
 Four: 
-	WordAddr($50)
+	ByteAddr($51)
 }

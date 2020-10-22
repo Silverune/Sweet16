@@ -17,6 +17,11 @@
 	.word $0000
 }
 
+.macro ByteAddr(addr) {
+    .label val = *       // naming consistency with .lohifill
+	.byte $0000
+}
+
 .macro LoHi(value) {
     .label lo = *       // naming consistency with .lohifill
     .label hi = *+1     // naming consistency with .lohifill

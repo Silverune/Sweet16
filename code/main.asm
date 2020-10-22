@@ -1,8 +1,5 @@
 .segment Main
 
-.const ZpTempWord = $fb
-.const ZpTemp = $fd
-
 BasicUpstart2(Main)
 
 Main:	
@@ -10,66 +7,33 @@ Main:
 	jsr loadAll
 	jsr ready
 
+init: {
+	InitIsr()
+	rts
+}
+
 install_update_isr: {
-	sei
-
-	lda #$01    // Set Interrupt Request Mask
-	sta $d01a   // IRQ by Rasterbeam
-
-	lda $314			// save previous vector
-	ldx $315
-	sta oldIrq
-	stx oldIrq + 1
-
-	lda #<irq			// install our IRQ
-	ldx #>irq
-	sta $314
-	stx $315
-
-	cli
+	InstallIsr(oldIrq, irq)
 	rts
 }
 
 uninstall_update_isr: {
-	sei 
-
-	lda #$00    // Unset Interrupt Request Mask
-	sta $d01a   // IRQ by Rasterbeam
-
-	lda oldIrq
-	ldx oldIrq + 1
-	sta $314
-	stx $315
-
-	cli
-	rts
-}
-
-init: {
-	sei 
-
-	ldy #$7f    // $7f = %01111111
-	sty $dc0d   // Turn off CIAs Timer interrupts
-	sty $dd0d   // Turn off CIAs Timer interrupts
-	lda $dc0d   // cancel all CIA-IRQs in queue/unprocessed
-	lda $dd0d   // cancel all CIA-IRQs in queue/unprocessed
-
-	cli
+	UninstallIsr(oldIrq)
 	rts
 }
 
 irq:
 	dec $d019				// ack interrrupt
-	TimerSub(ZpTemp, showWhirl, %00000100)
-	jmp (oldIrq)		// back to previous IRQ
+	TimerSub(ZpVar.One, showWhirl, %00000100)
+	jmp (oldIrq)			// back to previous IRQ
 
 storeCursor: {
-	StoreCursorRom(ZpTempWord)
+	StoreCursorRom(ZpVarWord.One)
 	rts
 }
 
 restoreCursor: {
-	RestoreCursorRom(ZpTempWord)
+	RestoreCursorRom(ZpVarWord.One)
 	rts
 }
 
@@ -118,27 +82,9 @@ Reset:
 
 oldIrq:
 	.byte 00, 00		// buffer for previous vector
-whirlLength:
-	.byte $04
 whirl:
 	.byte $2d, $cd, $dd, $ce 	// - \ | /
+whirlLength:
+	.byte $04
 whirlIndex:
 	.byte $ff
-
-.macro LoadIfMissing(destAddress, description, filename) {
-	Output("CHECKING FOR " + description + " ")
-	CheckPatchPlaceholder(destAddress)
-	beq !alreadyLoaded+
-	Output("LOADING...")
-	jsr install_update_isr
-	LoadPrgFile(!filenameInMemory+, filename.size())
-	jsr uninstall_update_isr
-	OutputLine(" DONE")
-	jmp !done+
-!alreadyLoaded:
-	OutputLine("FOUND")
-	jmp !done+
-!filenameInMemory:
-	.text filename
-!done:
-}
