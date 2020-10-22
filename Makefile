@@ -38,8 +38,8 @@ ifeq ($(OS),Windows_NT)
 	DEBUG_CLEAN=				del $(OUTPUT)\$(BREAKPOINTS)
 	DEBUG_VICE=					$(EMULATOR) $(DEBUG_FLAGS_VICE) $(OUTPUT_PRG)
 	DEBUG_DISK_VICE=			$(EMULATOR) $(DEBUG_DISK_FLAGS_VICE) 
-	DEBUG_FLAGS_VICE=			-moncommands "$(shell chdir)\$(OUTPUT)\$(BREAKPOINTS)" -remotemonitor -remotemonitoraddress 6510 -autostartprgmode 1 -autostart-warp -truedrive -cart
-	DEBUG_DISK_FLAGS_VICE=		-moncommands "$(shell chdir)\$(OUTPUT)\$(BREAKPOINTS)" -remotemonitor -remotemonitoraddress 6510 -autostart-warp -truedrive -cart -8 "$(shell chdir)\$(OUTPUT)\$(APP).$(FORMAT_D64)"
+	DEBUG_FLAGS_VICE=			-moncommands "$(shell chdir)\$(OUTPUT)\$(BREAKPOINTS)" -remotemonitor -remotemonitoraddress 6510 -autostartprgmode 1 -autostart-warp -truedrive
+	DEBUG_DISK_FLAGS_VICE=		-moncommands "$(shell chdir)\$(OUTPUT)\$(BREAKPOINTS)" -remotemonitor -remotemonitoraddress 6510 -autostart-warp -truedrive -8 "$(shell chdir)\$(OUTPUT)\$(APP).$(FORMAT_D64)"
 	EMULATOR=					$(EMULATOR_PATH)
 	RUN_PRG=					$(EMULATOR) $(RUN_PRG_FLAGS) $(OUTPUT_PRG)
 	RUN_DISK=					$(EMULATOR) $(RUN_DISK_FLAGS)

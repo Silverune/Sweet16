@@ -1,19 +1,13 @@
 .segment Main
 
+.const ZpTempWord = $fb
+.const ZpTemp = $fd
+
 BasicUpstart2(Main)
 
 Main:	
-	.memblock "Main"
-
 	jsr init
-
-	//jsr install_update_isr
-
-	//jsr *
-
 	jsr loadAll
-
-	jsr *
 	jsr ready
 
 install_update_isr: {
@@ -64,58 +58,23 @@ init: {
 	rts
 }
 
-oldIrq:
-	.byte 00, 00		// buffer for previous vector
-counterDot:
-	.byte $FF
-counterWhirl:
-	.byte $FF
-whirlLength:
-	.byte $04
-whirl:
-	// - \ | /
-	.byte $2d, $cd, $dd, $ce
-whirlIndex:
-	.byte $ff
-
 irq:
 	dec $d019				// ack interrrupt
-	
-//	TimerSub(counterDot, showDot, %01000000)
-	TimerSub(counterDot, showDot, %00001000)
-	TimerSub(counterWhirl, showWhirl, %00000100)
-
+	TimerSub(ZpTemp, showWhirl, %00000100)
 	jmp (oldIrq)		// back to previous IRQ
 
-showDot: {
-	lda #$2e			// .
-	KernalOutputA()
+storeCursor: {
+	StoreCursorRom(ZpTempWord)
 	rts
 }
 
-.macro TimerSub(timerAddress, subroutine, updateMask) {
-	inc timerAddress
-	lda #updateMask
-	bit timerAddress
-	bne !callSub+
-	jmp !+
-!callSub:
-	jsr subroutine
-	lda #$ff			// reset
-	sta timerAddress
-!:
+restoreCursor: {
+	RestoreCursorRom(ZpTempWord)
+	rts
 }
 
 showWhirl: {
-
-	// get cursor position
-	sec			// set carry flag
-	jsr $e50a	// fetch current position
-	txa
-	pha			// store x on stack
-	tya
-	pha			// store y on stack
-
+	jsr storeCursor
 	inc whirlIndex
 	lda whirlIndex
 	cmp whirlLength
@@ -126,15 +85,7 @@ showWhirl: {
 	ldx whirlIndex
 	lda whirl,x
 	KernalOutputA()
-
-	// restore cursor position
-	pla
-	tay
-	pla
-	tax
-	clc
-	jsr $e50a
-
+	jsr restoreCursor
 	rts
 }
 
@@ -150,24 +101,6 @@ loadAll:
 	OutputLine("")
 	rts
 
-.macro LoadIfMissing(destAddress, description, filename) {
-	Output("CHECKING FOR " + description + " ")
-	CheckPatchPlaceholder(destAddress)
-	beq !alreadyLoaded+
-	Output("LOADING")
-	jsr install_update_isr
-	LoadPrgFile(!filenameInMemory+, filename.size())
-	jsr uninstall_update_isr
-	OutputLine(" DONE")
-	jmp !done+
-!alreadyLoaded:
-	OutputLine("FOUND")
-	jmp !done+
-!filenameInMemory:
-	.text filename
-!done:
-}
-
 ready:
 	jsr TestRun
 	jsr Anykey
@@ -181,4 +114,31 @@ Anykey:
 	rts
 
 Reset:
-	jmp ($FFFC)		// kernal reset vector
+	jmp ($FFFC)			// kernal reset vector
+
+oldIrq:
+	.byte 00, 00		// buffer for previous vector
+whirlLength:
+	.byte $04
+whirl:
+	.byte $2d, $cd, $dd, $ce 	// - \ | /
+whirlIndex:
+	.byte $ff
+
+.macro LoadIfMissing(destAddress, description, filename) {
+	Output("CHECKING FOR " + description + " ")
+	CheckPatchPlaceholder(destAddress)
+	beq !alreadyLoaded+
+	Output("LOADING...")
+	jsr install_update_isr
+	LoadPrgFile(!filenameInMemory+, filename.size())
+	jsr uninstall_update_isr
+	OutputLine(" DONE")
+	jmp !done+
+!alreadyLoaded:
+	OutputLine("FOUND")
+	jmp !done+
+!filenameInMemory:
+	.text filename
+!done:
+}

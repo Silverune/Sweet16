@@ -19,7 +19,7 @@ Memory Map
 Main-segment:
   $0801-$080c Basic
   $080e-$080d Basic End
-  $080e-$0afc Main
+  $080e-$0b21 Main
 
 Util-segment:
 
@@ -36,7 +36,7 @@ Tests-segment:
   $2000-$523e Tests
 
 UtilData-segment:
-  $0afd-$0b22 UtilData
+  $0b22-$0b47 UtilData
 
 Sweet16JumpTable-segment:
   $1061-$1080 Sweet16JumpTable
@@ -53,5 +53,5 @@ Sweet16Data-segment:
 TestData-segment:
   $523f-$5290 TestData
 
-Writing Vice symbol file: /Users/rhett/Google Drive/Source/C64/Sweet16/bin/startup.vs
+Writing Vice symbol file: C:\Users\Rhett.Jacobs\OneDrive - Australian Research Council\Documents\Source\6502\Sweet16\bin\startup.vs
 Writing Symbol file: startup.sym

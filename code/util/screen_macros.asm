@@ -11,6 +11,8 @@
 .const cursor_row = $00D6
 .const NULL = $00
 .const RETURN = $0D
+.const PlotKernal = $e50a 		//$fff0	// jump address for PLOT kernal command
+.const PlotRom = $e56c			
 
 .macro Newline() {
 	.byte RETURN, NULL
@@ -191,6 +193,35 @@ newline:
 	.text msg
 	.byte RETURN, NULL
 !done:
+}
+
+.macro StoreCursorKernal(cursorWordAddress) {
+	sec							// set carry flag
+	jsr PlotKernal				// fetch current position (X get ROW, Y get COL)
+	stx cursorWordAddress
+	sty cursorWordAddress + 1
+}
+
+.macro StoreCursorRom(cursorWordAddress) {
+	ldx $d3
+	stx cursorWordAddress
+	ldx $d6
+	stx cursorWordAddress + 1
+}
+
+.macro RestoreCursorKernal(cursorWordAddress) {
+	ldx cursorWordAddress
+	ldy cursorWordAddress + 1	
+	clc							// clear carry flag
+	jsr PlotKernal				// set current position (X get ROW, Y get COL)
+}
+
+.macro RestoreCursorRom(cursorWordAddress) {
+	ldx cursorWordAddress
+	stx $d3
+	ldx cursorWordAddress + 1
+	stx $d6
+	jsr PlotRom
 }
 
 .segment Default

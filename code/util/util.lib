@@ -6,6 +6,7 @@
 #import "disk_macros.asm"
 #import "keyboard_macros.asm"
 #import "screen_macros.asm"
+#import "timer_macros.asm"
 #import "data.asm"
 
 .segment Default
