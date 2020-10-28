@@ -1,32 +1,19 @@
-.label RESTORED=$1213
 .label POP2=$11fb
 .label POP3=$1204
 .label BRANCH_IF_CARRY_SET_TEST=$3c5c {
 }
-.label TEST_COUNT=$5243
 .label SET2=$1060
 .label POPD=$11ec
 .label TestRun=$4fe1 {
 }
 .label SUB=$115d
-.label init=$817 {
-}
-.label Anykey=$aab
+.label Anykey=$98c
 .label INR2=$112b
-.label BRANCH_IF_NONZERO_TEST=$411a {
-}
 .label ABSOLUTE_JUMP_TEST=$4a47 {
 }
 .label TOBR=$103f
-.label ADD_TEST=$2fd0 {
-}
 .label POP=$11e8
-.label KernalLoad=$ac1 {
-}
-.label DECREMENT_TEST=$37c8 {
-}
 .label SUB2=$116b
-.label XREG=$12a7
 .label SW16_SAVE_RESTORE=$12aa
 .label POP_DOUBLE_BYTE_INDIRECT_TEST=$32fa {
 }
@@ -37,58 +24,41 @@
 }
 .label BC=$119e
 .label RS=$11d7
-.label TOBR2=$1045
 .label SET=$1101
 .label SUBTRACT_TEST=$3164 {
 }
-.label BM1=$11c1
 .label BRANCH_IF_NO_CARRY_TEST=$3b28 {
 }
 .label BK=$110d
-.label Newline=$abf {
+.label Newline=$9e7 {
 }
 .label BM=$11a8
-.label oldIrq=$ab7
 .label RTN=$11f8
 .label BP=$11a1
-.label whirl=$ab9
 .label BR=$118c
 .label BS=$1182
 .label storeCursor=$872 {
 }
-.label YREG=$12a8
 .label LOAD_INDIRECT_TEST=$2352 {
 }
-.label whirlIndex=$abe
-.label STACK_MEMORY=$5281 {
-}
+.label whirlIndex=$99f
 .label BZ=$11af
 .label RESTORE=$1226
 .label INCREMENT_TEST=$36a8 {
 }
-.label sweet16_patch=$1000 {
-}
-.label COMPARE_TEST=$357d {
-}
-.label SAVE=$1216
 .label TEST_PASS_COUNT=$5244
-.label SW16B=$1018
-.label SW16A=$1012
+.label loadFiles=$9a0 {
+}
 .label ST=$1114
 .label SETI=$11f5
 .label BREAK_HANDLER=$1235
 .label STORE_DOUBLE_BYTE_INDIRECT_TEST=$2887 {
 }
-.label SW16_NONE=$1000
-.label SW16D=$1024
 .label BRANCH_IF_MINUS_TEST=$3ec0 {
 }
-.label SW16C=$101e
 .label OPTBL=$1061
-.label NUL=$11d6
-.label whirlLength=$abd
+.label whirlLength=$99e
 .label irq=$85a
-.label SETM_OUTOFPAGE=$1278
 .label LOAD_DOUBLE_BYTE_INDIRECT_TEST=$26ed {
 }
 .label SETM=$110e
@@ -97,67 +67,23 @@
 .label install_update_isr=$828 {
 }
 .label STAT=$111d
-.label TEST_SUCCESS=$523f
 .label TEST_FAILURE=$5241
-.label BNC=$118d
-.label LD=$1104
-.label ZpVarWord=$0 {
-  .label One=$fb {
-  }
-  .label Two=$fd {
-  }
-}
-.label SW160=$100d
 .label SETZ=$104d
 .label ADD=$1174
-.label CPR=$115f
-.label BNC2=$119d
 .label BRTBL=$1062
-.label LDAT=$112c
-.label BNZ=$11b8
-.label STATUS=$12a9
-.label STORE_INDIRECT_TEST=$24e1 {
-}
-.label STORE_POP_INDIRECT_TEST=$2ea1 {
-}
 .label BRANCH_IF_NOT_MINUS_ONE_TEST=$4378 {
 }
-.label Reset=$ab4
 .label SET_TEST=$2000 {
 }
-.label RTNZ=$1209
-.label SETI_OUTOFPAGE=$1266
-.label BREAK_TEST=$44a8 {
-}
-.label SW16=$1008
-.label TEST_MEMORY_2=$525d
 .label LDDAT=$1136
 .label restoreCursor=$87b {
 }
-.label DCR=$1154
-.label SETIM_COMMON=$1244
-.label TEST_MEMORY_3=$525f
-.label BRANCH_ALWAYS_TEST=$39ff {
-}
-.label INTERRUPT_BREAK_TEST=$4640 {
-}
 .label TEST_TITLE=$5246
-.label BRANCH_TO_SUBROUTINE_TEST=$47e0 {
-}
 .label DCR2=$115a
-.label EXTERNAL_JSR_TEST=$4b74 {
-}
 .label loadAll=$8a7 {
 }
-.label INR=$1125
-.label STDAT=$1140
 .label BNM1=$11cc
-.label XJSR_OUTOFPAGE=$128a {
-}
-.label SET_INDIRECT_TEST=$4d91 {
-}
 .label RTS_FIX=$1100
-.label ready=$aa1
 .label ZpVar=$ff {
   .label One=$4e {
   }
@@ -168,32 +94,108 @@
   .label Three=$50 {
   }
 }
-.label BR1=$118f
 .label TEST_MEMORY=$525b
 .label showWhirl=$887 {
 }
-.label BR2=$1194
 .label BRANCH_IF_MINUS_ONE_TEST=$4249 {
 }
-.label TEST_MEMORY_SEQUENCE=$5261
 .label LOAD_TEST=$211a {
 }
 .label STAT2=$111f
 .label STAT3=$1123
+.label TEST_NAME_COUNT=$5245
+.label STORE_TEST=$2234 {
+}
+.label XJSR=$1111
+.label uninstall_update_isr=$846 {
+}
+.label RESTORED=$1213
+.label TEST_COUNT=$5243
+.label init=$817 {
+}
+.label BRANCH_IF_NONZERO_TEST=$411a {
+}
+.label ADD_TEST=$2fd0 {
+}
+.label KernalLoad=$9e9 {
+}
+.label DECREMENT_TEST=$37c8 {
+}
+.label XREG=$12a7
+.label TOBR2=$1045
+.label BM1=$11c1
+.label oldIrq=$998
+.label whirl=$99a
+.label YREG=$12a8
+.label STACK_MEMORY=$5281 {
+}
+.label sweet16_patch=$1000 {
+}
+.label COMPARE_TEST=$357d {
+}
+.label SAVE=$1216
+.label SW16B=$1018
+.label SW16A=$1012
+.label SW16_NONE=$1000
+.label SW16D=$1024
+.label SW16C=$101e
+.label NUL=$11d6
+.label SETM_OUTOFPAGE=$1278
+.label TEST_SUCCESS=$523f
+.label BNC=$118d
+.label LD=$1104
+.label ZpVarWord=$0 {
+  .label One=$fb {
+  }
+  .label Two=$fd {
+  }
+}
+.label SW160=$100d
+.label CPR=$115f
+.label BNC2=$119d
+.label LDAT=$112c
+.label BNZ=$11b8
+.label STATUS=$12a9
+.label STORE_INDIRECT_TEST=$24e1 {
+}
+.label STORE_POP_INDIRECT_TEST=$2ea1 {
+}
+.label Reset=$995
+.label RTNZ=$1209
+.label SETI_OUTOFPAGE=$1266
+.label BREAK_TEST=$44a8 {
+}
+.label SW16=$1008
+.label TEST_MEMORY_2=$525d
+.label DCR=$1154
+.label SETIM_COMMON=$1244
+.label TEST_MEMORY_3=$525f
+.label BRANCH_ALWAYS_TEST=$39ff {
+}
+.label INTERRUPT_BREAK_TEST=$4640 {
+}
+.label BRANCH_TO_SUBROUTINE_TEST=$47e0 {
+}
+.label EXTERNAL_JSR_TEST=$4b74 {
+}
+.label INR=$1125
+.label STDAT=$1140
+.label XJSR_OUTOFPAGE=$128a {
+}
+.label SET_INDIRECT_TEST=$4d91 {
+}
+.label ready=$982
+.label BR1=$118f
+.label BR2=$1194
+.label TEST_MEMORY_SEQUENCE=$5261
 .label POP_INDIRECT_TEST=$2a92 {
 }
 .label TEST_MEMORY_SEQUENCE_2=$5271
 .label tests_patch=$2000 {
 }
-.label TEST_NAME_COUNT=$5245
 .label SET_MEMORY_TEST=$4eba {
-}
-.label STORE_TEST=$2234 {
 }
 .label RETURN_TO_6502_MODE_TEST=$38ec {
 }
 .label ACCUMULATOR=$12a6
-.label XJSR=$1111
-.label uninstall_update_isr=$846 {
-}
 .label Main=$80e

@@ -3,7 +3,8 @@
 .const TestLocation = $2000
 
 .segmentdef Main [start=MainLocation]
-.segmentdef Util[startAfter="Main", segments="UtilData"]
+.segmentdef Loader[startAfter="Main"]
+.segmentdef Util[startAfter="Loader", segments="UtilData"]
 
 .segmentdef Sweet16Patch [start=LibLocation, allowOverlap]
 .segmentdef Sweet16 [start=LibLocation, segments="Sweet16JumpTable, Sweet16Page, Sweet16OutOfPage, Sweet16Data", allowOverlap]
@@ -15,7 +16,7 @@
 
 .file [
     name=name + ".prg",
-    segments="Main, Util, Sweet16, Tests",
+    segments="Main, Util, Sweet16, Tests, ",
 ]
 
 .var flair = "-";
@@ -28,7 +29,7 @@
 .disk [filename=name + "." + cmdLineVars.get("format").string(), name=name.toUpperCase(), id=cmdLineVars.get("id").string(), showInfo ] {
 
     [name=separator, type="rel" ],
-    [name=mainFilename, type="prg", segments="Main, Util, Sweet16Patch, TestsPatch"],
+    [name=mainFilename, type="prg", segments="Main, Util, Sweet16Patch, TestsPatch, Loader"],
     [name=separator, type="rel" ],
     [name=libraryFilename, type="prg", segments="Sweet16" ],
     [name=testsFilename, type="prg", segments="Tests" ],
@@ -38,4 +39,5 @@
 #import "code/util/util.lib"
 #import "code/sweet16/sweet16.lib"
 #import "code/tests/test.lib"
+#import "code/loader.asm"
 #import "code/main.asm"

@@ -60,9 +60,10 @@ loadAll:
 	KernalClearScreen()
 	OutputLine("SWEET16")
 	OutputLine("")
-	LoadIfMissing(sweet16_patch, "LIB", libraryFilename)
-	LoadIfMissing(tests_patch, "TESTS", testsFilename)
-	OutputLine("")
+	LoadAllIfMissing(sweet16_patch)
+	//LoadIfMissing(sweet16_patch, "LIB", libraryFilename)
+	//LoadIfMissing(tests_patch, "TESTS", testsFilename)
+	KernalClearScreen()
 	rts
 
 ready:
