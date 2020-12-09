@@ -89,3 +89,5 @@ whirlLength:
 	.byte $04
 whirlIndex:
 	.byte $ff
+
+.segment Default

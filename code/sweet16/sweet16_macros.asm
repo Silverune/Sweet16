@@ -1,4 +1,5 @@
 #importonce
+.filenamespace Sweet16
 
 .macro register_encode(op, register, address) {
 	.byte opcode(op, register)
@@ -12,9 +13,9 @@
     sta address+1
 }
 
-.macro BreakOnBrk() {
+.macro @BreakOnBrk() {
 	.const BRKVEC = $0316
-	InstallHandler(BRKVEC, BREAK_HANDLER)
+	InstallHandler(BRKVEC, Sweet16.BREAK_HANDLER)
 }
 
 .macro IncPC() {
@@ -27,8 +28,4 @@
 .macro Register(addrLow, addrHigh) {
     .label RL = addrLow
     .label RH = addrHigh
-}
-
-.macro Register2(value) {
-    .printnow value
 }

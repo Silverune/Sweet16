@@ -1,4 +1,5 @@
 #importonce
+.filenamespace Sweet16
 
 .function RL(register) {
 	.return ZP_BASE + (register * 2)

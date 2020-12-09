@@ -1,4 +1,5 @@
 #importonce
+.filenamespace Sweet16
 
 // SWEET 16 INTERPRETER
 // APPLE-II  PSEUDO MACHINE INTERPRETER
@@ -36,12 +37,14 @@
 
 .segment Sweet16
 
-SW16_NONE:			    // Entry point if no need to preserve registers
+.macro @Sweet16() {
+
+@SW16_NONE:			    // Entry point if no need to preserve registers
 	lda #$00
 	sta SW16_SAVE_RESTORE
 	jmp SW160
 	
-SW16:				    // Main entry point - should be called via pseudocommand "sweet16"
+@SW16:				    // Main entry point - should be called via pseudocommand "sweet16"
 	lda #$01
 	sta SW16_SAVE_RESTORE
 	
@@ -227,11 +230,11 @@ DCR:
 	lda  R0L,X
     bne  DCR2           // DECR RX
     dec  R0H,X
+
 DCR2:
 	dec  R0L,X
     rts
 	
-
 SUB:
 	ldy  #$00           // RESULT TO R0
 
@@ -269,16 +272,19 @@ BR:
 	
 BNC:
 	bcs  BNC2           // NO CARRY TEST	
+
 BR1:
 	lda  (R15L),Y       // DISPLACEMENT BYTE
     bpl  BR2
     dey
+
 BR2:
 	adc  R15L           // ADD TO PC
     sta  R15L
     tya
     adc  R15H
     sta  R15H
+
 BNC2:
 	rts
 
@@ -479,9 +485,6 @@ STATUS:
 SW16_SAVE_RESTORE:
 	.byte 0
 
-.segment Sweet16Patch
-sweet16_patch:
-    PatchCode()
-
 .segment Default
+}
 
