@@ -100,11 +100,13 @@ index: $(PROGRAM)
 debugonly:	
 		$(DEBUG_VICE)
 
-debug:	
+debug:	withdebug
+		$(DEBUG_VICE)
+
+withdebug:	
 		$(DEBUG_CLEAN)
 		$(COMPILE) $(CFLAGS_DEBUG) $(PROGRAM)
 		$(GENERATE_BREAKPOINTS)
-		$(DEBUG_VICE)
 
 debugdisk:	
 		$(DEBUG_CLEAN)

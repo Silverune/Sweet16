@@ -150,6 +150,7 @@ There are only four main files required to use this implementation of SWEET16:
 Collection of links related to the project development:
  - [Kick Assembler Reference](http://www.theweb.dk/KickAssembler/webhelp/content/cpt_Introduction.html)
  - [C64 Memory Map](http://sta.c64.org/cbm64mem.html)
+ - [C64 Kernal Routines](https://sta.c64.org/cbm64krnfunc.html)
  - [6502 Assembly Reference](http://www.obelisk.me.uk/6502/reference.html)
  - [6502 Addressing Modes](http://www.obelisk.me.uk/6502/addressing.html)
  - [Zero Page](https://www.c64-wiki.com/wiki/Zeropage)

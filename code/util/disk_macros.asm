@@ -28,6 +28,7 @@
 }
 
 .macro KernalLoad() {
+.break
     jsr $ffbd     // call setnam
     lda #$01
     ldx $ba       // last used device number
@@ -39,6 +40,7 @@
 
    lda #$00       // $00 means: load to memory (not verify)
    jsr $ffd5      // call load
+   .break
    bcs !error+    // if carry set, a load error has happened
    jmp !done+
 !error:
@@ -47,7 +49,6 @@
 	// a = $04 (file not found)
 	// a = $1d (load error)
 	// a = $00 (break, run/stop has been pressed during loading)
-    jmp *
     ldx #1
     rts
 !done:
@@ -87,6 +88,23 @@
 .print "[" + retval + "] " + retval.size()
     }
     .return retval
+}
+
+.macro LoadAllIfMissing(token) {
+	Output("CHECKING FOR RESOURCES...")
+	CheckPatchPlaceholder(token)
+	beq !alreadyLoaded+
+	Output("LOADING...")
+	jsr install_update_isr
+    jsr loadFiles
+	//LoadPrgFile(!filenameInMemory+, filename.size())
+	jsr uninstall_update_isr
+	OutputLine(" DONE")
+	jmp !done+
+!alreadyLoaded:
+	OutputLine("FOUND")
+	jmp !done+
+!done:
 }
 
 .macro LoadIfMissing(destAddress, description, filename) {

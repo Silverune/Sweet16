@@ -1,6 +1,8 @@
 #importonce
 .filenamespace Sweet16
 
+.label BRK_ISR = $316	// Three.BRK
+
 .label ZP_BASE = $17    // C64 start of 16 bit registers in zero page
 
 .label ACC = 0          // accumulator

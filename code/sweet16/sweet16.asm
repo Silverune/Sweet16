@@ -45,7 +45,7 @@ SW16C:
     bne  SW16D          // INCR SWEET16 PC FOR FETCH
     inc  R15H
 	
-SW16D:
+@SW16D:
 	lda  #>SET          // COMMON HIGH BYTE FOR ALL ROUTINES
     pha                 // PUSH ON STACK FOR RTS
     ldy  #$00
@@ -387,18 +387,18 @@ RESTORE:
     plp
     rts
 
-// BREAK_HANDLER:
-// 	pla		// Y
-// 	tay		// restore Y
-// 	pla		// X
-// 	tax		// restore X
-// 	pla		// restore A
-// 	sta RL(ZP)
-// 	plp		// restore Status Flags
-// 	pla		// PCL discard - not useful
-// 	pla		// PCH discard - not useful
-// 	lda RL(ZP)
-// 	jmp SW16D
+@SW16_BREAK_HANDLER:
+	pla		// Y
+	tay		// restore Y
+	pla		// X
+	tax		// restore X
+	pla		// restore A
+	sta RL(ZP)
+	plp		// restore Status Flags
+	pla		// PCL discard - not useful
+	pla		// PCH discard - not useful
+	lda RL(ZP)
+	jmp SW16D
 
 SETIM_COMMON:
 	lda (R15L),Y       		// dest addr high

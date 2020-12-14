@@ -8,323 +8,369 @@
 080a: 00        -         
 080b: 00 00     - upstartEnd:
 
-[Main]
-080e: a9 00     - Main:   lda #BLACK
-0810: 8d 20 d0  -         sta $d020
-0813: 8d 21 d0  -         sta $d021
-0816: a9 93     -         lda #147
-0818: 20 d2 ff  -         jsr kernal_chrout
-081b: 20 7f 08  -         jsr showProgress
-081e: 4c 1b 08  -         jmp !-
-0821: 20 65 08  -         jsr init
-0824: 20 33 08  -         jsr install_update_isr
-0827: 20 27 08  -         jsr *
-082a: 20 0c 09  -         jsr loadAll
-082d: 20 2d 08  -         jsr *
-0830: 20 00 0b  -         jsr ready
-0833: 78        - install_update_isr:sei
-0834: a9 01     -         lda #$01    // Set Interrupt Request Mask
-0836: 8d 1a d0  -         sta $d01a   // IRQ by Rasterbeam
-0839: ad 14 03  -         lda $314			// save previous vector
-083c: ae 15 03  -         ldx $315
-083f: 8d 16 0b  -         sta oldIrq
-0842: 8e 17 0b  -         stx oldIrq + 1
-0845: a9 76     -         lda #<irq			// install our IRQ
-0847: a2 08     -         ldx #>irq
-0849: 8d 14 03  -         sta $314
-084c: 8e 15 03  -         stx $315
-084f: 58        -         cli
-0850: 60        -         rts
-0851: 78        - uninstall_update_isr:sei 
-0852: a9 00     -         lda #$00    // Unset Interrupt Request Mask
-0854: 8d 1a d0  -         sta $d01a   // IRQ by Rasterbeam
-0857: ad 16 0b  -         lda oldIrq
-085a: ae 17 0b  -         ldx oldIrq + 1
-085d: 8d 14 03  -         sta $314
-0860: 8e 15 03  -         stx $315
-0863: 58        -         cli
-0864: 60        -         rts
-0865: 78        - init:   sei 
-0866: a0 7f     -         ldy #$7f    // $7f = %01111111
-0868: 8c 0d dc  -         sty $dc0d   // Turn off CIAs Timer interrupts
-086b: 8c 0d dd  -         sty $dd0d   // Turn off CIAs Timer interrupts
-086e: ad 0d dc  -         lda $dc0d   // cancel all CIA-IRQs in queue/unprocessed
-0871: ad 0d dd  -         lda $dd0d   // cancel all CIA-IRQs in queue/unprocessed
-0874: 58        -         cli
-0875: 60        -         rts
-0876: ce 19 d0  - irq:    dec $d019				// ack interrrupt
-0879: 20 7f 08  -         jsr showProgress
-087c: 6c 16 0b  -         jmp (oldIrq)		// back to previous IRQ
-087f: e6 50     - showProgress:inc timerAddress
-0881: a9 80     -         lda #updateMask
-0883: 24 50     -         bit timerAddress
-0885: d0 03     -         bne !callSub+
-0887: 4c 91 08  -         jmp !+
-088a: 20 92 08  -         jsr subroutine
-088d: a9 ff     -         lda #$ff			// reset
-088f: 85 50     -         sta timerAddress
-0891: 60        -         rts
-0892: e6 51     - showProgressNext:inc timerAddress
-0894: a9 04     -         lda #updateMask
-0896: 24 51     -         bit timerAddress
-0898: d0 03     -         bne !callSub+
-089a: 4c a4 08  -         jmp !+
-089d: 20 bb 08  -         jsr subroutine
-08a0: a9 ff     -         lda #$ff			// reset
-08a2: 85 51     -         sta timerAddress
-08a4: 60        -         rts
-08a5: a6 d1     - storeCursor:ldx $d1
-08a7: 8e 20 0b  -         stx cursorWordAddress
-08aa: a6 d2     -         ldx $d2
-08ac: 8e 21 0b  -         stx cursorWordAddress + 1
-08af: 60        -         rts
-08b0: ae 20 0b  - restoreCursor:ldx cursorWordAddress
-08b3: 86 d1     -         stx $d1
-08b5: ae 21 0b  -         ldx cursorWordAddress + 1
-08b8: 86 d2     -         stx $d2
-08ba: 60        -         rts
-08bb: ee 18 0b  - showActualProgress:inc timerAddress
-08be: a9 09     -         lda #updateMask
-08c0: 2c 18 0b  -         bit timerAddress
-08c3: d0 03     -         bne !callSub+
-08c5: 4c d0 08  -         jmp !+
-08c8: 20 e6 08  -         jsr subroutine
-08cb: a9 ff     -         lda #$ff			// reset
-08cd: 8d 18 0b  -         sta timerAddress
-08d0: ee 19 0b  -         inc timerAddress
-08d3: a9 01     -         lda #updateMask
-08d5: 2c 19 0b  -         bit timerAddress
-08d8: d0 03     -         bne !callSub+
-08da: 4c e5 08  -         jmp !+
-08dd: 20 ec 08  -         jsr subroutine
-08e0: a9 ff     -         lda #$ff			// reset
-08e2: 8d 19 0b  -         sta timerAddress
-08e5: 60        -         rts
-08e6: a9 2e     - showDot:lda #$2e			// .
+[Basic End]
+080e: 20 17 08  - Main:   jsr init
+0811: 20 a7 08  -         jsr loadAll
+0814: 20 3d 0b  -         jsr ready
+0817: 78        - init:   sei 
+0818: a0 7f     -         ldy #$7f    // $7f = %01111111
+081a: 8c 0d dc  -         sty $dc0d   // Turn off CIAs Timer interrupts
+081d: 8c 0d dd  -         sty $dd0d   // Turn off CIAs Timer interrupts
+0820: ad 0d dc  -         lda $dc0d   // cancel all CIA-IRQs in queue/unprocessed
+0823: ad 0d dd  -         lda $dd0d   // cancel all CIA-IRQs in queue/unprocessed
+0826: 58        -         cli	
+0827: 60        -         rts
+0828: 78        - install_update_isr:sei
+0829: a9 01     -         lda #$01    // Set Interrupt Request Mask
+082b: 8d 1a d0  -         sta IsrMaskRegister   // IRQ by Rasterbeam
+082e: ad 14 03  -         lda IsrAddress			// save previous vector
+0831: ae 15 03  -         ldx IsrAddress + 1
+0834: 8d 53 0b  -         sta storeExistingIsr
+0837: 8e 54 0b  -         stx storeExistingIsr + 1
+083a: a9 5a     -         lda #<newIsrAddress			// install our IRQ
+083c: a2 08     -         ldx #>newIsrAddress
+083e: 8d 14 03  -         sta IsrAddress
+0841: 8e 15 03  -         stx IsrAddress + 1
+0844: 58        -         cli
+0845: 60        -         rts
+0846: 78        - uninstall_update_isr:sei 
+0847: a9 00     -         lda #$00    // Unset Interrupt Request Mask
+0849: 8d 1a d0  -         sta IsrMaskRegister   // IRQ by Rasterbeam
+084c: ad 53 0b  -         lda previousIsr
+084f: ae 54 0b  -         ldx previousIsr + 1
+0852: 8d 14 03  -         sta IsrAddress
+0855: 8e 15 03  -         stx IsrAddress + 1
+0858: 58        -         cli
+0859: 60        -         rts
+085a: ce 19 d0  - irq:    dec $d019				// ack interrrupt
+085d: e6 4e     -         inc timerAddress
+085f: a9 04     -         lda #updateMask
+0861: 24 4e     -         bit timerAddress
+0863: d0 03     -         bne !callSub+
+0865: 4c 6f 08  -         jmp !+
+0868: 20 87 08  -         jsr subroutine
+086b: a9 ff     -         lda #$ff			// reset
+086d: 85 4e     -         sta timerAddress
+086f: 6c 53 0b  -         jmp (oldIrq)			// back to previous IRQ
+0872: a6 d3     - storeCursor:ldx $d3
+0874: 86 fb     -         stx cursorWordAddress
+0876: a6 d6     -         ldx $d6
+0878: 86 fc     -         stx cursorWordAddress + 1
+087a: 60        -         rts
+087b: a6 fb     - restoreCursor:ldx cursorWordAddress
+087d: 86 d3     -         stx $d3
+087f: a6 fc     -         ldx cursorWordAddress + 1
+0881: 86 d6     -         stx $d6
+0883: 20 6c e5  -         jsr PlotRom
+0886: 60        -         rts
+0887: 20 72 08  - showWhirl:jsr storeCursor
+088a: ee 5a 0b  -         inc whirlIndex
+088d: ad 5a 0b  -         lda whirlIndex
+0890: cd 59 0b  -         cmp whirlLength
+0893: 90 05     -         bcc !next+
+0895: a9 00     -         lda #$00
+0897: 8d 5a 0b  -         sta whirlIndex
+089a: ae 5a 0b  -         ldx whirlIndex
+089d: bd 55 0b  -         lda whirl,x
+08a0: 20 d2 ff  -         jsr kernal_chrout
+08a3: 20 7b 08  -         jsr restoreCursor
+08a6: 60        -         rts
+08a7: a9 00     - loadAll:lda #color
+08a9: 8d 20 d0  -         sta border_color
+08ac: a9 00     -         lda #color
+08ae: 8d 21 d0  -         sta background_color
+08b1: 20 44 e5  -         jsr $e544
+08b4: a2 00     -         ldx #$00
+08b6: bd c5 08  -         lda msg,x
+08b9: f0 07     -         beq !done+
+08bb: 20 d2 ff  -         jsr kernal_chrout
+08be: e8        -         inx
+08bf: 4c b6 08  -         jmp !loop-
+08c2: 4c ce 08  -         jmp !done+
+08c5: 53 57 45 45 54 31 36                             -         .text msg
+08cc: 0d 00     -         .byte RETURN, NULL
+08ce: a2 00     -         ldx #$00
+08d0: bd df 08  -         lda msg,x
+08d3: f0 07     -         beq !done+
+08d5: 20 d2 ff  -         jsr kernal_chrout
+08d8: e8        -         inx
+08d9: 4c d0 08  -         jmp !loop-
+08dc: 4c e1 08  -         jmp !done+
+08df: 0d 00     -         .byte RETURN, NULL
+08e1: a2 00     -         ldx #$00
+08e3: bd f2 08  -         lda msg,x
+08e6: f0 07     -         beq !done+
 08e8: 20 d2 ff  -         jsr kernal_chrout
-08eb: 60        -         rts
-08ec: 20 a5 08  - showWhirl:jsr storeCursor
-08ef: ee 1f 0b  -         inc whirlIndex
-08f2: ad 1f 0b  -         lda whirlIndex
-08f5: cd 1a 0b  -         cmp whirlLength
-08f8: 90 05     -         bcc !next+
-08fa: a9 00     -         lda #$00
-08fc: 8d 1f 0b  -         sta whirlIndex
-08ff: ae 1f 0b  -         ldx whirlIndex
-0902: bd 1b 0b  -         lda whirl,x
-0905: 20 d2 ff  -         jsr kernal_chrout
-0908: 20 b0 08  -         jsr restoreCursor
-090b: 60        -         rts
-090c: a9 00     - loadAll:lda #color
-090e: 8d 20 d0  -         sta border_color
-0911: a9 00     -         lda #color
-0913: 8d 21 d0  -         sta background_color
-0916: 20 44 e5  -         jsr $e544
-0919: a2 00     -         ldx #$00
-091b: bd 2a 09  -         lda msg,x
-091e: f0 07     -         beq !done+
-0920: 20 d2 ff  -         jsr kernal_chrout
-0923: e8        -         inx
-0924: 4c 1b 09  -         jmp !loop-
-0927: 4c 33 09  -         jmp !done+
-092a: 53 57 45 45 54 31 36                             -         .text msg
-0931: 0d 00     -         .byte RETURN, NULL
-0933: a2 00     -         ldx #$00
-0935: bd 44 09  -         lda msg,x
-0938: f0 07     -         beq !done+
-093a: 20 d2 ff  -         jsr kernal_chrout
-093d: e8        -         inx
-093e: 4c 35 09  -         jmp !loop-
-0941: 4c 46 09  -         jmp !done+
-0944: 0d 00     -         .byte RETURN, NULL
-0946: a2 00     -         ldx #$00
-0948: bd 57 09  -         lda msg,x
-094b: f0 07     -         beq !done+
-094d: 20 d2 ff  -         jsr kernal_chrout
-0950: e8        -         inx
-0951: 4c 48 09  -         jmp !loop-
-0954: 4c 69 09  -         jmp !done+
-0957: 43 48 45 43 4b 49 4e 47 20 46 4f 52 20 4c 49 42  -         .text msg
-0967: 20                                              
-0968: 00        -         .byte NULL
-0969: ad 00 10  -         lda baseAddr
-096c: c9 fe     -         cmp #(>MagicPatch) // opposite to normal so reads natural in memory inspection
-096e: d0 0c     -         bne !nope+
-0970: ad 01 10  -         lda baseAddr+1
-0973: c9 ed     -         cmp #(<MagicPatch)
-0975: d0 05     -         bne !nope+
-0977: a9 01     -         lda #$01
-0979: 4c 7e 09  -         jmp !done+
-097c: a9 00     -         lda #$00
-097e: f0 6d     -         beq !alreadyLoaded+
-0980: a2 00     -         ldx #$00
-0982: bd 91 09  -         lda msg,x
-0985: f0 07     -         beq !done+
-0987: 20 d2 ff  -         jsr kernal_chrout
-098a: e8        -         inx
-098b: 4c 82 09  -         jmp !loop-
-098e: 4c 99 09  -         jmp !done+
-0991: 4c 4f 41 44 49 4e 47                             -         .text msg
-0998: 00        -         .byte NULL
-0999: 20 33 08  -         jsr install_update_isr
-099c: a9 10     -         lda #length
-099e: a2 08     -         ldx #<filenameAddr
-09a0: a0 0a     -         ldy #>filenameAddr
-09a2: 20 24 0b  -         jsr KernalLoad
-09a5: e0 00     -         cpx #$00
-09a7: f0 26     -         beq !done+
-09a9: 48        -         pha
-09aa: a2 00     -         ldx #$00
-09ac: bd bb 09  -         lda msg,x
-09af: f0 07     -         beq !done+
-09b1: 20 d2 ff  -         jsr kernal_chrout
-09b4: e8        -         inx
-09b5: 4c ac 09  -         jmp !loop-
-09b8: 4c c8 09  -         jmp !done+
-09bb: 4c 0f 01 04 20 45 12 12 0f 12 3a 20              -         .text msg
-09c7: 00        -         .byte NULL
-09c8: 68        -         pla
-09c9: 20 d2 ff  -         jsr kernal_chrout
-09cc: 4c cc 09  -         jmp *
-09cf: 20 51 08  -         jsr uninstall_update_isr
-09d2: a2 00     -         ldx #$00
-09d4: bd e3 09  -         lda msg,x
-09d7: f0 07     -         beq !done+
-09d9: 20 d2 ff  -         jsr kernal_chrout
-09dc: e8        -         inx
-09dd: 4c d4 09  -         jmp !loop-
-09e0: 4c ea 09  -         jmp !done+
-09e3: 20 44 4f 4e 45                                   -         .text msg
-09e8: 0d 00     -         .byte RETURN, NULL
-09ea: 4c 18 0a  -         jmp !done+
-09ed: a2 00     -         ldx #$00
-09ef: bd fe 09  -         lda msg,x
-09f2: f0 07     -         beq !done+
-09f4: 20 d2 ff  -         jsr kernal_chrout
-09f7: e8        -         inx
-09f8: 4c ef 09  -         jmp !loop-
-09fb: 4c 05 0a  -         jmp !done+
-09fe: 46 4f 55 4e 44                                   -         .text msg
-0a03: 0d 00     -         .byte RETURN, NULL
-0a05: 4c 18 0a  -         jmp !done+
-0a08: 2d 2d 2d 20 20 20 20 4c 49 42 20 20 20 2d 2d 2d  -         .text filename
-0a18: a2 00     -         ldx #$00
-0a1a: bd 29 0a  -         lda msg,x
-0a1d: f0 07     -         beq !done+
-0a1f: 20 d2 ff  -         jsr kernal_chrout
-0a22: e8        -         inx
-0a23: 4c 1a 0a  -         jmp !loop-
-0a26: 4c 3d 0a  -         jmp !done+
-0a29: 43 48 45 43 4b 49 4e 47 20 46 4f 52 20 54 45 53  -         .text msg
-0a39: 54 53 20                                        
-0a3c: 00        -         .byte NULL
-0a3d: ad 00 20  -         lda baseAddr
-0a40: c9 fe     -         cmp #(>MagicPatch) // opposite to normal so reads natural in memory inspection
-0a42: d0 0c     -         bne !nope+
-0a44: ad 01 20  -         lda baseAddr+1
-0a47: c9 ed     -         cmp #(<MagicPatch)
-0a49: d0 05     -         bne !nope+
-0a4b: a9 01     -         lda #$01
-0a4d: 4c 52 0a  -         jmp !done+
-0a50: a9 00     -         lda #$00
-0a52: f0 6d     -         beq !alreadyLoaded+
-0a54: a2 00     -         ldx #$00
-0a56: bd 65 0a  -         lda msg,x
-0a59: f0 07     -         beq !done+
-0a5b: 20 d2 ff  -         jsr kernal_chrout
-0a5e: e8        -         inx
-0a5f: 4c 56 0a  -         jmp !loop-
-0a62: 4c 6d 0a  -         jmp !done+
-0a65: 4c 4f 41 44 49 4e 47                             -         .text msg
-0a6c: 00        -         .byte NULL
-0a6d: 20 33 08  -         jsr install_update_isr
-0a70: a9 10     -         lda #length
-0a72: a2 dc     -         ldx #<filenameAddr
-0a74: a0 0a     -         ldy #>filenameAddr
-0a76: 20 24 0b  -         jsr KernalLoad
-0a79: e0 00     -         cpx #$00
-0a7b: f0 26     -         beq !done+
-0a7d: 48        -         pha
-0a7e: a2 00     -         ldx #$00
-0a80: bd 8f 0a  -         lda msg,x
-0a83: f0 07     -         beq !done+
-0a85: 20 d2 ff  -         jsr kernal_chrout
-0a88: e8        -         inx
-0a89: 4c 80 0a  -         jmp !loop-
-0a8c: 4c 9c 0a  -         jmp !done+
-0a8f: 4c 0f 01 04 20 45 12 12 0f 12 3a 20              -         .text msg
-0a9b: 00        -         .byte NULL
-0a9c: 68        -         pla
-0a9d: 20 d2 ff  -         jsr kernal_chrout
-0aa0: 4c a0 0a  -         jmp *
-0aa3: 20 51 08  -         jsr uninstall_update_isr
-0aa6: a2 00     -         ldx #$00
-0aa8: bd b7 0a  -         lda msg,x
-0aab: f0 07     -         beq !done+
-0aad: 20 d2 ff  -         jsr kernal_chrout
-0ab0: e8        -         inx
-0ab1: 4c a8 0a  -         jmp !loop-
-0ab4: 4c be 0a  -         jmp !done+
-0ab7: 20 44 4f 4e 45                                   -         .text msg
-0abc: 0d 00     -         .byte RETURN, NULL
-0abe: 4c ec 0a  -         jmp !done+
-0ac1: a2 00     -         ldx #$00
-0ac3: bd d2 0a  -         lda msg,x
-0ac6: f0 07     -         beq !done+
-0ac8: 20 d2 ff  -         jsr kernal_chrout
-0acb: e8        -         inx
-0acc: 4c c3 0a  -         jmp !loop-
-0acf: 4c d9 0a  -         jmp !done+
-0ad2: 46 4f 55 4e 44                                   -         .text msg
-0ad7: 0d 00     -         .byte RETURN, NULL
-0ad9: 4c ec 0a  -         jmp !done+
-0adc: 2d 2d 2d 20 20 20 54 45 53 54 53 20 20 2d 2d 2d  -         .text filename
-0aec: a2 00     -         ldx #$00
-0aee: bd fd 0a  -         lda msg,x
-0af1: f0 07     -         beq !done+
-0af3: 20 d2 ff  -         jsr kernal_chrout
-0af6: e8        -         inx
-0af7: 4c ee 0a  -         jmp !loop-
-0afa: 4c ff 0a  -         jmp !done+
-0afd: 0d 00     -         .byte RETURN, NULL
-0aff: 60        -         rts
-0b00: 20 e1 4f  - ready:  jsr TestRun
-0b03: 20 0a 0b  -         jsr Anykey
-0b06: 4c 13 0b  -         jmp Reset
-0b09: 60        -         rts
-0b0a: 20 9f ff  - Anykey: jsr scnkey  // scan keyboard
-0b0d: 20 e4 ff  -         jsr getin	// put result into A
-0b10: f0 f8     -         beq !-	
-0b12: 60        -         rts
-0b13: 6c fc ff  - Reset:  jmp ($FFFC)		// kernal reset vector
-0b16: 00 00     - oldIrq: .byte 00, 00		// buffer for previous vector
-0b18: ff        - counterDot:.byte $FF
-0b19: ff        - counterWhirl:.byte $FF
-0b1a: 04        - whirlLength:.byte $04
-0b1b: 2d cd dd ce                                      - whirl:  .byte $2d, $cd, $dd, $ce
-0b1f: ff        - whirlIndex:.byte $ff
-0b20: 00        - safeX:  .byte $00
-0b21: 00        - safeY:  .byte $00
+08eb: e8        -         inx
+08ec: 4c e3 08  -         jmp !loop-
+08ef: 4c 08 09  -         jmp !done+
+08f2: 43 48 45 43 4b 49 4e 47 20 46 4f 52 20 54 4f 4b  -         .text msg
+0902: 45 4e 2e 2e 2e                                  
+0907: 00        -         .byte NULL
+0908: ad 00 10  -         lda baseAddr
+090b: c9 fe     -         cmp #(>MagicPatch) // opposite to normal so reads natural in memory inspection
+090d: d0 0c     -         bne !nope+
+090f: ad 01 10  -         lda baseAddr+1
+0912: c9 ed     -         cmp #(<MagicPatch)
+0914: d0 05     -         bne !nope+
+0916: a9 01     -         lda #$01
+0918: 4c 1d 09  -         jmp !done+
+091b: a9 00     -         lda #$00
+091d: f0 40     -         beq !alreadyLoaded+
+091f: a2 00     -         ldx #$00
+0921: bd 30 09  -         lda msg,x
+0924: f0 07     -         beq !done+
+0926: 20 d2 ff  -         jsr kernal_chrout
+0929: e8        -         inx
+092a: 4c 21 09  -         jmp !loop-
+092d: 4c 3b 09  -         jmp !done+
+0930: 4c 4f 41 44 49 4e 47 2e 2e 2e                    -         .text msg
+093a: 00        -         .byte NULL
+093b: 20 28 08  -         jsr install_update_isr
+093e: 20 5b 0b  -         jsr loadFiles
+0941: 20 46 08  -         jsr uninstall_update_isr
+0944: a2 00     -         ldx #$00
+0946: bd 55 09  -         lda msg,x
+0949: f0 07     -         beq !done+
+094b: 20 d2 ff  -         jsr kernal_chrout
+094e: e8        -         inx
+094f: 4c 46 09  -         jmp !loop-
+0952: 4c 5c 09  -         jmp !done+
+0955: 20 44 4f 4e 45                                   -         .text msg
+095a: 0d 00     -         .byte RETURN, NULL
+095c: 4c 7a 09  -         jmp !done+
+095f: a2 00     -         ldx #$00
+0961: bd 70 09  -         lda msg,x
+0964: f0 07     -         beq !done+
+0966: 20 d2 ff  -         jsr kernal_chrout
+0969: e8        -         inx
+096a: 4c 61 09  -         jmp !loop-
+096d: 4c 77 09  -         jmp !done+
+0970: 46 4f 55 4e 44                                   -         .text msg
+0975: 0d 00     -         .byte RETURN, NULL
+0977: 4c 7a 09  -         jmp !done+
+097a: 4c 7a 09  -         jmp *
+097d: a2 00     -         ldx #$00
+097f: bd 8e 09  -         lda msg,x
+0982: f0 07     -         beq !done+
+0984: 20 d2 ff  -         jsr kernal_chrout
+0987: e8        -         inx
+0988: 4c 7f 09  -         jmp !loop-
+098b: 4c a0 09  -         jmp !done+
+098e: 43 48 45 43 4b 49 4e 47 20 46 4f 52 20 4c 49 42  -         .text msg
+099e: 20                                              
+099f: 00        -         .byte NULL
+09a0: ad 00 10  -         lda baseAddr
+09a3: c9 fe     -         cmp #(>MagicPatch) // opposite to normal so reads natural in memory inspection
+09a5: d0 0c     -         bne !nope+
+09a7: ad 01 10  -         lda baseAddr+1
+09aa: c9 ed     -         cmp #(<MagicPatch)
+09ac: d0 05     -         bne !nope+
+09ae: a9 01     -         lda #$01
+09b0: 4c b5 09  -         jmp !done+
+09b3: a9 00     -         lda #$00
+09b5: f0 70     -         beq !alreadyLoaded+
+09b7: a2 00     -         ldx #$00
+09b9: bd c8 09  -         lda msg,x
+09bc: f0 07     -         beq !done+
+09be: 20 d2 ff  -         jsr kernal_chrout
+09c1: e8        -         inx
+09c2: 4c b9 09  -         jmp !loop-
+09c5: 4c d3 09  -         jmp !done+
+09c8: 4c 4f 41 44 49 4e 47 2e 2e 2e                    -         .text msg
+09d2: 00        -         .byte NULL
+09d3: 20 28 08  -         jsr install_update_isr
+09d6: a9 10     -         lda #length
+09d8: a2 42     -         ldx #<filenameAddr
+09da: a0 0a     -         ldy #>filenameAddr
+09dc: 20 a4 0b  -         jsr KernalLoad
+09df: e0 00     -         cpx #$00
+09e1: f0 26     -         beq !done+
+09e3: 48        -         pha
+09e4: a2 00     -         ldx #$00
+09e6: bd f5 09  -         lda msg,x
+09e9: f0 07     -         beq !done+
+09eb: 20 d2 ff  -         jsr kernal_chrout
+09ee: e8        -         inx
+09ef: 4c e6 09  -         jmp !loop-
+09f2: 4c 02 0a  -         jmp !done+
+09f5: 4c 0f 01 04 20 45 12 12 0f 12 3a 20              -         .text msg
+0a01: 00        -         .byte NULL
+0a02: 68        -         pla
+0a03: 20 d2 ff  -         jsr kernal_chrout
+0a06: 4c 06 0a  -         jmp *
+0a09: 20 46 08  -         jsr uninstall_update_isr
+0a0c: a2 00     -         ldx #$00
+0a0e: bd 1d 0a  -         lda msg,x
+0a11: f0 07     -         beq !done+
+0a13: 20 d2 ff  -         jsr kernal_chrout
+0a16: e8        -         inx
+0a17: 4c 0e 0a  -         jmp !loop-
+0a1a: 4c 24 0a  -         jmp !done+
+0a1d: 20 44 4f 4e 45                                   -         .text msg
+0a22: 0d 00     -         .byte RETURN, NULL
+0a24: 4c 52 0a  -         jmp !done+
+0a27: a2 00     -         ldx #$00
+0a29: bd 38 0a  -         lda msg,x
+0a2c: f0 07     -         beq !done+
+0a2e: 20 d2 ff  -         jsr kernal_chrout
+0a31: e8        -         inx
+0a32: 4c 29 0a  -         jmp !loop-
+0a35: 4c 3f 0a  -         jmp !done+
+0a38: 46 4f 55 4e 44                                   -         .text msg
+0a3d: 0d 00     -         .byte RETURN, NULL
+0a3f: 4c 52 0a  -         jmp !done+
+0a42: 2d 2d 2d 20 20 20 20 4c 49 42 20 20 20 2d 2d 2d  -         .text filename
+0a52: a2 00     -         ldx #$00
+0a54: bd 63 0a  -         lda msg,x
+0a57: f0 07     -         beq !done+
+0a59: 20 d2 ff  -         jsr kernal_chrout
+0a5c: e8        -         inx
+0a5d: 4c 54 0a  -         jmp !loop-
+0a60: 4c 77 0a  -         jmp !done+
+0a63: 43 48 45 43 4b 49 4e 47 20 46 4f 52 20 54 45 53  -         .text msg
+0a73: 54 53 20                                        
+0a76: 00        -         .byte NULL
+0a77: ad 00 20  -         lda baseAddr
+0a7a: c9 fe     -         cmp #(>MagicPatch) // opposite to normal so reads natural in memory inspection
+0a7c: d0 0c     -         bne !nope+
+0a7e: ad 01 20  -         lda baseAddr+1
+0a81: c9 ed     -         cmp #(<MagicPatch)
+0a83: d0 05     -         bne !nope+
+0a85: a9 01     -         lda #$01
+0a87: 4c 8c 0a  -         jmp !done+
+0a8a: a9 00     -         lda #$00
+0a8c: f0 70     -         beq !alreadyLoaded+
+0a8e: a2 00     -         ldx #$00
+0a90: bd 9f 0a  -         lda msg,x
+0a93: f0 07     -         beq !done+
+0a95: 20 d2 ff  -         jsr kernal_chrout
+0a98: e8        -         inx
+0a99: 4c 90 0a  -         jmp !loop-
+0a9c: 4c aa 0a  -         jmp !done+
+0a9f: 4c 4f 41 44 49 4e 47 2e 2e 2e                    -         .text msg
+0aa9: 00        -         .byte NULL
+0aaa: 20 28 08  -         jsr install_update_isr
+0aad: a9 10     -         lda #length
+0aaf: a2 19     -         ldx #<filenameAddr
+0ab1: a0 0b     -         ldy #>filenameAddr
+0ab3: 20 a4 0b  -         jsr KernalLoad
+0ab6: e0 00     -         cpx #$00
+0ab8: f0 26     -         beq !done+
+0aba: 48        -         pha
+0abb: a2 00     -         ldx #$00
+0abd: bd cc 0a  -         lda msg,x
+0ac0: f0 07     -         beq !done+
+0ac2: 20 d2 ff  -         jsr kernal_chrout
+0ac5: e8        -         inx
+0ac6: 4c bd 0a  -         jmp !loop-
+0ac9: 4c d9 0a  -         jmp !done+
+0acc: 4c 0f 01 04 20 45 12 12 0f 12 3a 20              -         .text msg
+0ad8: 00        -         .byte NULL
+0ad9: 68        -         pla
+0ada: 20 d2 ff  -         jsr kernal_chrout
+0add: 4c dd 0a  -         jmp *
+0ae0: 20 46 08  -         jsr uninstall_update_isr
+0ae3: a2 00     -         ldx #$00
+0ae5: bd f4 0a  -         lda msg,x
+0ae8: f0 07     -         beq !done+
+0aea: 20 d2 ff  -         jsr kernal_chrout
+0aed: e8        -         inx
+0aee: 4c e5 0a  -         jmp !loop-
+0af1: 4c fb 0a  -         jmp !done+
+0af4: 20 44 4f 4e 45                                   -         .text msg
+0af9: 0d 00     -         .byte RETURN, NULL
+0afb: 4c 29 0b  -         jmp !done+
+0afe: a2 00     -         ldx #$00
+0b00: bd 0f 0b  -         lda msg,x
+0b03: f0 07     -         beq !done+
+0b05: 20 d2 ff  -         jsr kernal_chrout
+0b08: e8        -         inx
+0b09: 4c 00 0b  -         jmp !loop-
+0b0c: 4c 16 0b  -         jmp !done+
+0b0f: 46 4f 55 4e 44                                   -         .text msg
+0b14: 0d 00     -         .byte RETURN, NULL
+0b16: 4c 29 0b  -         jmp !done+
+0b19: 2d 2d 2d 20 20 20 54 45 53 54 53 20 20 2d 2d 2d  -         .text filename
+0b29: a2 00     -         ldx #$00
+0b2b: bd 3a 0b  -         lda msg,x
+0b2e: f0 07     -         beq !done+
+0b30: 20 d2 ff  -         jsr kernal_chrout
+0b33: e8        -         inx
+0b34: 4c 2b 0b  -         jmp !loop-
+0b37: 4c 3c 0b  -         jmp !done+
+0b3a: 0d 00     -         .byte RETURN, NULL
+0b3c: 60        -         rts
+0b3d: 20 e1 4f  - ready:  jsr TestRun
+0b40: 20 47 0b  -         jsr Anykey
+0b43: 4c 50 0b  -         jmp Reset
+0b46: 60        -         rts
+0b47: 20 9f ff  - Anykey: jsr scnkey  // scan keyboard
+0b4a: 20 e4 ff  -         jsr getin	// put result into A
+0b4d: f0 f8     -         beq !-	
+0b4f: 60        -         rts
+0b50: 6c fc ff  - Reset:  jmp ($FFFC)			// kernal reset vector
+0b53: 00 00     - oldIrq: .byte 00, 00		// buffer for previous vector
+0b55: 2d cd dd ce                                      - whirl:  .byte $2d, $cd, $dd, $ce 	// - \ | /
+0b59: 04        - whirlLength:.byte $04
+0b5a: ff        - whirlIndex:.byte $ff
+******************************* Segment: Loader ********************************
+[Loader]
+0b5b: 4c 85 0b  - loadFiles:jmp !+
+
+[f1]
+0b5e: 2d 2d 2d 20 20 20 20 4c 49 42 20 20 20 2d 2d 2d  -         .text libraryFilename
+
+[f2]
+0b6e: 2d 2d 2d 20 20 20 54 45 53 54 53 20 20 2d 2d 2d  -         .text testsFilename
+
+[Lo]
+0b7e: 5e 6e     -         .byte <!f1-, <!f2- 
+
+[Hi]
+0b80: 0b 0b     -         .byte >!f1-, >!f2- 
+
+[Len]
+0b82: 10 10     -         .byte libraryFilename.size(), testsFilename.size()
+
+[Num]
+0b84: 02        -         .byte $02
+0b85: a0 00     -         ldy #$00        // table counter
+0b87: 98        -         tya
+0b88: 48        -         pha             // stack counter
+0b89: b9 82 0b  -         lda !lengths-,y
+0b8c: 48        -         pha             // stack length
+0b8d: b9 7e 0b  -         lda !filenamesLo-,y
+0b90: aa        -         tax
+0b91: b9 80 0b  -         lda !filenamesHi-,y
+0b94: a8        -         tay
+0b95: 68        -         pla             // pop length
+0b96: 20 a4 0b  -         jsr KernalLoad
+0b99: 68        -         pla             // pop counter
+0b9a: a8        -         tay
+0b9b: c8        -         iny
+0b9c: cc 84 0b  -         cpy !num-
+0b9f: d0 e6     -         bne !loadNext-
+0ba1: 60        -         rts
 ******************************** Segment: Util *********************************
 [UtilData]
-0b22: 0d 00     -         .byte RETURN, NULL
-0b24: 20 bd ff  -         jsr $ffbd     // call setnam
-0b27: a9 01     -         lda #$01
-0b29: a6 ba     -         ldx $ba       // last used device number
-0b2b: d0 02     -         bne !skip+
-0b2d: a2 08     -         ldx #$08      // default to device 8
-0b2f: a0 01     -         ldy #$01       // not $01 means: load to address stored in file
-0b31: 20 ba ff  -         jsr $ffba      // call setlfs
-0b34: a9 00     -         lda #$00       // $00 means: load to memory (not verify)
-0b36: 20 d5 ff  -         jsr $ffd5      // call load
-0b39: b0 03     -         bcs !error+    // if carry set, a load error has happened
-0b3b: 4c 44 0b  -         jmp !done+
-0b3e: 4c 3e 0b  -         jmp *
-0b41: a2 01     -         ldx #1
-0b43: 60        -         rts
-0b44: a2 00     -         ldx #0         // clear error flag in case set
-0b46: 60        -         rts
-0b47: 60        -         rts
+0ba2: 0d 00     -         .byte RETURN, NULL
+0ba4: 20 bd ff  -         jsr $ffbd     // call setnam
+0ba7: a9 01     -         lda #$01
+0ba9: a6 ba     -         ldx $ba       // last used device number
+0bab: d0 02     -         bne !skip+
+0bad: a2 08     -         ldx #$08      // default to device 8
+0baf: a0 01     -         ldy #$01       // not $01 means: load to address stored in file
+0bb1: 20 ba ff  -         jsr $ffba      // call setlfs
+0bb4: a9 00     -         lda #$00       // $00 means: load to memory (not verify)
+0bb6: 20 d5 ff  -         jsr $ffd5      // call load
+0bb9: b0 03     -         bcs !error+    // if carry set, a load error has happened
+0bbb: 4c c1 0b  -         jmp !done+
+0bbe: a2 01     -         ldx #1
+0bc0: 60        -         rts
+0bc1: a2 00     -         ldx #0         // clear error flag in case set
+0bc3: 60        -         rts
+0bc4: 60        -         rts
 **************************** Segment: Sweet16Patch *****************************
 [Sweet16Patch]
 1000: fe ed     - sweet16_patch:.byte >MagicPatch, <MagicPatch
@@ -6027,24 +6073,23 @@
 5281: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  -         .fill STACK_SIZE, 0
 ****************************** Segment: UtilData *******************************
 [UtilData]
-0b22: 0d 00     - Newline:.byte RETURN, NULL
-0b24: 20 bd ff  - KernalLoad:jsr $ffbd     // call setnam
-0b27: a9 01     -         lda #$01
-0b29: a6 ba     -         ldx $ba       // last used device number
-0b2b: d0 02     -         bne !skip+
-0b2d: a2 08     -         ldx #$08      // default to device 8
-0b2f: a0 01     -         ldy #$01       // not $01 means: load to address stored in file
-0b31: 20 ba ff  -         jsr $ffba      // call setlfs
-0b34: a9 00     -         lda #$00       // $00 means: load to memory (not verify)
-0b36: 20 d5 ff  -         jsr $ffd5      // call load
-0b39: b0 03     -         bcs !error+    // if carry set, a load error has happened
-0b3b: 4c 44 0b  -         jmp !done+
-0b3e: 4c 3e 0b  -         jmp *
-0b41: a2 01     -         ldx #1
-0b43: 60        -         rts
-0b44: a2 00     -         ldx #0         // clear error flag in case set
-0b46: 60        -         rts
-0b47: 60        -         rts
+0ba2: 0d 00     - Newline:.byte RETURN, NULL
+0ba4: 20 bd ff  - KernalLoad:jsr $ffbd     // call setnam
+0ba7: a9 01     -         lda #$01
+0ba9: a6 ba     -         ldx $ba       // last used device number
+0bab: d0 02     -         bne !skip+
+0bad: a2 08     -         ldx #$08      // default to device 8
+0baf: a0 01     -         ldy #$01       // not $01 means: load to address stored in file
+0bb1: 20 ba ff  -         jsr $ffba      // call setlfs
+0bb4: a9 00     -         lda #$00       // $00 means: load to memory (not verify)
+0bb6: 20 d5 ff  -         jsr $ffd5      // call load
+0bb9: b0 03     -         bcs !error+    // if carry set, a load error has happened
+0bbb: 4c c1 0b  -         jmp !done+
+0bbe: a2 01     -         ldx #1
+0bc0: 60        -         rts
+0bc1: a2 00     -         ldx #0         // clear error flag in case set
+0bc3: 60        -         rts
+0bc4: 60        -         rts
 ************************** Segment: Sweet16JumpTable ***************************
 [Sweet16JumpTable]
 1061: 00        - OPTBL:  .byte <SET-1          // 1X

@@ -8,11 +8,11 @@ sweet16_patch:
 .segment Tests
 
 .macro Sweet16Instance() {
-		sweet16 SW16 : SW16_NONE
+		sweet16
 }
 
 .macro Sweet16InstanceBreak() {
-		sweet16 SW16 : SW16_NONE : 1
+		sweet16 : 1
 }
 
 // Simple tests for Sweet16.  Most of these are converted versions of Woz's originals in the description of each of the mnemonics / opcodes (http://www.6502.org/source/interpreters/sweet16.htm#Register_Instructions_).
@@ -581,7 +581,10 @@ INTERRUPT_BREAK_TEST: {
 	.const VAL_1 = $feed
 	.const VAL_2 = $0123
 	TestName("INT BREAK")	
-	BreakOnBrk()
+	lda #<!breakHandler+
+	sta Sweet16.BRK_ISR
+	lda #>!breakHandler+
+	sta Sweet16.BRK_ISR+1
 	Sweet16Instance()
 	set Sweet16.ACC : VAL_1
 	bk
@@ -598,6 +601,8 @@ INTERRUPT_BREAK_TEST: {
 !assert2:
 	TestAssertEqual(Sweet16.ACC,  VAL_2, "2")
 	rts
+!breakHandler:
+	jmp SW16D
 }
 
 // A branch to the effective address (PC + 2 + d) is taken and execution is resumed in SWEET 16 mode. The current PC is pushed onto a SWEET 16 subroutine return address stack whose pointer is R12, and R12 is incremented by 2. The carry is cleared and branch conditions set to indicate the current Sweet16.ACC contents. EXAMPLE: Calling a 'memory move' subroutine to move TEST_MEMORY_SEQUENCE to TEST_MEMORY_SEQUENCE_2
@@ -765,7 +770,7 @@ TestRun:
 	jsr SET_INDIRECT_TEST
 	jsr SET_MEMORY_TEST
 	jsr INTERRUPT_BREAK_TEST
-	
+		
 	TestFinished()
 
 	// not a real test as routine not required in this implementation

@@ -4,23 +4,25 @@
 // convenience entry point
 // save - (optional) if non-zero will save registers on entry and restore on exit
 // break_handler - (optional) installs a ISR to called if the "bk" command is in ever used (6502 "brk" as well).  The routine restores the state and sets up to continue execution.  Useful for debugging in assembly monitors 
-.pseudocommand @sweet16 instance : instance_none : save : break_handler {
-	.errorif instance.getType() == AT_NONE, "Instance must be specified"
-	.errorif instance_none.getType() == AT_NONE, "Instance None must be specified"
+.pseudocommand @sweet16 save : break_handler {
 	.var install_break = 0
 	.if (break_handler.getType() != AT_NONE)
 		.eval install_break = break_handler.getValue()
-	.if (install_break != 0)
-		BreakOnBrk()
+	.if (install_break != 0) {
+		lda #<(install_break == 1 ? SW16_BREAK_HANDLER : install_break)
+		sta Sweet16.BRK_ISR
+		lda #>(install_break == 1 ? SW16_BREAK_HANDLER : install_break)
+		sta Sweet16.BRK_ISR+1
+	}
 	
 	.var save_restore = 1
 	.if (save.getType() != AT_NONE)
 		.eval save_restore = save.getValue()
 
 	.if (save_restore != 0)
-	 	jsr instance
+	 	jsr SW16
 	else
-	 	jsr instance_none
+	 	jsr SW16_NONE
 }
 
 .pseudocommand @SWEET16 save : break_handler { sweet16 save : break_handler }

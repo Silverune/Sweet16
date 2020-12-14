@@ -1,18 +1,18 @@
 .label BRANCH_IF_CARRY_SET_TEST=$3c5c {
 }
-.label TEST_COUNT=$5245
-.label TestRun=$4fe3 {
+.label TEST_COUNT=$5246
+.label TestRun=$4fe4 {
 }
 .label init=$817 {
 }
-.label Anykey=$aab
+.label Anykey=$98c
 .label BRANCH_IF_NONZERO_TEST=$411a {
 }
-.label ABSOLUTE_JUMP_TEST=$4a49 {
+.label ABSOLUTE_JUMP_TEST=$4a4a {
 }
 .label ADD_TEST=$2fd0 {
 }
-.label KernalLoad=$ac1 {
+.label KernalLoad=$9e9 {
 }
 .label DECREMENT_TEST=$37c8 {
 }
@@ -20,23 +20,23 @@
 }
 .label BRANCH_IF_PLUS_TEST=$3d90 {
 }
-.label RETURN_FROM_SUBROUTINE_TEST=$491c {
+.label RETURN_FROM_SUBROUTINE_TEST=$491d {
   .label REGISTER=$0
 }
 .label SUBTRACT_TEST=$3164 {
 }
 .label BRANCH_IF_NO_CARRY_TEST=$3b28 {
 }
-.label Newline=$abf {
+.label Newline=$9e7 {
 }
-.label oldIrq=$ab7
-.label whirl=$ab9
+.label oldIrq=$998
+.label whirl=$99a
 .label storeCursor=$872 {
 }
 .label LOAD_INDIRECT_TEST=$2352 {
 }
-.label whirlIndex=$abe
-.label STACK_MEMORY=$5283 {
+.label whirlIndex=$99f
+.label STACK_MEMORY=$5284 {
 }
 .label INCREMENT_TEST=$36a8 {
 }
@@ -44,13 +44,16 @@
 }
 .label COMPARE_TEST=$357d {
 }
-.label TEST_PASS_COUNT=$5246
+.label TEST_PASS_COUNT=$5247
+.label loadFiles=$9a0 {
+}
 .label STORE_DOUBLE_BYTE_INDIRECT_TEST=$2887 {
 }
 .label SW16_NONE=$1000
+.label SW16D=$1024
 .label BRANCH_IF_MINUS_TEST=$3ec0 {
 }
-.label whirlLength=$abd
+.label whirlLength=$99e
 .label irq=$85a
 .label LOAD_DOUBLE_BYTE_INDIRECT_TEST=$26ed {
 }
@@ -58,8 +61,8 @@
 }
 .label install_update_isr=$828 {
 }
-.label TEST_SUCCESS=$5241
-.label TEST_FAILURE=$5243
+.label TEST_SUCCESS=$5242
+.label TEST_FAILURE=$5244
 .label ZpVarWord=$0 {
   .label One=$fb {
   }
@@ -73,6 +76,7 @@
   .label RSP=$c
   .label R0L=$17
   .label R15L=$35
+  .label BRK_ISR=$316
   .label R14L=$33
   .label R13H=$32
   .label PC=$f
@@ -93,31 +97,32 @@
 }
 .label BRANCH_IF_NOT_MINUS_ONE_TEST=$4378 {
 }
-.label Reset=$ab4
+.label Reset=$995
+.label SW16_BREAK_HANDLER=$1235
 .label SET_TEST=$2000 {
 }
 .label BREAK_TEST=$44a8 {
   .label REGISTER=$0
 }
 .label SW16=$1008
-.label TEST_MEMORY_2=$525f
+.label TEST_MEMORY_2=$5260
 .label restoreCursor=$87b {
 }
-.label TEST_MEMORY_3=$5261
+.label TEST_MEMORY_3=$5262
 .label BRANCH_ALWAYS_TEST=$39ff {
 }
-.label INTERRUPT_BREAK_TEST=$4636 {
+.label INTERRUPT_BREAK_TEST=$4640 {
 }
-.label TEST_TITLE=$5248
-.label BRANCH_TO_SUBROUTINE_TEST=$47e2 {
+.label TEST_TITLE=$5249
+.label BRANCH_TO_SUBROUTINE_TEST=$47e3 {
 }
-.label EXTERNAL_JSR_TEST=$4b76 {
+.label EXTERNAL_JSR_TEST=$4b77 {
 }
 .label loadAll=$8a7 {
 }
-.label SET_INDIRECT_TEST=$4d93 {
+.label SET_INDIRECT_TEST=$4d94 {
 }
-.label ready=$aa1
+.label ready=$982
 .label ZpVar=$ff {
   .label One=$4e {
   }
@@ -128,21 +133,21 @@
   .label Three=$50 {
   }
 }
-.label TEST_MEMORY=$525d
+.label TEST_MEMORY=$525e
 .label showWhirl=$887 {
 }
 .label BRANCH_IF_MINUS_ONE_TEST=$4249 {
 }
-.label TEST_MEMORY_SEQUENCE=$5263
+.label TEST_MEMORY_SEQUENCE=$5264
 .label LOAD_TEST=$211a {
 }
 .label POP_INDIRECT_TEST=$2a92 {
 }
-.label TEST_MEMORY_SEQUENCE_2=$5273
+.label TEST_MEMORY_SEQUENCE_2=$5274
 .label tests_patch=$2000 {
 }
-.label TEST_NAME_COUNT=$5247
-.label SET_MEMORY_TEST=$4ebc {
+.label TEST_NAME_COUNT=$5248
+.label SET_MEMORY_TEST=$4ebd {
 }
 .label STORE_TEST=$2234 {
 }
