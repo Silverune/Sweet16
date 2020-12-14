@@ -332,7 +332,7 @@ DECREMENT_TEST: {
 // Control is returned to the 6502 and program execution continues at the location immediately following the RTN instruction. the 6502 registers and status conditions are restored to their original contents (prior to entering SWEET 16 mode).
 RETURN_TO_6502_MODE_TEST: {
 	TestName("6502 MODE")
-	sweet16
+	Sweet16Instance()
 	rtn
 	TestAssertNonZero(1, "RTN")
 	TestComplete()
@@ -582,7 +582,7 @@ INTERRUPT_BREAK_TEST: {
 	.const VAL_2 = $0123
 	TestName("INT BREAK")	
 	BreakOnBrk()
-	sweet16
+	Sweet16Instance()
 	set Sweet16.ACC : VAL_1
 	bk
 	xjsr !assert1+
@@ -606,7 +606,7 @@ BRANCH_TO_SUBROUTINE_TEST: {
 	.const SOURCE_LIMIT = 4
 	.const DEST = 6
 	TestName("BRANCH TO SUB")
-	sweet16
+	Sweet16Instance()
 	set SOURCE : TEST_MEMORY_SEQUENCE					// Init source register
 	set SOURCE_LIMIT : TEST_MEMORY_SEQUENCE + TMS_SIZE 	// Init limit register
 	set DEST : TEST_MEMORY_SEQUENCE_2					// Init dest register
@@ -632,7 +632,7 @@ RETURN_FROM_SUBROUTINE_TEST: {
 	.const DEFAULT_VALUE = $1234
 	.const SUB_SET_VALUE = $5678
 	TestName("RETURN FROM SUB")
-	sweet16
+	Sweet16Instance()
 	set REGISTER : DEFAULT_VALUE
 	bs !overwrite+
 	rtn
@@ -654,7 +654,7 @@ ABSOLUTE_JUMP_TEST: {
 	.const SET_VALUE = $1234
 	.const NON_ACC_REGISTER = 5
 	TestName("ABSOLUTE JUMP")
-	sweet16
+	Sweet16Instance()
 	set NON_ACC_REGISTER : INITIAL_VALUE	// initial value
 	ajmp !setter+							// absolute jump to setter
 
@@ -676,7 +676,7 @@ EXTERNAL_JSR_TEST: {
 	.const VALUE = $4321		// arbitrary value
 	.const VALUE_2 = $1234		// arbitrary value
 	.const VALUE_3 = $feed		// different value (will be set using 6502 calls)
-	sweet16
+	Sweet16Instance()
 	set REGISTER : VALUE		// R5 now contains VALUE
 	xjsr !assertAssigned+
 	set REGISTER : VALUE_2		// R5 now contains VALUE_2
@@ -693,9 +693,9 @@ EXTERNAL_JSR_TEST: {
 	
 !code6502:						// native 6502 code
 	lda #>VALUE_3
-	sta Sweet16.rh(REGISTER)
+	sta Sweet16_rh(REGISTER)
 	lda #<VALUE_3
-	sta Sweet16.rl(REGISTER)
+	sta Sweet16_rl(REGISTER)
 	ldxy REGISTER
 	TestAssertEqual(REGISTER, VALUE_3, "6502")
 	rts
@@ -705,7 +705,7 @@ EXTERNAL_JSR_TEST: {
 SET_INDIRECT_TEST: {
 	.const REGISTER = 5			// arbitrary register
 	TestName("SET INDIRECT")
-	sweet16
+	Sweet16Instance()
 	seti REGISTER : TEST_MEMORY	// set register with value at TEST_MEMORT
 	rtn
 	TestAssertEqualIndirectAddress(REGISTER, TEST_MEMORY, "TEST MEM")	
@@ -717,7 +717,7 @@ SET_INDIRECT_TEST: {
 SET_MEMORY_TEST: {
 	.const REGISTER = 5			// arbitrary register
 	TestName("SET MEMORY")
-	sweet16
+	Sweet16Instance()
 	setm REGISTER : TEST_MEMORY	// set register with value at TEST_MEMORT
 	rtn
 	TestAssertEqualIndirect(REGISTER, TEST_MEMORY, "TEST MEM")	

@@ -1,4 +1,4 @@
-.importonce 
+#importonce 
 
 .const IsrAddress = $314
 .const IsrMaskRegister = $d01a

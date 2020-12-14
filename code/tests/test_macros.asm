@@ -156,7 +156,7 @@ memory:
 
 // simply adds a convenience of doing the register lookup
 .macro TestAssertEqualMemoryRegister(register, value, desc) {
-	TestAssertEqualMemoryDirect(Sweet16.rl(register), value, desc)
+	TestAssertEqualMemoryDirect(Sweet16_rl(register), value, desc)
 }
 
 // compares the value in the register with the value stored at the address which has been stpred Low byte then High byte which is how SWEET16 keeps its values

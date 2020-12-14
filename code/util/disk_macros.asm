@@ -1,4 +1,4 @@
-.importonce
+#importonce
 
 // Loading a file to memory at address stored in file
 // Reference: https://codebase64.org/doku.php?id=base:loading_a_file

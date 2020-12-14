@@ -1,4 +1,4 @@
-.importonce
+#importonce
 
 .const MagicPatch = $feed;
 

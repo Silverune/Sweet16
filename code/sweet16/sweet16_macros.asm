@@ -13,9 +13,26 @@
     sta address+1
 }
 
+.macro BreakHandler() {
+	pla		// Y
+	tay		// restore Y
+	pla		// X
+	tax		// restore X
+	pla		// restore A
+	sta RL(ZP)
+	plp		// restore Status Flags
+	pla		// PCL discard - not useful
+	pla		// PCH discard - not useful
+	lda RL(ZP)
+	// jmp SW16D
+}
+
 .macro @BreakOnBrk() {
 	.const BRKVEC = $0316
-	InstallHandler(BRKVEC, Sweet16.BREAK_HANDLER)
+!instance:
+    BreakHandler()
+	InstallHandler(BRKVEC, !instance-)
+    // jmp Sweet16.SW16D - TODO 
 }
 
 .macro IncPC() {

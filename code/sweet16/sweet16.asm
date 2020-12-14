@@ -7,33 +7,11 @@
 // Additional Code: Copyright (C) 2018 Enable Software Pty Ltd, Inc All Rights Reserved Rhett D. Jacobs
 // In general - capitalized code / comments are part of the original source while lower-case as not
 
-.const ZP_BASE = $17 // C64 start of 16 bit registers in zero page
-
 #if DEBUG
 .for (var i = 0; i < 17; i++) { // +1 for the ZP used by the extensions
 	Register(RL(i), RH(i))
 }
 #endif
-
-.const ACC = 0          // accumulator
-.const RSP = 12			// subroutine return pointer
-.const CIR = 13	        // compare instruction result
-.const SR = 14          // stack register
-.const PC = 15			// program counter
-.const ZP = 16			// Extension - Zero Page location used by SETI
-
-.const R0L = RL(ACC)
-.const R0H = RH(ACC)
-.const R12L = RL(RSP)
-.const R12H = RH(RSP)
-.const R13L = RL(CIR)
-.const R13H = RH(CIR)
-.const R14L = RL(SR)
-.const R14H = RH(SR)
-.const R15L = RL(PC)
-.const R15H = RH(PC)
-.const R16L = RL(ZP)
-.const R16H = RH(ZP)
 
 .segment Sweet16
 
@@ -409,18 +387,18 @@ RESTORE:
     plp
     rts
 
-BREAK_HANDLER:
-	pla		// Y
-	tay		// restore Y
-	pla		// X
-	tax		// restore X
-	pla		// restore A
-	sta RL(ZP)
-	plp		// restore Status Flags
-	pla		// PCL discard - not useful
-	pla		// PCH discard - not useful
-	lda RL(ZP)
-	jmp SW16D
+// BREAK_HANDLER:
+// 	pla		// Y
+// 	tay		// restore Y
+// 	pla		// X
+// 	tax		// restore X
+// 	pla		// restore A
+// 	sta RL(ZP)
+// 	plp		// restore Status Flags
+// 	pla		// PCL discard - not useful
+// 	pla		// PCH discard - not useful
+// 	lda RL(ZP)
+// 	jmp SW16D
 
 SETIM_COMMON:
 	lda (R15L),Y       		// dest addr high

@@ -17,6 +17,14 @@
 	.return RH(register)
 }
 
+.function @Sweet16_rl(register) {
+	.return RL(register)
+}
+
+.function @Sweet16_rh(register) {
+	.return RH(register)
+}
+
 .function opcode(operand, register) {
 	.if (register.getType() == AT_IMMEDIATE || register.getType() == AT_ABSOLUTE)
 		.return operand + register.getValue()

@@ -1,4 +1,4 @@
-.importonce
+#importonce
 
 .macro LoadAddress(address, lowByte) {
 	LoadAddressFull(address, lowByte, lowByte + 1)
