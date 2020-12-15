@@ -572,11 +572,8 @@ BREAK_TEST: {
 INTERRUPT_BREAK_TEST: {
 	.const VAL_1 = $feed
 	.const VAL_2 = $0123
-	TestName("INT BREAK")	
-	lda #<!breakHandler+
-	sta Sweet16.BRK_ISR
-	lda #>!breakHandler+
-	sta Sweet16.BRK_ISR+1
+	TestName("INT BREAK")
+	LoadAddress(!breakHandler+, Sweet16.BRK_ISR)
 	sweet16
 	set Sweet16.ACC : VAL_1
 	bk
@@ -594,6 +591,16 @@ INTERRUPT_BREAK_TEST: {
 	TestAssertEqual(Sweet16.ACC,  VAL_2, "2")
 	rts
 !breakHandler:
+	pla		// Y
+	tay		// restore Y
+	pla		// X
+	tax		// restore X
+	pla		// restore A
+	sta Sweet16_rl(Sweet16.ZP)
+	plp		// restore Status Flags
+	pla		// PCL discard - not useful
+	pla		// PCH discard - not useful
+	lda Sweet16_rl(Sweet16.ZP)
 	jmp SW16D
 }
 

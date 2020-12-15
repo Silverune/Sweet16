@@ -37,9 +37,8 @@ loadFiles: {
     tax
     lda !filenamesHi-,y
     tay
-    pla             // pop length
+    pla             // pop length  
     jsr KernalLoad
-    .break
     pla             // pop counter
     tay
     iny

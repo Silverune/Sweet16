@@ -45,7 +45,7 @@
 }
 
 // NOTE - this directly tests documentation I found on SWEET16 in the BR instruction, however, using Kick I do not need to use the calc_effective_address function as can simply calculate it as shown in the "effective_address" implementation below 
-.function test_calculate_effective_address(currentAddress) {
+.function @test_calculate_effective_address(currentAddress) {
 	.var values = List().add($80, $81, $ff, $00, $01, $7e, $7f)
 	.for (var i = 0	; i < values.size(); i++) {
 	}

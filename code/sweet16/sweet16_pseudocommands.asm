@@ -8,12 +8,8 @@
 	.var install_break = 0
 	.if (break_handler.getType() != AT_NONE)
 		.eval install_break = break_handler.getValue()
-	.if (install_break != 0) {
-		lda #<(install_break == 1 ? SW16_BREAK_HANDLER : install_break)
-		sta Sweet16.BRK_ISR
-		lda #>(install_break == 1 ? SW16_BREAK_HANDLER : install_break)
-		sta Sweet16.BRK_ISR+1
-	}
+	.if (install_break != 0)
+		LoadAddress(install_break == 1 ? SW16_BREAK_HANDLER : install_break, Sweet16.BRK_ISR)
 	
 	.var save_restore = 1
 	.if (save.getType() != AT_NONE)

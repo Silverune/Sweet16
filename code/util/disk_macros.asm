@@ -28,7 +28,6 @@
 }
 
 .macro KernalLoad() {
-.break
     jsr $ffbd     // call setnam
     lda #$01
     ldx $ba       // last used device number
@@ -40,7 +39,6 @@
 
    lda #$00       // $00 means: load to memory (not verify)
    jsr $ffd5      // call load
-   .break
    bcs !error+    // if carry set, a load error has happened
    jmp !done+
 !error:

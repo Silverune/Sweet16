@@ -18,16 +18,16 @@ Memory Map
 ----------
 Main-segment:
   $0801-$080c Basic
-  $080e-$0b5a Basic End
+  $080e-$099f Basic End
 
 Loader-segment:
-  $0b5b-$0b5d Loader
-  $0b5e-$0b6d f1
-  $0b6e-$0b7d f2
-  $0b7e-$0b7f Lo
-  $0b80-$0b81 Hi
-  $0b82-$0b83 Len
-  $0b84-$0ba1 Num
+  $09a0-$09a2 Loader
+  $09a3-$09b2 f1
+  $09b3-$09c2 f2
+  $09c3-$09c4 Lo
+  $09c5-$09c6 Hi
+  $09c7-$09c8 Len
+  $09c9-$09e6 Num
 
 Util-segment:
 
@@ -41,10 +41,10 @@ TestsPatch-segment:
   $2000-$2001 TestsPatch
 
 Tests-segment:
-  $2000-$523e Tests
+  $2000-$5241 Tests
 
 UtilData-segment:
-  $0ba2-$0bc4 UtilData
+  $09e7-$0a09 UtilData
 
 Sweet16JumpTable-segment:
   $1061-$1080 Sweet16JumpTable
@@ -59,7 +59,7 @@ Sweet16Data-segment:
   $12a6-$12aa Sweet16Data
 
 TestData-segment:
-  $523f-$5290 TestData
+  $5242-$5293 TestData
 
 Writing Vice symbol file: /Users/rhett/Google Drive/Source/C64/Sweet16/bin/startup.vs
 Writing Symbol file: startup.sym

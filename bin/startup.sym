@@ -1,14 +1,14 @@
 .label BRANCH_IF_CARRY_SET_TEST=$3c5c {
 }
-.label TEST_COUNT=$5246
-.label TestRun=$4fe4 {
+.label TEST_COUNT=$5252
+.label TestRun=$4ff0 {
 }
 .label init=$817 {
 }
 .label Anykey=$98c
 .label BRANCH_IF_NONZERO_TEST=$411a {
 }
-.label ABSOLUTE_JUMP_TEST=$4a4a {
+.label ABSOLUTE_JUMP_TEST=$4a56 {
 }
 .label ADD_TEST=$2fd0 {
 }
@@ -20,7 +20,7 @@
 }
 .label BRANCH_IF_PLUS_TEST=$3d90 {
 }
-.label RETURN_FROM_SUBROUTINE_TEST=$491d {
+.label RETURN_FROM_SUBROUTINE_TEST=$4929 {
   .label REGISTER=$0
 }
 .label SUBTRACT_TEST=$3164 {
@@ -36,7 +36,7 @@
 .label LOAD_INDIRECT_TEST=$2352 {
 }
 .label whirlIndex=$99f
-.label STACK_MEMORY=$5284 {
+.label STACK_MEMORY=$5290 {
 }
 .label INCREMENT_TEST=$36a8 {
 }
@@ -44,7 +44,7 @@
 }
 .label COMPARE_TEST=$357d {
 }
-.label TEST_PASS_COUNT=$5247
+.label TEST_PASS_COUNT=$5253
 .label loadFiles=$9a0 {
 }
 .label STORE_DOUBLE_BYTE_INDIRECT_TEST=$2887 {
@@ -61,8 +61,8 @@
 }
 .label install_update_isr=$828 {
 }
-.label TEST_SUCCESS=$5242
-.label TEST_FAILURE=$5244
+.label TEST_SUCCESS=$524e
+.label TEST_FAILURE=$5250
 .label ZpVarWord=$0 {
   .label One=$fb {
   }
@@ -105,22 +105,22 @@
   .label REGISTER=$0
 }
 .label SW16=$1008
-.label TEST_MEMORY_2=$5260
+.label TEST_MEMORY_2=$526c
 .label restoreCursor=$87b {
 }
-.label TEST_MEMORY_3=$5262
+.label TEST_MEMORY_3=$526e
 .label BRANCH_ALWAYS_TEST=$39ff {
 }
 .label INTERRUPT_BREAK_TEST=$4640 {
 }
-.label TEST_TITLE=$5249
-.label BRANCH_TO_SUBROUTINE_TEST=$47e3 {
+.label TEST_TITLE=$5255
+.label BRANCH_TO_SUBROUTINE_TEST=$47ef {
 }
-.label EXTERNAL_JSR_TEST=$4b77 {
+.label EXTERNAL_JSR_TEST=$4b83 {
 }
 .label loadAll=$8a7 {
 }
-.label SET_INDIRECT_TEST=$4d94 {
+.label SET_INDIRECT_TEST=$4da0 {
 }
 .label ready=$982
 .label ZpVar=$ff {
@@ -133,21 +133,21 @@
   .label Three=$50 {
   }
 }
-.label TEST_MEMORY=$525e
+.label TEST_MEMORY=$526a
 .label showWhirl=$887 {
 }
 .label BRANCH_IF_MINUS_ONE_TEST=$4249 {
 }
-.label TEST_MEMORY_SEQUENCE=$5264
+.label TEST_MEMORY_SEQUENCE=$5270
 .label LOAD_TEST=$211a {
 }
 .label POP_INDIRECT_TEST=$2a92 {
 }
-.label TEST_MEMORY_SEQUENCE_2=$5274
+.label TEST_MEMORY_SEQUENCE_2=$5280
 .label tests_patch=$2000 {
 }
-.label TEST_NAME_COUNT=$5248
-.label SET_MEMORY_TEST=$4ebd {
+.label TEST_NAME_COUNT=$5254
+.label SET_MEMORY_TEST=$4ec9 {
 }
 .label STORE_TEST=$2234 {
 }
