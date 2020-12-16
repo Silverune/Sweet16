@@ -54,40 +54,6 @@
     rts
 }
 
-.function FormatFilename(name, border) {
-    .return FormatFilename(name, border, " ")
-}
-
-.function FormatFilename(name, border, spacer) {
-    .return FormatFilename(name, border, spacer, 999)
-}
-
-.function FormatFilename(name, border, spacer, lengthOverride) {
-    .const dumpDebug = false;
-    .const totalLength = 16
-    .var length = min(totalLength, lengthOverride)
-    .eval spacer = spacer.charAt(0)
-    .var toFill = length - name.size() - border.size() * 2    
-    .errorif (name.size() + border.size() * 2 > length), "Name too long, must be less than " + (length + border.size() * 2).string()
-    
-    .var retval = border;
-    .var left = mod(toFill, 2) + floor(toFill / 2);
-    .var right = floor(toFill / 2);
-    .for (var i = 0; i < left; i++) {
-        .eval retval += spacer
-    }
-    .eval retval = retval + name.toUpperCase()
-    .for (var i = 0; i < right; i++) {
-        .eval retval += spacer
-    }
-    .eval retval += border;
-    
-    .if (dumpDebug) {
-.print "[" + retval + "] " + retval.size()
-    }
-    .return retval
-}
-
 .macro LoadAllIfMissing(token) {
 	Output("CHECKING FOR RESOURCES...")
 	CheckPatchPlaceholder(token)
