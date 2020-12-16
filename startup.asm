@@ -7,7 +7,7 @@
 .segmentdef Util[startAfter="Loader", segments="UtilData"]
 
 .segmentdef Sweet16Patch [start=LibLocation, allowOverlap]
-.segmentdef Sweet16 [start=LibLocation, segments="Sweet16JumpTable, Sweet16Page, Sweet16OutOfPage, Sweet16Data", allowOverlap]
+.segmentdef Sweet16 [start=LibLocation, allowOverlap]
 
 .segmentdef TestsPatch[start=TestLocation, allowOverlap]
 .segmentdef Tests[start=TestLocation, segments="TestData", allowOverlap]
@@ -36,8 +36,8 @@
     [name=separator, type="rel" ],
 }
 
+#import "core.lib"
 #import "code/util/util.lib"
-#import "code/sweet16/sweet16.lib"
 #import "code/tests/test.lib"
 #import "code/loader.asm"
 #import "code/main.asm"

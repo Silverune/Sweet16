@@ -1,6 +1,5 @@
 .segmentdef UtilData [startAfter="Util"]
 
-#import "address_macros.asm"
 #import "patch_macros.asm"
 #import "zp_var.asm"
 #import "isr_macros.asm"

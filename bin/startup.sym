@@ -1,14 +1,186 @@
 .label BRANCH_IF_CARRY_SET_TEST=$3c5c {
 }
 .label TEST_COUNT=$5252
+.namespace Image {
+}
 .label TestRun=$4ff0 {
+}
+.namespace BASIC_ROM {
+  .label ROM=$a000 {
+  }
+}
+.namespace Kernal {
+  .label SETLFS=$ffba {
+  }
+  .label UDTIM=$ffea {
+  }
+  .label PLOT=$fff0 {
+  }
+  .label LOAD=$ffd5 {
+  }
+  .label CHKOUT=$ffc9 {
+  }
+  .label MEMBOT=$ff99 {
+  }
+  .label CLRCHN=$ffcc {
+  }
+  .label SETMSG=$ff90 {
+  }
+  .label TALK=$ffb4 {
+  }
+  .label CLOSE=$ffc3 {
+  }
+  .label RESET=$fffc {
+  }
+  .label GETIN=$ffe4 {
+  }
+  .label SCINIT=$ff81 {
+  }
+  .label SCREEN=$ffed {
+  }
+  .label RESTOR=$ff8a {
+  }
+  .label IECOUT=$ffa8 {
+  }
+  .label LISTEN=$ffb1 {
+  }
+  .label SAVE=$ffd8 {
+  }
+  .label UNLSTN=$ffae {
+  }
+  .label CHRIN=$ffcf {
+  }
+  .label SETTIM=$ffdb {
+  }
+  .label SETTMO=$ffa2 {
+  }
+  .label RDTIM=$ffde {
+  }
+  .label STOP=$ffe1 {
+  }
+  .label LSTNSA=$ff93 {
+  }
+  .label IECIN=$ffa5 {
+  }
+  .label CLALL=$ffe7 {
+  }
+  .label NMI=$fffa {
+  }
+  .label RAMTAS=$ff87 {
+  }
+  .label SETNAM=$ffbd {
+  }
+  .label VECTOR=$ff8d {
+  }
+  .label READST=$ffb7 {
+  }
+  .label OPEN=$ffc0 {
+  }
+  .label CHROUT=$ffd2 {
+  }
+  .label IRQ_BRK=$fffe {
+  }
+  .label TALKSA=$ff96 {
+  }
+  .label MEMTOP=$ff9c {
+  }
+  .label SCNKEY=$ff9f {
+  }
+  .label CHKIN=$ffc6 {
+  }
+  .label IOINIT=$ff84 {
+  }
+  .label UNTALK=$ffab {
+  }
+  .label IOBASE=$fff3 {
+  }
 }
 .label init=$817 {
 }
 .label Anykey=$98c
+.namespace IO {
+  .label Area=$d000 {
+  }
+}
 .label BRANCH_IF_NONZERO_TEST=$411a {
 }
 .label ABSOLUTE_JUMP_TEST=$4a56 {
+}
+.namespace Two {
+  .label D1IRQREADIndicator=$2a4 {
+  }
+  .label RS232InputBufferEnd=$29b {
+  }
+  .label ScreenMemoryAddressHighByte=$288 {
+  }
+  .label MemoryBottom=$281 {
+  }
+  .label RS232NonStandardBits=$295 {
+  }
+  .label RS232Enables=$2a1 {
+  }
+  .label RS232BaudRate=$299 {
+  }
+  .label RS232OutputBufferEnd=$29e {
+  }
+  .label TapeREADStore=$2a3 {
+  }
+  .label CurrentCharColor=$286 {
+  }
+  .label SerialBusTimeout=$285 {
+  }
+  .label ShiftKeys=$28d {
+  }
+  .label RS232Command=$294 {
+  }
+  .label BackgroundColorUnderCursor=$287 {
+  }
+  .label ActiveFileFirstAddress=$263 {
+  }
+  .label KeyboardTable=$28f {
+  }
+  .label RepeatKeys=$28a {
+  }
+  .label KeyboardBufferMaxBytes=$289 {
+  }
+  .label AutoScrollDown=$292 {
+  }
+  .label MemoryTop=$283 {
+  }
+  .label RS232OutputBifferHighByte=$29d {
+  }
+  .label RepeatKeyFirstRepeatDelay=$28c {
+  }
+  .label TVStandard=$2a6 {
+  }
+  .label LineIndex=$2a5 {
+  }
+  .label RS232Status=$297 {
+  }
+  .label UpperLowerCase=$291 {
+  }
+  .label RS232InputBufferHighByte=$29c {
+  }
+  .label KeyboardBufferQueue=$277 {
+  }
+  .label RepeatKeySpeedCounter=$28b {
+  }
+  .label BASICInputBuffer=$200 {
+  }
+  .label RS232Control=$293 {
+  }
+  .label ActiveFileSecondaryAddress=$26d {
+  }
+  .label LastShiftKey=$28e {
+  }
+  .label IRQVectorTapeIO=$29f {
+  }
+  .label TapeIOSenseTOD=$2a2 {
+  }
+  .label ActiveLogicalFileNumbers=$259 {
+  }
+  .label RS232BitsToSend=$298 {
+  }
 }
 .label ADD_TEST=$2fd0 {
 }
@@ -23,15 +195,50 @@
 .label RETURN_FROM_SUBROUTINE_TEST=$4929 {
   .label REGISTER=$0
 }
+.namespace Cartridge {
+  .label ROM=$8009 {
+  }
+  .label Signature=$8004 {
+  }
+  .label NMI=$8002 {
+  }
+  .label ColdReset=$8000 {
+  }
+}
+.namespace Kick {
+}
 .label SUBTRACT_TEST=$3164 {
 }
+.namespace One {
+  .label TapeInputErrorLog=$100 {
+  }
+  .label HardwareStackArea=$100
+  .label BASICStack=$13f {
+  }
+}
 .label BRANCH_IF_NO_CARRY_TEST=$3b28 {
+}
+.label Zb=$54 {
+  .label Five=$50 {
+  }
+  .label Six=$51
+  .label One=$2 {
+  }
+  .label Four=$2a {
+  }
+  .label Two=$5 {
+  }
+  .label Three=$6 {
+  }
 }
 .label Newline=$9e7 {
 }
 .label oldIrq=$998
 .label whirl=$99a
 .label storeCursor=$872 {
+}
+.label Zm=$51 {
+  .label One=$50
 }
 .label LOAD_INDIRECT_TEST=$2352 {
 }
@@ -45,6 +252,19 @@
 .label COMPARE_TEST=$357d {
 }
 .label TEST_PASS_COUNT=$5253
+.label Zw=$10b {
+  .label Five=$52 {
+  }
+  .label Six=$54
+  .label One=$3 {
+  }
+  .label Four=$fd {
+  }
+  .label Two=$4e {
+  }
+  .label Three=$fb {
+  }
+}
 .label loadFiles=$9a0 {
 }
 .label STORE_DOUBLE_BYTE_INDIRECT_TEST=$2887 {
@@ -54,6 +274,8 @@
 .label BRANCH_IF_MINUS_TEST=$3ec0 {
 }
 .label whirlLength=$99e
+.namespace ISR {
+}
 .label irq=$85a
 .label LOAD_DOUBLE_BYTE_INDIRECT_TEST=$26ed {
 }
@@ -63,6 +285,14 @@
 }
 .label TEST_SUCCESS=$524e
 .label TEST_FAILURE=$5250
+.namespace ScreenMemoryDefault {
+  .label ScreenMemory=$400 {
+  }
+  .label SpritePointers=$7f8 {
+  }
+}
+.namespace CharPad {
+}
 .label ZpVarWord=$0 {
   .label One=$fb {
   }
@@ -91,6 +321,10 @@
   .label SR=$e
   .label R12L=$2f
 }
+.namespace ColorRAM {
+  .label RAM=$d800 {
+  }
+}
 .label STORE_INDIRECT_TEST=$24e1 {
 }
 .label STORE_POP_INDIRECT_TEST=$2ea1 {
@@ -98,13 +332,121 @@
 .label BRANCH_IF_NOT_MINUS_ONE_TEST=$4378 {
 }
 .label Reset=$995
+.namespace Disk {
+}
 .label SW16_BREAK_HANDLER=$1235
 .label SET_TEST=$2000 {
 }
 .label BREAK_TEST=$44a8 {
   .label REGISTER=$0
 }
+.namespace Three {
+  .label LOAD=$330 {
+  }
+  .label CHKOUT=$320 {
+  }
+  .label CLRCHN=$322 {
+  }
+  .label CLOSE=$31c {
+  }
+  .label DefaultStatusSys=$30f {
+  }
+  .label GETIN=$32a {
+  }
+  .label SAVE=$332 {
+  }
+  .label CHRIN=$324 {
+  }
+  .label InterruptServiceRoutine=$314 {
+  }
+  .label STOP=$328 {
+  }
+  .label WarmReset=$300 {
+  }
+  .label BasicIdle=$302 {
+  }
+  .label JmpAbsUsr=$310 {
+  }
+  .label DefaultXSys=$30d {
+  }
+  .label BasicTokenDecoder=$306 {
+  }
+  .label NMI=$318 {
+  }
+  .label CLALL=$32c {
+  }
+  .label OPEN=$31a {
+  }
+  .label CHROUT=$326 {
+  }
+  .label BasicNextItem=$30a {
+  }
+  .label DefaultYSys=$30e {
+  }
+  .label DefaultASys=$30c {
+  }
+  .label CHKIN=$31e {
+  }
+  .label BRK=$316 {
+  }
+  .label BasicInstructionExecutor=$308 {
+  }
+  .label BasicLineTokenizater=$304 {
+  }
+  .label DatasetteBuffer=$33c {
+  }
+}
 .label SW16=$1008
+.namespace SID {
+  .label Voice1Frequency=$d400 {
+  }
+  .label VolumeFilterModes=$d418 {
+  }
+  .label Voice2AttackDecay=$d40c {
+  }
+  .label Voice3WaveformOutput=$d41b {
+  }
+  .label RegisterImages=$d420 {
+  }
+  .label FilterCutOffFrequency3_10=$d416 {
+  }
+  .label PaddleX=$d419 {
+  }
+  .label Voice1Sustain_Volume_Release=$d406 {
+  }
+  .label PaddleY=$d41a {
+  }
+  .label Voice3Frequency=$d40e {
+  }
+  .label Voice3PulseWidth=$d410 {
+  }
+  .label FilterControl=$d417 {
+  }
+  .label FilterCutOffFrequency0_2=$d415 {
+  }
+  .label Voice1PulseWidth=$d402 {
+  }
+  .label Voice2SustainVolumeRelease=$d40d {
+  }
+  .label Voice2Pulse_Width=$d409 {
+  }
+  .label Voice3ADSROutput=$d41c {
+  }
+  .label Voice3AttackDecay=$d413 {
+  }
+  .label Voice1Attack_Decay=$d405 {
+  }
+  .label Voice2Frequency=$d407 {
+  }
+  .label Voice2Control=$d40b {
+  }
+  .label Voice1Control=$d404 {
+  }
+  .label Voice3Control=$d412 {
+  }
+  .label Voice3SustainVolumeRelease=$d414 {
+  }
+}
 .label TEST_MEMORY_2=$526c
 .label restoreCursor=$87b {
 }
@@ -113,17 +455,31 @@
 }
 .label INTERRUPT_BREAK_TEST=$4640 {
 }
+.namespace Patch {
+}
 .label TEST_TITLE=$5255
 .label BRANCH_TO_SUBROUTINE_TEST=$47ef {
+}
+.namespace CharacterROM {
+  .label ROM=$d000 {
+  }
+  .label UppercaseGraphics=$e000 {
+  }
+  .label LowercaseUppercase=$e800 {
+  }
 }
 .label EXTERNAL_JSR_TEST=$4b83 {
 }
 .label loadAll=$8a7 {
 }
+.namespace BASIC {
+  .label Default=$801 {
+  }
+}
 .label SET_INDIRECT_TEST=$4da0 {
 }
 .label ready=$982
-.label ZpVar=$ff {
+.label ZpVar=$fd {
   .label One=$4e {
   }
   .label Four=$51 {
@@ -134,6 +490,266 @@
   }
 }
 .label TEST_MEMORY=$526a
+.namespace Zero {
+  .label SerialBusOutput=$95 {
+  }
+  .label CurrentOutputDevice=$9a {
+  }
+  .label LastKeyPressed=$c5 {
+  }
+  .label TrigSignFlag=$12 {
+  }
+  .label RS232StartBit=$a9 {
+  }
+  .label LoadScreenScrollingTempStorage=$ac {
+  }
+  .label ArrayVariablesStartPointer=$2f {
+  }
+  .label InputLastColumn=$c8 {
+  }
+  .label EndAddressOfLoadVerifySave=$ae {
+  }
+  .label CassetteReadBlockByteCounter=$b5 {
+  }
+  .label CursorFlashCount=$cd {
+  }
+  .label QuoteMode=$d4 {
+  }
+  .label BitCounter=$a3 {
+  }
+  .label FAC1Exponent=$61 {
+  }
+  .label TimingCassetteReadConstant=$92 {
+  }
+  .label DefaultArraySizeDimFlag=$c {
+  }
+  .label InputCursorXCoordinate=$c9 {
+  }
+  .label PointerToCurrentFilename=$bb {
+  }
+  .label InputCursorYCoordinate=$ca {
+  }
+  .label CursorCharacter=$ce {
+  }
+  .label JiffyClock=$a0 {
+  }
+  .label TempRS232ReadData=$a7 {
+  }
+  .label RomIntegerToFloatPointer=$5 {
+  }
+  .label KeyboardFlag=$91 {
+  }
+  .label TempX=$97 {
+  }
+  .label CassetteMotor=$c0 {
+  }
+  .label CurrentInputDevice=$99 {
+  }
+  .label CassetteSyncByteCounter=$a5 {
+  }
+  .label ConstantTimingCassetteReads=$b0 {
+  }
+  .label CurrentDeviceNumber=$ba {
+  }
+  .label RS232OutputParity=$bd {
+  }
+  .label NextAvailableSpaceTempStringPointer=$16 {
+  }
+  .label NumOpenIOFiles=$98 {
+  }
+  .label CursortLogicalColumn=$d3 {
+  }
+  .label ProcessorPortRegister=$1 {
+  }
+  .label UserFunctionOrArrayFlag=$10 {
+  }
+  .label CursorFlashPhase=$cf {
+  }
+  .label NameTypeCurrentVariable=$45 {
+  }
+  .label FAC1BitOverflow=$68 {
+  }
+  .label CounterRS232InputBits=$a8 {
+  }
+  .label InputBufferNumberPointer=$b {
+  }
+  .label ComparisonOperatorIndicator=$4d {
+  }
+  .label LoadSaveEnd=$c3 {
+  }
+  .label ColorRAMCurrentScreenLine=$f3 {
+  }
+  .label NumericVariablesPointer=$2d {
+  }
+  .label CassetteReadPass2ErrorLog=$9f {
+  }
+  .label TempInputStoragePointer=$43 {
+  }
+  .label CassetteReadWriteDuplicateBlockCounter=$be {
+  }
+  .label CurrentStringVariablePointer=$35 {
+  }
+  .label FAC2LowByte=$70 {
+  }
+  .label CursorColumnPosition=$9 {
+  }
+  .label ArithmeticRegister3=$57 {
+  }
+  .label ArithmeticRegister4=$5c {
+  }
+  .label ListGarbageCollection=$f {
+  }
+  .label CassetteBufferIOCount=$a6 {
+  }
+  .label TempStorageMathTxtPtr=$4b {
+  }
+  .label FAC2Exponent=$69 {
+  }
+  .label RSR232OutputBitCounter=$b4 {
+  }
+  .label KeyboardBufferCount=$c6 {
+  }
+  .label FAC2Sign=$6e {
+  }
+  .label MultiplicationDivisionResult=$26 {
+  }
+  .label CurrentInputDeviceFlag=$13 {
+  }
+  .label NumTermsSeriesEvaluation=$67 {
+  }
+  .label CursorFlash=$cc {
+  }
+  .label CassetteReadByte=$bf {
+  }
+  .label ScanQuoteEndOfStringFlag=$8 {
+  }
+  .label CurrentBasicLineNumberContPointer=$3b {
+  }
+  .label CurrentLogicalFileNumber=$b8 {
+  }
+  .label RS232InputBuffer=$f7 {
+  }
+  .label LoadSaveStart=$c1 {
+  }
+  .label InsertMode=$d8 {
+  }
+  .label RS232InputParity=$ab {
+  }
+  .label CurrentBasicLineNumberPointer=$39 {
+  }
+  .label LogicalScreenLineMaxLength=$d5 {
+  }
+  .label NextBasicStatementContPointer=$3d {
+  }
+  .label PrintReverseCharacters=$c7 {
+  }
+  .label CassetteReadPass1ErrorLog=$9e {
+  }
+  .label ScreenLineLinkTable=$d9 {
+  }
+  .label BasicStartPointer=$2b {
+  }
+  .label VariableTypeFlag=$d {
+  }
+  .label CassetteBlockSync=$96 {
+  }
+  .label CurrentVariableLetPointer=$49 {
+  }
+  .label KeyboardDecodingTable=$f5 {
+  }
+  .label SearchCharTempIntegerFlag=$7 {
+  }
+  .label NextDataReadPointer=$41 {
+  }
+  .label FAC1Mantissa=$62 {
+  }
+  .label RS232OutputBuffer=$f9 {
+  }
+  .label Input=$d0 {
+  }
+  .label FAC1Sign=$66 {
+  }
+  .label CurrentScreenLine=$d1 {
+  }
+  .label GarbageCollectionStepSize=$53 {
+  }
+  .label CurrentSecondaryAddress=$b9 {
+  }
+  .label SerialBusOutputCharWaiting=$94 {
+  }
+  .label CurrentFilenameLength=$b7 {
+  }
+  .label BasicInterpreterUtilityPointer=$22 {
+  }
+  .label ExecutionAddressCurrentBasicFunction=$55 {
+  }
+  .label ProcessorPortDataDirectionRegister=$0 {
+  }
+  .label RNDSeed=$8b {
+  }
+  .label DataEntryMethodFlag=$11 {
+  }
+  .label KernalLoadVerify=$93 {
+  }
+  .label KernalIOStatus=$90 {
+  }
+  .label TargetLineNumberPointer=$14 {
+  }
+  .label SeriesEvaluationTempTable=$71 {
+  }
+  .label CursorPhysicalLineNumber=$d6 {
+  }
+  .label TempStringAddressOrStackStringPointer=$17 {
+  }
+  .label StringVariablesPointer=$33 {
+  }
+  .label RomFloatToIntegerPointer=$3 {
+  }
+  .label JmpAboluteConstant=$54 {
+  }
+  .label FAC2Mantissa=$6a {
+  }
+  .label CassetteBuffer=$b2 {
+  }
+  .label OutputBuffer=$b6 {
+  }
+  .label BasicCurrentLineNumberDataPointer=$3f {
+  }
+  .label BasicEndPointer=$37 {
+  }
+  .label KeyboardDecodingIndex=$cb {
+  }
+  .label ArrayVariablesEndPointer=$31 {
+  }
+  .label SignedComparison=$6f {
+  }
+  .label SetBasicInterpreterFunctionFlag=$a {
+  }
+  .label TempStringStack=$19 {
+  }
+  .label TapeByteReceived=$9c {
+  }
+  .label RS232InputByte=$aa {
+  }
+  .label LastPrintedASCII=$d7 {
+  }
+  .label CurrentFnFunctionPointer=$4e {
+  }
+  .label CurrentStringVariableMemoryAllocationPointer=$50 {
+  }
+  .label NumericVariableTypeFlag=$e {
+  }
+  .label BASICFloatingPoint2ASCII=$ff {
+  }
+  .label CurrentVariableFunctionPointer=$47 {
+  }
+  .label KernalMessageDisplayControl=$9d {
+  }
+  .label CHRGETRoutine=$73 {
+  }
+  .label CassetteParityByte=$9b {
+  }
+}
 .label showWhirl=$887 {
 }
 .label BRANCH_IF_MINUS_ONE_TEST=$4249 {
@@ -141,7 +757,71 @@
 .label TEST_MEMORY_SEQUENCE=$5270
 .label LOAD_TEST=$211a {
 }
+.namespace CIA2 {
+  .label PortASerialBusAccess=$dd00 {
+  }
+  .label PortBRS232Access=$dd01 {
+  }
+  .label PortBDataDirection=$dd03 {
+  }
+  .label PortADataDirection=$dd02 {
+  }
+  .label TimerAControl=$dd0e {
+  }
+  .label TimerBControl=$dd0f {
+  }
+  .label TimerB=$dd06 {
+  }
+  .label TimeOfDayTenthSeconds=$dd08 {
+  }
+  .label TimerA=$dd04 {
+  }
+  .label SerialShift=$dd0c {
+  }
+  .label CIA2RegisterImages=$dd10 {
+  }
+  .label TimeOfDaySeconds=$dd09 {
+  }
+  .label TimeOfDayHours=$dd0b {
+  }
+  .label InterruptControlStatus=$dd0d {
+  }
+  .label TimeOfDayMinutes=$dd0a {
+  }
+}
 .label POP_INDIRECT_TEST=$2a92 {
+}
+.namespace CIA1 {
+  .label RegisterImages=$dc10 {
+  }
+  .label PortBDataDirection=$dc03 {
+  }
+  .label PortADataDirection=$dc02 {
+  }
+  .label TimerAControl=$dc0e {
+  }
+  .label TimerBControl=$dc0f {
+  }
+  .label TimerB=$dc06 {
+  }
+  .label TimeOfDayTenthSeconds=$dc08 {
+  }
+  .label TimerA=$dc04 {
+  }
+  .label SerialShift=$dc0c {
+  }
+  .label TimeOfDaySeconds=$dc09 {
+  }
+  .label TimeOfDayHours=$dc0b {
+  }
+  .label InterruptControlStatus=$dc0d {
+  }
+  .label PortB=$dc01 {
+  }
+  .label TimeOfDayMinutes=$dc0a {
+  }
+  .label PortA=$dc00 {
+  }
 }
 .label TEST_MEMORY_SEQUENCE_2=$5280
 .label tests_patch=$2000 {
@@ -151,8 +831,111 @@
 }
 .label STORE_TEST=$2234 {
 }
+.namespace VIC {
+  .label Sprite4XCoordinate=$d008 {
+  }
+  .label RasterLine=$d012 {
+  }
+  .label RegisterImages=$d040 {
+  }
+  .label SpriteExtraColor2=$d026 {
+  }
+  .label SpriteExtraColor1=$d025 {
+  }
+  .label Sprite2YCoordinate=$d005 {
+  }
+  .label BorderColor=$d020 {
+  }
+  .label Sprite1XCoordinate=$d002 {
+  }
+  .label Sprite7XCoordinate=$d00e {
+  }
+  .label Sprite6YCoordinate=$d00d {
+  }
+  .label SpriteEnable=$d015 {
+  }
+  .label Sprite5Color=$d02c {
+  }
+  .label SpriteDoubleHeight=$d017 {
+  }
+  .label Sprite5XCoordinate=$d00a {
+  }
+  .label Sprite3YCoordinate=$d007 {
+  }
+  .label MemorySetup=$d018 {
+  }
+  .label Sprite7Color=$d02e {
+  }
+  .label SpriteSpriteCollision=$d01e {
+  }
+  .label Sprite6XCoordinate=$d00c {
+  }
+  .label Sprite1Color=$d028 {
+  }
+  .label LightPenXCoordinate=$d013 {
+  }
+  .label Sprite2XCoordinate=$d004 {
+  }
+  .label SpriteDoubleWidth=$d01d {
+  }
+  .label Sprite4Color=$d02b {
+  }
+  .label Sprite3Color=$d02a {
+  }
+  .label Sprite0_7XCoordinates=$d010 {
+  }
+  .label Sprite4YCoordinate=$d009 {
+  }
+  .label Sprite7YCoordinate=$d00f {
+  }
+  .label ExtraBackgroundColor2=$d023 {
+  }
+  .label ExtraBackgroundColor1=$d022 {
+  }
+  .label Sprite0YCoordinate=$d001 {
+  }
+  .label Sprite6Color=$d02d {
+  }
+  .label InterruptControl=$d01a {
+  }
+  .label SpritePriority=$d01b {
+  }
+  .label ExtraBackgroundColor3=$d024 {
+  }
+  .label Sprite0Color=$d027 {
+  }
+  .label Sprite3XCoordinate=$d006 {
+  }
+  .label Sprite1YCoordinate=$d003 {
+  }
+  .label Sprite2Color=$d029 {
+  }
+  .label LightPenYCoordinate=$d014 {
+  }
+  .label Sprite5YCoordinate=$d00b {
+  }
+  .label Sprite0XCordinate=$d000 {
+  }
+  .label ScreenControl2=$d016 {
+  }
+  .label InterruptStatus=$d019 {
+  }
+  .label SpriteMulticolorMode=$d01c {
+  }
+  .label ScreenControl1=$d011 {
+  }
+  .label SpriteBackgroundCollision=$d01f {
+  }
+  .label BackgroundColor=$d021 {
+  }
+}
 .label RETURN_TO_6502_MODE_TEST=$38ec {
 }
 .label uninstall_update_isr=$846 {
+}
+.namespace KernalJump {
+  .label ISR=$ea31 {
+  }
+  .label ISRExit=$ea81
 }
 .label Main=$80e
