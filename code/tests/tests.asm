@@ -3,13 +3,13 @@
 	Sweet16()
 .segment Sweet16Patch
 sweet16_patch:
-    PatchCode()
+    Patch_WriteCode()
 
 .segment Tests
 
 // Simple tests for Sweet16.  Most of these are converted versions of Woz's originals in the description of each of the mnemonics / opcodes (http://www.6502.org/source/interpreters/sweet16.htm#Register_Instructions_).
 
-// The 2-byte constant is loaded into Rn (n=0 to F, Hex) and branch conditions set accordingly. The carry is cleared.
+// The 2-byte constant783 is loaded into Rn (n=0 to F, Hex) and branch conditions set accordingly. The carry is cleared.
 SET_TEST: {
 	.const REGISTER = 5			// arbitrary register
 	.const VALUE = $1234
@@ -780,6 +780,6 @@ TestRun:
 
 .segment TestsPatch
 tests_patch:
-    PatchCode()
+	Patch_WriteCode()
 
 .segment Default

@@ -28,6 +28,7 @@
 .var mainFilename = FormatFilename(name, border)
 .var libraryFilename=FormatFilename("lib", border)
 .var testsFilename=FormatFilename("tests", border)
+.const codeFiles = List().add(libraryFilename, testsFilename).lock()
 
 .disk [filename=name + "." + cmdLineVars.get("format").string(), name=name.toUpperCase(), id=cmdLineVars.get("id").string(), showInfo ] {
 
@@ -42,5 +43,4 @@
 #import "core.lib"
 #import "code/util/util.lib"
 #import "code/tests/test.lib"
-#import "code/loader.asm"
 #import "code/main.asm"

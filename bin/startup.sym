@@ -95,9 +95,7 @@
   .label IOBASE=$fff3 {
   }
 }
-.label init=$817 {
-}
-.label Anykey=$98c
+.label Anykey=$8ca
 .namespace IO {
   .label Area=$d000 {
   }
@@ -184,8 +182,6 @@
 }
 .label ADD_TEST=$2fd0 {
 }
-.label KernalLoad=$9e9 {
-}
 .label DECREMENT_TEST=$37c8 {
 }
 .label POP_DOUBLE_BYTE_INDIRECT_TEST=$32fa {
@@ -231,18 +227,13 @@
   .label Three=$6 {
   }
 }
-.label Newline=$9e7 {
-}
-.label oldIrq=$998
-.label whirl=$99a
-.label storeCursor=$872 {
+.label Newline=$8d3 {
 }
 .label Zm=$51 {
   .label One=$50
 }
 .label LOAD_INDIRECT_TEST=$2352 {
 }
-.label whirlIndex=$99f
 .label STACK_MEMORY=$5290 {
 }
 .label INCREMENT_TEST=$36a8 {
@@ -265,23 +256,19 @@
   .label Three=$fb {
   }
 }
-.label loadFiles=$9a0 {
-}
 .label STORE_DOUBLE_BYTE_INDIRECT_TEST=$2887 {
 }
 .label SW16_NONE=$1000
 .label SW16D=$1024
 .label BRANCH_IF_MINUS_TEST=$3ec0 {
 }
-.label whirlLength=$99e
 .namespace ISR {
 }
-.label irq=$85a
 .label LOAD_DOUBLE_BYTE_INDIRECT_TEST=$26ed {
 }
 .label BRANCH_IF_ZERO_TEST=$3ff0 {
 }
-.label install_update_isr=$828 {
+.label load_code=$865 {
 }
 .label TEST_SUCCESS=$524e
 .label TEST_FAILURE=$5250
@@ -331,10 +318,10 @@
 }
 .label BRANCH_IF_NOT_MINUS_ONE_TEST=$4378 {
 }
-.label Reset=$995
 .namespace Disk {
 }
 .label SW16_BREAK_HANDLER=$1235
+.label load_splash=$82b
 .label SET_TEST=$2000 {
 }
 .label BREAK_TEST=$44a8 {
@@ -448,8 +435,6 @@
   }
 }
 .label TEST_MEMORY_2=$526c
-.label restoreCursor=$87b {
-}
 .label TEST_MEMORY_3=$526e
 .label BRANCH_ALWAYS_TEST=$39ff {
 }
@@ -468,9 +453,8 @@
   .label LowercaseUppercase=$e800 {
   }
 }
+.label error_handler=$82c
 .label EXTERNAL_JSR_TEST=$4b83 {
-}
-.label loadAll=$8a7 {
 }
 .namespace BASIC {
   .label Default=$801 {
@@ -478,7 +462,9 @@
 }
 .label SET_INDIRECT_TEST=$4da0 {
 }
-.label ready=$982
+.label load=$84d {
+}
+.label ready=$8c0
 .label ZpVar=$fd {
   .label One=$4e {
   }
@@ -750,12 +736,12 @@
   .label CassetteParityByte=$9b {
   }
 }
-.label showWhirl=$887 {
-}
 .label BRANCH_IF_MINUS_ONE_TEST=$4249 {
 }
 .label TEST_MEMORY_SEQUENCE=$5270
 .label LOAD_TEST=$211a {
+}
+.namespace Keyboard {
 }
 .namespace CIA2 {
   .label PortASerialBusAccess=$dd00 {
@@ -931,11 +917,10 @@
 }
 .label RETURN_TO_6502_MODE_TEST=$38ec {
 }
-.label uninstall_update_isr=$846 {
-}
 .namespace KernalJump {
   .label ISR=$ea31 {
   }
   .label ISRExit=$ea81
 }
-.label Main=$80e
+.label Main=$80e {
+}

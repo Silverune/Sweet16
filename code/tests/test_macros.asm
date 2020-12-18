@@ -242,7 +242,7 @@ memory:
 	.text "PRESS ANY KEY TO CONTINUE..."
 	Newline()
 !no_key:
-	KernalGetKey()
+	GetKey()
 	beq !no_key-
 	KernalOutput(newline)
 	jmp !done+
