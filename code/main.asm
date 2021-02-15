@@ -3,10 +3,11 @@
 BasicUpstart2(Main)
 
 Main:
-	Patch_CheckPatchCode(LibLocation)		// looks for byte sequence indicating code placeholder meaning actual code needs to be loaded
+	Cookie_Check(LibLocation)					// looks for byte sequence indicating code placeholder meaning actual code needs to be loaded
  	beq !already_loaded+						// segment data already there - not being loaded from disk
 // 	jsr load_splash								// load quick loading splash screen to show while main code is loading
  	jsr load_code								// load library and tests
+	 .break
 !already_loaded:
 	jsr ready
 
@@ -16,6 +17,7 @@ load_splash:
 	rts
 
 error_handler:
+	.break
 	pha
 	Output("Error: ")
 	pla
