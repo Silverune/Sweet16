@@ -9,6 +9,8 @@
   .label ROM=$a000 {
   }
 }
+.namespace Cookie {
+}
 .namespace Kernal {
   .label SETLFS=$ffba {
   }
@@ -439,8 +441,6 @@
 .label BRANCH_ALWAYS_TEST=$39ff {
 }
 .label INTERRUPT_BREAK_TEST=$4640 {
-}
-.namespace Patch {
 }
 .label TEST_TITLE=$5255
 .label BRANCH_TO_SUBROUTINE_TEST=$47ef {
@@ -918,6 +918,8 @@
 .label RETURN_TO_6502_MODE_TEST=$38ec {
 }
 .namespace KernalJump {
+  .label ClearScreen=$e544 {
+  }
   .label ISR=$ea31 {
   }
   .label ISRExit=$ea81

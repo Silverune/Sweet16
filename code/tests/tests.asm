@@ -3,7 +3,7 @@
 	Sweet16()
 .segment Sweet16Patch
 sweet16_patch:
-    Patch_WriteCode()
+    Cookie_WriteCode()
 
 .segment Tests
 
@@ -774,12 +774,12 @@ TestRun:
 
 	// not a real test as routine not required in this implementation
 #if DEBUG
-	.eval test_calculate_effective_address($1000)
+	//.eval test_calculate_effective_address($1000)
 #endif
 	rts
 
 .segment TestsPatch
 tests_patch:
-	Patch_WriteCode()
+	Cookie_WriteCode()
 
 .segment Default

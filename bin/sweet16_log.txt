@@ -4,6 +4,7 @@ flex pass 1
 flex pass 2
 flex pass 3
 Output pass
+  Page Size: 248    Page Start: $1100
 Writing prg file: sweet16.prg
 Writing d64 file: sweet16.d64
 Info for disk 'SWEET16'
@@ -11,55 +12,36 @@ Info for disk 'SWEET16'
   "---  SWEET16 ---", sectors=25, startTS=1:0
   "----------------", sectors=0, startTS=0:0
   "---    LIB   ---", sectors=3, startTS=2:19
-  "---   TESTS  ---", sectors=51, startTS=2:7
+  "---   TESTS  ---", sectors=52, startTS=2:7
   "----------------", sectors=0, startTS=0:0
 
 Memory Map
 ----------
 Main-segment:
   $0801-$080c Basic
-  $080e-$099f Basic End
+  $080e-$08d2 Basic End
 
 Loader-segment:
-  $09a0-$09a2 Loader
-  $09a3-$09b2 f1
-  $09b3-$09c2 f2
-  $09c3-$09c4 Lo
-  $09c5-$09c6 Hi
-  $09c7-$09c8 Len
-  $09c9-$09e6 Num
 
 Util-segment:
+
+UtilData-segment:
+  $08d3-$08d4 UtilData
 
 Sweet16Patch-segment:
   $1000-$1001 Sweet16Patch
 
 Sweet16-segment:
-  $1000-$1060 Sweet16
+  $1000-$12aa Sweet16
 
 TestsPatch-segment:
   $2000-$2001 TestsPatch
 
 Tests-segment:
-  $2000-$5241 Tests
-
-UtilData-segment:
-  $09e7-$0a09 UtilData
-
-Sweet16JumpTable-segment:
-  $1061-$1080 Sweet16JumpTable
-
-Sweet16Page-segment:
-  $1100-$1265 Sweet16Page
-
-Sweet16OutOfPage-segment:
-  $1266-$12a5 Sweet16OutOfPage
-
-Sweet16Data-segment:
-  $12a6-$12aa Sweet16Data
+  $2000-$524d Tests
 
 TestData-segment:
-  $5242-$5293 TestData
+  $524e-$529f TestData
 
-Writing Vice symbol file: /Users/rhett/Google Drive/Source/C64/Sweet16/bin/startup.vs
+Writing Vice symbol file: C:\Users\Rhett.Jacobs\OneDrive - Australian Research Council\Documents\Source\6502\Sweet16\bin\startup.vs
 Writing Symbol file: startup.sym
