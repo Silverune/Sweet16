@@ -2,20 +2,8 @@
 
 .segment Util
 
-.const kernal_chrout = $ffd2    // kernel CHROUT subroutine
-.const border_color = $d020     // Border color
-.const background_color = $d021 // Background color
-.const foreground_color = $0286 // Cursor color
-.const spacebar = $20           // Code for the SPACEBAR
-.const cursor_col = $00D3
-.const cursor_row = $00D6
-.const NULL = $00
-.const RETURN = $0D
-.const PlotKernal = $e50a 		//$fff0	// jump address for PLOT kernal command
-.const PlotRom = $e56c			
-
 .macro Newline() {
-	.byte RETURN, NULL
+	.byte Petscii.RETURN, Petscii.NULL
 }
 
 .macro ChangeCursor(row, column) {
@@ -32,27 +20,19 @@ newline:
 
 .macro ChangeBorder(color) {
 	lda #color
-	sta border_color
+	sta VIC.BorderColor
 }
 
 .macro ChangeBackground(color) {
 	lda #color
-	sta background_color
+	sta VIC.BackgroundColor
 }
 
 .macro ChangeColor(color) {
 	lda #color
-	sta foreground_color
+	sta Two.CurrentCharColor
 }
 
-.macro ChangeExistingTextColor(color) {
-	lda #color
-	sta $0286
-}
-
-.macro KernalClearScreen() {
-	jsr $e544
-}
 
 .macro ChangeScreen(background_color, foreground_color) {
 	ChangeBorder(background_color)
@@ -193,35 +173,6 @@ newline:
 	.text msg
 	.byte RETURN, NULL
 !done:
-}
-
-.macro StoreCursorKernal(cursorWordAddress) {
-	sec							// set carry flag
-	jsr PlotKernal				// fetch current position (X get ROW, Y get COL)
-	stx cursorWordAddress
-	sty cursorWordAddress + 1
-}
-
-.macro StoreCursorRom(cursorWordAddress) {
-	ldx $d3
-	stx cursorWordAddress
-	ldx $d6
-	stx cursorWordAddress + 1
-}
-
-.macro RestoreCursorKernal(cursorWordAddress) {
-	ldx cursorWordAddress
-	ldy cursorWordAddress + 1	
-	clc							// clear carry flag
-	jsr PlotKernal				// set current position (X get ROW, Y get COL)
-}
-
-.macro RestoreCursorRom(cursorWordAddress) {
-	ldx cursorWordAddress
-	stx $d3
-	ldx cursorWordAddress + 1
-	stx $d6
-	jsr PlotRom
 }
 
 .segment Default

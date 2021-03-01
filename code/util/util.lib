@@ -1,7 +1,6 @@
-#import "zp_var.asm"
-#import "isr_macros.asm"
+#importonce
+
 #import "screen_macros.asm"
-#import "timer_macros.asm"
 #import "data.asm"
 
 .segment Default
