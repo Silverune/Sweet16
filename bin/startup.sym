@@ -97,7 +97,7 @@
   .label IOBASE=$fff3 {
   }
 }
-.label Anykey=$8ca
+.label Anykey=$8c9
 .namespace IO {
   .label Area=$d000 {
   }
@@ -229,7 +229,7 @@
   .label Three=$6 {
   }
 }
-.label Newline=$8d3 {
+.label Newline=$8d2 {
 }
 .label Zm=$51 {
   .label One=$50
@@ -270,7 +270,7 @@
 }
 .label BRANCH_IF_ZERO_TEST=$3ff0 {
 }
-.label load_code=$865 {
+.label load_code=$864 {
 }
 .label TEST_SUCCESS=$524e
 .label TEST_FAILURE=$5250
@@ -323,7 +323,6 @@
 .namespace Disk {
 }
 .label SW16_BREAK_HANDLER=$1235
-.label load_splash=$82b
 .label SET_TEST=$2000 {
 }
 .label BREAK_TEST=$44a8 {
@@ -453,7 +452,7 @@
   .label LowercaseUppercase=$e800 {
   }
 }
-.label error_handler=$82c
+.label error_handler=$82b
 .label EXTERNAL_JSR_TEST=$4b83 {
 }
 .namespace BASIC {
@@ -462,9 +461,42 @@
 }
 .label SET_INDIRECT_TEST=$4da0 {
 }
-.label load=$84d {
+.label load=$84c {
 }
-.label ready=$8c0
+.namespace ErrorCodes {
+  .label NOT_INPUT_FILE=$6
+  .label LOAD=$1d
+  .label FILE_NOT_OPEN=$3
+  .label UNDEFINDED_FUNCTION=$1b
+  .label VERIFY=$1c
+  .label CANT_CONTINUE=$1a
+  .label NOT_OUTPUT_FILE=$7
+  .label REDIMENSIONEDD_ARRAY=$13
+  .label STRING_TOO_LONG=$17
+  .label FILE_OPEN=$2
+  .label SYNTAX=$b
+  .label DIVISION_BY_ZERO=$14
+  .label FORMULA_TOO_COMPLEX=$19
+  .label NEXT_WITHOUT_FOR=$a
+  .label OUT_OF_DATA=$d
+  .label FILE_DATA=$18
+  .label BREAK=$1e
+  .label BREAK_RUNSTOP=$0
+  .label MISSING_FILENAME=$8
+  .label ILLEGAL_QUANTITY=$e
+  .label RETURN_WITHOUT_GOSUB=$c
+  .label ILLEGAL_DIRECT=$15
+  .label FILE_NOT_FOUND=$4
+  .label OUT_OF_MEMORY=$10
+  .label DEVICE_NOT_PRESENT=$5
+  .label OVERFLOW=$f
+  .label UNDEFINDED_STATEMENT=$11
+  .label BAD_SUBSCRIPT=$12
+  .label ILLEGAL_DEVICE_NUMBER=$9
+  .label TYPE_MISMATCH=$16
+  .label TOO_MANY_FILES=$1
+}
+.label ready=$8bf
 .label ZpVar=$fd {
   .label One=$4e {
   }
@@ -505,6 +537,8 @@
   }
   .label FAC1Exponent=$61 {
   }
+  .label CursorLogicalColumn=$d3 {
+  }
   .label TimingCassetteReadConstant=$92 {
   }
   .label DefaultArraySizeDimFlag=$c {
@@ -542,8 +576,6 @@
   .label NextAvailableSpaceTempStringPointer=$16 {
   }
   .label NumOpenIOFiles=$98 {
-  }
-  .label CursortLogicalColumn=$d3 {
   }
   .label ProcessorPortRegister=$1 {
   }
@@ -920,9 +952,49 @@
 .namespace KernalJump {
   .label ClearScreen=$e544 {
   }
+  .label VicDefaultKeyboardScreen=$e5a0 {
+  }
+  .label SetCurrentColor=$e8cb {
+  }
+  .label CurrentColor=$e4da {
+  }
+  .label ScreenScreenUpwards=$e8ea {
+  }
+  .label WriteCharColToScreen=$ea13 {
+  }
+  .label InsertLine=$e965 {
+  }
+  .label ClearScreenLine=$e9ff {
+  }
   .label ISR=$ea31 {
   }
   .label ISRExit=$ea81
+  .label QuotationToggle=$e684 {
+  }
+  .label VicDefaultKeyboardScreenClear=$e518 {
+  }
+  .label CursorHome=$e566 {
+  }
+  .label ReadScreen=$e632 {
+  }
+  .label RecalculateScreenMemory=$e6b6 {
+  }
+  .label VicDefaultKeyboardScreenCursor=$e59a {
+  }
+  .label VicInit=$e5a8 {
+  }
+  .label PointToCurrentLine=$e9f0 {
+  }
+  .label ScreenRowsCols=$e505 {
+  }
+  .label PointToScreenMemory=$e56c {
+  }
+  .label SaveRestoreCursorPosition=$e50a {
+  }
+  .label CurrentColorRam=$ea24 {
+  }
+  .label WriteToScreen=$e716 {
+  }
 }
 .label Main=$80e {
 }
