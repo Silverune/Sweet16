@@ -27,12 +27,12 @@
 	OutputInColor(memory_3, TITLE_COLOR)
 	jmp !done+
 memory:
-	.byte RETURN
+	.byte Petscii.RETURN
 	.text "TESTS COMPLETE: "
-	.byte NULL
+	.byte Petscii.NULL
 memory_2:
 	.text " / "
-	.byte NULL
+	.byte Petscii.NULL
 memory_3:
 	Newline()
 !done:
@@ -44,10 +44,10 @@ memory_3:
 	OutputInColor(memory, NAME_COLOR)
 	jmp !done+
 memory:
-	.fill spacing, spacebar
+	.fill spacing, Petscii.SPACEBAR
 	.text name
 	.text "..."
-	.byte NULL
+	.byte Petscii.NULL
 !done:
 }
 
@@ -56,10 +56,10 @@ memory:
 	OutputInColor(memory, DESC_COLOR)
 	jmp !done+
 memory:
-	.byte spacebar
+	.byte Petscii.SPACEBAR
 	.text description
 	.text ":"
-	.byte NULL
+	.byte Petscii.NULL
 !done:
 }
 
@@ -238,7 +238,7 @@ memory:
 	OutputInColor(memory, WHITE)
 	jmp !no_key+
 memory:
-	.byte RETURN
+	.byte Petscii.RETURN
 	.text "PRESS ANY KEY TO CONTINUE..."
 	Newline()
 !no_key:

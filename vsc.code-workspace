@@ -1,0 +1,46 @@
+{
+	"folders": [
+        {
+            "path": "."
+        },
+        {
+            "path": "..//Core//code",
+            "name": "Core Library"
+        },
+        {
+            "path": "..//Core//reference",
+            "name": "Documentation"
+        },
+        {
+            "path": ".//bin",
+            "name": "Output"
+        }
+    ],
+    "settings": {
+        "files.associations": {
+            "*.asm": "kickassembler"
+        },
+        "kickassembler.outputDirectory": ".//bin",
+        "files.exclude": {
+            "**/.asminfo.txt": true,
+            "**/.source.txt": true,
+            "**/bin": true
+        },
+        "kickassembler.debuggerOptions": "-wait 5000 -autojmp",
+        //"kickassembler.startup": "startup.asm",
+        "kickassembler.assemblerLibraryPaths": [
+            "..//Core//code",
+            "resources"
+        ],
+            "kickassembler.byteDumpFile": true,
+            "kickassembler.javaAllowFileCreation": true,
+            "kickassembler.javaPluginSystemProperties": [
+                "define:name='sweet16'"
+            ]
+        },
+        "extensions": {
+            "recommendations": [
+                "paulhocker.kick-assembler-vscode-ext"
+            ]
+        }
+}

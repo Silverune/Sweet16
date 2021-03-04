@@ -40,7 +40,8 @@
     [name=separator, type="rel" ],
 }
 
-#import "core.lib"
+#import "../Core/code/core.lib"     // todo - this should be found from -libDir but VSC Intellisense fails
+
 #import "code/util/util.lib"
 #import "code/tests/test.lib"
 #import "code/main.asm"

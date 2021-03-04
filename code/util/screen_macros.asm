@@ -8,9 +8,9 @@
 
 .macro ChangeCursor(row, column) {
 	lda #row
-	sta cursor_row
+	sta Zero.CursorLogicalColumn
 	lda #column
-	sta cursor_col
+	sta Zero.CursorPhysicalLineNumber
 	KernalOutput(newline)	// need return to ensure pointers $d1 and $f3 update
 	jmp !done+
 newline:
@@ -120,7 +120,7 @@ newline:
 	.const background_color = $d021 // Background color
 	ldx #color
 	stx background_color
-	lda #spacebar
+	lda #Petscii.SPACEBAR
 	ldx #$00
 !loop:
 	sta screen,x
@@ -137,7 +137,7 @@ newline:
 !loop:
 	lda msg,x
 	beq !done+
-	jsr kernal_chrout
+	jsr Kernal.CHROUT
 	inx
 	jmp !loop-
 !done:	
@@ -145,16 +145,16 @@ newline:
 
 // KernAl spelt the way CBM intended (for better or worse)
 .macro KernalOutputA() {
-	jsr kernal_chrout
+	jsr Kernal.CHROUT
 }
 
 .macro OutputInColor(msg, color) {
-	lda foreground_color
+	lda Two.CurrentCharColor
 	pha
 	ChangeColor(color)
 	KernalOutput(msg)
 	pla
-	sta foreground_color
+	sta Two.CurrentCharColor
 }
 
 .macro Output(msg) {
@@ -162,7 +162,7 @@ newline:
 	jmp !done+
 !data:
 	.text msg
-	.byte NULL
+	.byte Petscii.NULL
 !done:
 }
 
@@ -171,7 +171,7 @@ newline:
 	jmp !done+
 !data:
 	.text msg
-	.byte RETURN, NULL
+	.byte Petscii.RETURN, Petscii.NULL
 !done:
 }
 
