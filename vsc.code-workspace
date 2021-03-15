@@ -44,7 +44,8 @@
     },
         "extensions": {
             "recommendations": [
-                "paulhocker.kick-assembler-vscode-ext"
+                "analytic-signal.preview-pdf",
+                "slevesque.vscode-hexdump"
             ]
         }
 }
