@@ -16,10 +16,11 @@
 .segmentdef TestData [startAfter="Tests"]
 
 .var name = cmdLineVars.get("name").string()
+.var format = cmdLineVars.get("format").string()
 
 .file [
     name=name + ".prg",
-    segments="Main, Util, Sweet16, Tests, ",
+    segments="Main, Util, Sweet16, Tests",
 ]
 
 .var flair = "-";
@@ -40,7 +41,7 @@
     [name=separator, type="rel" ],
 }
 
-#import "../Core/code/core.lib"     // todo - this should be found from -libDir but VSC Intellisense fails
+#import "core.lib"              // -libdir
 
 #import "code/util/util.lib"
 #import "code/tests/test.lib"

@@ -20,6 +20,7 @@
         "files.associations": {
             "*.asm": "kickassembler"
         },
+        "kickassembler.outputFile": "sweet16.prg",
         "kickassembler.outputDirectory": ".//bin",
         "files.exclude": {
             "**/.asminfo.txt": true,
@@ -27,17 +28,20 @@
             "**/bin": true
         },
         "kickassembler.debuggerOptions": "-wait 5000 -autojmp",
-        //"kickassembler.startup": "startup.asm",
         "kickassembler.assemblerLibraryPaths": [
             "..//Core//code",
             "resources"
         ],
-            "kickassembler.byteDumpFile": true,
-            "kickassembler.javaAllowFileCreation": true,
-            "kickassembler.javaPluginSystemProperties": [
-                "define:name='sweet16'"
-            ]
-        },
+        "kickassembler.byteDumpFile": true,
+        "kickassembler.javaAllowFileCreation": true,
+        "kickassembler.javaPluginSystemProperties": [
+        ],
+        "kickassembler.startup": "startup.asm",   
+        "kickassembler.assemblerArgs": [
+            ":name=\"sweet16\"",
+            ":format=\"d64\"",
+        ],     
+    },
         "extensions": {
             "recommendations": [
                 "paulhocker.kick-assembler-vscode-ext"
