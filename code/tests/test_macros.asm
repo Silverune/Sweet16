@@ -1,7 +1,7 @@
 #importonce
 
 .macro TestStart() {
-	SetupScreen(BACKGROUND_COLOR, TITLE_COLOR)	
+	TestSetupScreen(BACKGROUND_COLOR, TITLE_COLOR)	
 	ScreenOutputStringLine("SWEET16 TEST RUNNER")
 	ScreenColor(FOREGROUND_COLOR)
 
@@ -15,7 +15,7 @@
 	inc TEST_COUNT
 }
 
-.macro SetupScreen(background_color, foreground_color) {
+.macro TestSetupScreen(background_color, foreground_color) {
 	ScreenBorder(background_color)
 	ScreenBackground(background_color)
 	ScreenColor(foreground_color)

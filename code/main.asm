@@ -2,41 +2,42 @@
 
 BasicUpstart2(Main)
 
-Main:
-	Cookie_Check(LibLocation)					// looks for byte sequence indicating code placeholder meaning actual code needs to be loaded
+Main: {
+	CookieCheck(LibLocation)					// looks for byte sequence indicating code placeholder meaning actual code needs to be loaded
  	beq !already_loaded+						// segment data already there - not being loaded from disk
- 	jsr load_code								// load library and tests
+ 	jsr LoadCode								// load library and tests
 !already_loaded:
-	jsr ready
+	jsr Ready
+}
 
-error_handler:
+ErrorHandler:
 	pha
 	ScreenOutputString("Error: ")
 	pla
 	jsr Kernal.CHROUT
 	jmp *
 
-load: {
-	Load(error_handler)
+Load: {
+	Load(ErrorHandler)
 	rts
 }
 
-load_code: {
+LoadCode: {
 	ScreenOutputString("LOADING CODE...")
-	LoadList(codeFiles, load)
+	LoadList(codeFiles, Load)
 	rts
 }
 
-ready:
+Ready: {
 	jsr TestRun
 	jsr Anykey
 	jmp (Kernal.RESET)
-	rts
+}
 
-Anykey:
-!:
+Anykey: {
 	GetKey()
-	beq !-	
+	beq Anykey
 	rts
+}
 
 .segment Default

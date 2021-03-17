@@ -19,9 +19,9 @@
 081e: 4c 23 08  -         jmp !done+
 0821: a9 00     -         lda #$00
 0823: f0 03     -         beq !already_loaded+						// segment data already there - not being loaded from disk
-0825: 20 64 08  -         jsr load_code								// load library and tests
-0828: 20 bf 08  -         jsr ready
-082b: 48        - error_handler:pha
+0825: 20 64 08  -         jsr LoadCode								// load library and tests
+0828: 20 bf 08  -         jsr Ready
+082b: 48        - ErrorHandler:pha
 082c: a2 00     -         ldx #$00
 082e: bd 3d 08  -         lda address,x
 0831: f0 07     -         beq !done+
@@ -34,7 +34,7 @@
 0845: 68        -         pla
 0846: 20 d2 ff  -         jsr Kernal.CHROUT
 0849: 4c 49 08  -         jmp *
-084c: 20 bd ff  - load:   jsr Kernal.SETNAM
+084c: 20 bd ff  - Load:   jsr Kernal.SETNAM
 084f: a9 01     -         lda #$01                        // logical number
 0851: a6 ba     -         ldx Zero.CurrentDeviceNumber    // last used device number
 0853: d0 02     -         bne !skip+
@@ -45,7 +45,7 @@
 085e: 20 d5 ff  -         jsr Kernal.LOAD
 0861: b0 c8     -         bcs errorHandler                 // if carry set, a load error has happened
 0863: 60        -         rts
-0864: a2 00     - load_code:ldx #$00
+0864: a2 00     - LoadCode:ldx #$00
 0866: bd 75 08  -         lda address,x
 0869: f0 07     -         beq !done+
 086b: 20 d2 ff  -         jsr Kernal.CHROUT
@@ -68,14 +68,13 @@
 08bc: 10        -         .byte fileList.get(i).size()
 08bd: 10        -         .byte fileList.get(i).size()
 08be: 60        -         rts
-08bf: 20 f9 51  - ready:  jsr TestRun
-08c2: 20 c9 08  -         jsr Anykey
+08bf: 20 f9 51  - Ready:  jsr TestRun
+08c2: 20 c8 08  -         jsr Anykey
 08c5: 6c fc ff  -         jmp (Kernal.RESET)
-08c8: 60        -         rts
-08c9: 20 9f ff  - Anykey: jsr Kernal.SCNKEY   // scan keyboard
-08cc: 20 e4 ff  -         jsr Kernal.GETIN    // put result into A
-08cf: f0 f8     -         beq !-	
-08d1: 60        -         rts
+08c8: 20 9f ff  - Anykey: jsr Kernal.SCNKEY   // scan keyboard
+08cb: 20 e4 ff  -         jsr Kernal.GETIN    // put result into A
+08ce: f0 f8     -         beq Anykey
+08d0: 60        -         rts
 ******************************* Segment: Loader ********************************
 **************************** Segment: Sweet16Patch *****************************
 [Sweet16Patch]

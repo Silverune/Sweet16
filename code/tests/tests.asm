@@ -3,7 +3,7 @@
 	Sweet16()
 .segment Sweet16Patch
 sweet16_patch:
-    Cookie_WriteCode()
+    CookieWriteCode()
 
 .segment Tests
 
@@ -780,6 +780,6 @@ TestRun:
 
 .segment TestsPatch
 tests_patch:
-	Cookie_WriteCode()
+	CookieWriteCode()
 
 .segment Default

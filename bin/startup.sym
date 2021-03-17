@@ -100,7 +100,8 @@
   .label IOBASE=$fff3 {
   }
 }
-.label Anykey=$8c9
+.label Anykey=$8c8 {
+}
 .label ABSOLUTE_JUMP_TEST=$4c20 {
 }
 .namespace Two {
@@ -306,11 +307,8 @@
 .label D6510=$0
 .label spriteAnimsEndFrameCurrent=$100c5
 .label VICIRQ=$d019
-.label error_handler=$82b
 .label bMathRandomCurrent2=$10082
 .label bMathRandomCurrent1=$10041
-.label load=$84c {
-}
 .label RASTER=$d012
 .label SPRITE0PTR=$7f8
 .label TEST_MEMORY=$5463
@@ -710,6 +708,8 @@
 .label soundIsPAL=$1015c
 .label ZeroPage10=$b
 .label ZeroPage11=$c
+.label Load=$84c {
+}
 .namespace IO {
   .label Area=$d000 {
   }
@@ -723,6 +723,8 @@
 .label ZeroPage12=$d
 .label ZeroPage13=$e
 .label ADD_TEST=$3069 {
+}
+.label Ready=$8bf {
 }
 .label DECREMENT_TEST=$38a5 {
 }
@@ -783,8 +785,6 @@
   .label SPRITE_POINTERS=$7f8
   .label SCREEN_MEMORY=$400
 }
-.label load_code=$864 {
-}
 .label TIMALO=$dc04
 .label spriteAnimsLoop=$100bb
 .label TEST_SUCCESS=$545c
@@ -830,6 +830,7 @@
 .label CharacterSlot1800=$6
 .label SCREENRAM=$400
 .label SCROLX=$d016
+.label ErrorHandler=$82b
 .label SCROLY=$d011
 .label BREAK_TEST=$4638 {
   .label REGISTER=$0
@@ -910,6 +911,8 @@
 }
 .label EXTERNAL_JSR_TEST=$4d5e {
 }
+.label LoadCode=$864 {
+}
 .label ZeroPage9=$a
 .label ZeroPage8=$9
 .label ZeroPage7=$8
@@ -958,7 +961,6 @@
   .label TOO_MANY_FILES=$1
 }
 .label bMathRandoms2=$10042
-.label ready=$8bf
 .label spriteAnimsCurrent=$100c3
 .label TEST_MEMORY_SEQUENCE=$5469
 .namespace Keyboard {

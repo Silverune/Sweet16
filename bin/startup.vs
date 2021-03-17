@@ -18,7 +18,7 @@ al C:92 .TimingCassetteReadConstant
 al C:dd0d .CI2ICR
 al C:20 .Space
 al C:bb .PointerToCurrentFilename
-al C:8c9 .Anykey
+al C:8c8 .Anykey
 al C:328 .STOP__0
 al C:ffe1 .STOP__1
 al C:a7 .TempRS232ReadData
@@ -122,7 +122,6 @@ al C:28e .LastShiftKey
 al C:d019 .VICIRQ
 al C:308 .BasicInstructionExecutor
 al C:3 .RomFloatToIntegerPointer
-al C:82b .error_handler
 al C:54 .Six__0
 al C:51 .Six__1
 al C:288 .ScreenMemoryAddressHighByte
@@ -134,7 +133,6 @@ al C:dd08 .TimeOfDayTenthSeconds
 al C:33 .R14L
 al C:d .OUT_OF_DATA
 al C:1100 .RTS_FIX
-al C:84c .load
 al C:7f8 .SpritePointers
 al C:34 .R14H
 al C:7f8 .SPRITE0PTR
@@ -304,6 +302,7 @@ al C:ffae .UNLSTN
 al C:b .ZeroPage10
 al C:c .ZeroPage11
 al C:ca .InputCursorYCoordinate
+al C:84c .Load
 al C:d419 .PaddleX
 al C:d41a .PaddleY
 al C:a0 .JiffyClock
@@ -315,6 +314,7 @@ al C:b0 .ConstantTimingCassetteReads
 al C:d .ZeroPage12
 al C:e .ZeroPage13
 al C:35 .R15L
+al C:8bf .Ready
 al C:1 .ProcessorPortRegister
 al C:10 .UserFunctionOrArrayFlag
 al C:cf .CursorFlashPhase
@@ -513,6 +513,7 @@ al C:2f29 .STORE_POP_INDIRECT_TEST
 al C:400 .SCREENRAM
 al C:324 .CHRIN__0
 al C:ffcf .CHRIN__1
+al C:82b .ErrorHandler
 al C:28f .KeyboardTable
 al C:0 .NULL
 al C:28a .RepeatKeys
@@ -538,6 +539,7 @@ al C:2a2 .TapeIOSenseTOD
 al C:4995 .BRANCH_TO_SUBROUTINE_TEST
 al C:33c .DatasetteBuffer
 al C:54 .JmpAboluteConstant
+al C:864 .LoadCode
 al C:a .ZeroPage9
 al C:b2 .CassetteBuffer
 al C:9 .ZeroPage8
@@ -954,7 +956,6 @@ al C:d40c .Voice2AttackDecay
 al C:d018 .VMCSB
 al C:11d6 .NUL
 al C:ea13 .WriteCharColToScreen
-al C:864 .load_code
 al C:4 .FILE_NOT_FOUND
 al C:d409 .Voice2Pulse_Width
 al C:545c .TEST_SUCCESS
@@ -1014,7 +1015,6 @@ al C:10001 .bMathRandoms1
 al C:4 .GameportLeftMask
 al C:4f8b .SET_INDIRECT_TEST
 al C:10042 .bMathRandoms2
-al C:8bf .ready
 al C:100c3 .spriteAnimsCurrent
 al C:d01e .SpriteSpriteCollision
 al C:d00c .Sprite6XCoordinate
