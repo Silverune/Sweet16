@@ -1,10 +1,12 @@
+#importonce
+
 .segment TestData
 
 TEST_SUCCESS:
-	.byte $73, $00
-	
+	.byte $73, Petscii.NULL
+
 TEST_FAILURE:
-	.byte $76, $00
+	.byte $76, Petscii.NULL
 
 TEST_COUNT:
 	.byte $00
@@ -14,17 +16,12 @@ TEST_PASS_COUNT:
 
 TEST_NAME_COUNT:
 	.byte $00
-	
-TEST_TITLE:	
-	.text "SWEET16 TEST RUNNER"
-	Newline()
 
-// Setup some common blocks of memory to use for the testing
 TEST_MEMORY:
-	.byte $12,$34
+	.byte $12, $34
 
 TEST_MEMORY_2:
-	.byte $56,$78
+	.byte $56, $78
 
 TEST_MEMORY_3:
 	.byte $9a,$bc
@@ -35,7 +32,7 @@ TEST_MEMORY_SEQUENCE:
 
 TEST_MEMORY_SEQUENCE_2:
 	.fill TMS_SIZE, $ff
-	
+
 STACK_MEMORY: {
 	.const STACK_SIZE = 16
 	.fill STACK_SIZE, 0

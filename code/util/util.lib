@@ -1,7 +1,0 @@
-#importonce
-
-#import "screen_macros.asm"
-#import "data.asm"
-
-.segment Default
-

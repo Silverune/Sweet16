@@ -1,9 +1,9 @@
+#importonce
+
 .macro TestStart() {
-	ChangeScreen(BACKGROUND_COLOR, TITLE_COLOR)
-	ClearScreen(BACKGROUND_COLOR)
-	ChangeCursor(0,0)
-	KernalOutput(TEST_TITLE)
-	ChangeColor(FOREGROUND_COLOR)
+	SetupScreen(BACKGROUND_COLOR, TITLE_COLOR)	
+	ScreenOutputStringLine("SWEET16 TEST RUNNER")
+	ScreenColor(FOREGROUND_COLOR)
 
 	lda #$00
 	sta TEST_COUNT
@@ -15,16 +15,24 @@
 	inc TEST_COUNT
 }
 
+.macro SetupScreen(background_color, foreground_color) {
+	ScreenBorder(background_color)
+	ScreenBackground(background_color)
+	ScreenColor(foreground_color)
+	jsr KernalJump.ClearScreen
+	CursorRowColumn(0,0)
+}
+
 .macro TestPassed() {
 	inc TEST_PASS_COUNT
 }
 
 .macro TestFinished() {
-	OutputInColor(memory, TITLE_COLOR)
-	OutputNumber(TEST_PASS_COUNT)
-	OutputInColor(memory_2, TITLE_COLOR)
-	OutputNumber(TEST_COUNT)
-	OutputInColor(memory_3, TITLE_COLOR)
+	ScreenOutputColor(memory, TITLE_COLOR)
+	ScreenOutputNumber(TEST_PASS_COUNT)
+	ScreenOutputColor(memory_2, TITLE_COLOR)
+	ScreenOutputNumber(TEST_COUNT)
+	ScreenOutputColor(memory_3, TITLE_COLOR)
 	jmp !done+
 memory:
 	.byte Petscii.RETURN
@@ -34,14 +42,14 @@ memory_2:
 	.text " / "
 	.byte Petscii.NULL
 memory_3:
-	Newline()
+	 ScreenNewlineReturn()
 !done:
 }
 	
 .macro TestName(name) {
 	.const spacing = 2
 	inc TEST_NAME_COUNT
-	OutputInColor(memory, NAME_COLOR)
+	ScreenOutputStringColor(name, NAME_COLOR)
 	jmp !done+
 memory:
 	.fill spacing, Petscii.SPACEBAR
@@ -53,7 +61,7 @@ memory:
 
 .macro TestAssertDescription(description) {
 	TestInc()
-	OutputInColor(memory, DESC_COLOR)
+	ScreenOutputColor(memory, DESC_COLOR)
 	jmp !done+
 memory:
 	.byte Petscii.SPACEBAR
@@ -65,18 +73,18 @@ memory:
 
 .macro TestSuccess() {
 	TestPassed()
-	OutputInColor(TEST_SUCCESS, SUCCESS_COLOR)
+	ScreenOutputColor(TEST_SUCCESS, SUCCESS_COLOR)
 }
 
 .macro TestFailure() {
-	OutputInColor(TEST_FAILURE, FAILURE_COLOR)
+	ScreenOutputColor(TEST_FAILURE, FAILURE_COLOR)
 }
 
 .macro TestComplete() {
-	KernalOutput(memory)
+	ScreenOutput(memory)
 	jmp !done+
 memory:
-	Newline()
+	ScreenNewlineReturn()
 !done:
 	ldx TEST_NAME_COUNT
 	cpx #TESTS_PER_PAGE
@@ -235,19 +243,19 @@ memory:
 
 // pauses output until the user hits a key to ensure all results are shown
 .macro TestPause() {
-	OutputInColor(memory, WHITE)
+	ScreenOutputColor(memory, WHITE)
 	jmp !no_key+
 memory:
 	.byte Petscii.RETURN
 	.text "PRESS ANY KEY TO CONTINUE..."
-	Newline()
+	ScreenNewlineReturn()
 !no_key:
 	GetKey()
 	beq !no_key-
-	KernalOutput(newline)
+	ScreenOutput(!newline+)
 	jmp !done+
-newline:
-	Newline()
+!newline:
+	ScreenNewlineReturn()
 !done:
 }
 

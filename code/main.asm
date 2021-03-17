@@ -10,11 +10,10 @@ Main:
 	jsr ready
 
 error_handler:
-	.break
 	pha
-	Output("Error: ")
+	ScreenOutputString("Error: ")
 	pla
-	KernalOutputA()
+	jsr Kernal.CHROUT
 	jmp *
 
 load: {
@@ -23,7 +22,7 @@ load: {
 }
 
 load_code: {
-	Output("LOADING CODE...")
+	ScreenOutputString("LOADING CODE...")
 	LoadList(codeFiles, load)
 	rts
 }
