@@ -1,6 +1,6 @@
 #import "test_data.asm"
 #import "config.asm"
 #import "test_macros.asm"
-#import "tests.asm"
+#import "test.asm"
 
 .segment Default

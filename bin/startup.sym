@@ -1,7 +1,5 @@
 .label CI2PRA=$dd00
 .label CI2PRB=$dd01
-.label BRANCH_IF_CARRY_SET_TEST=$3d77 {
-}
 .namespace Petscii {
   .label RETURN=$d
   .label SPACEBAR=$20
@@ -9,6 +7,8 @@
 }
 .label wColorRAMRowStart=$10100
 .label TestRun=$51f9 {
+}
+.label TestInterruptBreak=$47d9 {
 }
 .label CI2ICR=$dd0d
 .namespace Cookie {
@@ -102,8 +102,6 @@
 }
 .label Anykey=$8c8 {
 }
-.label ABSOLUTE_JUMP_TEST=$4c20 {
-}
 .namespace Two {
   .label D1IRQREADIndicator=$2a4 {
   }
@@ -181,17 +179,19 @@
   }
 }
 .label BGCOL3=$d024
+.label TestBranchToSubroutine=$4995 {
+}
 .label TIMBHI=$dc07
-.label POP_DOUBLE_BYTE_INDIRECT_TEST=$33ae {
-}
-.label BRANCH_IF_PLUS_TEST=$3ebe {
-}
-.label RETURN_FROM_SUBROUTINE_TEST=$4ae0 {
+.label TestReturnFromSubroutine=$4ae0 {
   .label REGISTER=$0
+}
+.label TestBranchIfMinus=$3fff {
 }
 .label BGCOL0=$d021
 .label BGCOL1=$d022
 .label BGCOL2=$d023
+.label TestSet=$2000 {
+}
 .namespace Cartridge {
   .label ROM=$8009 {
   }
@@ -204,8 +204,6 @@
 }
 .namespace Kick {
 }
-.label SUBTRACT_TEST=$3209 {
-}
 .namespace One {
   .label TapeInputErrorLog=$100 {
   }
@@ -213,28 +211,18 @@
   .label BASICStack=$13f {
   }
 }
-.label BRANCH_IF_NO_CARRY_TEST=$3c30 {
+.label TestBranchIfPlus=$3ebe {
 }
 .label CharacterSlot3000=$c
-.label LOAD_INDIRECT_TEST=$236a {
-}
-.label INCREMENT_TEST=$3778 {
-}
 .label TEST_PASS_COUNT=$5461
 .label CharacterSlot3800=$e
 .label IRQROMROUTINE=$ea31
 .label SpriteAnimsMax=$8
-.label STORE_DOUBLE_BYTE_INDIRECT_TEST=$28da {
-}
-.label BRANCH_IF_MINUS_TEST=$3fff {
-}
 .namespace ISR {
 }
-.label LOAD_DOUBLE_BYTE_INDIRECT_TEST=$2728 {
-}
-.label BRANCH_IF_ZERO_TEST=$4140 {
-}
 .label TEST_FAILURE=$545e
+.label TestSubtract=$3209 {
+}
 .namespace ScreenMemoryDefault {
   .label ScreenMemory=$400 {
   }
@@ -247,13 +235,15 @@
 .label GameportRightMask=$8
 .label CIAPRA=$dc00
 .label CIAPRB=$dc01
+.label TestReturnTo6502Mode=$39d6 {
+}
 .label SPRITERAM=$a0
+.label TestLoadIndirect=$236a {
+}
 .label SPMC=$d01c
-.label BRANCH_IF_NOT_MINUS_ONE_TEST=$44f7 {
+.label TestPopDoubleByteIndirect=$33ae {
 }
 .label SW16_BREAK_HANDLER=$1235
-.label SET_TEST=$2000 {
-}
 .namespace SID {
   .label Voice1Frequency=$d400 {
   }
@@ -311,7 +301,13 @@
 .label bMathRandomCurrent1=$10041
 .label RASTER=$d012
 .label SPRITE0PTR=$7f8
+.label TestBranchIfNonZero=$4279 {
+}
+.label TestBranchAlways=$3af6 {
+}
 .label TEST_MEMORY=$5463
+.label TestAdd=$3069 {
+}
 .namespace Zero {
   .label SerialBusOutput=$95 {
   }
@@ -573,9 +569,9 @@
   }
 }
 .label libScreenSetCharacter=$10132
-.label BRANCH_IF_MINUS_ONE_TEST=$43b8 {
+.label TestExternalJSR=$4d5e {
 }
-.label LOAD_TEST=$2121 {
+.label TestBranchIfCarrySet=$3d77 {
 }
 .label libScreenSetColor=$10147
 .namespace CIA2 {
@@ -609,6 +605,8 @@
   }
   .label TimeOfDayMinutes=$dd0a {
   }
+}
+.label TestSetMemory=$50c4 {
 }
 .namespace CIA1 {
   .label RegisterImages=$dc10 {
@@ -644,9 +642,10 @@
 }
 .label R6510=$1
 .label TEST_NAME_COUNT=$5462
-.label COLORRAM=$d800
-.label STORE_TEST=$2243 {
+.label TestBreak=$4638 {
+  .label REGISTER=$0
 }
+.label COLORRAM=$d800
 .label spriteAnimsActive=$10083
 .namespace KernalJump {
   .label ClearScreen=$e544 {
@@ -698,6 +697,8 @@
 .label EXTCOL=$d020
 .label False=$0
 .label TEST_COUNT=$5460
+.label TestLoadDoubleByteIndirect=$2728 {
+}
 .namespace Image {
 }
 .label spriteAnimsFrameCurrent=$100c4
@@ -706,30 +707,32 @@
   }
 }
 .label soundIsPAL=$1015c
+.label TestBranchIfNotMinus1=$44f7 {
+}
 .label ZeroPage10=$b
 .label ZeroPage11=$c
 .label Load=$84c {
+}
+.label TestBranchIfMinus1=$43b8 {
 }
 .namespace IO {
   .label Area=$d000 {
   }
 }
 .label IRQMSK=$d01a
-.label BRANCH_IF_NONZERO_TEST=$4279 {
-}
 .label ZeroPage14=$f
 .label ZeroPage15=$10
 .label SP0COL=$d027
 .label ZeroPage12=$d
 .label ZeroPage13=$e
-.label ADD_TEST=$3069 {
-}
 .label Ready=$8bf {
 }
-.label DECREMENT_TEST=$38a5 {
-}
 .label CharacterSlot0000=$0
+.label TestBranchIfZero=$4140 {
+}
 .label soundNTSCTimer=$1015d
+.label TestStore=$2243 {
+}
 .label CharacterSlot0800=$2
 .label spriteAnimsStartFrame=$1008b
 .label Zb=$54 {
@@ -745,6 +748,8 @@
   .label Three=$6 {
   }
 }
+.label TestStoreIndirect=$250a {
+}
 .label spriteAnimsEndFrame=$1009b
 .label Zm=$51 {
   .label One=$50
@@ -756,8 +761,6 @@
 .label STACK_MEMORY=$5489 {
 }
 .label sweet16_patch=$1000 {
-}
-.label COMPARE_TEST=$3642 {
 }
 .label Zw=$10b {
   .label Five=$52 {
@@ -785,10 +788,22 @@
   .label SPRITE_POINTERS=$7f8
   .label SCREEN_MEMORY=$400
 }
+.label TestIncrement=$3778 {
+}
+.label TestDecrement=$38a5 {
+}
+.label TestPopIndirect=$2af6 {
+}
 .label TIMALO=$dc04
 .label spriteAnimsLoop=$100bb
 .label TEST_SUCCESS=$545c
+.label TestBranchIfNoCarry=$3c30 {
+}
 .label GameportFireMask=$10
+.label TestCompare=$3642 {
+}
+.label TestSetIndirect=$4f8b {
+}
 .namespace Sweet16 {
   .label ACC=$0
   .label R0H=$18
@@ -817,13 +832,11 @@
 }
 .label CIAICR=$dc0d
 .label True=$1
-.label SPENA=$d015
-.label STORE_INDIRECT_TEST=$250a {
+.label TestAbsoluteJump=$4c20 {
 }
+.label SPENA=$d015
 .label CharacterSlot1000=$4
 .label libUtilityRti=$10000
-.label STORE_POP_INDIRECT_TEST=$2f29 {
-}
 .namespace Disk {
 }
 .label spriteAnimsDelay=$100b3
@@ -832,9 +845,6 @@
 .label SCROLX=$d016
 .label ErrorHandler=$82b
 .label SCROLY=$d011
-.label BREAK_TEST=$4638 {
-  .label REGISTER=$0
-}
 .namespace Three {
   .label LOAD=$330 {
   }
@@ -894,13 +904,7 @@
 .label SW16=$1008
 .label TEST_MEMORY_2=$5465
 .label TEST_MEMORY_3=$5467
-.label BRANCH_ALWAYS_TEST=$3af6 {
-}
 .label spriteAnimsSpeed=$100ab
-.label INTERRUPT_BREAK_TEST=$47d9 {
-}
-.label BRANCH_TO_SUBROUTINE_TEST=$4995 {
-}
 .namespace CharacterROM {
   .label ROM=$d000 {
   }
@@ -909,7 +913,7 @@
   .label LowercaseUppercase=$e800 {
   }
 }
-.label EXTERNAL_JSR_TEST=$4d5e {
+.label TestLoad=$2121 {
 }
 .label LoadCode=$864 {
 }
@@ -925,8 +929,6 @@
 .label bMathRandoms1=$10001
 .label GameportLeftMask=$4
 .label spriteAnimsStopFrame=$100a3
-.label SET_INDIRECT_TEST=$4f8b {
-}
 .namespace ErrorCodes {
   .label NOT_INPUT_FILE=$6
   .label LOAD=$1d
@@ -962,15 +964,15 @@
 }
 .label bMathRandoms2=$10042
 .label spriteAnimsCurrent=$100c3
+.label TestStoreDoubleByteIndirect=$28da {
+}
+.label TestStorePopIndirect=$2f29 {
+}
 .label TEST_MEMORY_SEQUENCE=$5469
 .namespace Keyboard {
 }
-.label POP_INDIRECT_TEST=$2af6 {
-}
 .label TEST_MEMORY_SEQUENCE_2=$5479
 .label tests_patch=$2000 {
-}
-.label SET_MEMORY_TEST=$50c4 {
 }
 .label ZeroPage2=$3
 .namespace VIC {
@@ -1073,8 +1075,6 @@
 }
 .label ZeroPage1=$2
 .label wScreenRAMRowStart=$100ce
-.label RETURN_TO_6502_MODE_TEST=$39d6 {
-}
 .label ZeroPage6=$7
 .label CharacterSlot2000=$8
 .label ZeroPage5=$6

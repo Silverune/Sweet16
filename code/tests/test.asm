@@ -10,7 +10,7 @@ sweet16_patch:
 // Simple tests for Sweet16.  Most of these are converted versions of Woz's originals in the description of each of the mnemonics / opcodes (http://www.6502.org/source/interpreters/sweet16.htm#Register_Instructions_).
 
 // The 2-byte constant783 is loaded into Rn (n=0 to F, Hex) and branch conditions set accordingly. The carry is cleared.
-SET_TEST: {
+TestSet: {
 	.const REGISTER = 5			// arbitrary register
 	.const VALUE = $1234
 	TestName("SET")
@@ -23,7 +23,7 @@ SET_TEST: {
 }
 
 // The Sweet16.ACC (R0) is loaded from Rn and branch conditions set according to the data transferred. The carry is cleared and contents of Rn are not disturbed.
-LOAD_TEST: {
+TestLoad: {
 	.const REGISTER = 5			// arbitrary register
 	.const VALUE = $4321
 	TestName("LOAD")
@@ -37,7 +37,7 @@ LOAD_TEST: {
 }
 
 // The Sweet16.ACC is stored into Rn and branch conditions set according to the data transferred. The carry is cleared and the Sweet16.ACC contents are not disturbed.
-STORE_TEST: {
+TestStore: {
 	.const SOURCE = 5			// arbitrary register
 	.const DEST = 6				// arbitrary register
 	.const VALUE = $1234
@@ -53,7 +53,7 @@ STORE_TEST: {
 }
 	
 // The low-order Sweet16.ACC byte is loaded from the memory location whose address resides in Rn and the high-order Sweet16.ACC byte is cleared. Branch conditions reflect the final Sweet16.ACC contents which will always be positive and never minus 1. The carry is cleared. After the transfer, Rn is incremented by 1.	
-LOAD_INDIRECT_TEST: {
+TestLoadIndirect: {
 	.const REGISTER = 5			// arbitrary register
 	TestName("LOAD INDIRECT")
 	sweet16
@@ -68,7 +68,7 @@ LOAD_INDIRECT_TEST: {
 }
 	
 // The low-order Sweet16.ACC byte is stored into the memory location whose address resides in Rn. Branch conditions reflect the 2-byte Sweet16.ACC contents. The carry is cleared. After the transfer Rn is incremented by 1.
-STORE_INDIRECT_TEST: {
+TestStoreIndirect: {
 	.const SOURCE = 5			// arbitrary register
 	.const DEST = 6				// arbitrary register
 	TestName("STORE INDIRECT")
@@ -86,7 +86,7 @@ STORE_INDIRECT_TEST: {
 }
 	
 // The low order Sweet16.ACC byte is loaded from memory location whose address resides in Rn, and Rn is then incremented by 1. The high order Sweet16.ACC byte is loaded from the memory location whose address resides in the incremented Rn, and Rn is again incremented by 1. Branch conditions reflect the final Sweet16.ACC contents. The carry is cleared.
-LOAD_DOUBLE_BYTE_INDIRECT_TEST: {
+TestLoadDoubleByteIndirect: {
 	.const REGISTER = 5			// arbitrary register
 	TestName("LOAD DOUBLE INDIRECT")
 	sweet16
@@ -102,7 +102,7 @@ LOAD_DOUBLE_BYTE_INDIRECT_TEST: {
 }
 
 // The low-order Sweet16.ACC byte is stored into memory location whose address resides in Rn, and Rn is the incremented by 1. The high-order Sweet16.ACC byte is stored into the memory location whose address resides in the incremented Rn, and Rn is again incremented by 1. Branch conditions reflect the Sweet16.ACC contents which are not disturbed. The carry is cleared.
-STORE_DOUBLE_BYTE_INDIRECT_TEST: {
+TestStoreDoubleByteIndirect: {
 	.const SOURCE = 5			// arbitrary register
 	.const DEST = 6				// arbitrary register
 	TestName("STORE DBL IND")
@@ -121,7 +121,7 @@ STORE_DOUBLE_BYTE_INDIRECT_TEST: {
 }
 	
 // The low-order Sweet16.ACC byte is loaded from the memory location whose address resides in Rn after Rn is decremented by 1, and the high order Sweet16.ACC byte is cleared. Branch conditions reflect the final 2-byte Sweet16.ACC contents which will always be positive and never minus one. The carry is cleared. Because Rn is decremented prior to loading the ACC, single byte stacks may be implemented with the STI Rn and POP Rn ops (Rn is the stack pointer).  Note - as trying to inspect the intermediate values using the extension "XJSR" to output the test assertions
-POP_INDIRECT_TEST: {
+TestPopIndirect: {
 	.const STACK = 5			// Arbitrary register
 	.const VAL_1 = $04			// Arbitrary low order used
 	.const VAL_2 = $05			// Arbitrary low order used
@@ -171,7 +171,7 @@ POP_INDIRECT_TEST: {
 }
 	
 // The low-order Sweet16.ACC byte is stored into the memory location whose address resides in Rn after Rn is decremented by 1. Branch conditions will reflect the 2-byte Sweet16.ACC contents which are not modified. STP Rn and POP Rn are used together to move data blocks beginning at the greatest address and working down. Additionally, single-byte stacks may be implemented with the STP Rn ops.
-STORE_POP_INDIRECT_TEST: {
+TestStorePopIndirect: {
 	.const SOURCE = 4				// Arbitrary register
 	.const DEST = 5					// Arbitrary register
 	TestName("STORE POP IND")
@@ -189,7 +189,7 @@ STORE_POP_INDIRECT_TEST: {
 }
 
 // The contents of Rn are added to the contents of Sweet16.ACC (R0), and the low-order 16 bits of the sum restored in ACC. the 17th sum bit becomes the carry and the other branch conditions reflect the final Sweet16.ACC contents.
-ADD_TEST: {
+TestAdd: {
 	.const REGISTER = 1
 	.const VAL_1 = $7634
 	.const VAL_2 = $4227
@@ -214,7 +214,7 @@ ADD_TEST: {
 // Sweet16.ACC = Sweet16.ACC + Rn + 1
 //
 //The low order 16 bits of the subtraction are restored in the ACC, the 17th sum bit becomes the carry and other branch conditions reflect the final Sweet16.ACC contents. If the 16-bit unsigned Sweet16.ACC contents are greater than or equal to the 16-bit unsigned Rn contents, then the carry is set, otherwise it is cleared. Rn is not disturbed.
-SUBTRACT_TEST: {
+TestSubtract: {
 	.const REGISTER = 1		// Arbitrary register
 	.const VAL_1 = $7634
 	.const VAL_2 = $4227
@@ -235,7 +235,7 @@ SUBTRACT_TEST: {
 }
 	
 // Rn is decremented by 1 and the high-order Sweet16.ACC byte is loaded from the memory location whose address now resides in Rn. Rn is again decremented by 1 and the low-order Sweet16.ACC byte is loaded from the corresponding memory location. Branch conditions reflect the final Sweet16.ACC contents. The carry is cleared. Because Rn is decremented prior to loading each of the Sweet16.ACC halves, double-byte stacks may be implemented with the STD @Rn and POPD @Rn ops (Rn is the stack pointer).
-POP_DOUBLE_BYTE_INDIRECT_TEST: {
+TestPopDoubleByteIndirect: {
 	.const STACK = 5			// Arbitrary register
 	TestName("POP DBL-B IND")
 	sweet16
@@ -265,7 +265,7 @@ POP_DOUBLE_BYTE_INDIRECT_TEST: {
 }
 
 // The Sweet16.ACC (R0) contents are compared to Rn by performing the 16 bit binary subtraction ACC-Rn and storing the low order 16 difference bits in R13 for subsequent branch tests. If the 16 bit unsigned Sweet16.ACC contents are greater than or equal to the 16 bit unsigned Rn contents, then the carry is set, otherwise it is cleared. No other registers, including Sweet16.ACC and Rn, are disturbed.
-COMPARE_TEST: {
+TestCompare: {
 	.const DATA_REGISTER = 5
 	.const LIMIT_REGISTER = 6
 	.const COUNT_REGISTER = 4
@@ -288,7 +288,7 @@ COMPARE_TEST: {
 }
 
 // The contents of Rn are incremented by 1. The carry is cleared and other branch conditions reflect the incremented value.
-INCREMENT_TEST: {
+TestIncrement: {
 	.const REGISTER = 5			// arbitrary register
 	TestName("INCREMENT")
 	sweet16
@@ -303,7 +303,7 @@ INCREMENT_TEST: {
 }
 
 // The contents of Rn are decremented by 1. The carry is cleared and other branch conditions reflect the decremented value. e.g., to clear 9 bytes beginning at location TEST_MEMORY_SEQUENCE
-DECREMENT_TEST: {
+TestDecrement: {
 	.const DATA_REGISTER = 5
 	.const COUNT_REGISTER = 4
 	TestName("DECREMENT")
@@ -322,7 +322,7 @@ DECREMENT_TEST: {
 }
 
 // Control is returned to the 6502 and program execution continues at the location immediately following the RTN instruction. the 6502 registers and status conditions are restored to their original contents (prior to entering SWEET 16 mode).
-RETURN_TO_6502_MODE_TEST: {
+TestReturnTo6502Mode: {
 	TestName("6502 MODE")
 	sweet16
 	rtn
@@ -332,7 +332,7 @@ RETURN_TO_6502_MODE_TEST: {
 }
 	
 // An effective address (ea) is calculated by adding the signed displacement byte (d) to the PC. The PC contains the address of the instruction immediately following the BR, or the address of the BR op plus 2. The displacement is a signed two's complement value from -128 to +127. Branch conditions are not changed.
-BRANCH_ALWAYS_TEST: {
+TestBranchAlways: {
 	TestName("BRANCH ALWAYS")
 	sweet16
 	br !setVal1+
@@ -352,7 +352,7 @@ BRANCH_ALWAYS_TEST: {
 }
 
 // A branch to the effective address is taken only is the carry is clear, otherwise execution resumes as normal with the next instruction. Branch conditions are not changed.	
-BRANCH_IF_NO_CARRY_TEST: {
+TestBranchIfNoCarry: {
 	.const REGISTER = 5
 	TestName("BRANCH NO CARRY")
 	sweet16
@@ -377,7 +377,7 @@ BRANCH_IF_NO_CARRY_TEST: {
 }
 
 // A branch is effected only if the carry is set. Branch conditions are not changed.
-BRANCH_IF_CARRY_SET_TEST: {
+TestBranchIfCarrySet: {
 	.const REGISTER = 5
 	TestName("BRANCH IF CARRY")
 	sweet16
@@ -402,7 +402,7 @@ BRANCH_IF_CARRY_SET_TEST: {
 }
 
 // A branch is effected only if the prior 'result' (or most recently transferred data) was positive. Branch conditions are not changed. e.g., Clear mem from TEST_MEMORY_SEQUENCE to SIZE
-BRANCH_IF_PLUS_TEST: {
+TestBranchIfPlus: {
 	.const DATA_REGISTER = 5
 	.const LIMIT_REGISTER = 4
 	TestName("BRANCH IF +VE")
@@ -422,7 +422,7 @@ BRANCH_IF_PLUS_TEST: {
 }
 	
 // A branch is effected only if prior 'result' was minus (negative, MSB = 1). Branch conditions are not changed.
-BRANCH_IF_MINUS_TEST: {
+TestBranchIfMinus: {
 	.const DATA_REGISTER = 5
 	.const VALUE = $0A
 	TestName("BRANCH IF -VE")
@@ -448,7 +448,7 @@ BRANCH_IF_MINUS_TEST: {
 }
 
 // A Branch is effected only if the prior 'result' was zero. Branch conditions are not changed.
-BRANCH_IF_ZERO_TEST: {
+TestBranchIfZero: {
 	TestName("BRANCH IF 0")
 	sweet16
 	sub Sweet16.ACC							// Clear mem byte
@@ -470,7 +470,7 @@ BRANCH_IF_ZERO_TEST: {
 }
 
 // A branch is effected only if the priot 'result' was non-zero Branch conditions are not changed.
-BRANCH_IF_NONZERO_TEST: {
+TestBranchIfNonZero: {
 	.const DATA_REGISTER = 5
 	.const VALUE = $0A
 	TestName("BRANCH IF !0")
@@ -496,7 +496,7 @@ BRANCH_IF_NONZERO_TEST: {
 }
 
 // A branch is effected only if the prior 'result' was minus one ($FFFF Hex). Branch conditions are not changed.
-BRANCH_IF_MINUS_ONE_TEST: {
+TestBranchIfMinus1: {
 	.const DATA_REGISTER = 5
 	.const VALUE = 1
 	TestName("BRANCH IF -1")
@@ -522,7 +522,7 @@ BRANCH_IF_MINUS_ONE_TEST: {
 }
 
 // A branch effected only if the prior 'result' was not minus 1. Branch conditions are not changed
-BRANCH_IF_NOT_MINUS_ONE_TEST: {
+TestBranchIfNotMinus1: {
 	.const DATA_REGISTER = 5
 	.const VALUE = 2
 	TestName("BRANCH IF !-1")
@@ -548,7 +548,7 @@ BRANCH_IF_NOT_MINUS_ONE_TEST: {
 }
 
 // A 6502 BRK (break) instruction is executed. SWEET 16 may be re-entered non destructively at SW16d after correcting the stack pointer to its value prior to executing the BRK.   This test uses an extension to SWEET16 which inserts a VICE break when the BK instruction is encountered after restoring the SP, Registers and Flags.  Note the additional argument to sweet16 to ensure the handler is setup as it is not by default.  The handler also deals with the setting up for the stack pointer and conntinuing execution from SW16D
-BREAK_TEST: {
+TestBreak: {
 	.const REGISTER = Sweet16.ACC
 	.const VAL_1 = $feed
 	.const VAL_2 = $0123
@@ -569,7 +569,7 @@ BREAK_TEST: {
 }
 
 // Shows the use of the extension "IBK" which operates like "BK" except that it is responsible for installing the 6502 "brk" which can also be done by starting SWEET16 with a "sweet16 : 1".  Once the interrupt handler has been set there is no need to call ibk again
-INTERRUPT_BREAK_TEST: {
+TestInterruptBreak: {
 	.const VAL_1 = $feed
 	.const VAL_2 = $0123
 	TestName("INT BREAK")
@@ -605,7 +605,7 @@ INTERRUPT_BREAK_TEST: {
 }
 
 // A branch to the effective address (PC + 2 + d) is taken and execution is resumed in SWEET 16 mode. The current PC is pushed onto a SWEET 16 subroutine return address stack whose pointer is R12, and R12 is incremented by 2. The carry is cleared and branch conditions set to indicate the current Sweet16.ACC contents. EXAMPLE: Calling a 'memory move' subroutine to move TEST_MEMORY_SEQUENCE to TEST_MEMORY_SEQUENCE_2
-BRANCH_TO_SUBROUTINE_TEST: {
+TestBranchToSubroutine: {
 	.const SOURCE = 5
 	.const SOURCE_LIMIT = 4
 	.const DEST = 6
@@ -631,7 +631,7 @@ BRANCH_TO_SUBROUTINE_TEST: {
 }
 	
 // RS terminates execution of a SWEET 16 subroutine and returns to the SWEET 16 calling program which resumes execution (in SWEET 16 mode). R12, which is the SWEET 16 subroutine return stack pointer, is decremented twice. Branch conditions are not changed.
-RETURN_FROM_SUBROUTINE_TEST: {
+TestReturnFromSubroutine: {
 	.const REGISTER = Sweet16.ACC
 	.const DEFAULT_VALUE = $1234
 	.const SUB_SET_VALUE = $5678
@@ -653,7 +653,7 @@ RETURN_FROM_SUBROUTINE_TEST: {
 
 
 // Test the pseudocommand AJMP which allows SWEET16 to perform absolute jumps by directly setting the address of the PC (minus 1) in the Sweet16.ACC register.  Affect the value in the Sweet16.ACC and PC registers
-ABSOLUTE_JUMP_TEST: {
+TestAbsoluteJump: {
 	.const INITIAL_VALUE = $0000
 	.const SET_VALUE = $1234
 	.const NON_ACC_REGISTER = 5
@@ -674,7 +674,7 @@ ABSOLUTE_JUMP_TEST: {
 }
 
 // XJSR is an extension added to the standard SWEET16 instructions to allow for a mix of SWEET16 calls and 6502.  When "XJSR" is called the address is executed normally as if we were in 6502 instruction set mode.  Once the RTS is encountered regular SWEET16 execution continues
-EXTERNAL_JSR_TEST: {
+TestExternalJSR: {
 	TestName("EXTERNAL JSR")
 	.const REGISTER = 5			// arbitrary register
 	.const VALUE = $4321		// arbitrary value
@@ -706,7 +706,7 @@ EXTERNAL_JSR_TEST: {
 }
 
 // SETI is an extension added to the standard SWEET16 instructions to allow for a setting a register value indirectly by providing a memory location to source.
-SET_INDIRECT_TEST: {
+TestSetIndirect: {
 	.const REGISTER = 5			// arbitrary register
 	TestName("SET INDIRECT")
 	sweet16
@@ -718,7 +718,7 @@ SET_INDIRECT_TEST: {
 }
 
 // SETM is an extension added to the standard SWEET16 instructions to allow for a setting a register value indirectly by providing a memory location to source.  It puts the exact bytes into the register not Hight byte Low byte
-SET_MEMORY_TEST: {
+TestSetMemory: {
 	.const REGISTER = 5			// arbitrary register
 	TestName("SET MEMORY")
 	sweet16
@@ -734,41 +734,41 @@ TestRun:
 
 	// core sweet16
 
-	jsr SET_TEST
-	jsr LOAD_TEST
-	jsr STORE_TEST
-	jsr LOAD_INDIRECT_TEST
-	jsr STORE_INDIRECT_TEST
-	jsr LOAD_DOUBLE_BYTE_INDIRECT_TEST
-	jsr STORE_DOUBLE_BYTE_INDIRECT_TEST
-	jsr POP_INDIRECT_TEST
-	jsr STORE_POP_INDIRECT_TEST
-	jsr ADD_TEST
-	jsr SUBTRACT_TEST
-	jsr POP_DOUBLE_BYTE_INDIRECT_TEST
-	jsr COMPARE_TEST
-	jsr INCREMENT_TEST
-	jsr DECREMENT_TEST
-	jsr RETURN_TO_6502_MODE_TEST
-	jsr BRANCH_ALWAYS_TEST
-	jsr BRANCH_IF_NO_CARRY_TEST	
-	jsr BRANCH_IF_CARRY_SET_TEST
-	jsr BRANCH_IF_PLUS_TEST
-	jsr BRANCH_IF_MINUS_TEST
-	jsr BRANCH_IF_ZERO_TEST	
-	jsr BRANCH_IF_NONZERO_TEST
-	jsr BRANCH_IF_MINUS_ONE_TEST
-	jsr BRANCH_IF_NOT_MINUS_ONE_TEST
-	jsr BREAK_TEST
-	jsr BRANCH_TO_SUBROUTINE_TEST
-	jsr RETURN_FROM_SUBROUTINE_TEST
+	jsr TestSet
+	jsr TestLoad
+	jsr TestStore
+	jsr TestLoadIndirect
+	jsr TestStoreIndirect
+	jsr TestLoadDoubleByteIndirect
+	jsr TestStoreDoubleByteIndirect
+	jsr TestPopIndirect
+	jsr TestStorePopIndirect
+	jsr TestAdd
+	jsr TestSubtract
+	jsr TestPopDoubleByteIndirect
+	jsr TestCompare
+	jsr TestIncrement
+	jsr TestDecrement
+	jsr TestReturnTo6502Mode
+	jsr TestBranchAlways
+	jsr TestBranchIfNoCarry
+	jsr TestBranchIfCarrySet
+	jsr TestBranchIfPlus
+	jsr TestBranchIfMinus
+	jsr TestBranchIfZero
+	jsr TestBranchIfNonZero
+	jsr TestBranchIfMinus1
+	jsr TestBranchIfNotMinus1
+	jsr TestBreak
+	jsr TestBranchToSubroutine
+	jsr TestReturnFromSubroutine
 
 	// extensions
-	jsr ABSOLUTE_JUMP_TEST
-	jsr EXTERNAL_JSR_TEST
-	jsr SET_INDIRECT_TEST
-	jsr SET_MEMORY_TEST
-	jsr INTERRUPT_BREAK_TEST
+	jsr TestAbsoluteJump
+	jsr TestExternalJSR
+	jsr TestSetIndirect
+	jsr TestSetMemory
+	jsr TestInterruptBreak
 		
 	TestFinished()
 

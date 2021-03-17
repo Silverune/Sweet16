@@ -401,7 +401,7 @@
 2000: fe ed     - tests_patch:.byte >MagicCookie, <MagicCookie
 ******************************** Segment: Tests ********************************
 [Tests]
-2000: ee 62 54  - SET_TEST:inc TEST_NAME_COUNT
+2000: ee 62 54  - TestSet:inc TEST_NAME_COUNT
 2003: ad 86 02  -         lda Two.CurrentCharColor
 2006: 48        -         pha
 2007: a9 0f     -         lda #color
@@ -518,7 +518,7 @@
 211b: a2 00     -         ldx #$00
 211d: 8e 62 54  -         stx TEST_NAME_COUNT
 2120: 60        -         rts
-2121: ee 62 54  - LOAD_TEST:inc TEST_NAME_COUNT
+2121: ee 62 54  - TestLoad:inc TEST_NAME_COUNT
 2124: ad 86 02  -         lda Two.CurrentCharColor
 2127: 48        -         pha
 2128: a9 0f     -         lda #color
@@ -636,7 +636,7 @@
 223d: a2 00     -         ldx #$00
 223f: 8e 62 54  -         stx TEST_NAME_COUNT
 2242: 60        -         rts
-2243: ee 62 54  - STORE_TEST:inc TEST_NAME_COUNT
+2243: ee 62 54  - TestStore:inc TEST_NAME_COUNT
 2246: ad 86 02  -         lda Two.CurrentCharColor
 2249: 48        -         pha
 224a: a9 0f     -         lda #color
@@ -755,7 +755,7 @@
 2364: a2 00     -         ldx #$00
 2366: 8e 62 54  -         stx TEST_NAME_COUNT
 2369: 60        -         rts
-236a: ee 62 54  - LOAD_INDIRECT_TEST:inc TEST_NAME_COUNT
+236a: ee 62 54  - TestLoadIndirect:inc TEST_NAME_COUNT
 236d: ad 86 02  -         lda Two.CurrentCharColor
 2370: 48        -         pha
 2371: a9 0f     -         lda #color
@@ -921,7 +921,7 @@
 2504: a2 00     -         ldx #$00
 2506: 8e 62 54  -         stx TEST_NAME_COUNT
 2509: 60        -         rts
-250a: ee 62 54  - STORE_INDIRECT_TEST:inc TEST_NAME_COUNT
+250a: ee 62 54  - TestStoreIndirect:inc TEST_NAME_COUNT
 250d: ad 86 02  -         lda Two.CurrentCharColor
 2510: 48        -         pha
 2511: a9 0f     -         lda #color
@@ -1144,7 +1144,7 @@
 2722: a2 00     -         ldx #$00
 2724: 8e 62 54  -         stx TEST_NAME_COUNT
 2727: 60        -         rts
-2728: ee 62 54  - LOAD_DOUBLE_BYTE_INDIRECT_TEST:inc TEST_NAME_COUNT
+2728: ee 62 54  - TestLoadDoubleByteIndirect:inc TEST_NAME_COUNT
 272b: ad 86 02  -         lda Two.CurrentCharColor
 272e: 48        -         pha
 272f: a9 0f     -         lda #color
@@ -1314,7 +1314,7 @@
 28d4: a2 00     -         ldx #$00
 28d6: 8e 62 54  -         stx TEST_NAME_COUNT
 28d9: 60        -         rts
-28da: ee 62 54  - STORE_DOUBLE_BYTE_INDIRECT_TEST:inc TEST_NAME_COUNT
+28da: ee 62 54  - TestStoreDoubleByteIndirect:inc TEST_NAME_COUNT
 28dd: ad 86 02  -         lda Two.CurrentCharColor
 28e0: 48        -         pha
 28e1: a9 0f     -         lda #color
@@ -1537,7 +1537,7 @@
 2af0: a2 00     -         ldx #$00
 2af2: 8e 62 54  -         stx TEST_NAME_COUNT
 2af5: 60        -         rts
-2af6: ee 62 54  - POP_INDIRECT_TEST:inc TEST_NAME_COUNT
+2af6: ee 62 54  - TestPopIndirect:inc TEST_NAME_COUNT
 2af9: ad 86 02  -         lda Two.CurrentCharColor
 2afc: 48        -         pha
 2afd: a9 0f     -         lda #color
@@ -1996,7 +1996,7 @@
 2f24: 68        -         pla
 2f25: 8d 86 02  -         sta Two.CurrentCharColor
 2f28: 60        -         rts
-2f29: ee 62 54  - STORE_POP_INDIRECT_TEST:inc TEST_NAME_COUNT
+2f29: ee 62 54  - TestStorePopIndirect:inc TEST_NAME_COUNT
 2f2c: ad 86 02  -         lda Two.CurrentCharColor
 2f2f: 48        -         pha
 2f30: a9 0f     -         lda #color
@@ -2121,7 +2121,7 @@
 3063: a2 00     -         ldx #$00
 3065: 8e 62 54  -         stx TEST_NAME_COUNT
 3068: 60        -         rts
-3069: ee 62 54  - ADD_TEST:inc TEST_NAME_COUNT
+3069: ee 62 54  - TestAdd:inc TEST_NAME_COUNT
 306c: ad 86 02  -         lda Two.CurrentCharColor
 306f: 48        -         pha
 3070: a9 0f     -         lda #color
@@ -2296,7 +2296,7 @@
 3204: 68        -         pla
 3205: 8d 86 02  -         sta Two.CurrentCharColor
 3208: 60        -         rts
-3209: ee 62 54  - SUBTRACT_TEST:inc TEST_NAME_COUNT
+3209: ee 62 54  - TestSubtract:inc TEST_NAME_COUNT
 320c: ad 86 02  -         lda Two.CurrentCharColor
 320f: 48        -         pha
 3210: a9 0f     -         lda #color
@@ -2471,7 +2471,7 @@
 33a9: 68        -         pla
 33aa: 8d 86 02  -         sta Two.CurrentCharColor
 33ad: 60        -         rts	
-33ae: ee 62 54  - POP_DOUBLE_BYTE_INDIRECT_TEST:inc TEST_NAME_COUNT
+33ae: ee 62 54  - TestPopDoubleByteIndirect:inc TEST_NAME_COUNT
 33b1: ad 86 02  -         lda Two.CurrentCharColor
 33b4: 48        -         pha
 33b5: a9 0f     -         lda #color
@@ -2758,7 +2758,7 @@
 363d: 68        -         pla
 363e: 8d 86 02  -         sta Two.CurrentCharColor
 3641: 60        -         rts
-3642: ee 62 54  - COMPARE_TEST:inc TEST_NAME_COUNT
+3642: ee 62 54  - TestCompare:inc TEST_NAME_COUNT
 3645: ad 86 02  -         lda Two.CurrentCharColor
 3648: 48        -         pha
 3649: a9 0f     -         lda #color
@@ -2885,7 +2885,7 @@
 3772: a2 00     -         ldx #$00
 3774: 8e 62 54  -         stx TEST_NAME_COUNT
 3777: 60        -         rts	
-3778: ee 62 54  - INCREMENT_TEST:inc TEST_NAME_COUNT
+3778: ee 62 54  - TestIncrement:inc TEST_NAME_COUNT
 377b: ad 86 02  -         lda Two.CurrentCharColor
 377e: 48        -         pha
 377f: a9 0f     -         lda #color
@@ -3005,7 +3005,7 @@
 389f: a2 00     -         ldx #$00
 38a1: 8e 62 54  -         stx TEST_NAME_COUNT
 38a4: 60        -         rts
-38a5: ee 62 54  - DECREMENT_TEST:inc TEST_NAME_COUNT
+38a5: ee 62 54  - TestDecrement:inc TEST_NAME_COUNT
 38a8: ad 86 02  -         lda Two.CurrentCharColor
 38ab: 48        -         pha
 38ac: a9 0f     -         lda #color
@@ -3128,7 +3128,7 @@
 39d0: a2 00     -         ldx #$00
 39d2: 8e 62 54  -         stx TEST_NAME_COUNT
 39d5: 60        -         rts
-39d6: ee 62 54  - RETURN_TO_6502_MODE_TEST:inc TEST_NAME_COUNT
+39d6: ee 62 54  - TestReturnTo6502Mode:inc TEST_NAME_COUNT
 39d9: ad 86 02  -         lda Two.CurrentCharColor
 39dc: 48        -         pha
 39dd: a9 0f     -         lda #color
@@ -3239,7 +3239,7 @@
 3af0: a2 00     -         ldx #$00
 3af2: 8e 62 54  -         stx TEST_NAME_COUNT
 3af5: 60        -         rts
-3af6: ee 62 54  - BRANCH_ALWAYS_TEST:inc TEST_NAME_COUNT
+3af6: ee 62 54  - TestBranchAlways:inc TEST_NAME_COUNT
 3af9: ad 86 02  -         lda Two.CurrentCharColor
 3afc: 48        -         pha
 3afd: a9 0f     -         lda #color
@@ -3361,7 +3361,7 @@
 3c2a: a2 00     -         ldx #$00
 3c2c: 8e 62 54  -         stx TEST_NAME_COUNT
 3c2f: 60        -         rts
-3c30: ee 62 54  - BRANCH_IF_NO_CARRY_TEST:inc TEST_NAME_COUNT
+3c30: ee 62 54  - TestBranchIfNoCarry:inc TEST_NAME_COUNT
 3c33: ad 86 02  -         lda Two.CurrentCharColor
 3c36: 48        -         pha
 3c37: a9 0f     -         lda #color
@@ -3489,7 +3489,7 @@
 3d71: a2 00     -         ldx #$00
 3d73: 8e 62 54  -         stx TEST_NAME_COUNT
 3d76: 60        -         rts
-3d77: ee 62 54  - BRANCH_IF_CARRY_SET_TEST:inc TEST_NAME_COUNT
+3d77: ee 62 54  - TestBranchIfCarrySet:inc TEST_NAME_COUNT
 3d7a: ad 86 02  -         lda Two.CurrentCharColor
 3d7d: 48        -         pha
 3d7e: a9 0f     -         lda #color
@@ -3617,7 +3617,7 @@
 3eb8: a2 00     -         ldx #$00
 3eba: 8e 62 54  -         stx TEST_NAME_COUNT
 3ebd: 60        -         rts
-3ebe: ee 62 54  - BRANCH_IF_PLUS_TEST:inc TEST_NAME_COUNT
+3ebe: ee 62 54  - TestBranchIfPlus:inc TEST_NAME_COUNT
 3ec1: ad 86 02  -         lda Two.CurrentCharColor
 3ec4: 48        -         pha
 3ec5: a9 0f     -         lda #color
@@ -3743,7 +3743,7 @@
 3ff9: a2 00     -         ldx #$00
 3ffb: 8e 62 54  -         stx TEST_NAME_COUNT
 3ffe: 60        -         rts
-3fff: ee 62 54  - BRANCH_IF_MINUS_TEST:inc TEST_NAME_COUNT
+3fff: ee 62 54  - TestBranchIfMinus:inc TEST_NAME_COUNT
 4002: ad 86 02  -         lda Two.CurrentCharColor
 4005: 48        -         pha
 4006: a9 0f     -         lda #color
@@ -3870,7 +3870,7 @@
 413a: a2 00     -         ldx #$00
 413c: 8e 62 54  -         stx TEST_NAME_COUNT
 413f: 60        -         rts
-4140: ee 62 54  - BRANCH_IF_ZERO_TEST:inc TEST_NAME_COUNT
+4140: ee 62 54  - TestBranchIfZero:inc TEST_NAME_COUNT
 4143: ad 86 02  -         lda Two.CurrentCharColor
 4146: 48        -         pha
 4147: a9 0f     -         lda #color
@@ -3994,7 +3994,7 @@
 4273: a2 00     -         ldx #$00
 4275: 8e 62 54  -         stx TEST_NAME_COUNT
 4278: 60        -         rts
-4279: ee 62 54  - BRANCH_IF_NONZERO_TEST:inc TEST_NAME_COUNT
+4279: ee 62 54  - TestBranchIfNonZero:inc TEST_NAME_COUNT
 427c: ad 86 02  -         lda Two.CurrentCharColor
 427f: 48        -         pha
 4280: a9 0f     -         lda #color
@@ -4121,7 +4121,7 @@
 43b2: a2 00     -         ldx #$00
 43b4: 8e 62 54  -         stx TEST_NAME_COUNT
 43b7: 60        -         rts
-43b8: ee 62 54  - BRANCH_IF_MINUS_ONE_TEST:inc TEST_NAME_COUNT
+43b8: ee 62 54  - TestBranchIfMinus1:inc TEST_NAME_COUNT
 43bb: ad 86 02  -         lda Two.CurrentCharColor
 43be: 48        -         pha
 43bf: a9 0f     -         lda #color
@@ -4248,7 +4248,7 @@
 44f1: a2 00     -         ldx #$00
 44f3: 8e 62 54  -         stx TEST_NAME_COUNT
 44f6: 60        -         rts
-44f7: ee 62 54  - BRANCH_IF_NOT_MINUS_ONE_TEST:inc TEST_NAME_COUNT
+44f7: ee 62 54  - TestBranchIfNotMinus1:inc TEST_NAME_COUNT
 44fa: ad 86 02  -         lda Two.CurrentCharColor
 44fd: 48        -         pha
 44fe: a9 0f     -         lda #color
@@ -4375,7 +4375,7 @@
 4632: a2 00     -         ldx #$00
 4634: 8e 62 54  -         stx TEST_NAME_COUNT
 4637: 60        -         rts
-4638: ee 62 54  - BREAK_TEST:inc TEST_NAME_COUNT
+4638: ee 62 54  - TestBreak:inc TEST_NAME_COUNT
 463b: ad 86 02  -         lda Two.CurrentCharColor
 463e: 48        -         pha
 463f: a9 0f     -         lda #color
@@ -4554,7 +4554,7 @@
 47d4: 68        -         pla
 47d5: 8d 86 02  -         sta Two.CurrentCharColor
 47d8: 60        -         rts
-47d9: ee 62 54  - INTERRUPT_BREAK_TEST:inc TEST_NAME_COUNT
+47d9: ee 62 54  - TestInterruptBreak:inc TEST_NAME_COUNT
 47dc: ad 86 02  -         lda Two.CurrentCharColor
 47df: 48        -         pha
 47e0: a9 0f     -         lda #color
@@ -4748,7 +4748,7 @@
 498f: 68        -         pla		// PCH discard - not useful
 4990: a5 37     -         lda Sweet16_rl(Sweet16.ZP)
 4992: 4c 24 10  -         jmp SW16D
-4995: ee 62 54  - BRANCH_TO_SUBROUTINE_TEST:inc TEST_NAME_COUNT
+4995: ee 62 54  - TestBranchToSubroutine:inc TEST_NAME_COUNT
 4998: ad 86 02  -         lda Two.CurrentCharColor
 499b: 48        -         pha
 499c: a9 0f     -         lda #color
@@ -4879,7 +4879,7 @@
 4ada: a2 00     -         ldx #$00
 4adc: 8e 62 54  -         stx TEST_NAME_COUNT
 4adf: 60        -         rts
-4ae0: ee 62 54  - RETURN_FROM_SUBROUTINE_TEST:inc TEST_NAME_COUNT
+4ae0: ee 62 54  - TestReturnFromSubroutine:inc TEST_NAME_COUNT
 4ae3: ad 86 02  -         lda Two.CurrentCharColor
 4ae6: 48        -         pha
 4ae7: a9 0f     -         lda #color
@@ -5001,7 +5001,7 @@
 4c1a: a2 00     -         ldx #$00
 4c1c: 8e 62 54  -         stx TEST_NAME_COUNT
 4c1f: 60        -         rts
-4c20: ee 62 54  - ABSOLUTE_JUMP_TEST:inc TEST_NAME_COUNT
+4c20: ee 62 54  - TestAbsoluteJump:inc TEST_NAME_COUNT
 4c23: ad 86 02  -         lda Two.CurrentCharColor
 4c26: 48        -         pha
 4c27: a9 0f     -         lda #color
@@ -5126,7 +5126,7 @@
 4d5a: 10        -         .byte opcode(op, register)
 4d5b: 6e 4c     -         .word address.getValue()
 4d5d: 3f        -         .byte opcode($30, register) }
-4d5e: ee 62 54  - EXTERNAL_JSR_TEST:inc TEST_NAME_COUNT
+4d5e: ee 62 54  - TestExternalJSR:inc TEST_NAME_COUNT
 4d61: ad 86 02  -         lda Two.CurrentCharColor
 4d64: 48        -         pha
 4d65: a9 0f     -         lda #color
@@ -5361,7 +5361,7 @@
 4f86: 68        -         pla
 4f87: 8d 86 02  -         sta Two.CurrentCharColor
 4f8a: 60        -         rts
-4f8b: ee 62 54  - SET_INDIRECT_TEST:inc TEST_NAME_COUNT
+4f8b: ee 62 54  - TestSetIndirect:inc TEST_NAME_COUNT
 4f8e: ad 86 02  -         lda Two.CurrentCharColor
 4f91: 48        -         pha
 4f92: a9 0f     -         lda #color
@@ -5479,7 +5479,7 @@
 50be: a2 00     -         ldx #$00
 50c0: 8e 62 54  -         stx TEST_NAME_COUNT
 50c3: 60        -         rts
-50c4: ee 62 54  - SET_MEMORY_TEST:inc TEST_NAME_COUNT
+50c4: ee 62 54  - TestSetMemory:inc TEST_NAME_COUNT
 50c7: ad 86 02  -         lda Two.CurrentCharColor
 50ca: 48        -         pha
 50cb: a9 0f     -         lda #color
@@ -5633,39 +5633,39 @@
 5255: 8d 60 54  -         sta TEST_COUNT
 5258: 8d 61 54  -         sta TEST_PASS_COUNT
 525b: 8d 62 54  -         sta TEST_NAME_COUNT
-525e: 20 00 20  -         jsr SET_TEST
-5261: 20 21 21  -         jsr LOAD_TEST
-5264: 20 43 22  -         jsr STORE_TEST
-5267: 20 6a 23  -         jsr LOAD_INDIRECT_TEST
-526a: 20 0a 25  -         jsr STORE_INDIRECT_TEST
-526d: 20 28 27  -         jsr LOAD_DOUBLE_BYTE_INDIRECT_TEST
-5270: 20 da 28  -         jsr STORE_DOUBLE_BYTE_INDIRECT_TEST
-5273: 20 f6 2a  -         jsr POP_INDIRECT_TEST
-5276: 20 29 2f  -         jsr STORE_POP_INDIRECT_TEST
-5279: 20 69 30  -         jsr ADD_TEST
-527c: 20 09 32  -         jsr SUBTRACT_TEST
-527f: 20 ae 33  -         jsr POP_DOUBLE_BYTE_INDIRECT_TEST
-5282: 20 42 36  -         jsr COMPARE_TEST
-5285: 20 78 37  -         jsr INCREMENT_TEST
-5288: 20 a5 38  -         jsr DECREMENT_TEST
-528b: 20 d6 39  -         jsr RETURN_TO_6502_MODE_TEST
-528e: 20 f6 3a  -         jsr BRANCH_ALWAYS_TEST
-5291: 20 30 3c  -         jsr BRANCH_IF_NO_CARRY_TEST	
-5294: 20 77 3d  -         jsr BRANCH_IF_CARRY_SET_TEST
-5297: 20 be 3e  -         jsr BRANCH_IF_PLUS_TEST
-529a: 20 ff 3f  -         jsr BRANCH_IF_MINUS_TEST
-529d: 20 40 41  -         jsr BRANCH_IF_ZERO_TEST	
-52a0: 20 79 42  -         jsr BRANCH_IF_NONZERO_TEST
-52a3: 20 b8 43  -         jsr BRANCH_IF_MINUS_ONE_TEST
-52a6: 20 f7 44  -         jsr BRANCH_IF_NOT_MINUS_ONE_TEST
-52a9: 20 38 46  -         jsr BREAK_TEST
-52ac: 20 95 49  -         jsr BRANCH_TO_SUBROUTINE_TEST
-52af: 20 e0 4a  -         jsr RETURN_FROM_SUBROUTINE_TEST
-52b2: 20 20 4c  -         jsr ABSOLUTE_JUMP_TEST
-52b5: 20 5e 4d  -         jsr EXTERNAL_JSR_TEST
-52b8: 20 8b 4f  -         jsr SET_INDIRECT_TEST
-52bb: 20 c4 50  -         jsr SET_MEMORY_TEST
-52be: 20 d9 47  -         jsr INTERRUPT_BREAK_TEST
+525e: 20 00 20  -         jsr TestSet
+5261: 20 21 21  -         jsr TestLoad
+5264: 20 43 22  -         jsr TestStore
+5267: 20 6a 23  -         jsr TestLoadIndirect
+526a: 20 0a 25  -         jsr TestStoreIndirect
+526d: 20 28 27  -         jsr TestLoadDoubleByteIndirect
+5270: 20 da 28  -         jsr TestStoreDoubleByteIndirect
+5273: 20 f6 2a  -         jsr TestPopIndirect
+5276: 20 29 2f  -         jsr TestStorePopIndirect
+5279: 20 69 30  -         jsr TestAdd
+527c: 20 09 32  -         jsr TestSubtract
+527f: 20 ae 33  -         jsr TestPopDoubleByteIndirect
+5282: 20 42 36  -         jsr TestCompare
+5285: 20 78 37  -         jsr TestIncrement
+5288: 20 a5 38  -         jsr TestDecrement
+528b: 20 d6 39  -         jsr TestReturnTo6502Mode
+528e: 20 f6 3a  -         jsr TestBranchAlways
+5291: 20 30 3c  -         jsr TestBranchIfNoCarry
+5294: 20 77 3d  -         jsr TestBranchIfCarrySet
+5297: 20 be 3e  -         jsr TestBranchIfPlus
+529a: 20 ff 3f  -         jsr TestBranchIfMinus
+529d: 20 40 41  -         jsr TestBranchIfZero
+52a0: 20 79 42  -         jsr TestBranchIfNonZero
+52a3: 20 b8 43  -         jsr TestBranchIfMinus1
+52a6: 20 f7 44  -         jsr TestBranchIfNotMinus1
+52a9: 20 38 46  -         jsr TestBreak
+52ac: 20 95 49  -         jsr TestBranchToSubroutine
+52af: 20 e0 4a  -         jsr TestReturnFromSubroutine
+52b2: 20 20 4c  -         jsr TestAbsoluteJump
+52b5: 20 5e 4d  -         jsr TestExternalJSR
+52b8: 20 8b 4f  -         jsr TestSetIndirect
+52bb: 20 c4 50  -         jsr TestSetMemory
+52be: 20 d9 47  -         jsr TestInterruptBreak
 52c1: ad 86 02  -         lda Two.CurrentCharColor
 52c4: 48        -         pha
 52c5: a9 01     -         lda #color
