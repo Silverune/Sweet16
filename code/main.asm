@@ -10,6 +10,7 @@ Main: {
 !already_loaded:
 .break
 	jsr Ready
+.break
 }
 
 ErrorHandler:
@@ -32,14 +33,8 @@ LoadCode: {
 
 Ready: {
 	jsr TestRun
-	jsr Anykey
+	AnyKey()
 	jmp (Kernal.RESET)
-}
-
-Anykey: {
-	GetKey()
-	beq Anykey
-	rts
 }
 
 .segment Default

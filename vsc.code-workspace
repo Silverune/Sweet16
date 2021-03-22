@@ -1,5 +1,5 @@
 {
-	"folders": [
+    "folders": [
         {
             "path": "."
         },
@@ -17,10 +17,14 @@
         }
     ],
     "settings": {
+        "kickassembler.outputFile": "sweet16.prg",
+        "kickassembler.assemblerArgs": [
+            ":name=\"sweet16\"",
+            ":format=\"d64\"",
+        ],     
         "files.associations": {
             "*.asm": "kickassembler"
         },
-        "kickassembler.outputFile": "sweet16.prg",
         "kickassembler.outputDirectory": ".//bin",
         "files.exclude": {
             "**/.asminfo.txt": true,
@@ -37,15 +41,11 @@
         "kickassembler.javaPluginSystemProperties": [
         ],
         "kickassembler.startup": "startup.asm",   
-        "kickassembler.assemblerArgs": [
-            ":name=\"sweet16\"",
-            ":format=\"d64\"",
-        ],     
     },
-        "extensions": {
-            "recommendations": [
-                "analytic-signal.preview-pdf",
-                "slevesque.vscode-hexdump"
-            ]
-        }
+    "extensions": {
+        "recommendations": [
+            "analytic-signal.preview-pdf",
+            "slevesque.vscode-hexdump"
+        ]
+    }
 }

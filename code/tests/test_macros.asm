@@ -29,9 +29,9 @@
 
 .macro TestFinished() {
 	ScreenOutputColor(memory, TITLE_COLOR)
-	ScreenOutputNumber(TEST_PASS_COUNT)
+	ScreenOutputNumber(TEST_PASS_COUNT, Zb.Three)
 	ScreenOutputColor(memory_2, TITLE_COLOR)
-	ScreenOutputNumber(TEST_COUNT)
+	ScreenOutputNumber(TEST_COUNT, Zb.Three)
 	ScreenOutputColor(memory_3, TITLE_COLOR)
 	jmp !done+
 memory:
