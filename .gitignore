@@ -10,3 +10,7 @@ breakpoints.txt
 #*#
 .#*
 .source.txt
+ByteDump.txt
+startup.sym
+startup.vs
+
