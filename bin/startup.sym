@@ -11,8 +11,7 @@
 .label TestInterruptBreak=$47d9 {
 }
 .label CI2ICR=$dd0d
-.namespace Cookie {
-}
+.label Sweet16_MainStore=$1008
 .label Space=$20
 .namespace Kernal {
   .label SETLFS=$ffba {
@@ -100,8 +99,7 @@
   .label IOBASE=$fff3 {
   }
 }
-.label Anykey=$8c8 {
-}
+.label Sweet16_ACC=$0
 .namespace Two {
   .label D1IRQREADIndicator=$2a4 {
   }
@@ -202,8 +200,6 @@
   .label ColdReset=$8000 {
   }
 }
-.namespace Kick {
-}
 .namespace One {
   .label TapeInputErrorLog=$100 {
   }
@@ -211,6 +207,7 @@
   .label BASICStack=$13f {
   }
 }
+.label Sweet16_Execute=$1024
 .label TestBranchIfPlus=$3ebe {
 }
 .label CharacterSlot3000=$c
@@ -218,8 +215,8 @@
 .label CharacterSlot3800=$e
 .label IRQROMROUTINE=$ea31
 .label SpriteAnimsMax=$8
-.namespace ISR {
-}
+.label Sweet16_ZP_BASE=$17
+.label Sweet16_PC=$f
 .label TEST_FAILURE=$545e
 .label TestSubtract=$3209 {
 }
@@ -230,8 +227,6 @@
   }
 }
 .label NMIRAMVECTOR=$318
-.namespace CharPad {
-}
 .label GameportRightMask=$8
 .label CIAPRA=$dc00
 .label CIAPRB=$dc01
@@ -243,6 +238,7 @@
 .label SPMC=$d01c
 .label TestPopDoubleByteIndirect=$33ae {
 }
+.label Sweet16_Main=$1000
 .label SW16_BREAK_HANDLER=$1235
 .namespace SID {
   .label Voice1Frequency=$d400 {
@@ -301,10 +297,14 @@
 .label bMathRandomCurrent1=$10041
 .label RASTER=$d012
 .label SPRITE0PTR=$7f8
+.label Zm32=$51 {
+  .label One=$17
+}
 .label TestBranchIfNonZero=$4279 {
 }
 .label TestBranchAlways=$3af6 {
 }
+.label Sweet16_SR=$e
 .label TEST_MEMORY=$5463
 .label TestAdd=$3069 {
 }
@@ -647,6 +647,39 @@
 }
 .label COLORRAM=$d800
 .label spriteAnimsActive=$10083
+.namespace ErrorCode {
+  .label NOT_INPUT_FILE=$6
+  .label LOAD=$1d
+  .label FILE_NOT_OPEN=$3
+  .label UNDEFINDED_FUNCTION=$1b
+  .label VERIFY=$1c
+  .label CANT_CONTINUE=$1a
+  .label NOT_OUTPUT_FILE=$7
+  .label REDIMENSIONEDD_ARRAY=$13
+  .label STRING_TOO_LONG=$17
+  .label FILE_OPEN=$2
+  .label SYNTAX=$b
+  .label DIVISION_BY_ZERO=$14
+  .label FORMULA_TOO_COMPLEX=$19
+  .label NEXT_WITHOUT_FOR=$a
+  .label OUT_OF_DATA=$d
+  .label FILE_DATA=$18
+  .label BREAK=$1e
+  .label BREAK_RUNSTOP=$0
+  .label MISSING_FILENAME=$8
+  .label ILLEGAL_QUANTITY=$e
+  .label RETURN_WITHOUT_GOSUB=$c
+  .label ILLEGAL_DIRECT=$15
+  .label FILE_NOT_FOUND=$4
+  .label OUT_OF_MEMORY=$10
+  .label DEVICE_NOT_PRESENT=$5
+  .label OVERFLOW=$f
+  .label UNDEFINDED_STATEMENT=$11
+  .label BAD_SUBSCRIPT=$12
+  .label ILLEGAL_DEVICE_NUMBER=$9
+  .label TYPE_MISMATCH=$16
+  .label TOO_MANY_FILES=$1
+}
 .namespace KernalJump {
   .label ClearScreen=$e544 {
   }
@@ -699,8 +732,7 @@
 .label TEST_COUNT=$5460
 .label TestLoadDoubleByteIndirect=$2728 {
 }
-.namespace Image {
-}
+.label Sweet16_CPR=$d
 .label spriteAnimsFrameCurrent=$100c4
 .namespace BASIC_ROM {
   .label ROM=$a000 {
@@ -711,7 +743,7 @@
 }
 .label ZeroPage10=$b
 .label ZeroPage11=$c
-.label Load=$84c {
+.label Load=$84a {
 }
 .label TestBranchIfMinus1=$43b8 {
 }
@@ -725,7 +757,7 @@
 .label SP0COL=$d027
 .label ZeroPage12=$d
 .label ZeroPage13=$e
-.label Ready=$8bf {
+.label Ready=$8bd {
 }
 .label CharacterSlot0000=$0
 .label TestBranchIfZero=$4140 {
@@ -751,9 +783,6 @@
 .label TestStoreIndirect=$250a {
 }
 .label spriteAnimsEndFrame=$1009b
-.label Zm=$51 {
-  .label One=$50
-}
 .label SPSPCL=$d01e
 .label IRQRAMVECTOR=$314
 .label spriteNumberMask=$100c6
@@ -777,8 +806,6 @@
 }
 .label GameportUpMask=$1
 .label SP0Y=$d001
-.label SW16_NONE=$1000
-.label SW16D=$1024
 .label SP0X=$d000
 .label VMCSB=$d018
 .label SPMC1=$d026
@@ -804,28 +831,6 @@
 }
 .label TestSetIndirect=$4f8b {
 }
-.namespace Sweet16 {
-  .label ACC=$0
-  .label R0H=$18
-  .label CIR=$d
-  .label RSP=$c
-  .label R0L=$17
-  .label R15L=$35
-  .label BRK_ISR=$316
-  .label R14L=$33
-  .label R13H=$32
-  .label PC=$f
-  .label R12H=$30
-  .label R16L=$37
-  .label ZP_BASE=$17
-  .label R15H=$36
-  .label R14H=$34
-  .label ZP=$10
-  .label R16H=$38
-  .label R13L=$31
-  .label SR=$e
-  .label R12L=$2f
-}
 .namespace ColorRAM {
   .label RAM=$d800 {
   }
@@ -837,13 +842,11 @@
 .label SPENA=$d015
 .label CharacterSlot1000=$4
 .label libUtilityRti=$10000
-.namespace Disk {
-}
 .label spriteAnimsDelay=$100b3
 .label CharacterSlot1800=$6
 .label SCREENRAM=$400
 .label SCROLX=$d016
-.label ErrorHandler=$82b
+.label ErrorHandler=$829
 .label SCROLY=$d011
 .namespace Three {
   .label LOAD=$330 {
@@ -901,7 +904,6 @@
   .label DatasetteBuffer=$33c {
   }
 }
-.label SW16=$1008
 .label TEST_MEMORY_2=$5465
 .label TEST_MEMORY_3=$5467
 .label spriteAnimsSpeed=$100ab
@@ -915,9 +917,10 @@
 }
 .label TestLoad=$2121 {
 }
-.label LoadCode=$864 {
+.label LoadCode=$862 {
 }
 .label ZeroPage9=$a
+.label Sweet16_ZP=$b
 .label ZeroPage8=$9
 .label ZeroPage7=$8
 .label spriteAnimsFrame=$10093
@@ -926,42 +929,10 @@
   }
 }
 .label IRQROMVECTOR=$fffe
+.label Sweet16_RSP=$c
 .label bMathRandoms1=$10001
 .label GameportLeftMask=$4
 .label spriteAnimsStopFrame=$100a3
-.namespace ErrorCodes {
-  .label NOT_INPUT_FILE=$6
-  .label LOAD=$1d
-  .label FILE_NOT_OPEN=$3
-  .label UNDEFINDED_FUNCTION=$1b
-  .label VERIFY=$1c
-  .label CANT_CONTINUE=$1a
-  .label NOT_OUTPUT_FILE=$7
-  .label REDIMENSIONEDD_ARRAY=$13
-  .label STRING_TOO_LONG=$17
-  .label FILE_OPEN=$2
-  .label SYNTAX=$b
-  .label DIVISION_BY_ZERO=$14
-  .label FORMULA_TOO_COMPLEX=$19
-  .label NEXT_WITHOUT_FOR=$a
-  .label OUT_OF_DATA=$d
-  .label FILE_DATA=$18
-  .label BREAK=$1e
-  .label BREAK_RUNSTOP=$0
-  .label MISSING_FILENAME=$8
-  .label ILLEGAL_QUANTITY=$e
-  .label RETURN_WITHOUT_GOSUB=$c
-  .label ILLEGAL_DIRECT=$15
-  .label FILE_NOT_FOUND=$4
-  .label OUT_OF_MEMORY=$10
-  .label DEVICE_NOT_PRESENT=$5
-  .label OVERFLOW=$f
-  .label UNDEFINDED_STATEMENT=$11
-  .label BAD_SUBSCRIPT=$12
-  .label ILLEGAL_DEVICE_NUMBER=$9
-  .label TYPE_MISMATCH=$16
-  .label TOO_MANY_FILES=$1
-}
 .label bMathRandoms2=$10042
 .label spriteAnimsCurrent=$100c3
 .label TestStoreDoubleByteIndirect=$28da {
@@ -969,8 +940,6 @@
 .label TestStorePopIndirect=$2f29 {
 }
 .label TEST_MEMORY_SEQUENCE=$5469
-.namespace Keyboard {
-}
 .label TEST_MEMORY_SEQUENCE_2=$5479
 .label tests_patch=$2000 {
 }

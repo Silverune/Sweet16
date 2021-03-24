@@ -2,8 +2,8 @@
 
 .macro TestStart() {
 	TestSetupScreen(BACKGROUND_COLOR, TITLE_COLOR)	
-	ScreenOutputStringLine("SWEET16 TEST RUNNER")
-	ScreenColor(FOREGROUND_COLOR)
+	Screen_OutputStringLine("SWEET16 TEST RUNNER")
+	Screen_Color(FOREGROUND_COLOR)
 
 	lda #$00
 	sta TEST_COUNT
@@ -16,11 +16,11 @@
 }
 
 .macro TestSetupScreen(background_color, foreground_color) {
-	ScreenBorder(background_color)
-	ScreenBackground(background_color)
-	ScreenColor(foreground_color)
+	Screen_Border(background_color)
+	Screen_Background(background_color)
+	Screen_Color(foreground_color)
 	jsr KernalJump.ClearScreen
-	CursorRowColumn(0,0)
+	Cursor_RowColumn(0,0)
 }
 
 .macro TestPassed() {
@@ -28,11 +28,11 @@
 }
 
 .macro TestFinished() {
-	ScreenOutputColor(memory, TITLE_COLOR)
-	ScreenOutputNumber(TEST_PASS_COUNT, Zb.Three)
-	ScreenOutputColor(memory_2, TITLE_COLOR)
-	ScreenOutputNumber(TEST_COUNT, Zb.Three)
-	ScreenOutputColor(memory_3, TITLE_COLOR)
+	Screen_OutputColor(memory, TITLE_COLOR)
+	Screen_OutputNumber(TEST_PASS_COUNT, Zb.Three)
+	Screen_OutputColor(memory_2, TITLE_COLOR)
+	Screen_OutputNumber(TEST_COUNT, Zb.Three)
+	Screen_OutputColor(memory_3, TITLE_COLOR)
 	jmp !done+
 memory:
 	.byte Petscii.RETURN
@@ -42,14 +42,14 @@ memory_2:
 	.text " / "
 	.byte Petscii.NULL
 memory_3:
-	 ScreenNewlineReturn()
+	 Screen_NewlineReturn()
 !done:
 }
 	
 .macro TestName(name) {
 	.const spacing = 2
 	inc TEST_NAME_COUNT
-	ScreenOutputStringColor(name, NAME_COLOR)
+	Screen_OutputStringColor(name, NAME_COLOR)
 	jmp !done+
 memory:
 	.fill spacing, Petscii.SPACEBAR
@@ -61,7 +61,7 @@ memory:
 
 .macro TestAssertDescription(description) {
 	TestInc()
-	ScreenOutputColor(memory, DESC_COLOR)
+	Screen_OutputColor(memory, DESC_COLOR)
 	jmp !done+
 memory:
 	.byte Petscii.SPACEBAR
@@ -73,18 +73,18 @@ memory:
 
 .macro TestSuccess() {
 	TestPassed()
-	ScreenOutputColor(TEST_SUCCESS, SUCCESS_COLOR)
+	Screen_OutputColor(TEST_SUCCESS, SUCCESS_COLOR)
 }
 
 .macro TestFailure() {
-	ScreenOutputColor(TEST_FAILURE, FAILURE_COLOR)
+	Screen_OutputColor(TEST_FAILURE, FAILURE_COLOR)
 }
 
 .macro TestComplete() {
-	ScreenOutput(memory)
+	Screen_Output(memory)
 	jmp !done+
 memory:
-	ScreenNewlineReturn()
+	Screen_NewlineReturn()
 !done:
 	ldx TEST_NAME_COUNT
 	cpx #TESTS_PER_PAGE
@@ -164,7 +164,7 @@ memory:
 
 // simply adds a convenience of doing the register lookup
 .macro TestAssertEqualMemoryRegister(register, value, desc) {
-	TestAssertEqualMemoryDirect(Sweet16_rl(register), value, desc)
+	TestAssertEqualMemoryDirect(Sweet16_RL(register), value, desc)
 }
 
 // compares the value in the register with the value stored at the address which has been stpred Low byte then High byte which is how SWEET16 keeps its values
@@ -228,11 +228,11 @@ memory:
 // compares two SWEET16 register contents
 .macro TestAssertEqualRegisters(register1, register2, desc) {
 	TestAssertDescription(desc)
-	lda Sweet16.rl(register1)
-	cmp Sweet16.rl(register2)
+	lda Sweet16_RL(register1)
+	cmp Sweet16_RL(register2)
 	bne !failed+
-	lda Sweet16.rh(register1)
-	cmp Sweet16.rh(register2)
+	lda Sweet16_RH(register1)
+	cmp Sweet16_RH(register2)
 	bne !failed+
 	TestSuccess()
 	jmp !done+
@@ -243,19 +243,19 @@ memory:
 
 // pauses output until the user hits a key to ensure all results are shown
 .macro TestPause() {
-	ScreenOutputColor(memory, WHITE)
+	Screen_OutputColor(memory, WHITE)
 	jmp !no_key+
 memory:
 	.byte Petscii.RETURN
 	.text "PRESS ANY KEY TO CONTINUE..."
-	ScreenNewlineReturn()
+	Screen_NewlineReturn()
 !no_key:
-	GetKey()
+	Keyboard_Get()
 	beq !no_key-
-	ScreenOutput(!newline+)
+	Screen_Output(!newline+)
 	jmp !done+
 !newline:
-	ScreenNewlineReturn()
+	Screen_NewlineReturn()
 !done:
 }
 

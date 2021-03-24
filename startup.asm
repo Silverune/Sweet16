@@ -22,10 +22,10 @@
 
 .var flair = "-";
 .var border = flair + flair + flair
-.var separator = FormatFilename("", "", flair)
-.var mainFilename = FormatFilename(name, border)
-.var libraryFilename=FormatFilename("lib", border)
-.var testsFilename=FormatFilename("tests", border)
+.var separator = Kick_FormatFilename("", "", flair)
+.var mainFilename = Kick_FormatFilename(name, border)
+.var libraryFilename = Kick_FormatFilename("lib", border)
+.var testsFilename = Kick_FormatFilename("tests", border)
 .const codeFiles = List().add(libraryFilename, testsFilename).lock()
 
 .disk [filename=name + "." + cmdLineVars.get("format").string(), name=name.toUpperCase(), id=cmdLineVars.get("id").string(), showInfo ] {

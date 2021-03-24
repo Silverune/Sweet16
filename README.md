@@ -107,7 +107,7 @@ One aspect of using SWEET16 which at first might appear to be problematic is deb
 - Start SWEET16 with the optional flag to install the interrupt routine: ```sweet16 : 1```
 - While within SWEET16 execute the extension ```IBK``` which will ensure the ISR is installed (only needs to be done once - use ```BK``` from then onwards).
 
-In either case once the command is encountered (and assuming using VICE) the monitor will show up at that point.   From this point it is important to realise that the user is in 6502 world (not SWEET16) so it is fine to inspect the mapped zero-page registers etc. which are all mapped in the debug output file ```breakpoints.txt``` However, once you continue execution the call will jump to ```SW16D``` which effectively continues where you left off back in the SWEET16 metaprocessor.
+In either case once the command is encountered (and assuming using VICE) the monitor will show up at that point.   From this point it is important to realise that the user is in 6502 world (not SWEET16) so it is fine to inspect the mapped zero-page registers etc. which are all mapped in the debug output file ```breakpoints.txt``` However, once you continue execution the call will jump to ```Sweet16_Exexcute``` which effectively continues where you left off back in the SWEET16 metaprocessor.
 
 A more powerful alternative to this is using the extension of ```XJSR``` which will allow any 6502 routine to be called within SWEET16 execution to continue once it encounters a ```RTS```.
 
