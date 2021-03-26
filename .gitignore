@@ -14,4 +14,7 @@ ByteDump.txt
 *.sym
 *.vs
 *.dbg
+.DS_Store
+asminfo.txt
+
 
