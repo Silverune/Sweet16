@@ -2,7 +2,8 @@
 
 .macro TestStart() {
 	TestSetupScreen(BACKGROUND_COLOR, TITLE_COLOR)	
-	Screen_OutputStringLine("SWEET16 TEST RUNNER")
+	TestOutputString("SWEET16 TEST RUNNER")
+	Screen_OutputNewline()
 	Screen_Color(FOREGROUND_COLOR)
 
 	lda #$00
@@ -28,11 +29,11 @@
 }
 
 .macro TestFinished() {
-	Screen_OutputColor(memory, TITLE_COLOR)
-	Screen_OutputNumber(TEST_PASS_COUNT, Zb.Three)
-	Screen_OutputColor(memory_2, TITLE_COLOR)
-	Screen_OutputNumber(TEST_COUNT, Zb.Three)
-	Screen_OutputColor(memory_3, TITLE_COLOR)
+	TestOutputColor(memory, TITLE_COLOR)
+	Screen_OutputNumber(TEST_PASS_COUNT, TempByteZp)
+	TestOutputColor(memory_2, TITLE_COLOR)
+	Screen_OutputNumber(TEST_COUNT, TempByteZp)
+	TestOutputColor(memory_3, TITLE_COLOR)
 	jmp !done+
 memory:
 	.byte Petscii.RETURN
@@ -46,14 +47,15 @@ memory_3:
 !done:
 }
 	
-.macro TestName(name) {
+.macro TestName(preprocessorString) {
 	.const spacing = 2
 	inc TEST_NAME_COUNT
-	Screen_OutputStringColor(name, NAME_COLOR)
+	TestOutputStringColor(preprocessorString, NAME_COLOR)
+	TestOutput(memory)
+
 	jmp !done+
 memory:
 	.fill spacing, Petscii.SPACEBAR
-	.text name
 	.text "..."
 	.byte 0
 !done:
@@ -61,7 +63,7 @@ memory:
 
 .macro TestAssertDescription(description) {
 	TestInc()
-	Screen_OutputColor(memory, DESC_COLOR)
+	TestOutputColor(memory, DESC_COLOR)
 	jmp !done+
 memory:
 	.byte Petscii.SPACEBAR
@@ -73,15 +75,15 @@ memory:
 
 .macro TestSuccess() {
 	TestPassed()
-	Screen_OutputColor(TEST_SUCCESS, SUCCESS_COLOR)
+	TestOutputColor(TEST_SUCCESS, SUCCESS_COLOR)
 }
 
 .macro TestFailure() {
-	Screen_OutputColor(TEST_FAILURE, FAILURE_COLOR)
+	TestOutputColor(TEST_FAILURE, FAILURE_COLOR)
 }
 
 .macro TestComplete() {
-	Screen_Output(memory)
+	TestOutput(memory)
 	jmp !done+
 memory:
 	.byte Petscii.RETURN, 0
@@ -243,20 +245,47 @@ memory:
 
 // pauses output until the user hits a key to ensure all results are shown
 .macro TestPause() {
-	Screen_OutputColor(memory, WHITE)
+	TestOutputColor(memory, WHITE)
 	jmp !no_key+
 memory:
 	.byte Petscii.RETURN
 	.text "PRESS ANY KEY TO CONTINUE..."
 	.byte Petscii.RETURN, 0
 !no_key:
-	Keyboard_Get()
-	beq !no_key-
-	Screen_Output(!newline+)
+	Keyboard_Any()
+	Screen_OutputNewline()
+}
+
+.macro TestOutput(address) {
+	Address_Load(address, ScreenZp)
+	jsr TestOutputIndirect
+}
+
+.macro TestOutputString(preprocessorString) {
+	TestOutput(!data+)
 	jmp !done+
-!newline:
-	.byte Petscii.RETURN, 0
+!data:
+	.text preprocessorString	// store in memory
+	.byte 0						// terminate
 !done:
+}
+
+.macro TestOutputColor(msg, color) {
+	lda Two.CurrentCharColor
+	pha
+	Screen_Color(color)
+	TestOutput(msg)
+	pla
+	sta Two.CurrentCharColor
+}
+
+.macro TestOutputStringColor(preprocessorString, color) {
+	lda Two.CurrentCharColor
+	pha
+	Screen_Color(color)
+	TestOutputString(preprocessorString)
+	pla
+	sta Two.CurrentCharColor
 }
 
 .segment Default

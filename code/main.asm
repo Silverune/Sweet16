@@ -13,7 +13,7 @@ Main: {
 
 ErrorHandler:
 	pha
-	Screen_OutputString("Error: ")
+	TestOutputString("Error: ")
 	pla
 	jsr Kernal.CHROUT
 	jmp *
@@ -24,7 +24,7 @@ Load: {
 }
 
 LoadCode: {
-	Screen_OutputString("LOADING CODE...")
+	TestOutputString("LOADING CODE...")
 	Disk_LoadList(codeFiles, Load)
 	rts
 }
