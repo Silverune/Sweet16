@@ -3,10 +3,10 @@
 .segment TestData
 
 TEST_SUCCESS:
-	.byte $73, Petscii.NULL
+	.byte $73, 0
 
 TEST_FAILURE:
-	.byte $76, Petscii.NULL
+	.byte $76, 0
 
 TEST_COUNT:
 	.byte $00

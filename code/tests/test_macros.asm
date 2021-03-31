@@ -37,12 +37,12 @@
 memory:
 	.byte Petscii.RETURN
 	.text "TESTS COMPLETE: "
-	.byte Petscii.NULL
+	.byte 0
 memory_2:
 	.text " / "
-	.byte Petscii.NULL
+	.byte 0
 memory_3:
-	 Screen_NewlineReturn()
+	 .byte Petscii.RETURN, 0
 !done:
 }
 	
@@ -55,7 +55,7 @@ memory:
 	.fill spacing, Petscii.SPACEBAR
 	.text name
 	.text "..."
-	.byte Petscii.NULL
+	.byte 0
 !done:
 }
 
@@ -67,7 +67,7 @@ memory:
 	.byte Petscii.SPACEBAR
 	.text description
 	.text ":"
-	.byte Petscii.NULL
+	.byte 0
 !done:
 }
 
@@ -84,7 +84,7 @@ memory:
 	Screen_Output(memory)
 	jmp !done+
 memory:
-	Screen_NewlineReturn()
+	.byte Petscii.RETURN, 0
 !done:
 	ldx TEST_NAME_COUNT
 	cpx #TESTS_PER_PAGE
@@ -248,14 +248,14 @@ memory:
 memory:
 	.byte Petscii.RETURN
 	.text "PRESS ANY KEY TO CONTINUE..."
-	Screen_NewlineReturn()
+	.byte Petscii.RETURN, 0
 !no_key:
 	Keyboard_Get()
 	beq !no_key-
 	Screen_Output(!newline+)
 	jmp !done+
 !newline:
-	Screen_NewlineReturn()
+	.byte Petscii.RETURN, 0
 !done:
 }
 

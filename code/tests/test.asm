@@ -760,8 +760,8 @@ TestRun:
 	jsr TestBranchIfMinus1
 	jsr TestBranchIfNotMinus1
 	jsr TestBreak
-	jsr TestBranchToSubroutine
-	jsr TestReturnFromSubroutine
+	//jsr TestBranchToSubroutine
+	//jsr TestReturnFromSubroutine
 
 	// extensions
 	jsr TestAbsoluteJump
