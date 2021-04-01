@@ -552,7 +552,12 @@ TestBranchIfNotMinus1: {
 	rts
 }
 
-// A 6502 BRK (break) instruction is executed. SWEET 16 may be re-entered non destructively at Sweet16_Next after correcting the stack pointer to its value prior to executing the BRK.   This test uses an extension to SWEET16 which inserts a VICE break when the BK instruction is encountered after restoring the SP, Registers and Flags.  Note the additional argument to sweet16 to ensure the handler is setup as it is not by default.  The handler also deals with the setting up for the stack pointer and conntinuing execution from Sweet16_Execute
+// A 6502 BRK (break) instruction is executed. SWEET 16 may be re-entered non destructively at
+// Sweet16_Next after correcting the stack pointer to its value prior to executing the BRK.   
+// This test uses an extension to SWEET16 which inserts a VICE break when the BK instruction is 
+// encountered after restoring the SP, Registers and Flags.  Note the additional argument to sweet16
+// to ensure the handler is setup as it is not by default.  The handler also deals with the setting
+// up for the stack pointer and conntinuing execution from Sweet16_Execute
 TestBreak: {
 	.const REGISTER = Sweet16_ACC
 	.const VAL_1 = $feed
@@ -610,7 +615,7 @@ TestInterruptBreak: {
 }
 
 // A branch to the effective address (PC + 2 + d) is taken and execution is resumed in SWEET 16 mode. The current PC is pushed onto a SWEET 16 subroutine return address stack whose pointer is R12, and R12 is incremented by 2. The carry is cleared and branch conditions set to indicate the current Sweet16_ACC contents. EXAMPLE: Calling a 'memory move' subroutine to move TEST_MEMORY_SEQUENCE to TEST_MEMORY_SEQUENCE_2
-TestBranchToSubroutine: {
+TestBranchToSubroutine: 
 	.const SOURCE = 5
 	.const SOURCE_LIMIT = 4
 	.const DEST = 6
@@ -633,7 +638,6 @@ TestBranchToSubroutine: {
 	TestAssertEqualMemory(TEST_MEMORY_SEQUENCE, TEST_MEMORY_SEQUENCE_2, TMS_SIZE, "MEM")
 	TestComplete()
 	rts
-}
 	
 // RS terminates execution of a SWEET 16 subroutine and returns to the SWEET 16 calling program which resumes execution (in SWEET 16 mode). R12, which is the SWEET 16 subroutine return stack pointer, is decremented twice. Branch conditions are not changed.
 TestReturnFromSubroutine: {
@@ -738,7 +742,6 @@ TestRun:
 	TestStart()
 
 	// core sweet16
-
 	jsr TestSet
 	jsr TestLoad
 	jsr TestStore
@@ -765,8 +768,8 @@ TestRun:
 	jsr TestBranchIfMinus1
 	jsr TestBranchIfNotMinus1
 	jsr TestBreak
-	//jsr TestBranchToSubroutine
-	//jsr TestReturnFromSubroutine
+	jsr TestBranchToSubroutine
+	jsr TestReturnFromSubroutine
 
 	// extensions
 	jsr TestAbsoluteJump
