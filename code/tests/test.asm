@@ -17,12 +17,11 @@ TestOutputIndirect: {
 // The 2-byte constant783 is loaded into Rn (n=0 to F, Hex) and branch conditions set accordingly. The carry is cleared.
 TestSet: {
 	.const REGISTER = 5			// arbitrary register
-	.const VALUE = $1234
 	TestName("SET")
 	sweet16
-	set REGISTER : VALUE		// R5 now contains $A034
+	set REGISTER : TEST_WORD_ONE		// R5 now contains $A034
 	rtn
-	TestAssertEqual(REGISTER, VALUE, "VALUE")	
+	TestAssertEqual(REGISTER, TEST_WORD_ONE, "VALUE")	
 	TestComplete()
 	rts
 }
@@ -30,7 +29,7 @@ TestSet: {
 // The Sweet16_ACC is loaded from Rn and branch conditions set according to the data transferred. The carry is cleared and contents of Rn are not disturbed.
 TestLoad: {
 	.const REGISTER = 5			// arbitrary register
-	.const VALUE = $4321
+	.const VALUE = TEST_WORD_TWO
 	TestName("LOAD")
 	sweet16
     set REGISTER : VALUE
@@ -45,7 +44,7 @@ TestLoad: {
 TestStore: {
 	.const SOURCE = 5			// arbitrary register
 	.const DEST = 6				// arbitrary register
-	.const VALUE = $1234
+	.const VALUE = TEST_WORD_ONE
 	TestName("STORE")
 	sweet16
 	set SOURCE : VALUE
@@ -277,7 +276,7 @@ TestCompare: {
 	TestName("COMPARE")
 	sweet16
 	set DATA_REGISTER : TEST_MEMORY_SEQUENCE				// pointer to memory
-	set LIMIT_REGISTER : TEST_MEMORY_SEQUENCE + TMS_SIZE	// limit address
+	set LIMIT_REGISTER : TEST_MEMORY_SEQUENCE + TEST_MEMORY_SEQUENCE_SIZE	// limit address
 	set COUNT_REGISTER : $000								// clear counter
 !loop:
 	inr COUNT_REGISTER	// inc counter
@@ -287,7 +286,7 @@ TestCompare: {
 	cpr LIMIT_REGISTER	// to limit R6
 	bnc !loop-			// loop if C clear
 	rtn
-	TestAssertEqual(COUNT_REGISTER, TMS_SIZE / 2, "COUNT")	// 16-bit
+	TestAssertEqual(COUNT_REGISTER, TEST_MEMORY_SEQUENCE_SIZE / 2, "COUNT")	// 16-bit
 	TestComplete()
 	rts	
 }
@@ -314,7 +313,7 @@ TestDecrement: {
 	TestName("DECREMENT")
 	sweet16
 	set DATA_REGISTER : TEST_MEMORY_SEQUENCE	// Init pointer
-	set COUNT_REGISTER : TMS_SIZE				// Init counter
+	set COUNT_REGISTER : TEST_MEMORY_SEQUENCE_SIZE				// Init counter
 	sub Sweet16_ACC							    // Zero ACC
 !loop:
 	sti DATA_REGISTER							// Clear a mem byte
@@ -413,7 +412,7 @@ TestBranchIfPlus: {
 	TestName("BRANCH IF +VE")
 	sweet16
 	set DATA_REGISTER : TEST_MEMORY_SEQUENCE		 		// Init pointer
-	set LIMIT_REGISTER : TEST_MEMORY_SEQUENCE + TMS_SIZE 	// Init limit
+	set LIMIT_REGISTER : TEST_MEMORY_SEQUENCE + TEST_MEMORY_SEQUENCE_SIZE 	// Init limit
 !loop:
 	sub Sweet16_ACC							// Clear mem byte
 	sti DATA_REGISTER						// Increment R5
@@ -421,7 +420,7 @@ TestBranchIfPlus: {
 	cpr DATA_REGISTER						// to Pointer
 	bp !loop-								// Loop until done
 	rtn
-	TestAssertEqualMemoryToConstant(TEST_MEMORY_SEQUENCE, $00, TMS_SIZE, "CLR")
+	TestAssertEqualMemoryToConstant(TEST_MEMORY_SEQUENCE, $00, TEST_MEMORY_SEQUENCE_SIZE, "CLR")
 	TestComplete()
 	rts
 }
@@ -622,7 +621,7 @@ TestBranchToSubroutine:
 	TestName("BRANCH TO SUB")
 	sweet16
 	set SOURCE : TEST_MEMORY_SEQUENCE					// Init source register
-	set SOURCE_LIMIT : TEST_MEMORY_SEQUENCE + TMS_SIZE 	// Init limit register
+	set SOURCE_LIMIT : TEST_MEMORY_SEQUENCE + TEST_MEMORY_SEQUENCE_SIZE 	// Init limit register
 	set DEST : TEST_MEMORY_SEQUENCE_2					// Init dest register
 	bs !move+											// call subroutine
 	rtn
@@ -635,15 +634,15 @@ TestBranchToSubroutine:
 	bp !move-
 	rs													// return
 !done:
-	TestAssertEqualMemory(TEST_MEMORY_SEQUENCE, TEST_MEMORY_SEQUENCE_2, TMS_SIZE, "MEM")
+	TestAssertEqualMemory(TEST_MEMORY_SEQUENCE, TEST_MEMORY_SEQUENCE_2, TEST_MEMORY_SEQUENCE_SIZE, "MEM")
 	TestComplete()
 	rts
 	
 // RS terminates execution of a SWEET 16 subroutine and returns to the SWEET 16 calling program which resumes execution (in SWEET 16 mode). R12, which is the SWEET 16 subroutine return stack pointer, is decremented twice. Branch conditions are not changed.
 TestReturnFromSubroutine: {
 	.const REGISTER = Sweet16_ACC
-	.const DEFAULT_VALUE = $1234
-	.const SUB_SET_VALUE = $5678
+	.const DEFAULT_VALUE = TEST_WORD_ONE
+	.const SUB_SET_VALUE = TEST_WORD_TWO
 	TestName("RETURN FROM SUB")
 	sweet16
 	set REGISTER : DEFAULT_VALUE
@@ -664,7 +663,7 @@ TestReturnFromSubroutine: {
 // Test the pseudocommand AJMP which allows SWEET16 to perform absolute jumps by directly setting the address of the PC (minus 1) in the Sweet16_ACC register.  Affect the value in the Sweet16_ACC and PC registers
 TestAbsoluteJump: {
 	.const INITIAL_VALUE = $0000
-	.const SET_VALUE = $1234
+	.const SET_VALUE = TEST_WORD_ONE
 	.const NON_ACC_REGISTER = 5
 	TestName("ABSOLUTE JUMP")
 	sweet16
@@ -685,9 +684,9 @@ TestAbsoluteJump: {
 // XJSR is an extension added to the standard SWEET16 instructions to allow for a mix of SWEET16 calls and 6502.  When "XJSR" is called the address is executed normally as if we were in 6502 instruction set mode.  Once the RTS is encountered regular SWEET16 execution continues
 TestExternalJSR: {
 	TestName("EXTERNAL JSR")
-	.const REGISTER = 5			// arbitrary register
-	.const VALUE = $4321		// arbitrary value
-	.const VALUE_2 = $1234		// arbitrary value
+	.const REGISTER = 5				// arbitrary register
+	.const VALUE = TEST_WORD_TWO 	// arbitrary value
+	.const VALUE_2 = TEST_WORD_ONE		// arbitrary value
 	.const VALUE_3 = $feed		// different value (will be set using 6502 calls)
 	sweet16
 	set REGISTER : VALUE		// R5 now contains VALUE

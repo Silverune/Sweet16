@@ -1,15 +1,28 @@
 #importonce
 
 .macro TestStart() {
+	TestInitializeCounters()
 	TestSetupScreen(BACKGROUND_COLOR, TITLE_COLOR)	
 	TestOutputString("SWEET16 TEST RUNNER")
 	Screen_OutputNewline()
 	Screen_Color(FOREGROUND_COLOR)
+}
 
-	lda #$00
+.macro TestInitializeCounters() {
+	lda #00
 	sta TEST_COUNT
 	sta TEST_PASS_COUNT
 	sta TEST_NAME_COUNT
+
+	// lda #>TEST_WORD_ONE
+	// sta TEST_MEMORY
+	// lda #<TEST_WORD_ONE
+	// sta TEST_MEMORY+1
+
+	// lda #>TEST_WORD_TWO
+	// sta TEST_MEMORY_2
+	// lda #<TEST_WORD_TWO	
+	// sta TEST_MEMORY_2+1
 }
 
 .macro TestInc() {
@@ -75,11 +88,11 @@ memory:
 
 .macro TestSuccess() {
 	TestPassed()
-	TestOutputColor(TEST_SUCCESS, SUCCESS_COLOR)
+	TestOutputColor(TEST_PETSCII_SUCCESS, SUCCESS_COLOR)
 }
 
 .macro TestFailure() {
-	TestOutputColor(TEST_FAILURE, FAILURE_COLOR)
+	TestOutputColor(TEST_PETSCII_FAILURE, FAILURE_COLOR)
 }
 
 .macro TestComplete() {

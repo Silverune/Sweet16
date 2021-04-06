@@ -1,5 +1,5 @@
+#import "test_config.asm"
 #import "test_data.asm"
-#import "config.asm"
 #import "test_macros.asm"
 #import "test.asm"
 
