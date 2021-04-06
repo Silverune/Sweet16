@@ -13,16 +13,6 @@
 	sta TestCount
 	sta TestPassCount
 	sta TestNameCount
-
-	// lda #>TEST_WORD_ONE
-	// sta TestMemoryOne
-	// lda #<TEST_WORD_ONE
-	// sta TestMemoryOne+1
-
-	// lda #>TEST_WORD_TWO
-	// sta TestMemoryTwo
-	// lda #<TEST_WORD_TWO	
-	// sta TestMemoryTwo+1
 }
 
 .macro TestInc() {
