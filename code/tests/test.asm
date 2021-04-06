@@ -61,12 +61,12 @@ TestLoadIndirect: {
 	.const REGISTER = 5			// arbitrary register
 	TestName("LOAD INDIRECT")
 	sweet16
-	set REGISTER : TEST_MEMORY  // Load from 
-	ldi REGISTER				// Sweet16_ACC is loaded from memory where TEST_MEMORY ($00, $12)
-								// R5 is incr by one (TEST_MEMORY + 1)
+	set REGISTER : TestMemoryOne  // Load from 
+	ldi REGISTER				// Sweet16_ACC is loaded from memory where TestMemoryOne ($00, $12)
+								// R5 is incr by one (TestMemoryOne + 1)
 	rtn
-	TestAssertEqualIndirectByte(Sweet16_ACC, TEST_MEMORY, "ACC")
-	TestAssertEqual(REGISTER, TEST_MEMORY + 1, "REG")
+	TestAssertEqualIndirectByte(Sweet16_ACC, TestMemoryOne, "ACC")
+	TestAssertEqual(REGISTER, TestMemoryOne + 1, "REG")
 	TestComplete()
 	rts
 }
@@ -77,14 +77,14 @@ TestStoreIndirect: {
 	.const DEST = 6				// arbitrary register
 	TestName("STORE INDIRECT")
 	sweet16
-	set SOURCE : TEST_MEMORY	// Load pointers R5, R6 with
-	set DEST : TEST_MEMORY_2	// memory values
-    ldi SOURCE            		// Move byte from TEST_MEMORY to TEST_MEMORY_2
+	set SOURCE : TestMemoryOne	// Load pointers R5, R6 with
+	set DEST : TestMemoryTwo	// memory values
+    ldi SOURCE            		// Move byte from TestMemoryOne to TestMemoryTwo
     sti DEST			        // Both ptrs are incremented	
 	rtn						
-	TestAssertEqualMemory(TEST_MEMORY, TEST_MEMORY_2, 1, "MEM")
-	TestAssertEqual(SOURCE, TEST_MEMORY+1, "SRC")
-	TestAssertEqual(DEST, TEST_MEMORY_2+1, "DST")
+	TestAssertEqualMemory(TestMemoryOne, TestMemoryTwo, 1, "MEM")
+	TestAssertEqual(SOURCE, TestMemoryOne+1, "SRC")
+	TestAssertEqual(DEST, TestMemoryTwo+1, "DST")
 	TestComplete()
 	rts
 }
@@ -94,13 +94,13 @@ TestLoadDoubleByteIndirect: {
 	.const REGISTER = 5			// arbitrary register
 	TestName("LOAD DOUBLE INDIRECT")
 	sweet16
-	set REGISTER : TEST_MEMORY	// The low-order Sweet16_ACC byte is loaded from
-	lddi REGISTER				// TEST_MEMORY, high-order from TEST_MEMORY+1
+	set REGISTER : TestMemoryOne	// The low-order Sweet16_ACC byte is loaded from
+	lddi REGISTER				// TestMemoryOne, high-order from TestMemoryOne+1
 								// NOTE - original had error of specifying "R6"
 								// R5 is incr by 2	
 	rtn
-	TestAssertEqualIndirect(Sweet16_ACC, TEST_MEMORY, "ACC")
-	TestAssertEqual(REGISTER, TEST_MEMORY+2, "+2")
+	TestAssertEqualIndirect(Sweet16_ACC, TestMemoryOne, "ACC")
+	TestAssertEqual(REGISTER, TestMemoryOne+2, "+2")
 	TestComplete()
 	rts
 }
@@ -111,15 +111,15 @@ TestStoreDoubleByteIndirect: {
 	.const DEST = 6				// arbitrary register
 	TestName("STORE DBL IND")
 	sweet16
-	set SOURCE : TEST_MEMORY	// Load pointers R5, R6 with
-	set DEST : TEST_MEMORY_2	// memory values
+	set SOURCE : TestMemoryOne	// Load pointers R5, R6 with
+	set DEST : TestMemoryTwo	// memory values
 	lddi SOURCE					// Move double byte from
-    stdi DEST            		// TEST_MEMORY to TEST_MEMORY_2
+    stdi DEST            		// TestMemoryOne to TestMemoryTwo
                                 // Both pointers incremented by 2.
 	rtn
-	TestAssertEqualMemory(TEST_MEMORY, TEST_MEMORY_2, 2, "MEM")
-	TestAssertEqual(SOURCE, TEST_MEMORY+2, "S+2")
-	TestAssertEqual(DEST, TEST_MEMORY_2+2, "D+2")
+	TestAssertEqualMemory(TestMemoryOne, TestMemoryTwo, 2, "MEM")
+	TestAssertEqual(SOURCE, TestMemoryOne+2, "S+2")
+	TestAssertEqual(DEST, TestMemoryTwo+2, "D+2")
 	TestComplete()
 	rts
 }
@@ -180,14 +180,14 @@ TestStorePopIndirect: {
 	.const DEST = 5					// Arbitrary register
 	TestName("STORE POP IND")
 	sweet16
-	set SOURCE : TEST_MEMORY + 2	// Init pointers with 2 byte offset
-	set DEST : TEST_MEMORY_2 + 2 	// as moves down from this address -1 then -2
+	set SOURCE : TestMemoryOne + 2	// Init pointers with 2 byte offset
+	set DEST : TestMemoryTwo + 2 	// as moves down from this address -1 then -2
 	popi	SOURCE						// Move byte from
-    stpi DEST            			// TEST_MEMORY + 1 to TEST_MEMORY_2 + 1
+    stpi DEST            			// TestMemoryOne + 1 to TestMemoryTwo + 1
 	popi SOURCE						// Move byte from
-	stpi DEST						// TEST_MEMORY to TEST_MEMORY_2
+	stpi DEST						// TestMemoryOne to TestMemoryTwo
 	rtn
-	TestAssertEqualMemory(TEST_MEMORY, TEST_MEMORY, 2, "MEM")
+	TestAssertEqualMemory(TestMemoryOne, TestMemoryOne, 2, "MEM")
 	TestComplete()
 	rts
 }
@@ -244,27 +244,27 @@ TestPopDoubleByteIndirect: {
 	TestName("POP DBL-B IND")
 	sweet16
 	set STACK : STACK_MEMORY	// Init stack pointer
-	set Sweet16_ACC : TEST_MEMORY		// Load TEST_MEMORY into ACC
-	stdi STACK					// Push TEST_MEMORY onto stack
+	set Sweet16_ACC : TestMemoryOne		// Load TestMemoryOne into ACC
+	stdi STACK					// Push TestMemoryOne onto stack
 	xjsr !assertStd1+
-	set Sweet16_ACC : TEST_MEMORY_2		// Load TEST_MEMORY_2 into ACC
-	stdi STACK					// Push TEST_MEMORY_2 onto stack
+	set Sweet16_ACC : TestMemoryTwo		// Load TestMemoryTwo into ACC
+	stdi STACK					// Push TestMemoryTwo onto stack
 	xjsr !assertStd2+
-	popdi STACK					// Pop TEST_MEMORY_2 off stack
+	popdi STACK					// Pop TestMemoryTwo off stack
 	xjsr !assertPop2+
-	popdi STACK					// Pop TEST_MEMORY off stack
+	popdi STACK					// Pop TestMemoryOne off stack
 	rtn
-	TestAssertEqualMemoryRegister(Sweet16_ACC,  TEST_MEMORY, "P1")
+	TestAssertEqualMemoryRegister(Sweet16_ACC,  TestMemoryOne, "P1")
 	TestComplete()
 	rts
 !assertStd1:
-	TestAssertEqualMemoryDirect(STACK_MEMORY, TEST_MEMORY, "1")
+	TestAssertEqualMemoryDirect(STACK_MEMORY, TestMemoryOne, "1")
 	rts
 !assertStd2:
-	TestAssertEqualMemoryDirect(STACK_MEMORY+2, TEST_MEMORY_2, "2")
+	TestAssertEqualMemoryDirect(STACK_MEMORY+2, TestMemoryTwo, "2")
 	rts
 !assertPop2:
-	TestAssertEqualMemoryRegister(Sweet16_ACC,  TEST_MEMORY_2, "P2")
+	TestAssertEqualMemoryRegister(Sweet16_ACC,  TestMemoryTwo, "P2")
 	rts
 }
 
@@ -275,8 +275,8 @@ TestCompare: {
 	.const COUNT_REGISTER = 4
 	TestName("COMPARE")
 	sweet16
-	set DATA_REGISTER : TEST_MEMORY_SEQUENCE				// pointer to memory
-	set LIMIT_REGISTER : TEST_MEMORY_SEQUENCE + TEST_MEMORY_SEQUENCE_SIZE	// limit address
+	set DATA_REGISTER : TestMemoryOne_SEQUENCE				// pointer to memory
+	set LIMIT_REGISTER : TestMemoryOne_SEQUENCE + TEST_MEMORY_SEQUENCE_SIZE	// limit address
 	set COUNT_REGISTER : $000								// clear counter
 !loop:
 	inr COUNT_REGISTER	// inc counter
@@ -296,23 +296,23 @@ TestIncrement: {
 	.const REGISTER = 5			// arbitrary register
 	TestName("INCREMENT")
 	sweet16
-	set REGISTER : TEST_MEMORY	// setup pointer
+	set REGISTER : TestMemoryOne	// setup pointer
 	sub Sweet16_ACC				// clear ACC
-	sti REGISTER				// clear location TEST_MEMORY
-	inr REGISTER				// increment R5 to TEST_MEMORY + 2
+	sti REGISTER				// clear location TestMemoryOne
+	inr REGISTER				// increment R5 to TestMemoryOne + 2
 	rtn
-	TestAssertEqual(REGISTER, TEST_MEMORY + 2, "+2")
+	TestAssertEqual(REGISTER, TestMemoryOne + 2, "+2")
 	TestComplete()
 	rts
 }
 
-// The contents of Rn are decremented by 1. The carry is cleared and other branch conditions reflect the decremented value. e.g., to clear 9 bytes beginning at location TEST_MEMORY_SEQUENCE
+// The contents of Rn are decremented by 1. The carry is cleared and other branch conditions reflect the decremented value. e.g., to clear 9 bytes beginning at location TestMemoryOne_SEQUENCE
 TestDecrement: {
 	.const DATA_REGISTER = 5
 	.const COUNT_REGISTER = 4
 	TestName("DECREMENT")
 	sweet16
-	set DATA_REGISTER : TEST_MEMORY_SEQUENCE	// Init pointer
+	set DATA_REGISTER : TestMemoryOne_SEQUENCE	// Init pointer
 	set COUNT_REGISTER : TEST_MEMORY_SEQUENCE_SIZE				// Init counter
 	sub Sweet16_ACC							    // Zero ACC
 !loop:
@@ -405,14 +405,14 @@ TestBranchIfCarrySet: {
 	rts
 }
 
-// A branch is effected only if the prior 'result' (or most recently transferred data) was positive. Branch conditions are not changed. e.g., Clear mem from TEST_MEMORY_SEQUENCE to SIZE
+// A branch is effected only if the prior 'result' (or most recently transferred data) was positive. Branch conditions are not changed. e.g., Clear mem from TestMemoryOne_SEQUENCE to SIZE
 TestBranchIfPlus: {
 	.const DATA_REGISTER = 5
 	.const LIMIT_REGISTER = 4
 	TestName("BRANCH IF +VE")
 	sweet16
-	set DATA_REGISTER : TEST_MEMORY_SEQUENCE		 		// Init pointer
-	set LIMIT_REGISTER : TEST_MEMORY_SEQUENCE + TEST_MEMORY_SEQUENCE_SIZE 	// Init limit
+	set DATA_REGISTER : TestMemoryOne_SEQUENCE		 		// Init pointer
+	set LIMIT_REGISTER : TestMemoryOne_SEQUENCE + TEST_MEMORY_SEQUENCE_SIZE 	// Init limit
 !loop:
 	sub Sweet16_ACC							// Clear mem byte
 	sti DATA_REGISTER						// Increment R5
@@ -420,7 +420,7 @@ TestBranchIfPlus: {
 	cpr DATA_REGISTER						// to Pointer
 	bp !loop-								// Loop until done
 	rtn
-	TestAssertEqualMemoryToConstant(TEST_MEMORY_SEQUENCE, $00, TEST_MEMORY_SEQUENCE_SIZE, "CLR")
+	TestAssertEqualMemoryToConstant(TestMemoryOne_SEQUENCE, $00, TEST_MEMORY_SEQUENCE_SIZE, "CLR")
 	TestComplete()
 	rts
 }
@@ -613,16 +613,16 @@ TestInterruptBreak: {
 	jmp Sweet16_Execute
 }
 
-// A branch to the effective address (PC + 2 + d) is taken and execution is resumed in SWEET 16 mode. The current PC is pushed onto a SWEET 16 subroutine return address stack whose pointer is R12, and R12 is incremented by 2. The carry is cleared and branch conditions set to indicate the current Sweet16_ACC contents. EXAMPLE: Calling a 'memory move' subroutine to move TEST_MEMORY_SEQUENCE to TEST_MEMORY_SEQUENCE_2
+// A branch to the effective address (PC + 2 + d) is taken and execution is resumed in SWEET 16 mode. The current PC is pushed onto a SWEET 16 subroutine return address stack whose pointer is R12, and R12 is incremented by 2. The carry is cleared and branch conditions set to indicate the current Sweet16_ACC contents. EXAMPLE: Calling a 'memory move' subroutine to move TestMemoryOne_SEQUENCE to TestMemoryOne_SEQUENCE_2
 TestBranchToSubroutine: 
 	.const SOURCE = 5
 	.const SOURCE_LIMIT = 4
 	.const DEST = 6
 	TestName("BRANCH TO SUB")
 	sweet16
-	set SOURCE : TEST_MEMORY_SEQUENCE					// Init source register
-	set SOURCE_LIMIT : TEST_MEMORY_SEQUENCE + TEST_MEMORY_SEQUENCE_SIZE 	// Init limit register
-	set DEST : TEST_MEMORY_SEQUENCE_2					// Init dest register
+	set SOURCE : TestMemoryOne_SEQUENCE					// Init source register
+	set SOURCE_LIMIT : TestMemoryOne_SEQUENCE + TEST_MEMORY_SEQUENCE_SIZE 	// Init limit register
+	set DEST : TestMemoryOne_SEQUENCE_2					// Init dest register
 	bs !move+											// call subroutine
 	rtn
 	jmp !done+
@@ -634,7 +634,7 @@ TestBranchToSubroutine:
 	bp !move-
 	rs													// return
 !done:
-	TestAssertEqualMemory(TEST_MEMORY_SEQUENCE, TEST_MEMORY_SEQUENCE_2, TEST_MEMORY_SEQUENCE_SIZE, "MEM")
+	TestAssertEqualMemory(TestMemoryOne_SEQUENCE, TestMemoryOne_SEQUENCE_2, TEST_MEMORY_SEQUENCE_SIZE, "MEM")
 	TestComplete()
 	rts
 	
@@ -718,9 +718,9 @@ TestSetIndirect: {
 	.const REGISTER = 5			// arbitrary register
 	TestName("SET INDIRECT")
 	sweet16
-	seti REGISTER : TEST_MEMORY	// set register with value at TEST_MEMORT
+	seti REGISTER : TestMemoryOne	// set register with value at TEST_MEMORT
 	rtn
-	TestAssertEqualIndirectAddress(REGISTER, TEST_MEMORY, "TEST MEM")	
+	TestAssertEqualIndirectAddress(REGISTER, TestMemoryOne, "TEST MEM")	
 	TestComplete()
 	rts
 }
@@ -730,9 +730,9 @@ TestSetMemory: {
 	.const REGISTER = 5			// arbitrary register
 	TestName("SET MEMORY")
 	sweet16
-	setm REGISTER : TEST_MEMORY	// set register with value at TEST_MEMORT
+	setm REGISTER : TestMemoryOne	// set register with value at TEST_MEMORT
 	rtn
-	TestAssertEqualIndirect(REGISTER, TEST_MEMORY, "TEST MEM")	
+	TestAssertEqualIndirect(REGISTER, TestMemoryOne, "TEST MEM")	
 	TestComplete()
 	rts
 }

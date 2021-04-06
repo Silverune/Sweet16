@@ -10,23 +10,23 @@
 
 .macro TestInitializeCounters() {
 	lda #00
-	sta TEST_COUNT
-	sta TEST_PASS_COUNT
-	sta TEST_NAME_COUNT
+	sta TestCount
+	sta TestPassCount
+	sta TestNameCount
 
 	// lda #>TEST_WORD_ONE
-	// sta TEST_MEMORY
+	// sta TestMemoryOne
 	// lda #<TEST_WORD_ONE
-	// sta TEST_MEMORY+1
+	// sta TestMemoryOne+1
 
 	// lda #>TEST_WORD_TWO
-	// sta TEST_MEMORY_2
+	// sta TestMemoryTwo
 	// lda #<TEST_WORD_TWO	
-	// sta TEST_MEMORY_2+1
+	// sta TestMemoryTwo+1
 }
 
 .macro TestInc() {
-	inc TEST_COUNT
+	inc TestCount
 }
 
 .macro TestSetupScreen(background_color, foreground_color) {
@@ -38,14 +38,14 @@
 }
 
 .macro TestPassed() {
-	inc TEST_PASS_COUNT
+	inc TestPassCount
 }
 
 .macro TestFinished() {
 	TestOutputColor(memory, TITLE_COLOR)
-	Screen_OutputNumber(TEST_PASS_COUNT, TempByteZp)
+	Screen_OutputNumber(TestPassCount, TempByteZp)
 	TestOutputColor(memory_2, TITLE_COLOR)
-	Screen_OutputNumber(TEST_COUNT, TempByteZp)
+	Screen_OutputNumber(TestCount, TempByteZp)
 	TestOutputColor(memory_3, TITLE_COLOR)
 	jmp !done+
 memory:
@@ -62,7 +62,7 @@ memory_3:
 	
 .macro TestName(preprocessorString) {
 	.const spacing = 2
-	inc TEST_NAME_COUNT
+	inc TestNameCount
 	TestOutputStringColor(preprocessorString, NAME_COLOR)
 	TestOutput(memory)
 
@@ -101,12 +101,12 @@ memory:
 memory:
 	.byte Petscii.RETURN, 0
 !done:
-	ldx TEST_NAME_COUNT
+	ldx TestNameCount
 	cpx #TESTS_PER_PAGE
 	bne !exit+
 	TestPause()
 	ldx #$00
-	stx TEST_NAME_COUNT
+	stx TestNameCount
 !exit:	
 }
 
