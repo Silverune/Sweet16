@@ -11,8 +11,15 @@
 
 // test config
 .const TESTS_PER_PAGE = 21
+
+.const TEST_BYTE_ONE = $04
+.const TEST_BYTE_TWO = $05
+.const TEST_BYTE_THREE = $06
+
 .const TEST_WORD_ONE = $1234
 .const TEST_WORD_TWO = $5678
+.const TEST_WORD_THREE = $9ABC
+
 .const TEST_MEMORY_SEQUENCE_SIZE = 16
 .const TEST_STACK_SIZE = 16
 

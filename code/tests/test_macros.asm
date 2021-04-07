@@ -60,7 +60,7 @@ memory_3:
 }
 
 .macro TestCommand(opcode, description) {
-	TestName(opcode, "", description)
+	TestName(opcode, "-", description)
 }
 
 .macro TestName(opcode, args, description) {
@@ -68,10 +68,15 @@ memory_3:
 	inc TestNameCount
 	.encoding "petscii_mixed"
 	TestOutputStringColor(opcode, OPCODE_COLOR)
-	TestOutputString(" ")
+	TestOutput(!space+)
 	TestOutputStringColor(args, ARG_COLOR)
-	TestOutputString(" ")
+	TestOutput(!space+)
 	TestOutputStringColor(description, NAME_COLOR)
+	jmp !done+
+!space:
+	.text " "
+	.byte 0
+!done:
 }
 
 .macro TestAssertDescription(description) {
@@ -105,7 +110,7 @@ memory:
 	cpx #TESTS_PER_PAGE
 	bne !exit+
 	TestPause()
-	ldx #$00
+	ldx #0
 	stx TestNameCount
 !exit:	
 }

@@ -126,10 +126,10 @@ TestStoreDoubleByteIndirect: {
 	
 // The low-order Sweet16_ACC byte is loaded from the memory location whose address resides in Rn after Rn is decremented by 1, and the high order Sweet16_ACC byte is cleared. Branch conditions reflect the final 2-byte Sweet16_ACC contents which will always be positive and never minus one. The carry is cleared. Because Rn is decremented prior to loading the ACC, single byte stacks may be implemented with the STI Rn and POP Rn ops (Rn is the stack pointer).  Note - as trying to inspect the intermediate values using the extension "XJSR" to output the test assertions
 TestPopIndirect: {
-	.const STACK = 5			// Arbitrary register
-	.const VAL_1 = $04			// Arbitrary low order used
-	.const VAL_2 = $05			// Arbitrary low order used
-	.const VAL_3 = $06			// Arbitrary low order used
+	.const STACK = 5			 	// Arbitrary register
+	.const VAL_1 = TEST_BYTE_ONE 	// Arbitrary low order used
+	.const VAL_2 = TEST_BYTE_TWO	// Arbitrary low order used
+	.const VAL_3 = TEST_BYTE_THREE	// Arbitrary low order used
 	TestValue("POPI", "Pop Indirect 1")
 	sweet16
 	set STACK : STACK_MEMORY	// Init stack pointer
@@ -195,8 +195,8 @@ TestStorePopIndirect: {
 // The contents of Rn are added to the contents of Sweet16_ACC, and the low-order 16 bits of the sum restored in ACC. the 17th sum bit becomes the carry and the other branch conditions reflect the final Sweet16_ACC contents.
 TestAdd: {
 	.const REGISTER = 1
-	.const VAL_1 = $7634
-	.const VAL_2 = $4227
+	.const VAL_1 = TEST_WORD_ONE
+	.const VAL_2 = TEST_WORD_TWO
 	TestValue("ADD", "Addition")
 	sweet16
 	set Sweet16_ACC : VAL_1 		// Init Sweet16_ACC
@@ -220,8 +220,8 @@ TestAdd: {
 //The low order 16 bits of the subtraction are restored in the ACC, the 17th sum bit becomes the carry and other branch conditions reflect the final Sweet16_ACC contents. If the 16-bit unsigned Sweet16_ACC contents are greater than or equal to the 16-bit unsigned Rn contents, then the carry is set, otherwise it is cleared. Rn is not disturbed.
 TestSubtract: {
 	.const REGISTER = 1		// Arbitrary register
-	.const VAL_1 = $7634
-	.const VAL_2 = $4227
+	.const VAL_1 = TEST_WORD_TWO
+	.const VAL_2 = TEST_WORD_ONE
 	TestValue("SUB", "Subtraction")
 	sweet16
 	set Sweet16_ACC : VAL_1     	// Init Sweet16_ACC
@@ -277,7 +277,7 @@ TestCompare: {
 	sweet16
 	set DATA_REGISTER : TestMemoryOne_SEQUENCE				// pointer to memory
 	set LIMIT_REGISTER : TestMemoryOne_SEQUENCE + TEST_MEMORY_SEQUENCE_SIZE	// limit address
-	set COUNT_REGISTER : $000								// clear counter
+	set COUNT_REGISTER : 0									// clear counter
 !loop:
 	inr COUNT_REGISTER	// inc counter
 	sub Sweet16_ACC		// zero data
@@ -341,11 +341,11 @@ TestBranchAlways: {
 	sweet16
 	br !setVal1+
 !setVal1:
-	.const VAL_1 = $fedc
+	.const VAL_1 = TEST_WORD_TWO
 	set Sweet16_ACC : VAL_1
 	br !finish+
 !setVal2:
-	.const VAL_2 = $0123
+	.const VAL_2 = TEST_WORD_ONE
 	set Sweet16_ACC : VAL_2
 	br !finish+
 !finish:
@@ -360,17 +360,17 @@ TestBranchIfNoCarry: {
 	.const REGISTER = 5
 	TestEffectiveAddress("BNC", "Branch No Carry")
 	sweet16
-	set REGISTER : $1000
+	set REGISTER : TEST_WORD_ONE
 	set Sweet16_ACC : $ffff
 	add REGISTER
 	bnc !setVal1+
 	br !setVal2+
 !setVal1:
-	.const VAL_1 = $fedc
+	.const VAL_1 = TEST_WORD_THREE
 	set Sweet16_ACC : VAL_1
 	br !finish+
 !setVal2:
-	.const VAL_2 = $0123
+	.const VAL_2 = TEST_WORD_ONE
 	set Sweet16_ACC : VAL_2
 	br !finish+
 !finish:
@@ -385,17 +385,17 @@ TestBranchIfCarrySet: {
 	.const REGISTER = 5
 	TestEffectiveAddress("BC", "Branch If Carry")
 	sweet16
-	set REGISTER : $1000
+	set REGISTER : TEST_WORD_ONE
 	set Sweet16_ACC : $ffff
 	add REGISTER
 	bc !setVal1+
 	br !setVal2+
 !setVal1:
-	.const VAL_1 = $fedc
+	.const VAL_1 = TEST_WORD_THREE
 	set Sweet16_ACC : VAL_1
 	br !finish+
 !setVal2:
-	.const VAL_2 = $0123
+	.const VAL_2 = TEST_WORD_ONE
 	set Sweet16_ACC : VAL_2
 	br !finish+
 !finish:
@@ -428,7 +428,7 @@ TestBranchIfPlus: {
 // A branch is effected only if prior 'result' was minus (negative, MSB = 1). Branch conditions are not changed.
 TestBranchIfMinus: {
 	.const DATA_REGISTER = 5
-	.const VALUE = $0A
+	.const VALUE = TEST_BYTE_THREE
 	TestEffectiveAddress("BM", "Branch If Minus")
 	sweet16
 	set DATA_REGISTER : #VALUE
@@ -437,11 +437,11 @@ TestBranchIfMinus: {
 	bm !setVal2+
 	br !setVal1+
 !setVal1:
-	.const VAL_1 = $fedc
+	.const VAL_1 = TEST_WORD_THREE
 	set Sweet16_ACC : VAL_1
 	br !finish+
 !setVal2:
-	.const VAL_2 = $0123
+	.const VAL_2 = TEST_WORD_ONE
 	set Sweet16_ACC : VAL_2
 	br !finish+
 !finish:
@@ -459,11 +459,11 @@ TestBranchIfZero: {
 	bz !setVal2+
 	br !setVal1+
 !setVal1:
-	.const VAL_1 = $fedc
+	.const VAL_1 = TEST_WORD_THREE
 	set Sweet16_ACC : VAL_1
 	br !finish+
 !setVal2:
-	.const VAL_2 = $0123
+	.const VAL_2 = TEST_WORD_ONE
 	set Sweet16_ACC : VAL_2
 	br !finish+
 !finish:
@@ -476,7 +476,7 @@ TestBranchIfZero: {
 // A branch is effected only if the priot 'result' was non-zero Branch conditions are not changed.
 TestBranchIfNonZero: {
 	.const DATA_REGISTER = 5
-	.const VALUE = $0A
+	.const VALUE = TEST_BYTE_THREE
 	TestEffectiveAddress("BNZ", "Branch If Non Zero")
 	sweet16
 	set DATA_REGISTER : #VALUE
@@ -485,11 +485,11 @@ TestBranchIfNonZero: {
 	bnz !setVal2+
 	br !setVal1+
 !setVal1:
-	.const VAL_1 = $fedc
+	.const VAL_1 = TEST_WORD_THREE
 	set Sweet16_ACC : VAL_1
 	br !finish+
 !setVal2:
-	.const VAL_2 = $0123
+	.const VAL_2 = TEST_WORD_ONE
 	set Sweet16_ACC : VAL_2
 	br !finish+
 !finish:
@@ -511,11 +511,11 @@ TestBranchIfMinus1: {
 	bm1 !setVal2+
 	br !setVal1+
 !setVal1:
-	.const VAL_1 = $fedc
+	.const VAL_1 = TEST_WORD_THREE
 	set Sweet16_ACC : VAL_1
 	br !finish+
 !setVal2:
-	.const VAL_2 = $0123
+	.const VAL_2 = TEST_WORD_ONE
 	set Sweet16_ACC : VAL_2
 	br !finish+
 !finish:
@@ -537,11 +537,11 @@ TestBranchIfNotMinus1: {
 	bnm1 !setVal2+
 	br !setVal1+
 !setVal1:
-	.const VAL_1 = $fedc
+	.const VAL_1 = TEST_WORD_THREE
 	set Sweet16_ACC : VAL_1
 	br !finish+
 !setVal2:
-	.const VAL_2 = $0123
+	.const VAL_2 = TEST_WORD_ONE
 	set Sweet16_ACC : VAL_2
 	br !finish+
 !finish:
@@ -559,8 +559,8 @@ TestBranchIfNotMinus1: {
 // up for the stack pointer and conntinuing execution from Sweet16_Execute
 TestBreak: {
 	.const REGISTER = Sweet16_ACC
-	.const VAL_1 = $feed
-	.const VAL_2 = $0123
+	.const VAL_1 = TEST_WORD_THREE
+	.const VAL_2 = TEST_WORD_ONE
 	TestCommand("BK", "Break")
 	sweet16 : 1					// NOTE: Installing handler to bring up VICE monitor if emulating
 	set REGISTER : VAL_1
@@ -579,8 +579,8 @@ TestBreak: {
 
 // Shows the use of the extension "IBK" which operates like "BK" except that it is responsible for installing the 6502 "brk" which can also be done by starting SWEET16 with a "sweet16 : 1".  Once the interrupt handler has been set there is no need to call ibk again
 TestInterruptBreak: {
-	.const VAL_1 = $feed
-	.const VAL_2 = $0123
+	.const VAL_1 = TEST_WORD_THREE
+	.const VAL_2 = TEST_WORD_ONE
 	TestCommand("IBK", "Extenstion Install Break")
 	Address_Load(!breakHandler+, Three.BRK)
 	sweet16
@@ -657,12 +657,11 @@ TestReturnFromSubroutine: {
 	TestComplete()
 	rts
 }
-	
 
 
 // Test the pseudocommand AJMP which allows SWEET16 to perform absolute jumps by directly setting the address of the PC (minus 1) in the Sweet16_ACC register.  Affect the value in the Sweet16_ACC and PC registers
 TestAbsoluteJump: {
-	.const INITIAL_VALUE = $0000
+	.const INITIAL_VALUE = 0
 	.const SET_VALUE = TEST_WORD_ONE
 	.const NON_ACC_REGISTER = 5
 	TestEffectiveAddress("AJMP", "Absolute Jump")
@@ -687,7 +686,7 @@ TestExternalJSR: {
 	.const REGISTER = 5				// arbitrary register
 	.const VALUE = TEST_WORD_TWO 	// arbitrary value
 	.const VALUE_2 = TEST_WORD_ONE		// arbitrary value
-	.const VALUE_3 = $feed		// different value (will be set using 6502 calls)
+	.const VALUE_3 = TEST_WORD_THREE		// different value (will be set using 6502 calls)
 	sweet16
 	set REGISTER : VALUE		// R5 now contains VALUE
 	xjsr !assertAssigned+
@@ -779,10 +778,6 @@ TestRun:
 		
 	TestFinished()
 
-	// not a real test as routine not required in this implementation
-#if DEBUG
-	//.eval test_calculate_effective_address($1000)
-#endif
 	rts
 
 .segment TestsPatch
