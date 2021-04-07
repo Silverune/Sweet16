@@ -3,10 +3,11 @@
 .segment TestData
 
 TEST_PETSCII_SUCCESS:
-	.byte $73, 0
+	.byte Petscii_Set2.TICK, 0
 
 TEST_PETSCII_FAILURE:
-	.byte $76, 0
+	Kick_PetsciiMixed("X")
+	.byte 0
 
 TestMemoryOne_SEQUENCE:
 	.fill TEST_MEMORY_SEQUENCE_SIZE, i

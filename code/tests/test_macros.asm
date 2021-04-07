@@ -1,9 +1,10 @@
 #importonce
 
 .macro TestStart() {
+    Screen_SetUpperLowerCase()
 	TestInitializeCounters()
 	TestSetupScreen(BACKGROUND_COLOR, TITLE_COLOR)	
-	TestOutputString("SWEET16 TEST RUNNER")
+	TestOutputString("Sweet16 Test Runner")
 	Screen_OutputNewline()
 	Screen_Color(FOREGROUND_COLOR)
 }
@@ -39,29 +40,38 @@
 	TestOutputColor(memory_3, TITLE_COLOR)
 	jmp !done+
 memory:
-	.byte Petscii.RETURN
-	.text "TESTS COMPLETE: "
+	.byte Ascii.RETURN
+	Kick_PetsciiMixed("Tests Complete: ")
 	.byte 0
 memory_2:
-	.text " / "
+	Kick_PetsciiMixed(" / ")
 	.byte 0
 memory_3:
-	 .byte Petscii.RETURN, 0
+	 .byte Ascii.RETURN, 0
 !done:
 }
-	
-.macro TestName(preprocessorString) {
-	.const spacing = 2
-	inc TestNameCount
-	TestOutputStringColor(preprocessorString, NAME_COLOR)
-	TestOutput(memory)
 
-	jmp !done+
-memory:
-	.fill spacing, Petscii.SPACEBAR
-	.text "..."
-	.byte 0
-!done:
+.macro TestEffectiveAddress(opcode, description) {
+	TestName(opcode, "ea", description)
+}
+
+.macro TestValue(opcode, description) {
+	TestName(opcode, "n", description)
+}
+
+.macro TestCommand(opcode, description) {
+	TestName(opcode, "", description)
+}
+
+.macro TestName(opcode, args, description) {
+	.const spacing = 1
+	inc TestNameCount
+	.encoding "petscii_mixed"
+	TestOutputStringColor(opcode, OPCODE_COLOR)
+	TestOutputString(" ")
+	TestOutputStringColor(args, ARG_COLOR)
+	TestOutputString(" ")
+	TestOutputStringColor(description, NAME_COLOR)
 }
 
 .macro TestAssertDescription(description) {
@@ -69,8 +79,8 @@ memory:
 	TestOutputColor(memory, DESC_COLOR)
 	jmp !done+
 memory:
-	.byte Petscii.SPACEBAR
-	.text description
+	.byte Ascii.SPACEBAR
+	Kick_PetsciiMixed(description)
 	.text ":"
 	.byte 0
 !done:
@@ -89,7 +99,7 @@ memory:
 	TestOutput(memory)
 	jmp !done+
 memory:
-	.byte Petscii.RETURN, 0
+	.byte Ascii.RETURN, 0
 !done:
 	ldx TestNameCount
 	cpx #TESTS_PER_PAGE
@@ -251,9 +261,9 @@ memory:
 	TestOutputColor(memory, WHITE)
 	jmp !no_key+
 memory:
-	.byte Petscii.RETURN
-	.text "PRESS ANY KEY TO CONTINUE..."
-	.byte Petscii.RETURN, 0
+	.byte Ascii.RETURN
+	Kick_PetsciiMixed("Press any keu to continue...")
+	.byte Ascii.RETURN, 0
 !no_key:
 	Keyboard_Any()
 	Screen_OutputNewline()

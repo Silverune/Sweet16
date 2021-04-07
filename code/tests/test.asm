@@ -17,11 +17,11 @@ TestOutputIndirect: {
 // The 2-byte constant783 is loaded into Rn (n=0 to F, Hex) and branch conditions set accordingly. The carry is cleared.
 TestSet: {
 	.const REGISTER = 5			// arbitrary register
-	TestName("SET")
+	TestName("SET", "n : val", "Set")
 	sweet16
 	set REGISTER : TEST_WORD_ONE		// R5 now contains $A034
 	rtn
-	TestAssertEqual(REGISTER, TEST_WORD_ONE, "VALUE")	
+	TestAssertEqual(REGISTER, TEST_WORD_ONE, "Value")	
 	TestComplete()
 	rts
 }
@@ -30,12 +30,12 @@ TestSet: {
 TestLoad: {
 	.const REGISTER = 5			// arbitrary register
 	.const VALUE = TEST_WORD_TWO
-	TestName("LOAD")
+	TestValue("LD", "Load")
 	sweet16
     set REGISTER : VALUE
     ld REGISTER					// Sweet16_ACC now contains VALUE
 	rtn
-	TestAssertEqual(Sweet16_ACC, VALUE, "ACC")
+	TestAssertEqual(Sweet16_ACC, VALUE, "Acc")
 	TestComplete()
 	rts
 }
@@ -45,13 +45,13 @@ TestStore: {
 	.const SOURCE = 5			// arbitrary register
 	.const DEST = 6				// arbitrary register
 	.const VALUE = TEST_WORD_ONE
-	TestName("STORE")
+	TestValue("ST", "Store")
 	sweet16
 	set SOURCE : VALUE
 	ld SOURCE					// Copy the contents
 	st DEST						// of R5 to R6
 	rtn
-	TestAssertEqual(DEST, VALUE, "VALUE")
+	TestAssertEqual(DEST, VALUE, "Value")
 	TestComplete()
 	rts
 }
@@ -59,14 +59,14 @@ TestStore: {
 // The low-order Sweet16_ACC byte is loaded from the memory location whose address resides in Rn and the high-order Sweet16_ACC byte is cleared. Branch conditions reflect the final Sweet16_ACC contents which will always be positive and never minus 1. The carry is cleared. After the transfer, Rn is incremented by 1.	
 TestLoadIndirect: {
 	.const REGISTER = 5			// arbitrary register
-	TestName("LOAD INDIRECT")
+	TestValue("LDI", "Load Indirect")
 	sweet16
 	set REGISTER : TestMemoryOne  // Load from 
 	ldi REGISTER				// Sweet16_ACC is loaded from memory where TestMemoryOne ($00, $12)
 								// R5 is incr by one (TestMemoryOne + 1)
 	rtn
-	TestAssertEqualIndirectByte(Sweet16_ACC, TestMemoryOne, "ACC")
-	TestAssertEqual(REGISTER, TestMemoryOne + 1, "REG")
+	TestAssertEqualIndirectByte(Sweet16_ACC, TestMemoryOne, "Acc")
+	TestAssertEqual(REGISTER, TestMemoryOne + 1, "Reg")
 	TestComplete()
 	rts
 }
@@ -75,16 +75,16 @@ TestLoadIndirect: {
 TestStoreIndirect: {
 	.const SOURCE = 5			// arbitrary register
 	.const DEST = 6				// arbitrary register
-	TestName("STORE INDIRECT")
+	TestValue("STI", "Store Indirect")
 	sweet16
 	set SOURCE : TestMemoryOne	// Load pointers R5, R6 with
 	set DEST : TestMemoryTwo	// memory values
     ldi SOURCE            		// Move byte from TestMemoryOne to TestMemoryTwo
     sti DEST			        // Both ptrs are incremented	
 	rtn						
-	TestAssertEqualMemory(TestMemoryOne, TestMemoryTwo, 1, "MEM")
-	TestAssertEqual(SOURCE, TestMemoryOne+1, "SRC")
-	TestAssertEqual(DEST, TestMemoryTwo+1, "DST")
+	TestAssertEqualMemory(TestMemoryOne, TestMemoryTwo, 1, "Mem")
+	TestAssertEqual(SOURCE, TestMemoryOne+1, "Src")
+	TestAssertEqual(DEST, TestMemoryTwo+1, "Dst")
 	TestComplete()
 	rts
 }
@@ -92,14 +92,14 @@ TestStoreIndirect: {
 // The low order Sweet16_ACC byte is loaded from memory location whose address resides in Rn, and Rn is then incremented by 1. The high order Sweet16_ACC byte is loaded from the memory location whose address resides in the incremented Rn, and Rn is again incremented by 1. Branch conditions reflect the final Sweet16_ACC contents. The carry is cleared.
 TestLoadDoubleByteIndirect: {
 	.const REGISTER = 5			// arbitrary register
-	TestName("LOAD DOUBLE INDIRECT")
+	TestValue("LDDI", "Load Double Indirect")
 	sweet16
 	set REGISTER : TestMemoryOne	// The low-order Sweet16_ACC byte is loaded from
 	lddi REGISTER				// TestMemoryOne, high-order from TestMemoryOne+1
 								// NOTE - original had error of specifying "R6"
 								// R5 is incr by 2	
 	rtn
-	TestAssertEqualIndirect(Sweet16_ACC, TestMemoryOne, "ACC")
+	TestAssertEqualIndirect(Sweet16_ACC, TestMemoryOne, "Acc")
 	TestAssertEqual(REGISTER, TestMemoryOne+2, "+2")
 	TestComplete()
 	rts
@@ -109,7 +109,7 @@ TestLoadDoubleByteIndirect: {
 TestStoreDoubleByteIndirect: {
 	.const SOURCE = 5			// arbitrary register
 	.const DEST = 6				// arbitrary register
-	TestName("STORE DBL IND")
+	TestValue("STDI", "Store Dbl Ind")
 	sweet16
 	set SOURCE : TestMemoryOne	// Load pointers R5, R6 with
 	set DEST : TestMemoryTwo	// memory values
@@ -117,7 +117,7 @@ TestStoreDoubleByteIndirect: {
     stdi DEST            		// TestMemoryOne to TestMemoryTwo
                                 // Both pointers incremented by 2.
 	rtn
-	TestAssertEqualMemory(TestMemoryOne, TestMemoryTwo, 2, "MEM")
+	TestAssertEqualMemory(TestMemoryOne, TestMemoryTwo, 2, "Mem")
 	TestAssertEqual(SOURCE, TestMemoryOne+2, "S+2")
 	TestAssertEqual(DEST, TestMemoryTwo+2, "D+2")
 	TestComplete()
@@ -130,7 +130,7 @@ TestPopIndirect: {
 	.const VAL_1 = $04			// Arbitrary low order used
 	.const VAL_2 = $05			// Arbitrary low order used
 	.const VAL_3 = $06			// Arbitrary low order used
-	TestName("POP INDIRECT 1")
+	TestValue("POPI", "Pop Indirect 1")
 	sweet16
 	set STACK : STACK_MEMORY	// Init stack pointer
 	set Sweet16_ACC : VAL_1				// Load into ACC
@@ -163,7 +163,7 @@ TestPopIndirect: {
 	rts
 !assertP3:
 	TestComplete()
-	TestName("POP INDIRECT 2")
+	TestValue("POPI", "Pop Indirect 2")
 	TestAssertEqual(Sweet16_ACC, VAL_3, "P3")
 	rts
 !assertP2:
@@ -178,7 +178,7 @@ TestPopIndirect: {
 TestStorePopIndirect: {
 	.const SOURCE = 4				// Arbitrary register
 	.const DEST = 5					// Arbitrary register
-	TestName("STORE POP IND")
+	TestValue("STPI", "Store Pop Indirect")
 	sweet16
 	set SOURCE : TestMemoryOne + 2	// Init pointers with 2 byte offset
 	set DEST : TestMemoryTwo + 2 	// as moves down from this address -1 then -2
@@ -187,7 +187,7 @@ TestStorePopIndirect: {
 	popi SOURCE						// Move byte from
 	stpi DEST						// TestMemoryOne to TestMemoryTwo
 	rtn
-	TestAssertEqualMemory(TestMemoryOne, TestMemoryOne, 2, "MEM")
+	TestAssertEqualMemory(TestMemoryOne, TestMemoryOne, 2, "Mem")
 	TestComplete()
 	rts
 }
@@ -197,7 +197,7 @@ TestAdd: {
 	.const REGISTER = 1
 	.const VAL_1 = $7634
 	.const VAL_2 = $4227
-	TestName("ADDITION")
+	TestValue("ADD", "Addition")
 	sweet16
 	set Sweet16_ACC : VAL_1 		// Init Sweet16_ACC
     set REGISTER : VAL_2			// Init REGSITER
@@ -205,11 +205,11 @@ TestAdd: {
 	xjsr !assertAdd+
     add Sweet16_ACC					// Double Sweet16_ACC with carry set.
 	rtn
-	TestAssertEqual(Sweet16_ACC, (VAL_1 + VAL_2) * 2, "X2")
+	TestAssertEqual(Sweet16_ACC, (VAL_1 + VAL_2) * 2, "x2")
 	TestComplete()
 	rts
 !assertAdd:
-	TestAssertEqual(Sweet16_ACC, VAL_1 + VAL_2, "ADD")
+	TestAssertEqual(Sweet16_ACC, VAL_1 + VAL_2, "Add")
 	rts
 }
 	
@@ -222,7 +222,7 @@ TestSubtract: {
 	.const REGISTER = 1		// Arbitrary register
 	.const VAL_1 = $7634
 	.const VAL_2 = $4227
-	TestName("SUBTRACTION")
+	TestValue("SUB", "Subtraction")
 	sweet16
 	set Sweet16_ACC : VAL_1     	// Init Sweet16_ACC
 	set REGISTER : VAL_2	// and REGISTER
@@ -234,14 +234,14 @@ TestSubtract: {
 	TestComplete()
 	rts
 !assertSub:
-	TestAssertEqual(Sweet16_ACC, VAL_1 - VAL_2, "SUB")
+	TestAssertEqual(Sweet16_ACC, VAL_1 - VAL_2, "Sub")
 	rts	
 }
 	
 // Rn is decremented by 1 and the high-order Sweet16_ACC byte is loaded from the memory location whose address now resides in Rn. Rn is again decremented by 1 and the low-order Sweet16_ACC byte is loaded from the corresponding memory location. Branch conditions reflect the final Sweet16_ACC contents. The carry is cleared. Because Rn is decremented prior to loading each of the Sweet16_ACC halves, double-byte stacks may be implemented with the STD @Rn and POPD @Rn ops (Rn is the stack pointer).
 TestPopDoubleByteIndirect: {
 	.const STACK = 5			// Arbitrary register
-	TestName("POP DBL-B IND")
+	TestValue("POPDI", "Pop Dbl Ind")
 	sweet16
 	set STACK : STACK_MEMORY	// Init stack pointer
 	set Sweet16_ACC : TestMemoryOne		// Load TestMemoryOne into ACC
@@ -273,7 +273,7 @@ TestCompare: {
 	.const DATA_REGISTER = 5
 	.const LIMIT_REGISTER = 6
 	.const COUNT_REGISTER = 4
-	TestName("COMPARE")
+	TestValue("CPR", "Compare")
 	sweet16
 	set DATA_REGISTER : TestMemoryOne_SEQUENCE				// pointer to memory
 	set LIMIT_REGISTER : TestMemoryOne_SEQUENCE + TEST_MEMORY_SEQUENCE_SIZE	// limit address
@@ -286,7 +286,7 @@ TestCompare: {
 	cpr LIMIT_REGISTER	// to limit R6
 	bnc !loop-			// loop if C clear
 	rtn
-	TestAssertEqual(COUNT_REGISTER, TEST_MEMORY_SEQUENCE_SIZE / 2, "COUNT")	// 16-bit
+	TestAssertEqual(COUNT_REGISTER, TEST_MEMORY_SEQUENCE_SIZE / 2, "Count")	// 16-bit
 	TestComplete()
 	rts	
 }
@@ -294,7 +294,7 @@ TestCompare: {
 // The contents of Rn are incremented by 1. The carry is cleared and other branch conditions reflect the incremented value.
 TestIncrement: {
 	.const REGISTER = 5			// arbitrary register
-	TestName("INCREMENT")
+	TestValue("INR", "Increment")
 	sweet16
 	set REGISTER : TestMemoryOne	// setup pointer
 	sub Sweet16_ACC				// clear ACC
@@ -310,7 +310,7 @@ TestIncrement: {
 TestDecrement: {
 	.const DATA_REGISTER = 5
 	.const COUNT_REGISTER = 4
-	TestName("DECREMENT")
+	TestValue("DCR", "Decrement")
 	sweet16
 	set DATA_REGISTER : TestMemoryOne_SEQUENCE	// Init pointer
 	set COUNT_REGISTER : TEST_MEMORY_SEQUENCE_SIZE				// Init counter
@@ -327,7 +327,7 @@ TestDecrement: {
 
 // Control is returned to the 6502 and program execution continues at the location immediately following the RTN instruction. the 6502 registers and status conditions are restored to their original contents (prior to entering SWEET 16 mode).
 TestReturnTo6502Mode: {
-	TestName("6502 MODE")
+	TestCommand("RTN", "Return to 6502 Mode")
 	sweet16
 	rtn
 	TestAssertNonZero(1, "RTN")
@@ -337,7 +337,7 @@ TestReturnTo6502Mode: {
 	
 // An effective address (ea) is calculated by adding the signed displacement byte (d) to the PC. The PC contains the address of the instruction immediately following the BR, or the address of the BR op plus 2. The displacement is a signed two's complement value from -128 to +127. Branch conditions are not changed.
 TestBranchAlways: {
-	TestName("BRANCH ALWAYS")
+	TestEffectiveAddress("BR", "Branch Always")
 	sweet16
 	br !setVal1+
 !setVal1:
@@ -358,7 +358,7 @@ TestBranchAlways: {
 // A branch to the effective address is taken only is the carry is clear, otherwise execution resumes as normal with the next instruction. Branch conditions are not changed.	
 TestBranchIfNoCarry: {
 	.const REGISTER = 5
-	TestName("BRANCH NO CARRY")
+	TestEffectiveAddress("BNC", "Branch No Carry")
 	sweet16
 	set REGISTER : $1000
 	set Sweet16_ACC : $ffff
@@ -383,7 +383,7 @@ TestBranchIfNoCarry: {
 // A branch is effected only if the carry is set. Branch conditions are not changed.
 TestBranchIfCarrySet: {
 	.const REGISTER = 5
-	TestName("BRANCH IF CARRY")
+	TestEffectiveAddress("BC", "Branch If Carry")
 	sweet16
 	set REGISTER : $1000
 	set Sweet16_ACC : $ffff
@@ -409,7 +409,7 @@ TestBranchIfCarrySet: {
 TestBranchIfPlus: {
 	.const DATA_REGISTER = 5
 	.const LIMIT_REGISTER = 4
-	TestName("BRANCH IF +VE")
+	TestEffectiveAddress("BP", "Branch If Plus")
 	sweet16
 	set DATA_REGISTER : TestMemoryOne_SEQUENCE		 		// Init pointer
 	set LIMIT_REGISTER : TestMemoryOne_SEQUENCE + TEST_MEMORY_SEQUENCE_SIZE 	// Init limit
@@ -429,7 +429,7 @@ TestBranchIfPlus: {
 TestBranchIfMinus: {
 	.const DATA_REGISTER = 5
 	.const VALUE = $0A
-	TestName("BRANCH IF -VE")
+	TestEffectiveAddress("BM", "Branch If Minus")
 	sweet16
 	set DATA_REGISTER : #VALUE
 	sub Sweet16_ACC							// Clear mem byte
@@ -453,7 +453,7 @@ TestBranchIfMinus: {
 
 // A Branch is effected only if the prior 'result' was zero. Branch conditions are not changed.
 TestBranchIfZero: {
-	TestName("BRANCH IF 0")
+	TestEffectiveAddress("BZ", "Branch If Zero")
 	sweet16
 	sub Sweet16_ACC							// Clear mem byte
 	bz !setVal2+
@@ -477,7 +477,7 @@ TestBranchIfZero: {
 TestBranchIfNonZero: {
 	.const DATA_REGISTER = 5
 	.const VALUE = $0A
-	TestName("BRANCH IF !0")
+	TestEffectiveAddress("BNZ", "Branch If Non Zero")
 	sweet16
 	set DATA_REGISTER : #VALUE
 	sub Sweet16_ACC							// Clear mem byte
@@ -503,7 +503,7 @@ TestBranchIfNonZero: {
 TestBranchIfMinus1: {
 	.const DATA_REGISTER = 5
 	.const VALUE = 1
-	TestName("BRANCH IF -1")
+	TestEffectiveAddress("BM1", "Branch If Minus 1")
 	sweet16
 	set DATA_REGISTER : #VALUE
 	sub Sweet16_ACC							// Clear mem byte
@@ -529,7 +529,7 @@ TestBranchIfMinus1: {
 TestBranchIfNotMinus1: {
 	.const DATA_REGISTER = 5
 	.const VALUE = 2
-	TestName("BRANCH IF !-1")
+	TestEffectiveAddress("BNM1", "Branch If Not Minus 1")
 	sweet16
 	set DATA_REGISTER : #VALUE
 	sub Sweet16_ACC							// Clear mem byte
@@ -561,7 +561,7 @@ TestBreak: {
 	.const REGISTER = Sweet16_ACC
 	.const VAL_1 = $feed
 	.const VAL_2 = $0123
-	TestName("BREAK")
+	TestCommand("BK", "Break")
 	sweet16 : 1					// NOTE: Installing handler to bring up VICE monitor if emulating
 	set REGISTER : VAL_1
 	bk
@@ -581,7 +581,7 @@ TestBreak: {
 TestInterruptBreak: {
 	.const VAL_1 = $feed
 	.const VAL_2 = $0123
-	TestName("INT BREAK")
+	TestCommand("IBK", "Extenstion Install Break")
 	Address_Load(!breakHandler+, Three.BRK)
 	sweet16
 	set Sweet16_ACC : VAL_1
@@ -618,7 +618,7 @@ TestBranchToSubroutine:
 	.const SOURCE = 5
 	.const SOURCE_LIMIT = 4
 	.const DEST = 6
-	TestName("BRANCH TO SUB")
+	TestEffectiveAddress("BS", "Branch To Subroutine")
 	sweet16
 	set SOURCE : TestMemoryOne_SEQUENCE					// Init source register
 	set SOURCE_LIMIT : TestMemoryOne_SEQUENCE + TEST_MEMORY_SEQUENCE_SIZE 	// Init limit register
@@ -643,7 +643,7 @@ TestReturnFromSubroutine: {
 	.const REGISTER = Sweet16_ACC
 	.const DEFAULT_VALUE = TEST_WORD_ONE
 	.const SUB_SET_VALUE = TEST_WORD_TWO
-	TestName("RETURN FROM SUB")
+	TestCommand("RS", "Return From Subroutine")
 	sweet16
 	set REGISTER : DEFAULT_VALUE
 	bs !overwrite+
@@ -653,7 +653,7 @@ TestReturnFromSubroutine: {
 	set REGISTER : SUB_SET_VALUE
 	rs
 !done:
-	TestAssertEqual(REGISTER, SUB_SET_VALUE, "SUB")
+	TestAssertEqual(REGISTER, SUB_SET_VALUE, "Sub")
 	TestComplete()
 	rts
 }
@@ -665,14 +665,14 @@ TestAbsoluteJump: {
 	.const INITIAL_VALUE = $0000
 	.const SET_VALUE = TEST_WORD_ONE
 	.const NON_ACC_REGISTER = 5
-	TestName("ABSOLUTE JUMP")
+	TestEffectiveAddress("AJMP", "Absolute Jump")
 	sweet16
 	set NON_ACC_REGISTER : INITIAL_VALUE	// initial value
 	ajmp !setter+							// absolute jump to setter
 
 !finished:
 	rtn										// exit SWEET16
-	TestAssertEqual(NON_ACC_REGISTER, SET_VALUE, "SET")
+	TestAssertEqual(NON_ACC_REGISTER, SET_VALUE, "Set")
 	TestComplete()
 	rts
 
@@ -683,7 +683,7 @@ TestAbsoluteJump: {
 
 // XJSR is an extension added to the standard SWEET16 instructions to allow for a mix of SWEET16 calls and 6502.  When "XJSR" is called the address is executed normally as if we were in 6502 instruction set mode.  Once the RTS is encountered regular SWEET16 execution continues
 TestExternalJSR: {
-	TestName("EXTERNAL JSR")
+	TestEffectiveAddress("XJSR", "Ext JSR")
 	.const REGISTER = 5				// arbitrary register
 	.const VALUE = TEST_WORD_TWO 	// arbitrary value
 	.const VALUE_2 = TEST_WORD_ONE		// arbitrary value
@@ -695,12 +695,12 @@ TestExternalJSR: {
 	xjsr !code6502+
 	set REGISTER : VALUE		// R5 now contains VALUE (again)
 	rtn
-	TestAssertEqual(REGISTER, VALUE, "SAME")
+	TestAssertEqual(REGISTER, VALUE, "Same")
 	TestComplete()
 	rts
 
 !assertAssigned:
-	TestAssertEqual(REGISTER, VALUE, "VALUE")
+	TestAssertEqual(REGISTER, VALUE, "Value")
 	rts
 	
 !code6502:						// native 6502 code
@@ -716,23 +716,23 @@ TestExternalJSR: {
 // SETI is an extension added to the standard SWEET16 instructions to allow for a setting a register value indirectly by providing a memory location to source.
 TestSetIndirect: {
 	.const REGISTER = 5			// arbitrary register
-	TestName("SET INDIRECT")
+	TestEffectiveAddress("SETI", "Set Reg Indirect")
 	sweet16
 	seti REGISTER : TestMemoryOne	// set register with value at TEST_MEMORT
 	rtn
-	TestAssertEqualIndirectAddress(REGISTER, TestMemoryOne, "TEST MEM")	
+	TestAssertEqualIndirectAddress(REGISTER, TestMemoryOne, "Test Mem")	
 	TestComplete()
 	rts
 }
 
-// SETM is an extension added to the standard SWEET16 instructions to allow for a setting a register value indirectly by providing a memory location to source.  It puts the exact bytes into the register not Hight byte Low byte
+// SETM is an extension added to the standard SWEET16 instructions to allow for a setting a register value by providing a memory location to source.  It puts the exact bytes into the register not Hight byte Low byte
 TestSetMemory: {
 	.const REGISTER = 5			// arbitrary register
-	TestName("SET MEMORY")
+	TestEffectiveAddress("SETM", "Set Reg Memory")
 	sweet16
 	setm REGISTER : TestMemoryOne	// set register with value at TEST_MEMORT
 	rtn
-	TestAssertEqualIndirect(REGISTER, TestMemoryOne, "TEST MEM")	
+	TestAssertEqualIndirect(REGISTER, TestMemoryOne, "Test Mem")	
 	TestComplete()
 	rts
 }

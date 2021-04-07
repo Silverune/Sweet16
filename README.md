@@ -150,7 +150,7 @@ There are only four main files required to use this implementation of SWEET16:
 <tr><td>4n</td><td>LDI n</td><td>Load indirect</td><td>04</td><td>BP ea</td><td>Branch if Plus</td></tr>
 <tr><td>5n</td><td>STI n</td><td>Store indirect</td><td>05</td><td>BM ea</td><td>Branch if Minus</td></tr>
 <tr><td>6n</td><td>LDDI n</td><td>Load double indirect</td><td>06</td><td>BZ ea</td><td>Branch if Zero</td></tr>
-<tr><td>7n</td><td>STDI n</td><td>Store double indirect</td><td>07</td><td>BNZ ea</td><td>Branch if NonZero</td></tr>
+<tr><td>7n</td><td>STDI n</td><td>Store double indirect</td><td>07</td><td>BNZ ea</td><td>Branch if Non Zero</td></tr>
 <tr><td>8n</td><td>POPI n</td><td>Pop indirect</td><td>08</td><td>BM1 ea</td><td>Branch if Minus 1</td></tr>
 <tr><td>9n</td><td>STPI n</td><td>Store Pop indirect</td><td>09</td><td>BNM1 ea</td><td>Branch if Not Minus 1</td></tr>
 <tr><td>An</td><td>ADD n</td><td>Add</td><td>0A</td><td>BK</td><td>Break</td></tr>
