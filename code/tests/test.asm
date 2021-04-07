@@ -562,7 +562,7 @@ TestBreak: {
 	.const VAL_1 = TEST_WORD_THREE
 	.const VAL_2 = TEST_WORD_ONE
 	TestCommand("BK", "Break")
-	sweet16 : 1					// NOTE: Installing handler to bring up VICE monitor if emulating
+	sweet16 : 0 : 1					// NOTE: Installing break handler to bring up VICE monitor if emulating
 	set REGISTER : VAL_1
 	bk
 	xjsr !assertVal1+
@@ -577,7 +577,7 @@ TestBreak: {
 	rts
 }
 
-// Shows the use of the extension "IBK" which operates like "BK" except that it is responsible for installing the 6502 "brk" which can also be done by starting SWEET16 with a "sweet16 : 1".  Once the interrupt handler has been set there is no need to call ibk again
+// Shows the use of the extension "IBK" which operates like "BK" except that it is responsible for installing the 6502 "brk" which can also be done by starting SWEET16 with a "sweet16 : 1 : 1".  Once the interrupt handler has been set there is no need to call ibk again
 TestInterruptBreak: {
 	.const VAL_1 = TEST_WORD_THREE
 	.const VAL_2 = TEST_WORD_ONE
@@ -619,7 +619,7 @@ TestBranchToSubroutine:
 	.const SOURCE_LIMIT = 4
 	.const DEST = 6
 	TestEffectiveAddress("BS", "Branch To Subroutine")
-	sweet16
+	sweet16 : 1
 	set SOURCE : TestMemoryOne_SEQUENCE					// Init source register
 	set SOURCE_LIMIT : TestMemoryOne_SEQUENCE + TEST_MEMORY_SEQUENCE_SIZE 	// Init limit register
 	set DEST : TestMemoryOne_SEQUENCE_2					// Init dest register
@@ -644,7 +644,7 @@ TestReturnFromSubroutine: {
 	.const DEFAULT_VALUE = TEST_WORD_ONE
 	.const SUB_SET_VALUE = TEST_WORD_TWO
 	TestCommand("RS", "Return From Subroutine")
-	sweet16
+	sweet16 : 1
 	set REGISTER : DEFAULT_VALUE
 	bs !overwrite+
 	rtn

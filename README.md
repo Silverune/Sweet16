@@ -101,12 +101,12 @@ Its important to have the opcode lookup table all within the one page so that on
 
 Another difference is the introduction of a ```nop``` at the start of the page containing all the mnemonics.  The reasons for this is that the Kick Assembler allows code to be page aligned which is done via the ```.align $100``` command.  This means it is now on a 256 byte page alignment.  However, SWEET16 uses ```JSR```'s as ```JMP``` by putting the address minus one onto the stack and then executing an ```RTS```.   In every case except being page aligned this works but the first call (```SET```) being page aligned at ```00``` in its low byte becomes ```ff``` after the minus one.  So to ensure this will always work a ```nop``` has been placed at the start of the table.   This is not a deficiency in SWEET16, rather an implementation detail that affected this particular port.
 
-Lastly, the original implementation required " _...the user must initialize and otherwise not disturb R12 if the SWEET16 subroutine capability is used since it is utilized as the automatic subroutine return stack pointer..._".  This is now taken care of as part of the initialization / configuration to ensure that usage of this functionality does not crash the program using unitialized memory if the user had not already known to set this up.
+Lastly, the original implementation required " _...the user must initialize and otherwise not disturb R12 if the SWEET16 subroutine capability is used since it is utilized as the automatic subroutine return stack pointer..._".  This is can now be taken care of as part of the initialization to ensure that usage of this functionality does not crash the program using uninitialized memory if the user had not already known to set this up.  This can be enabled by passing a non-zero value as the first argument to the pseudocommand.  e.g., ```sweet16 : 1```
 
 # Debugging
 One aspect of using SWEET16 which at first might appear to be problematic is debugging.  While working in assembler a lot of time is spent inspecting memory location and registers and SWEET16 is not forgiving in this regard.  The registers you are inspecting are arbitrary memory locations outside of the normal 6502 ones and breakpoints don't work as well as would initially be expecting due to this (you don't simply put a ```BRK``` in the SWEET16 code and load up the debugger).  When SWEET16 encounteres a  ```BK``` it executes the the ISR for break.   This is usually not setup unless debugging so I have added two ways to set this up to assist in debugging SWEET16 programs "natively".  They both make the assumption the developer has access to VICE and is not developing on native hardware for this part of the development as it installs an ISR that produces a breakpoint in a VICE format.  So when run in debug mode once the SWEET16 call ```BR``` is encountered the monitor will appear and the developer can inspect the state of the metaprocessor.   There are two ways to achieve this.
 
-- Start SWEET16 with the optional flag to install the interrupt routine: ```sweet16 : 1```
+- Start SWEET16 with the optional flag to install the interrupt routine: ```sweet16 : 0: 1```
 - While within SWEET16 execute the extension ```IBK``` which will ensure the ISR is installed (only needs to be done once - use ```BK``` from then onwards).
 
 In either case once the command is encountered (and assuming using VICE) the monitor will show up at that point.   From this point it is important to realise that the user is in 6502 world (not SWEET16) so it is fine to inspect the mapped zero-page registers etc. which are all mapped in the debug output file ```breakpoints.txt``` However, once you continue execution the call will jump to ```Sweet16_Exexcute``` which effectively continues where you left off back in the SWEET16 metaprocessor.
@@ -117,7 +117,7 @@ A more powerful alternative to this is using the extension of ```XJSR``` which w
 I've added a rudimentary test suite based on Woz's original descriptions for each mnemonic.  Very few look 1:1 with the description but they are similar in vibe.  Often (to keep a single source of truth) I'll use a Kick ```.const``` instead of the original value so that I can pass the same value to an assert routine.   The end code is the same but code maintainability and the flexibility is more-so today than it was in 1977.  In total there are over 50 "unit" tests validating the original code, the extensions and my understanding of the metaprocessor.  I'm sure there is room for many more but I do think there are enough to give a vague guide to anyone putting their toes into SWEET16 for the first time some confidence about how it is meant to work.
 
 # External Use
-There are only four main files required to use this implementation of SWEET16:
+There are only four main files required to use this implementation of SWEET16 as well as inclusion of the *Core* library:
 - ```sweet16.asm```: the core implememtation with some extensions
 - ```sweet16_pseudocommands.asm```: Kick Assembler pseudo commands to map mnemonics to SWEET16
 - ```sweet16_macros.asm```: macro's used by the pseudo commands and core extensions
@@ -156,8 +156,8 @@ There are only four main files required to use this implementation of SWEET16:
 <tr><td>An</td><td>ADD n</td><td>Add</td><td>0A</td><td>BK</td><td>Break</td></tr>
 <tr><td>Bn</td><td>SUB n</td><td>Subtract</td><td>0B</td><td>RS</td><td>Return from Subroutine</td></tr>
 <tr><td>Cn</td><td>POPDI n</td><td>Pop double indirect</td><td>0C</td><td>BS ea</td><td>Branch to Subroutine</td></tr>
-<tr><td>Dn</td><td>CPR n</td><td>Compare</td><td>0D</td><td><i>XJSR addr</i></td><td><i>Extension - Jump to External 6502 Subroutine</i></td></tr>
-<tr><td>En</td><td>INR n</td><td>Increment</td><td>0E</td><td><i>SETM</i></td><td><i>Extension - Sets register with value from memory</i></td></tr>
-<tr><td>Fn</td><td>DCR n</td><td>Decrement</td><td>0F</td><td><i>SETI</i></td><td>Extension - Set reguster with value from address (High / Low) as if the value at the address was a const to SET</td></tr>
+<tr><td>Dn</td><td>CPR n</td><td>Compare</td><td>0D</td><td><i>XJSR ea</i></td><td><i>Extension - Jump to External 6502 Subroutine</i></td></tr>
+<tr><td>En</td><td>INR n</td><td>Increment</td><td>0E</td><td><i>SETM ea</i></td><td><i>Extension - Sets register with value from memory</i></td></tr>
+<tr><td>Fn</td><td>DCR n</td><td>Decrement</td><td>0F</td><td><i>SETI ea</i></td><td>Extension - Set reguster with value from address (High / Low) as if the value at the address was a const to SET</td></tr>
 <tr><td colspan="6"><b>SWEET16 Operation Code Summary:</b> Table 1 summarizes the list of SWEET16 operation codes.  They are executed after a call to the entry point SWEET16.  Return to the calling program and normal noninterpretive operation is accomplished with the RTN mnemonic of SWEET16.  These codes differ from Woz's original only in the removal of the redundant <b>R</b> for register numbers and the replacement of <b>I</b> instead of <b>@</b> to refer to indirect address mnemonics</td></tr>
 </tbody></table>
