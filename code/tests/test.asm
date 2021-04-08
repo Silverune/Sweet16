@@ -14,12 +14,12 @@ TestOutputIndirect: {
 
 // Simple tests for Sweet16.  Most of these are converted versions of Woz's originals in the description of each of the mnemonics / opcodes (http://www.6502.org/source/interpreters/sweet16.htm#Register_Instructions_).
 
-// The 2-byte constant783 is loaded into Rn (n=0 to F, Hex) and branch conditions set accordingly. The carry is cleared.
+// The 2-byte constant is loaded into Rn (n=0 to F, Hex) and branch conditions set accordingly. The carry is cleared.
 TestSet: {
 	.const REGISTER = 5			// arbitrary register
 	TestName("SET", "n : val", "Set")
 	sweet16
-	set REGISTER : TEST_WORD_ONE		// R5 now contains $A034
+	set REGISTER : TEST_WORD_ONE		
 	rtn
 	TestAssertEqual(REGISTER, TEST_WORD_ONE, "Value")	
 	TestComplete()
