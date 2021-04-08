@@ -3,7 +3,6 @@
 BasicUpstart2(Main)
 
 Main: {
-.break
 	Cookie_Check(LibLocation)					// looks for byte sequence indicating code placeholder meaning actual code needs to be loaded
  	bcc !already_loaded+						// segment data already there - not being loaded from disk
  	jsr LoadCode								// load library and tests
@@ -24,7 +23,7 @@ Load: {
 }
 
 LoadCode: {
-	TestOutputString("LOADING CODE...")
+	TestOutputString("Loading code...")
 	Disk_LoadList(codeFiles, Load)
 	rts
 }

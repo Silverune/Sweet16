@@ -10,7 +10,7 @@
 .const DESC_COLOR = LIGHT_BLUE
 
 // test config
-.const TESTS_PER_PAGE = 21
+.const TESTS_PER_PAGE = 20
 
 .const TEST_BYTE_ONE = $04
 .const TEST_BYTE_TWO = $05

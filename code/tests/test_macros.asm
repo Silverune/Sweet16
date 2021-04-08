@@ -6,6 +6,7 @@
 	TestSetupScreen(BACKGROUND_COLOR, TITLE_COLOR)	
 	TestOutputString("Sweet16 Test Runner")
 	Screen_OutputNewline()
+	Screen_OutputNewline()
 	Screen_Color(FOREGROUND_COLOR)
 }
 
