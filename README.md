@@ -1,127 +1,122 @@
 # Sweet16
-A C64 / Kick Assembler port of Steve Wozniak's ("Woz") 16-bit metaprocessor processor
-- [Original BYTE Article](https://archive.org/stream/byte-magazine-1977-11-rescan/1977_11_BYTE_02-11_Memory_Mapped_IO#page/n151)
-- [Text Only BYTE Article](http://amigan.1emu.net/kolsen/programming/sweet16.html)
-- [Porting](http://www.6502.org/source/interpreters/sweet16.htm)
-- [Original Source Code](http://www.6502.org/source/interpreters/sweet16.htm#The_Story_of_Sweet_Sixteen)
-- [S-C Macro Assembler](http://www.6502.org/source/interpreters/sweet16.htm#Sweet_16_S_C_Macro_Assembler_Tex)
-- [Original Register Instructions](http://www.6502.org/source/interpreters/sweet16.htm#Register_Instructions_)
-- [Original Detailed Description](http://www.6502.org/source/interpreters/sweet16.htm#SWEET_16_A_Pseudo_16_Bit_Micropr)
-- [SWEET16 Introduction](http://www.6502.org/source/interpreters/sweet16.htm#SWEET_16_INTRODUCTION)
-- [Atari Source Port](https://github.com/jefftranter/6502/blob/master/asm/sweet16/sweet16.s)
 
-This project provides an implementation of Steve Wozniak's "SWEET16" ported to the C64 6502 / 6510 using the Kick Assembler.   Using Kick's scripting language features SWEET16 can more natively be coded using ```pseudocommands``` that better reflect Woz's original description.  Using an example from Jeff Tranter's Atari port of SWEET16:
+A Commodore 64 implementation of Steve Wozniak's *Sweet16* 16-bit metaprocessor processor using *Kick Assembler*
 
-```
-TEST:
-   JSR SWEET16
-  .BYTE $11,$00,$70 ; SET R1,$7000
-  .BYTE $12,$02,$70 ; SET R2,$7002
-  .BYTE $13,$01,$00 ; SET R3,1
-;LOOP:
-  .BYTE $41         ; LD @R1
-  .BYTE $52         ; ST @R2
-  .BYTE $F3         ; DCR R3
-  .BYTE $07,$FB     ; BNZ LOOP
-  .BYTE $00         ; RTN
-```
+# Overview
+In 1977, Steve Wozniak wrote an article for BYTE magazine about a 16-bit "metaprocessor" that he had invented to deal with manipulating 16-bit values on an 8-bit CPU (6502) for the *AppleBASIC* he was writing at the time.  What he came up with was "*Sweet16*"  which he referred to "*as a 6502 enhancement package, not a stand alone processor*".  It defined sixteen 16-bit registers (```R0``` to ```R15```) which under the bonnet were implemented as 32 contiguous memory locations located in zero page. Some of the registers were dual purpose (e.g., ```R0``` doubled as the *Sweet16* accumulator).  
 
-Looking at the comments you can see the SWEET16 mnemonics but to actually have them execute correctly each needs to be converted into the a byte sequence of their opcodes and operands by hand.  So without the comments the code becomes at first glace straight assembler:
+The *Sweet16* instructions fell into register and nonregister categories with the register operations specifying one of the 16 registers to be used as either a data element or a pointer to data in memory depending on the specific instruction.  Except for the ```SET``` instruction, register operations only required one byte. The nonregister operations were primarily 6502 style branches with the second byte specifying a +/-127 byte displacement relative to the address of the following instruction. If a prior register operation result met a specified branch condition, the displacement was added to *Sweet16*'s program counter, effecting a branch.
+
+# Kick Assembler
+This project provides an implementation of Steve Wozniak's "*Sweet16*" ported to the Commodore 64 using *Kick Assembler* which provides powerful scripting language features via ```.pseudocommand``` and ```.macro``` allowing *Sweet16* programs to be more natively coded that better reflect the metaprocessor's original description.  An assumption is made the reader underestands *Sweet16* and 6502 assembler.
+
+One of the downsides of using the original *Sweet16* implementation without convenience helpers is the fact that it is built on top of the existing 6502 mnemonics and has no native assembler support so using it requires the user to hand-roll conversion from *Sweet16* to a byte sequence for use by the *Sweet16* routines. 
+
+An example of some 6502 generic code showing the equivalent *Sweet16* operations in the comments:
 
 ```
-TEST:
-  JSR SWEET16
-  .BYTE $11,$00,$70,$12,$02,$70,$13,$01,$00
-;LOOP:
-  .BYTE $41,$52,$F3,$07,$FB,$00
+eg:
+   jsr SWEET16
+  .byte $11,$00,$12 // SET R1,$1200
+  .byte $12,$34,$00 // SET R2,$0034
+!:                  // 
+  .byte $41         // LD @R1
+  .byte $52         // ST @R2
+  .byte $F3         // DCR R3
+  .byte $07,$FB     // BNZ !-
+  .byte $00         // RTN
 ```
 
-Clearly this is not easy to maintain and coding in this manner is error prone.   However, using Kick's ```pseudocommands``` the following mnemonics produces the same SWEET16 opcodes / operands:
+Looking at the equivalent *Sweet16* mnemonics (in comments) to have them execute correctly each needs to be converted into a byte sequence of their opcodes and operands by hand.  So without the comments the code becomes at first glace straight machine code:
 
 ```
-TEST:
+eg:
+  jsr SWEET16
+  .byte $11,$00,$12,$12,$34,$00,$41,$52,$F3,$07,$FB,$00
+```
+
+Code like this is not easy to maintain / modify and coding in this manner is error prone.   However, using *Kick Assembler's* ```pseudocommands``` the following mnemonics can produce the same *Sweet16* opcodes / operands:
+
+```
+eg:
   SWEET16
-  SET 1 : $7000
-  SET 2 : $7002
-  SET 3 : $0001
-LOOP:
+  SET 1 : $1200
+  SET 2 : $0034
+!:
   LDI 1
   STI 2
   DCR 3
-  BNZ LOOP
+  BNZ !-
   RTN
 ```
-
-# Overview
-In 1977, Steve Wozniak wrote an article for BYTE magazine about a 16-bit "metaprocessor" that he had invented to deal with manipulating 16-bit values on an 8-bit CPU (6502) for the AppleBASIC he was writing at the time.  What he came up with was "SWEET16"  which he referred to "as a 6502 enhancement package, not a stand alone processor".  It defined sixteen 16-bit registers (R0 to R15) which under the bonnet were implemented as 32 memory locations located in zero page. Some of the registers were dual purpose (e.g., R0 doubled as the SWEET16 accumulator).  
-
-SWEET16 instructions fell into register and nonregister categories with the register operations specifying one of the 16 registers to be used as either a data element or a pointer to data in memory depending on the specific instruction.  Except for the ```SET``` instruction, register operations only require one byte. The nonregister operations were primarily 6502 style branches with the second byte specifying a +/-127 byte displacement relative to the address of the following instruction. If a prior register operation result meets a specified branch condition, the displacement was added to SWEET16's program counter, effecting a branch.
-
-Any implementation of SWEET16 required a few key things to achieve this.   The first is that the implementation of all the instructions are located on the same 256 byte memory page.  In this implementation this was achieved by using Kick's ```!align $100``` command and then inserting a ```nop``` at the first address (see later).    This way a jumptable can be used which only needs to specify a single byte as they will all share a common high byte.  Another requirement is that the registers themselves are located in zero page due to the addressing modes required.  (More information can be found in Carsten Strotmann [article](http://www.6502.org/source/interpreters/sweet16.htm)) detailing porting SWEET16.
+## Details
+Any implementation of *Sweet16* requires a few key things.   
+ * The implementation of all the instructions are located on the same 256 byte memory page.  The code itself can contain subroutines outside of this however the initial jump table subroutine must sit within this page.  In this implementation this was achieved by using *Kick Assembler's* ```!align $100``` command to ensure the code was page aligned and then inserting a ```nop``` as the first address (see later).    This way a jumptable can be used which only needs to specify a single byte as they all share a common high byte.
+  * The registers themselves are located in zero page due to the addressing modes required.  (More information can be found in Carsten Strotmann [article](http://www.6502.org/source/interpreters/sweet16.htm)) detailing porting *Sweet16*.
 
 # Extensions
-In addition to the standard SWEET16 mnemonics there was room for an additional 3 instructions which I have created in this implementation.  This is in addition to creating another ```pseudocommand``` that appears to be a SWEET16 call but is actually simply a macro calling two successive SWEET16 calls to provide the ability to perform an absolute jump.  These SWEET16 extensions are:
+As Wozniak stated in the original article "...*I leave it to readers to explore further possibilities for SWEET16*.".  For this implementation I have added two different types of extensions:
+ 1. *Macro Extensions* - implemented as convenience ```.macro``` calls which simply chain *Sweet16* calls to achieve a single outcome
+ 2. *New Instructions* - first class extensions utilizing the 3 additional instruction slots remaining in the original specification.
 
-- ```XJSR``` - Provides a means to calling 6502 code while still executing code as if within the SWEET16 metaprocessor.  All state is kept intact within the SWEET16 virtual environment and after a ```RTS``` is executed in the regular 6502 code SWEET16 continues execution.   This was found to be invaluable in the test suite for outputting intermediate results.
-- ```SETM``` - SWEET16 uses up half its mnemonics on setter routines which are only able to use direct absolute values.   The ```SETM``` extension allows an indirect memory address to be used which will have their values loaded directly into the register instead
-- ```SETI``` - Very similar to ```SETM``` except that the byte ordering is High to Low which is how SWEET16 treats 16-bit values passed as constants to registers.
+# Macro extensions
+- ```AJMP``` - This is simply a convenience call which sets the *Sweet16* PC to the values specified which causes a jump to the desired address.  To store this value in the PC it overwrites the value in the ACC register
+- ```IBK``` - (see below) Installs an ISR handler for working with VICE and calling ```BK```
+- ```LDXY``` - Loads the values from the passed in register to the ```X``` and ```Y``` registers.  This is handy for debugging when you want to quickly inspect what is happening in *Sweet16*
+
+# New Instructions
+- ```XJSR``` - Provides a means to calling 6502 code while still executing code as if within the *Sweet16* metaprocessor.  All state is kept intact within the *Sweet16* virtual environment and after a ```RTS``` is executed in the regular 6502 code *Sweet16* continues execution.   This was found to be invaluable in the test suite for outputting intermediate results.
+- ```SETM``` - *Sweet16* uses up half its mnemonics on setter routines which are only able to use direct absolute values.   The ```SETM``` extension allows an indirect memory address to be used which will have their values loaded directly into the register instead
+- ```SETI``` - Very similar to ```SETM``` except that the byte ordering is High to Low which is how *Sweet16* treats 16-bit values passed as constants to registers.
 
 To elaborate:
 
 ```
-SHOW_DIFFERECE:
-	.const VAL_1 = $1234            // arbitrary number
-	.const REGISTER = 5             // arbitrary register (location $0021)
-	jmp !eg+
-VAL_1_MEMORY:
-	!byte $12, $34                  // same as VAL_1
-!eg:
+eg:
+	.const REGISTER = 5             // arbitrary register
+	jmp !+
+!:
 	SWEET16
-	SET REGISTER : VAL_1            // assigns VAL_1 to register 5 - in memory:  34 12 ...
-	SETM REGISTER : VAL_1_MEMORY    // assigns VAL_1_MEMORY memory to register 5: 12 34 ...
-	SETI REGISTER : VAL_1_MEMORY    // assigns VAL_1_MEMORY high / low to register 5: 34 12 ...
+	SET REGISTER : $1234            // assigns value to register - in memory:  34 12 ...
+	SETM REGISTER : !data+          // assigns data memory to register: 12 34 ...
+	SETI REGISTER : !data+          // assigns data high / low to register: 34 12 ...
 	RTN
 	rts
+!data:
+	.byte $12, $34                  
 ```
-
-- ```AJMP``` - This is simply a convenience call which sets the SWEET16 PC to the values specified which causes a jump to the desired address.  To store this value in the PC it overwrites the value in the ACC register
-
-# Convenience
-There are a number of convenience routine created to make using and verifying SWEET16 more readily accessible:
-- ```ibk``` - (see below) Installs an ISR handler for working with VICE and calling ```BK```
-- ```ldyx``` - Loads the values from the passed in register to the ```X``` and ```Y``` registers.  This is handy for debugging when you want to quickly inspect what is happening in SWEET16
-
 # Test Suite
-Each of the SWEET16 has some unit style tests around them.  These are usually quite trivial and not exhaustive but they have proven to be suitable for catching game-changing breakages when my experiments have gone too far.   Some do rely on my extension ```XJSR``` due to the nature of needing to call a lot of 6502 code to output the intermediate results to the screen memory.   The other point looking at the branch tests is the need to place the jumps close within the calls themselves as the branches can only every be +/- 127 which causes issues when calling convenience routine to output to the display which can be quite a lot of code.
+Each of the *Sweet16* instructions have unit style tests to validate them.  These are quite trivial and not exhaustive but they have proven to be suitable for catching game-changing breakages when my experiments have gone too far.   Some do rely on the extension ```XJSR``` due to the nature of needing to call a lot of 6502 code to output the intermediate results to the screen memory.
 
-# SWEET16 code changes for C64
-There were a few things done to bring Sweet16 into the C64 world.  First was to find a place in Zero Page which wouldn't cause too much damage.  I start at ```$0002``` and take the next 32 bytes for registers and a convience zero page location I use as part of the ```SETI``` / ```SETM``` implementation.  This clobbers some BASIC important values but that doesn't impact this work.
+# *Sweet16* code changes for Commodore 64
+There were a few things done to bring *Sweet16* into the Commodore world.  First was to find a place in Zero Page which wouldn't cause too much damage.  Assuming the user is not attempting to use ```BASIC``` it should be safe to store it in 32-bytes starting from ```$0002``` all the way up ```008f```.  If using *Sweet16's* subroutine functionality (optionally installed) then the stack pointer storage needs to be specified which is also within this block.
 
-Its important to have the opcode lookup table all within the one page so that only a single address byte is required in the opcode itself.  It doesn't matter where else the subroutine calls after that as long as all 32 branches are on the same page.   As such some calls have had to be moved outside of this page to allow for the 3 new mnemonics.   All ```POP```, ```SET``` and ```RTN``` mnemonics have the bulk of their implementation moved out of page.   This costs a single jump but it is a difference from other SWEET16 implementations and if the extensions are not required these out of page jumps can be moved into page.
+Its important to have the opcode lookup table all within the one page so that only a single address byte is required in the opcode itself.  It doesn't matter where else the subroutine calls after that as long as all 32 branches are on the same page.   As such some calls have had to be moved outside of this page to allow for the 3 new mnemonics.   All ```POP```, ```SET``` and ```RTN``` mnemonics have the bulk of their implementation moved out of page.   This costs a single jump but it is a difference from other *Sweet16* implementations and if the extensions are not required these out of page jumps can be moved into page.
 
-Another difference is the introduction of a ```nop``` at the start of the page containing all the mnemonics.  The reasons for this is that the Kick Assembler allows code to be page aligned which is done via the ```.align $100``` command.  This means it is now on a 256 byte page alignment.  However, SWEET16 uses ```JSR```'s as ```JMP``` by putting the address minus one onto the stack and then executing an ```RTS```.   In every case except being page aligned this works but the first call (```SET```) being page aligned at ```00``` in its low byte becomes ```ff``` after the minus one.  So to ensure this will always work a ```nop``` has been placed at the start of the table.   This is not a deficiency in SWEET16, rather an implementation detail that affected this particular port.
+Another difference is the introduction of a ```nop``` at the start of the page containing all the mnemonics.  The reasons for this is that the *Kick Assembler* allows code to be page aligned which is done via the ```.align $100``` command.  This means it is now on a 256 byte page alignment.  However, *Sweet16* uses ```JSR```'s as ```JMP``` by putting the address minus one onto the stack and then executing an ```RTS```.   In every case except being page aligned this works but the first call (```SET```) being page aligned at ```$00``` in its low byte becomes ```$ff``` after the minus one.  So to ensure this will always work a ```nop``` has been placed at the start of the table.   This is not a deficiency in *Sweet16*, rather an implementation detail that affected this particular port.
 
-I've also opted to use the stack as an alternate place to optionally store the current state before calling Sweet16 rather than have to specifiy an alternate memory location.  This has minimal impact but simplifies moving Sweet16 to other locations.
+The original (and other ports) tends to use specific memory locations to store the calling state which I've opted instead to use the stack as an alternate place to (optionally) store the current state before calling *Sweet16* rather than have to specifiy an alternate memory location.  This has minimal impact but simplifies moving *Sweet16* to other locations.
 
-Lastly, the original implementation required " _...the user must initialize and otherwise not disturb R12 if the SWEET16 subroutine capability is used since it is utilized as the automatic subroutine return stack pointer..._".  This is can now be taken care of as part of the initialization to ensure that usage of this functionality does not crash the program using uninitialized memory if the user had not already known to set this up.  This can be enabled by passing a non-zero value as the first argument to the pseudocommand.  e.g., ```sweet16 : 1```
+Lastly, the original implementation required " _...the user must initialize and otherwise not disturb R12 if the *Sweet16* subroutine capability is used since it is utilized as the automatic subroutine return stack pointer..._".  This is can now be taken care of as part of the initialization to ensure that usage of this functionality does not crash the program using uninitialized memory if the user had not already known to set this up.  This can be enabled by passing a non-zero value as the first argument to the pseudocommand.  e.g., ```sweet16 : 1```
 
 # Debugging
-One aspect of using SWEET16 which at first might appear to be problematic is debugging.  While working in assembler a lot of time is spent inspecting memory location and registers and SWEET16 is not forgiving in this regard.  The registers you are inspecting are arbitrary memory locations outside of the normal 6502 ones and breakpoints don't work as well as would initially be expecting due to this (you don't simply put a ```BRK``` in the SWEET16 code and load up the debugger).  When SWEET16 encounteres a  ```BK``` it executes the the ISR for break.   This is usually not setup unless debugging so I have added two ways to set this up to assist in debugging SWEET16 programs "natively".  They both make the assumption the developer has access to VICE and is not developing on native hardware for this part of the development as it installs an ISR that produces a breakpoint in a VICE format.  So when run in debug mode once the SWEET16 call ```BR``` is encountered the monitor will appear and the developer can inspect the state of the metaprocessor.   There are two ways to achieve this.
+One aspect of using *Sweet16* which at first might appear to be problematic is debugging.  While working in assembler a lot of time is spent inspecting memory location and registers and *Sweet16* is not forgiving in this regard.  The registers being inspected are arbitrary memory locations outside of the normal 6502 ones and breakpoints don't work as well as would initially be expecting due to this (you don't simply put a ```BRK``` in the *Sweet16* code and load up the debugger).  When *Sweet16* encounteres a  ```BK``` it executes the the ISR for break.   This is usually not setup unless debugging so have added two ways to set this up to assist in debugging *Sweet16* programs "natively".  They both make the assumption the developer has access to VICE and is not developing on native hardware for this part of the development as it installs an ISR that produces a breakpoint in a VICE format.  When run in debug mode once the *Sweet16* call ```BR``` is encountered the monitor will appear and the developer can inspect the state of the metaprocessor.   There are two ways to achieve this.
 
-- Start SWEET16 with the optional flag to install the interrupt routine: ```sweet16 : 0: 1```
-- While within SWEET16 execute the extension ```IBK``` which will ensure the ISR is installed (only needs to be done once - use ```BK``` from then onwards).
+- Start *Sweet16* with the optional flag to install the interrupt routine: ```sweet16 : 0: 1```
+- While within *Sweet16* execute the extension ```IBK``` which will ensure the ISR is installed (only needs to be done once - use ```BK``` from then onwards).
 
-In either case once the command is encountered (and assuming using VICE) the monitor will show up at that point.   From this point it is important to realise that the user is in 6502 world (not SWEET16) so it is fine to inspect the mapped zero-page registers etc. which are all mapped in the debug output file ```breakpoints.txt``` However, once you continue execution the call will jump to ```Sweet16_Exexcute``` which effectively continues where you left off back in the SWEET16 metaprocessor.
+In either case, once the command is encountered (and assuming using VICE) the monitor will show up at that point.   From this point it is important to realise that the user is in 6502 world (not *Sweet16*) so it is fine to inspect the mapped zero-page registers etc. which are all mapped in the debug output file ```breakpoints.txt``` However, once you continued execution the call will jump to ```Sweet16_Exexcute``` which continues where the break left off in the *Sweet16* metaprocessor.
 
-A more powerful alternative to this is using the extension of ```XJSR``` which will allow any 6502 routine to be called within SWEET16 execution to continue once it encounters a ```RTS```.
+A more powerful alternative to this is using the extension of ```XJSR``` which will allow any 6502 routine to be called within *Sweet16* execution to continue once it encounters an ```RTS```.
 
 # Test Suite
-I've added a rudimentary test suite based on Woz's original descriptions for each mnemonic.  Very few look 1:1 with the description but they are similar in vibe.  Often (to keep a single source of truth) I'll use a Kick ```.const``` instead of the original value so that I can pass the same value to an assert routine.   The end code is the same but code maintainability and the flexibility is more-so today than it was in 1977.  In total there are over 50 "unit" tests validating the original code, the extensions and my understanding of the metaprocessor.  I'm sure there is room for many more but I do think there are enough to give a vague guide to anyone putting their toes into SWEET16 for the first time some confidence about how it is meant to work.
+Added is a rudimentary test suite based on Wozniak's original descriptions for each mnemonic.  Very few look 1:1 with the description but they are similar in vibe.  Often (to keep a single source of truth) used is a *Kick Assembler* ```.const``` instead of the original value so that it can pass the same value to an assert routine.   The end code is the same but code maintainability and the flexibility is more-so today than it was in 1977.  In total there are over 50 "unit" tests validating the original code, the extensions and my understanding of the metaprocessor.  I'm sure there is room for many more but there are enough to give a vague guide to anyone putting their toes into *Sweet16* for the first time some confidence about how it is meant to work.
 
 # External Use
-There are only four main files required to use this implementation of SWEET16 as well as inclusion of the *Core* library:
+There are only a handful of main files required to use this implementation of *Sweet16* which are part of the *Core* library:
+- ```sweet16_const.asm```: configuration
 - ```sweet16.asm```: the core implememtation with some extensions
-- ```sweet16_pseudocommands.asm```: Kick Assembler pseudo commands to map mnemonics to SWEET16
+- ```sweet16_pseudocommands.asm```: Kick Assembler pseudo commands to map mnemonics to *Sweet16*
 - ```sweet16_macros.asm```: macro's used by the pseudo commands and core extensions
 - ```sweet16_functions.asm```: functions used by the pseudo commands
 
@@ -133,10 +128,6 @@ There are only four main files required to use this implementation of SWEET16 as
 # Binaries
 - .PRG format [sweet16.prg](https://github.com/Silverune/Sweet16/blob/master/bin/sweet16.prg)
 - .D64 format (1541 disk image) [sweet16.d64](https://github.com/Silverune/Sweet16/blob/master/bin/sweet16.d64)
-- .D71 format (1571 disk image) [sweet16.d71](https://github.com/Silverune/Sweet16/blob/master/bin/sweet16.d71)
-- .D81 format (1581 disk image) [sweet16.d81](https://github.com/Silverune/Sweet16/blob/master/bin/sweet16.d81)
-- .T64 format (VICE tape image) [sweet16.t64](https://github.com/Silverune/Sweet16/blob/master/bin/sweet16.t64)
-- .TAP format (Raw tape image) [sweet16.tap](https://github.com/Silverune/Sweet16/blob/master/bin/sweet16.tap)
 - .B64 format (Base64 zip encoded) [sweet16.b64](https://github.com/Silverune/Sweet16/blob/master/bin/sweet16.b64)
 
 # Online Emulator
@@ -144,7 +135,7 @@ There are only four main files required to use this implementation of SWEET16 as
 # Opcode Reference
 
 <table width="100%" border="">
-<tbody><tr><td align="center" colspan="6"><b>SWEET16 OP CODE SUMMARY</b></td></tr>
+<tbody><tr><td align="center" colspan="6"><b>*Sweet16* OP CODE SUMMARY</b></td></tr>
 <tr><td width="5%">00</td><td width="12%">RTN</td><td width="33%">Return to 6502 mode</td><td width="5%">&nbsp;</td><td width="12%">&nbsp;</td><td width="33%">&nbsp;</td></tr>
 <tr><td>01</td><td>BR ea</td><td>Branch always</td><td>1n</td><td>SET n : val</td><td>Constant set value</td></tr>
 <tr><td>02</td><td>BNC ea</td><td>Branch if No Carry</td><td>2n</td><td>LD n</td><td>Load</td></tr>
@@ -161,5 +152,13 @@ There are only four main files required to use this implementation of SWEET16 as
 <tr><td>0D</td><td><i>XJSR ea</i></td><td><i>Extension - Jump to External 6502 Subroutine</i></td><td>Dn</td><td>CPR n</td><td>Compare</td></tr>
 <tr><td>0E</td><td><i>SETM ea</i></td><td><i>Extension - Sets register with value from memory</i></td><td>En</td><td>INR n</td><td>Increment</td></tr>
 <tr><td>0F</td><td><i>SETI ea</i></td><td>Extension - Set reguster with value from address (High / Low) as if the value at the address was a const to SET</td><td>Fn</td><td>DCR n</td><td>Decrement</td></tr>
-<tr><td colspan="6"><b>SWEET16 Operation Code Summary:</b> Table 1 summarizes the list of SWEET16 operation codes.  They are executed after a call to the entry point SWEET16.  Return to the calling program and normal noninterpretive operation is accomplished with the RTN mnemonic of SWEET16.  These codes differ from Woz's original only in the removal of the redundant <b>R</b> for register numbers and the replacement of <b>I</b> instead of <b>@</b> to refer to indirect address mnemonics</td></tr>
+<tr><td colspan="6"><b>*Sweet16* Operation Code Summary:</b> Table 1 summarizes the list of *Sweet16* operation codes.  They are executed after a call to the entry point *Sweet16*.  Return to the calling program and normal noninterpretive operation is accomplished with the RTN mnemonic of *Sweet16*.  These codes differ from Woz's original only in the removal of the redundant <b>R</b> for register numbers and the replacement of <b>I</b> instead of <b>@</b> to refer to indirect address mnemonics</td></tr>
 </tbody></table>
+
+## Essential Links
+- [Original BYTE Article](https://archive.org/stream/byte-magazine-1977-11-rescan/1977_11_BYTE_02-11_Memory_Mapped_IO#page/n151) [TXT](http://amigan.1emu.net/kolsen/programming/sweet16.html)
+- [Kick Assembler](http://theweb.dk/KickAssembler/Main.html)
+
+## Other Implementations
+- [Porting](http://www.6502.org/source/interpreters/sweet16.htm)
+- [Atari Source Port](https://github.com/jefftranter/6502/blob/master/asm/sweet16/sweet16.s)
