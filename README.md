@@ -163,3 +163,6 @@ There are only a handful of main files required to use this implementation of *S
 - [Porting](http://www.6502.org/source/interpreters/sweet16.htm)
 - [Atari Source Port](https://github.com/jefftranter/6502/blob/master/asm/sweet16/sweet16.s)
 - [VIC-20 Port](https://techtinkering.com/articles/sweet-16-the-6502-dream-machine-ported-to-the-vic-20/)
+
+## TODO
+- Create a sister branch of ```Core``` so that entire build tree is public
