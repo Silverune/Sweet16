@@ -8,10 +8,13 @@
             "name": "Core Library"
         },
         {
-            "path": "..//Core//reference",
+            "path": "..//CoreResources//reference",
             "name": "Documentation"
         },
         {
+            "path": "..//CoreResources//reference//images",
+            "name": "Diagrams"
+        },        {
             "path": ".//bin",
             "name": "Output"
         }
