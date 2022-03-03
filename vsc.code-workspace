@@ -4,17 +4,10 @@
             "path": "."
         },
         {
-            "path": "..//Core//code",
-            "name": "Core Library"
+            "path": "..//Sweet16Core//code",
+            "name": "Sweet16 Core Library Fork"
         },
         {
-            "path": "..//CoreResources//reference",
-            "name": "Documentation"
-        },
-        {
-            "path": "..//CoreResources//reference//images",
-            "name": "Diagrams"
-        },        {
             "path": ".//bin",
             "name": "Output"
         }
@@ -36,7 +29,7 @@
         },
         "kickassembler.debuggerOptions": "-wait 5000 -autojmp",
         "kickassembler.assemblerLibraryPaths": [
-            "..//Core//code",
+            "..//Sweet16Core//code",
             "resources"
         ],
         "kickassembler.byteDumpFile": true,

@@ -13,7 +13,7 @@
 APP=							sweet16
 PROG=							startup
 OUTPUT=							bin
-LIB_DIR=						resources -libdir ../Core/code
+LIB_DIR=						resources -libdir ../Sweet16Core/code
 FORMAT_D64=						d64
 FORMAT_D71=						d71
 FORMAT_D81=						d81
