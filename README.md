@@ -166,3 +166,4 @@ There are only a handful of main files required to use this implementation of *S
 
 ## Related
 - This project requires use of the separate fork ```Sweet16Core``` available [here](https://github.com/Silverune/Sweet16Core)
+- Project was developed in Microsoft Studio Code using a forked Kick Assembler extension available [here](https://github.com/Silverune/Sweet16VSCKickAssembler)
