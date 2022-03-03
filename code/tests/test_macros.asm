@@ -85,7 +85,7 @@ memory_3:
 	TestOutputColor(memory, DESC_COLOR)
 	jmp !done+
 memory:
-	.byte Ascii.SPACEBAR
+	.byte Ascii.SPACE
 	Kick_PetsciiMixed(description)
 	.text ":"
 	.byte 0
