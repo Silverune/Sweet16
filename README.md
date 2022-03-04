@@ -2,6 +2,7 @@
 
 | :exclamation: | This project requires use of the separate fork ```Sweet16Core``` available [here](https://github.com/Silverune/Sweet16Core) |
 |---------------|:------------------------|
+
 | :memo:        | Sweet16 was developed in Microsoft Studio Code using a forked Kick Assembler extension available [here](https://github.com/Silverune/Sweet16VSCKickAssembler)   |
 |---------------|:------------------------|
 - 
@@ -171,7 +172,9 @@ There are only a handful of main files required to use this implementation of *S
 - [VIC-20 Port](https://techtinkering.com/articles/sweet-16-the-6502-dream-machine-ported-to-the-vic-20/)
 
 ## Related
+
 | :exclamation: | This project requires use of the separate fork ```Sweet16Core``` available [here](https://github.com/Silverune/Sweet16Core) |
 |---------------|:------------------------|
+
 | :memo:        | Sweet16 was developed in Microsoft Studio Code using a forked Kick Assembler extension available [here](https://github.com/Silverune/Sweet16VSCKickAssembler)   |
 |---------------|:------------------------|
