@@ -1,13 +1,14 @@
 # Sweet16
 
+A Commodore 64 implementation of Steve Wozniak's *Sweet16* 16-bit metaprocessor processor using *Kick Assembler*
+
+
+# Note
 | :exclamation: | This project requires use of the separate fork ```Sweet16Core``` available [here](https://github.com/Silverune/Sweet16Core) |
 |---------------|:------------------------|
 
 | :memo:        | Sweet16 was developed in Microsoft Studio Code using a forked Kick Assembler extension available [here](https://github.com/Silverune/Sweet16VSCKickAssembler)   |
 |---------------|:------------------------|
-- 
-
-A Commodore 64 implementation of Steve Wozniak's *Sweet16* 16-bit metaprocessor processor using *Kick Assembler*
 
 # Overview
 In 1977, Steve Wozniak wrote an article for BYTE magazine about a 16-bit "metaprocessor" that he had invented to deal with manipulating 16-bit values on an 8-bit CPU (6502) for the *AppleBASIC* he was writing at the time.  What he came up with was "*Sweet16*"  which he referred to "*as a 6502 enhancement package, not a stand alone processor*".  It defined sixteen 16-bit registers (```R0``` to ```R15```) which under the bonnet were implemented as 32 contiguous memory locations located in zero page. Some of the registers were dual purpose (e.g., ```R0``` doubled as the *Sweet16* accumulator).  
@@ -172,7 +173,6 @@ There are only a handful of main files required to use this implementation of *S
 - [VIC-20 Port](https://techtinkering.com/articles/sweet-16-the-6502-dream-machine-ported-to-the-vic-20/)
 
 ## Related
-
 | :exclamation: | This project requires use of the separate fork ```Sweet16Core``` available [here](https://github.com/Silverune/Sweet16Core) |
 |---------------|:------------------------|
 
