@@ -1,5 +1,8 @@
 # Sweet16
 
+| :memo:        | This repo contains the test repo for the Core Sweet16 library available [here](https://github.com/Silverune/Sweet16Core)       |
+|---------------|:------------------------|
+
 A Commodore 64 implementation of Steve Wozniak's *Sweet16* 16-bit metaprocessor processor using *Kick Assembler*
 
 # Overview
